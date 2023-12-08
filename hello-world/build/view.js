@@ -1,0 +1,1 @@
+console.log("Hello World! (from wpsp-hello-world block)");
