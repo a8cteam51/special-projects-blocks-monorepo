@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpsp/dynamic-table-of-contents",
+	"version": "0.1.0",
+	"title": "Dynamic Table of Contents",
+	"category": "design",
+	"icon": "table",
+	"description": "Creates a table of contents that's dynamically (PHP) rendered.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "dynamic-table-of-contents",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"viewScript": "file:./view.js"
+}
