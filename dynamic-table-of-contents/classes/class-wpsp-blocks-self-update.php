@@ -5,10 +5,9 @@
  *
  * @package wpsp
  */
-namespace WPSP_Blocks\Dynamic_Table_Of_Contents;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
 class WPSP_Blocks_Self_Update {
@@ -30,6 +29,13 @@ class WPSP_Blocks_Self_Update {
 	 * @return array|bool Array of update data or false if no update available.
 	 */
 	public function self_update( $update, array $plugin_data, string $plugin_file ) {
+		$wpsp_blocks = apply_filters( 'wpsp_installed_blocks', array() );
+
+		// Only check if this is a plugin we manage.
+		if ( ! in_array( $plugin_file, $wpsp_blocks, true ) ) {
+			return $update;
+		}
+
 		$plugin_slug     = $plugin_data['TextDomain'];
 		$current_version = (float) $plugin_data['Version'];
 		$updated_version = (float) $current_version + 0.1;
@@ -67,5 +73,3 @@ class WPSP_Blocks_Self_Update {
 		);
 	}
 }
-$wpsp_blocks_self_update = new WPSP_Blocks_Self_Update();
-$wpsp_blocks_self_update->init();

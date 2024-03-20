@@ -1,25 +1,50 @@
-/**
- * Use this file for JavaScript code that you want to run in the front-end
- * on posts/pages that contain this block.
- *
- * When this file is defined as the value of the `viewScript` property
- * in `block.json` it will be enqueued on the front end of the site.
- *
- * Example:
- *
- * ```js
- * {
- *   "viewScript": "file:./view.js"
- * }
- * ```
- *
- * If you're not making any changes to this file because your project doesn't need any
- * JavaScript running in the front-end, then you should delete this file and remove
- * the `viewScript` property from `block.json`.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
- */
+const $headings = document.querySelectorAll('.wp-block-post-content h1, .wp-block-post-content h2, .wp-block-post-content h3, .wp-block-post-content h4, .wp-block-post-content h5, .wp-block-post-content h6');
+const $headingList = document.querySelector('.wp-block-wpsp-dynamic-table-of-contents ul');
 
-/* eslint-disable no-console */
-console.log( 'Hello World! (from wpsp-dynamic-table-of-contents block)' );
-/* eslint-enable no-console */
+// This is the observer that will be used to highlight the current heading.
+const $observer = new IntersectionObserver((entries) => {
+	let $links = document.querySelectorAll('.wp-block-wpsp-dynamic-table-of-contents a');
+
+	entries.forEach((entry) => {
+		const $id = entry.target.id;
+		const $link = document.querySelector(`.wp-block-wpsp-dynamic-table-of-contents a[href="#${$id}"]`);
+
+		if (entry.isIntersecting) {
+			$links.forEach((link) => {
+				link.classList.remove('active');
+			});
+
+			$link.classList.add('active');
+		}
+	});
+},
+{
+	rootMargin: '0px 0px -75% 0px',
+});
+
+$headings.forEach((heading, index) => {
+	const $id = heading.id;
+
+	if ($id.length) {
+		// Create new elements.
+		const $latestListItem = document.createElement('li');
+		const $latestLink = document.createElement('a');
+
+		// Add attributes to new elements.
+		$latestLink.href = `#${$id}`;
+		$latestLink.textContent = heading.textContent;
+
+		// Setup the first element as active.
+		if (0 === index) {
+			$latestLink.classList.add('active');
+		}
+
+		// Add new elements to the markup.
+		$latestListItem.appendChild($latestLink);
+		$headingList.appendChild($latestListItem);
+
+		// Setup on scroll highlighting.
+		$observer.observe(heading);
+	}
+
+});

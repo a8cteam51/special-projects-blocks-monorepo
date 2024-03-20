@@ -1,12 +1,64 @@
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
+.wp-block-post-content {
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		scroll-margin-top: 2rem;
+	}
+}
 
 .wp-block-wpsp-dynamic-table-of-contents {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
+	font-family: var(--wp--preset--font-family--sans-serif);
+	max-width: 312px;
+
+	&.is-position-sticky {
+		top: 2rem;
+
+		.admin-bar & {
+			top: calc(2rem + 32px);
+		}
+	}
+
+	> :first-child {
+		margin-top: 0;
+	}
+
+	> :last-child {
+		margin-bottom: 0;
+	}
+
+	h2 {
+		font-size: var(--wp--preset--font-size--medium);
+		color: inherit;
+		margin-bottom: 1.5rem;
+	}
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0.5rem 0 0 0;
+		border-top: 1px solid var(--wp--preset--color--light-gray);
+
+		li {
+			padding-top: 1rem;
+			margin-bottom: 0;
+
+			a {
+				&:not(.active) {
+					color: var(--wp--preset--color--black);
+				}
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+
+			a.active {
+				font-weight: bold;
+			}
+		}
+	}
 }
