@@ -31,7 +31,7 @@ class WPSP_Blocks_Self_Update {
 	 * Initialize WordPress hooks
 	 */
 	public function hooks() {
-		add_filter( 'update_plugins_opsoasis.mystagingwebsite.com', array( $this, 'self_update' ), 10, 3 );
+		add_filter( 'update_plugins_opsoasis-develop.mystagingwebsite.com', array( $this, 'self_update' ), 10, 3 );
 	}
 
 	/**
@@ -53,7 +53,7 @@ class WPSP_Blocks_Self_Update {
 
 		// Ask opsoasis.mystagingwebsite.com if there's an update.
 		$response = wp_remote_get(
-			'https://opsoasis.mystagingwebsite.com/wp-json/opsoasis-blocks-version-manager/v1/update-check',
+			'https://opsoasis-develop.mystagingwebsite.com/wp-json/opsoasis-blocks-version-manager/v1/update-check',
 			array(
 				'body' => array(
 					'plugin'  => $plugin_filename_parts[0],
@@ -70,20 +70,11 @@ class WPSP_Blocks_Self_Update {
 		$updated_version = wp_remote_retrieve_body( $response );
 		$updated_array   = json_decode( $updated_version, true );
 
-		// Get the zip file.
-		$zip = wp_remote_get( $updated_array['package_url'] );
-
-		// If the zip file was found, return the update.
-		if ( 200 === wp_remote_retrieve_response_code( $zip ) ) {
-			return array(
-				'slug'    => $updated_array['slug'],
-				'version' => $updated_array['version'],
-				'url'     => $updated_array['package_url'],
-				'package' => wp_remote_retrieve_body( $zip ),
-			);
-		}
-
-		// If we're here, nothing was found on github.
-		return $update;
+		return array(
+			'slug'    => $updated_array['slug'],
+			'version' => $updated_array['version'],
+			'url'     => $updated_array['package_url'],
+			'package' => $updated_array['package_url'],
+		);
 	}
 }
