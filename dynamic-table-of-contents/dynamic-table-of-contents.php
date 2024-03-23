@@ -4,7 +4,7 @@
  * Description:       Creates a table of contents that's dynamically (PHP) rendered.
  * Requires at least: 6.1
  * Requires PHP:      8.0
- * Version:           0.1.6
+ * Version:           0.1.7
  * Author:            WordPress Special Projects Team
  * Author URI:        https://wpspecialprojects.wordpress.com/
  * Update URI:        https://opsoasis.mystagingwebsite.com/dynamic-table-of-contents/
