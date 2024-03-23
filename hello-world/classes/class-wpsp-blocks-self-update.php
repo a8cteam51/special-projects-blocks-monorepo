@@ -49,18 +49,6 @@ class WPSP_Blocks_Self_Update {
 			return $update;
 		}
 
-		// Check this is a plugin we actually manage.
-		$wpsp_blocks = array_map(
-			function( $block ) {
-				return "{$block}/{$block}.php";
-			},
-			apply_filters( 'wpsp_installed_blocks', array() )
-		);
-
-		if ( ! in_array( $plugin_file, $wpsp_blocks, true ) ) {
-			return $update;
-		}
-
 		$plugin_filename_parts = explode( '/', $plugin_file );
 
 		// Ask opsoasis.mystagingwebsite.com if there's an update.
