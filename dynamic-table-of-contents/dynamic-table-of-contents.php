@@ -7,7 +7,7 @@
  * Version:           0.1.7
  * Author:            WordPress Special Projects Team
  * Author URI:        https://wpspecialprojects.wordpress.com/
- * Update URI:        https://opsoasis.mystagingwebsite.com/dynamic-table-of-contents/
+ * Update URI:        https://opsoasis-develop.mystagingwebsite.com/dynamic-table-of-contents/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       dynamic-table-of-contents
