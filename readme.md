@@ -10,9 +10,9 @@ Your plugin must have an entrypoint with the same name as the folder, i.e. `hell
 
 ## Creating a new block
 
-You can add a new block to the monorepo by running the following steps in any folder:
+You can add a new block to the monorepo by running the following steps. Make sure you're starting from the `wp-content/plugins` folder:
 
-```
+``` bash
 git clone --no-checkout --sparse https://github.com/a8cteam51/special-projects-blocks-monorepo/
 cd special-projects-blocks-monorepo
 npx @wordpress/create-block
@@ -37,7 +37,7 @@ From here, you can start editing your block.
 
 Start by downloading the block's zip file on your plugin folder
 
-```
+``` bash
 git clone --no-checkout --sparse https://github.com/a8cteam51/special-projects-blocks-monorepo/
 cd special-projects-blocks-monorepo
 git sparse-checkout init --cone
