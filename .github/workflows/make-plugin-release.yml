@@ -1,0 +1,61 @@
+name: Creates a release when a plugin is updated
+
+on:
+  push:
+    branches:
+      - trunk
+
+jobs:
+  get-changed-folders:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get changed files
+        id: changed_files
+        uses: tj-actions/changed-files@v43
+        with:
+          dir_names: true
+          files_ignore: .github/**
+          dir_names_include_files: false
+          dir_names_exclude_current_dir: true
+          dir_names_max_depth: 1
+          matrix: true
+    outputs:
+      matrix: ${{ steps.changed_files.outputs.all_changed_files }}
+
+  make-release:
+    runs-on: ubuntu-latest
+    if: ${{ needs.get-changed-folders.outputs.matrix.files != '' }}
+    strategy:
+      matrix: 
+        files: ${{ fromJSON( needs.get-changed-folders.outputs.matrix ) }}
+      max-parallel: 4
+      fail-fast: false
+    needs: get-changed-folders
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get plugin version from header file
+        id: get_plugin_version
+        run: echo "VERSION=$(grep "Version:" ${{ matrix.files }}/${{ matrix.files }}.php | awk '{print $3}')" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependencies
+        run: |
+          npm ci --prefix ${{ matrix.files }}
+          npm run build --prefix ${{ matrix.files }}
+
+      - name: Zip folder
+        run: zip -r ${{ matrix.files }}.zip ${{ matrix.files }} -x "${{ matrix.files }}/node_modules/*" "${{ matrix.files }}/.gitignore" "${{ matrix.files }}/.editorconfig" "${{ matrix.files }}/.phpcs.xml" "${{ matrix.files }}/composer.json" "${{ matrix.files }}/composer.lock" "${{ matrix.files }}/package.json" "${{ matrix.files }}/package-lock.json"
+
+      - name: Create release
+        id: create_github_release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ matrix.files }}.zip
+          tag_name: ${{ matrix.files }}@${{ steps.get_plugin_version.outputs.VERSION }}
+          generate_release_notes: true
+          make_latest: false
+
+permissions:
+  contents: write
