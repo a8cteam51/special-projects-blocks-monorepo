@@ -58,7 +58,7 @@ jobs:
           tag_name: ${{ matrix.files }}@${{ steps.get_plugin_version.outputs.VERSION }}
           generate_release_notes: true
           make_latest: false
-          body_path: ${{ matrix.files }}/CHANGELOG.md
+          body_path: ${{ matrix.files }}/readme.txt
 
 permissions:
   contents: write
