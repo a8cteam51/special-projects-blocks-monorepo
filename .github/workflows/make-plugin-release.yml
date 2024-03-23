@@ -25,7 +25,6 @@ jobs:
 
   make-release:
     runs-on: ubuntu-latest
-    if: ${{ needs.get-changed-folders.outputs.matrix.files != '' }}
     strategy:
       matrix: 
         files: ${{ fromJSON( needs.get-changed-folders.outputs.matrix ) }}
