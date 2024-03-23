@@ -80,3 +80,23 @@ Make sure that project-specific styles and data go into the project code and not
 Any partner-specific styling rules should be added via a separate stylesheet that should be registered through https://developer.wordpress.org/themes/features/block-stylesheets/#registering-a-block-stylesheet
 
 ### Adding site / partner specific styles
+
+How to extend or customize blocks in the monorepo, without directly editing the blocks themselves.
+It’s important to avoid modifying blocks in the monorepo unless absolutely necessary. In that case please contact an engineering lead to discuss your modification plans. If you’re importing an existing block into your project block and need to modify the blocks functionality, styling, or output, there’s a variety of hooks and filters available to do this.
+
+
+
+Re-styling the block: https://developer.wordpress.org/themes/features/block-stylesheets/
+
+Writing block variations: https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/extending-the-query-loop-block/
+
+Extending the block edit and save functions, e.g adding classes, adding new controls, add output wrapper: https://gutenberghub.com/how-to-create-block-visibility-extension/
+
+Modifying block output: https://developer.wordpress.org/reference/hooks/render_block/
+https://developer.wordpress.org/reference/hooks/render_block_this-name/
+
+Modify block.json params: https://developer.wordpress.org/reference/hooks/register_block_type_args/
+
+Enqueue/dequeue stylesheets and scripts from block.json: https://developer.wordpress.org/reference/hooks/register_block_type_args/
+
+https://developer.wordpress.org/block-editor/reference-guides/filters/block-filters/
