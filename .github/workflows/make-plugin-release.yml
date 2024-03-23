@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ needs.get-changed-folders.outputs.matrix != '[]' }}
     strategy:
-      matrix: 
+      matrix:
         files: ${{ fromJSON( needs.get-changed-folders.outputs.matrix ) }}
       max-parallel: 4
       fail-fast: false

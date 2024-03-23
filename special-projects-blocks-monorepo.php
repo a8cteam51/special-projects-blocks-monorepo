@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Plugin Name:       Dynamic Table of Contents
  * Description:       Creates a table of contents that's dynamically (PHP) rendered.
@@ -22,7 +22,7 @@
  *
  * Example: /dynamic-table-of-contents/dynamic-table-of-contents.php
  */
- function load_add_downloaded_blocks(){
+function load_add_downloaded_blocks(){
 	$dirs = glob( dirname( __FILE__ ) . '/*', GLOB_ONLYDIR );
 
 	foreach ( $dirs as $dir ) {
@@ -30,6 +30,6 @@
 			require $dir . DIRECTORY_SEPARATOR . basename( $dir ) . '.php';
 		}
 	}
- }
+}
 
- add_action('init', 'load_add_downloaded_blocks');
+add_action( 'init', 'load_add_downloaded_blocks' );
