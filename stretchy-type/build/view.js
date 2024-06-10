@@ -1,0 +1,1 @@
+console.log("Hello World! (from wpsp-stretchy-type block)");
