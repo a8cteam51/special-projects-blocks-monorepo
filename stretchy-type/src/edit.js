@@ -11,7 +11,7 @@ import { __ } from '@wordpress/i18n';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import { useBlockProps } from '@wordpress/block-editor';
+import { RichText, useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -29,10 +29,18 @@ import './editor.scss';
  *
  * @return {Element} Element to render.
  */
-export default function Edit() {
+export default function Edit( { attributes, setAttributes }) {
+	const { content } = attributes;
 	return (
-		<p { ...useBlockProps() }>
-			{ __( 'Stretchy Type – hello from the editor!', 'stretchy-type' ) }
-		</p>
+		<RichText tagName="pre"
+			{ ...useBlockProps() }
+			allowedFormats={ [] }
+			disableLineBreaks
+			identifier="content"
+			placeholder="Stretchy text goes here"
+			preserveWhiteSpace
+			value={ content }
+			onChange={ ( nextContent ) => setAttributes( { content: nextContent } ) }
+			/>
 	);
 }
