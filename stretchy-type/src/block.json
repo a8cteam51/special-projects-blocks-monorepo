@@ -4,7 +4,7 @@
 	"name": "wpsp/stretchy-type",
 	"version": "0.1.0",
 	"title": "Stretchy Type",
-	"category": "design",
+	"category": "theme",
 	"icon": "smiley",
 	"description": "A block that expands to fill the width of its container.",
 	"example": {},
@@ -12,6 +12,15 @@
 		"html": false
 	},
 	"textdomain": "stretchy-type",
+	"attributes": {
+		"content": {
+			"type": "rich-text",
+			"source": "rich-text",
+			"selector": "pre",
+			"__unstablePreserveWhiteSpace": true,
+			"__experimentalRole": "content"
+		}
+	},
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
