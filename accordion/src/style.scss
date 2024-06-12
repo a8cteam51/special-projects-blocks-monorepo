@@ -6,7 +6,15 @@
  */
 
 .wp-block-wpsp-accordion {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
+	// border: 1px solid black;
+}
+
+.wpsp-accordion__button {
+	background: none;
+	border: none;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+	padding: 0;
+	outline: none;
 }

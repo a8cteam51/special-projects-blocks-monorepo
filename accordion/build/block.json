@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
+  "apiVersion": 2,
   "name": "wpsp/accordion",
   "version": "0.1.0",
   "title": "Accordion",
@@ -9,11 +9,29 @@
   "description": "Accordion block for displaying hidden content via a toggle.",
   "example": {},
   "supports": {
-    "html": false
+    "color": {
+      "background": true,
+      "gradient": true
+    },
+    "align": true,
+    "border": true,
+    "layout": true,
+    "interactivity": true,
+    "spacing": {
+      "padding": true,
+      "margin": true
+    }
+  },
+  "attributes": {
+    "buttonText": {
+      "type": "string",
+      "default": "Read More"
+    }
   },
   "textdomain": "accordion",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css",
-  "viewScript": "file:./view.js"
+  "viewScriptModule": "file:./view.js",
+  "render": "file:./render.php"
 }

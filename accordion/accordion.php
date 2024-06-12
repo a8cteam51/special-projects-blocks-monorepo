@@ -25,6 +25,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
 function wpsp_accordion_block_init() {
-	register_block_type( __DIR__ . '/build' );
+	register_block_type_from_metadata( __DIR__ . '/build' );
 }
 add_action( 'init', 'wpsp_accordion_block_init' );
