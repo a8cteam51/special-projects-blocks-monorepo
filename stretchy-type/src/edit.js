@@ -12,6 +12,7 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { RichText, useBlockProps } from '@wordpress/block-editor';
+import { useRef, useEffect } from '@wordpress/element';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -31,16 +32,39 @@ import './editor.scss';
  */
 export default function Edit( { attributes, setAttributes }) {
 	const { content } = attributes;
+
+	const ref = useRef();
+
+	useEffect( () => {
+		const width = 200;
+		const characters = content.length;
+		const size = width / characters;
+		
+		// Set the font size of the reference element
+		ref.current.style.fontSize = `${ size }vw`;
+	}, [ content ] );
+
+	const onChange = ( nextContent ) => {
+		setAttributes( { content: nextContent } );
+		const width = 100;
+		const characters = nextContent.length;
+		const size = width / characters;
+		
+		// Set the font size of the reference element
+		ref.current.style.fontSize = `${ size }vw`;
+	}
+
 	return (
 		<RichText tagName="pre"
 			{ ...useBlockProps() }
+			ref={ ref }
 			allowedFormats={ [] }
 			disableLineBreaks
 			identifier="content"
 			placeholder="Stretchy text goes here"
 			preserveWhiteSpace
 			value={ content }
-			onChange={ ( nextContent ) => setAttributes( { content: nextContent } ) }
+			onChange={ onChange }
 			/>
 	);
 }
