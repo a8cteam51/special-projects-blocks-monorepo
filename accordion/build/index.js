@@ -59,11 +59,16 @@ function Edit({
   setAttributes,
   isSelected
 }) {
+  const {
+    level,
+    buttonText
+  } = attributes;
   const onChange = value => {
     setAttributes({
       buttonText: value
     });
   };
+  const tagName = 'h' + level;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)(),
     className: "wpsp-accordion-block",
@@ -72,13 +77,18 @@ function Edit({
         title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Accordion Settings'),
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, {})
       })
-    }, "setting"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
-      className: "wpsp-accordion-button",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText, {
-        value: attributes.buttonText,
-        onChange: onChange,
-        placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Add text...')
+    }, "setting"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.BlockControls, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.HeadingLevelDropdown, {
+        value: level,
+        onChange: newLevel => setAttributes({
+          level: newLevel
+        })
       })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText, {
+      tagName: tagName,
+      value: attributes.buttonText,
+      onChange: onChange,
+      placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Add text...')
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "inner",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks, {
@@ -275,7 +285,7 @@ module.exports = window["wp"]["i18n"];
   \************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"wpsp/accordion","version":"0.1.0","title":"Accordion","category":"design","icon":"smiley","description":"Accordion block for displaying hidden content via a toggle.","example":{},"supports":{"color":{"background":true,"gradient":true},"align":true,"border":true,"layout":true,"interactivity":true,"spacing":{"padding":true,"margin":true}},"attributes":{"buttonText":{"type":"string","default":"Read More"}},"textdomain":"accordion","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"wpsp/accordion","version":"0.1.0","title":"Accordion","category":"design","icon":"smiley","description":"Accordion block for displaying hidden content via a toggle.","example":{},"supports":{"color":{"background":true,"gradient":true},"align":true,"border":true,"layout":true,"interactivity":true,"spacing":{"padding":true,"margin":true}},"attributes":{"title":{"type":"string","default":"Enter some text here"},"level":{"type":"number","default":3}},"textdomain":"accordion","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
 
 /***/ })
 

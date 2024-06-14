@@ -12,7 +12,14 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  * @see https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/nested-blocks-inner-blocks/
  */
-import { RichText, useBlockProps, InnerBlocks, InspectorControls } from '@wordpress/block-editor';
+import {
+	RichText,
+	useBlockProps,
+	InnerBlocks,
+	InspectorControls,
+	BlockControls,
+	HeadingLevelDropdown,
+} from '@wordpress/block-editor';
 import { TextControl, PanelBody, PanelRow } from '@wordpress/components';
 
 /**
@@ -31,27 +38,32 @@ import './editor.scss';
  * @return {WPElement} Element to render.
  */
 export default function Edit( { attributes, setAttributes, isSelected } ) {
+	const { level, buttonText } = attributes;
 	const onChange = ( value ) => {
 		setAttributes( { buttonText: value } );
 	};
 
+	const tagName = 'h' + level;
+
 	return (
 		<div { ...useBlockProps() } className="wpsp-accordion-block">
 			<InspectorControls key="setting">
-				<PanelBody
-					title={ __( 'Accordion Settings' ) }
-				>
-					<PanelRow>
-					</PanelRow>
+				<PanelBody title={ __( 'Accordion Settings' ) }>
+					<PanelRow></PanelRow>
 				</PanelBody>
 			</InspectorControls>
-			<button className="wpsp-accordion-button">
-				<RichText
-					value={ attributes.buttonText }
-					onChange={ onChange }
-					placeholder={ __( 'Add text...' ) }
+			<BlockControls>
+				<HeadingLevelDropdown
+					value={ level }
+					onChange={ ( newLevel ) => setAttributes( { level: newLevel } ) }
 				/>
-			</button>
+			</BlockControls>
+			<RichText
+				tagName={ tagName }
+				value={ attributes.buttonText }
+				onChange={ onChange }
+				placeholder={ __( 'Add text...' ) }
+			/>
 			<div className="inner">
 				<InnerBlocks
 					renderAppender={ InnerBlocks.ButtonBlockAppender }

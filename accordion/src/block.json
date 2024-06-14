@@ -23,9 +23,13 @@
 		}
 	},
 	"attributes": {
-		"buttonText": {
+		"title": {
 			"type": "string",
-			"default": "Read More"
+			"default": "Enter some text here"
+		},
+		"level": {
+			"type": "number",
+			"default": 3
 		}
 	},
 	"textdomain": "accordion",
@@ -34,4 +38,4 @@
 	"style": "file:./style-index.css",
 	"viewScriptModule": "file:./view.js",
 	"render": "file:./render.php"
-  }
+}
