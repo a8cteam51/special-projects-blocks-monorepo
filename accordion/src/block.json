@@ -1,6 +1,6 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 2,
+	"apiVersion": 3,
 	"name": "wpsp/accordion",
 	"version": "0.1.0",
 	"title": "Accordion",
@@ -15,7 +15,6 @@
 		},
 		"align": true,
 		"border": true,
-		"layout": true,
 		"interactivity": true,
 		"spacing": {
 			"padding": true,
@@ -24,12 +23,15 @@
 	},
 	"attributes": {
 		"title": {
-			"type": "string",
-			"default": "Enter some text here"
+			"type": "string"
 		},
 		"level": {
 			"type": "number",
 			"default": 3
+		},
+		"textAlign": {
+			"type": "string",
+			"default": "left"
 		}
 	},
 	"textdomain": "accordion",

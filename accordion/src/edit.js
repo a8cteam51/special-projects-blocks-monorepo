@@ -19,8 +19,9 @@ import {
 	InspectorControls,
 	BlockControls,
 	HeadingLevelDropdown,
+	AlignmentControl,
 } from '@wordpress/block-editor';
-import { TextControl, PanelBody, PanelRow } from '@wordpress/components';
+import { PanelBody, PanelRow } from '@wordpress/components';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -38,30 +39,35 @@ import './editor.scss';
  * @return {WPElement} Element to render.
  */
 export default function Edit( { attributes, setAttributes, isSelected } ) {
-	const { level, buttonText } = attributes;
-	const onChange = ( value ) => {
-		setAttributes( { buttonText: value } );
-	};
-
+	const { level, title, textAlign } = attributes;
 	const tagName = 'h' + level;
 
 	return (
-		<div { ...useBlockProps() } className="wpsp-accordion-block">
-			<InspectorControls key="setting">
-				<PanelBody title={ __( 'Accordion Settings' ) }>
-					<PanelRow></PanelRow>
-				</PanelBody>
+		<>
+		<InspectorControls key="setting">
+			<PanelBody title={ __( 'Settings' ) }>
+				<PanelRow></PanelRow>
+			</PanelBody>
 			</InspectorControls>
-			<BlockControls>
-				<HeadingLevelDropdown
-					value={ level }
-					onChange={ ( newLevel ) => setAttributes( { level: newLevel } ) }
-				/>
-			</BlockControls>
+		<BlockControls>
+			<HeadingLevelDropdown
+				value={ level }
+				onChange={ ( newLevel ) => setAttributes( { level: newLevel } ) }
+			/>
+			<AlignmentControl
+				value={ textAlign }
+				onChange={ ( nextAlign ) => {
+					setAttributes( { textAlign: nextAlign } );
+				} }
+			/>
+		</BlockControls>
+		<div { ...useBlockProps() }>
 			<RichText
+				className={ `has-text-align-${ textAlign }` }
+				identifier={ 'title' }
 				tagName={ tagName }
-				value={ attributes.buttonText }
-				onChange={ onChange }
+				value={ title }
+				onChange={ ( newTitle ) => setAttributes( { title: newTitle } ) }
 				placeholder={ __( 'Add text...' ) }
 			/>
 			<div className="inner">
@@ -70,5 +76,6 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 				/>
 			</div>
 		</div>
+	</>
 	);
 }

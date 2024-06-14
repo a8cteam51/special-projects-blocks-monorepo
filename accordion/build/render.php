@@ -18,7 +18,7 @@ $heading_tag_closing = $attributes['level'] ? '</h' . esc_attr( $attributes['lev
             aria-controls="<?php echo esc_attr( $unique_id ); ?>"
         >
             <span class="wpsp-accordion__title">
-                <?php esc_html_e( $attributes['buttonText'], 'wpsp-accordion-block' ); ?>
+                <?php esc_html_e( $attributes['title'], 'wpsp-accordion-block' ); ?>
             </span>
         </button>
     <?php echo $heading_tag_closing; ?>
