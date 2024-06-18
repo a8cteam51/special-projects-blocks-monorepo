@@ -72,6 +72,7 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 			<TagName className={ headerClassName }>
 				<button className='wpsp-accordion__toggle'>
 					<RichText
+						allowedFormats={ [ 'core/bold', 'core/italic', 'core/strikethrough']}
 					 	tagName='span'
 						value={ title }
 						onChange={ ( newTitle ) => setAttributes( { title: newTitle } ) }

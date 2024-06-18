@@ -99,6 +99,7 @@ function Edit({
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
           className: "wpsp-accordion__toggle",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
+            allowedFormats: ['core/bold', 'core/italic', 'core/strikethrough'],
             tagName: "span",
             value: title,
             onChange: newTitle => setAttributes({

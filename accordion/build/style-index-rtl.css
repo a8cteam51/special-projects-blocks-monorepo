@@ -7,7 +7,7 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-.wpsp-accordion__button {
+.wpsp-accordion__toggle {
   background: none;
   border: none;
   color: inherit;
@@ -17,14 +17,14 @@
   outline: none;
 }
 
-.wpsp-accordion__button {
+.wpsp-accordion__toggle {
   position: relative;
   display: flex;
   width: 100%;
   padding-left: 24px;
 }
 
-.wpsp-accordion__button::after {
+.wpsp-accordion__toggle::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -37,7 +37,7 @@
   background-repeat: no-repeat;
 }
 
-.wpsp-accordion__button:focus-visible {
+.wpsp-accordion__toggle:focus-visible {
   outline: 2px solid #0073aa;
   outline-offset: 2px;
 }

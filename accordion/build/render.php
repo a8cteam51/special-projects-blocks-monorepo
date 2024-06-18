@@ -1,6 +1,4 @@
 <?php
-$unique_id = wp_unique_id( 'p-' );
-
 $p = new WP_HTML_Tag_Processor( $content );
 
 while ( $p->next_tag() ){
@@ -14,9 +12,10 @@ while ( $p->next_tag() ){
 
 $content = $p->get_updated_html();
 $p = new WP_HTML_Tag_Processor( $content );
+$unique_id = wp_unique_id( 'p-' );
 
 while ( $p->next_tag() ){
-    if ( $p->has_class( 'wpsp-accordion__title' ) ) {
+    if ( $p->has_class( 'wpsp-accordion__toggle' ) ) {
         $p->set_attribute( 'data-wp-on--click', 'actions.toggle' );
         $p->set_attribute( 'data-wp-bind--aria-expanded', 'context.isOpen' );
         $p->set_attribute( 'aria-controls', $unique_id );
