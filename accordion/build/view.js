@@ -69,8 +69,6 @@ __webpack_require__.r(__webpack_exports__);
       const {
         isOpen
       } = (0,_wordpress_interactivity__WEBPACK_IMPORTED_MODULE_0__.getContext)();
-      // Log the value of `isOpen` each time it changes.
-      console.log(`Is open: ${isOpen}`);
     }
   }
 });

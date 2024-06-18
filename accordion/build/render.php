@@ -9,6 +9,7 @@ $heading_tag_closing = $attributes['level'] ? '</h' . esc_attr( $attributes['lev
 	data-wp-interactive="wpsp-accordion"
 	<?php echo wp_interactivity_data_wp_context( array( 'isOpen' => false ) ); ?>
 	data-wp-watch="callbacks.logIsOpen"
+    data-wp-class--is-open="context.isOpen"
 >
     <?php echo $heading_tag_opening; ?>
         <button
