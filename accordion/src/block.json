@@ -23,15 +23,16 @@
 	},
 	"attributes": {
 		"title": {
-			"type": "string"
+			"type": "rich-text",
+			"source": "rich-text",
+			"selector": "span"
 		},
 		"level": {
 			"type": "number",
 			"default": 3
 		},
 		"textAlign": {
-			"type": "string",
-			"default": "left"
+			"type": "string"
 		}
 	},
 	"textdomain": "accordion",

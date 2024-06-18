@@ -17,14 +17,14 @@
   outline: none;
 }
 
-.wp-block-wpsp-accordion button {
+.wpsp-accordion__button {
   position: relative;
   display: flex;
   width: 100%;
   padding-right: 24px;
 }
 
-.wp-block-wpsp-accordion button::after {
+.wpsp-accordion__button::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -35,6 +35,11 @@
   background-image: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2.34424 9.19922L11.9442 18.7992L21.5442 9.19922\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"square\" stroke-linejoin=\"round\"/></svg>");
   background-size: contain;
   background-repeat: no-repeat;
+}
+
+.wpsp-accordion__button:focus-visible {
+  outline: 2px solid #0073aa;
+  outline-offset: 2px;
 }
 
 /* Add transition only for users who do not prefer reduced motion */

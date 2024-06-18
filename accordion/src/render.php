@@ -1,33 +1,36 @@
 <?php
 $unique_id = wp_unique_id( 'p-' );
-$heading_tag_opening = $attributes['level'] ? '<h' . esc_attr( $attributes['level'] ) . '>' : '<h3>';
-$heading_tag_closing = $attributes['level'] ? '</h' . esc_attr( $attributes['level'] ) . '>' : '</h3>';
-?>
 
-<div
-	<?php echo get_block_wrapper_attributes(); ?>
-	data-wp-interactive="wpsp-accordion"
-	<?php echo wp_interactivity_data_wp_context( array( 'isOpen' => false ) ); ?>
-	data-wp-watch="callbacks.logIsOpen"
-    data-wp-class--is-open="context.isOpen"
->
-    <?php echo $heading_tag_opening; ?>
-        <button
-            class="wpsp-accordion__button"
-            data-wp-on--click="actions.toggle"
-            data-wp-bind--aria-expanded="context.isOpen"
-            aria-controls="<?php echo esc_attr( $unique_id ); ?>"
-        >
-            <span class="wpsp-accordion__title">
-                <?php esc_html_e( $attributes['title'], 'wpsp-accordion-block' ); ?>
-            </span>
-        </button>
-    <?php echo $heading_tag_closing; ?>
+$p = new WP_HTML_Tag_Processor( $content );
 
-	<div
-		id="<?php echo esc_attr( $unique_id ); ?>"
-		data-wp-bind--hidden="!context.isOpen"
-	>
-        <?php echo $content ?>
-	</div>
-</div>
+while ( $p->next_tag() ){
+    if ( $p->has_class( 'wp-block-wpsp-accordion') ) {
+        $p->set_attribute( 'data-wp-interactive', 'wpsp-accordion' );
+        $p->set_attribute( 'data-wp-context', '{"isOpen": false}' );
+        $p->set_attribute( 'data-wp-watch', 'callbacks.logIsOpen' );
+        $p->set_attribute( 'data-wp-class--is-open', 'context.isOpen' );
+    }
+}
+
+$content = $p->get_updated_html();
+$p = new WP_HTML_Tag_Processor( $content );
+
+while ( $p->next_tag() ){
+    if ( $p->has_class( 'wpsp-accordion__title' ) ) {
+        $p->set_attribute( 'data-wp-on--click', 'actions.toggle' );
+        $p->set_attribute( 'data-wp-bind--aria-expanded', 'context.isOpen' );
+        $p->set_attribute( 'aria-controls', $unique_id );
+    } 
+}
+
+$content = $p->get_updated_html();
+$p = new WP_HTML_Tag_Processor( $content );
+
+while ( $p->next_tag() ){
+    if ( $p->next_tag( array( 'tag_name' => 'div', 'class_name' => 'wpsp-accordion__content' ) ) ) {
+        $p->set_attribute( 'id', $unique_id );
+        $p->set_attribute( 'data-wp-bind--hidden', '!context.isOpen' );
+    }
+}
+
+echo $p->get_updated_html();

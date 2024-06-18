@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 /**
  * Retrieves the translation of text.
  *
@@ -40,7 +42,12 @@ import './editor.scss';
  */
 export default function Edit( { attributes, setAttributes, isSelected } ) {
 	const { level, title, textAlign } = attributes;
-	const tagName = 'h' + level;
+	const TagName = 'h' + level;
+
+	const headerClassName = clsx( {
+		'wpsp-accordion__title': true,
+		[ `has-text-align-${ textAlign }` ]: textAlign,
+	} );
 
 	return (
 		<>
@@ -62,19 +69,19 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 			/>
 		</BlockControls>
 		<div { ...useBlockProps() }>
-			<RichText
-				className={ `has-text-align-${ textAlign }` }
-				identifier={ 'title' }
-				tagName={ tagName }
-				value={ title }
-				onChange={ ( newTitle ) => setAttributes( { title: newTitle } ) }
-				placeholder={ __( 'Add text...' ) }
+			<TagName className={ headerClassName }>
+				<button className='wpsp-accordion__toggle'>
+					<RichText
+					 	tagName='span'
+						value={ title }
+						onChange={ ( newTitle ) => setAttributes( { title: newTitle } ) }
+						placeholder={ __( 'Add text...' ) }
+					/>
+				</button>
+			</TagName>
+			<InnerBlocks
+				renderAppender={ InnerBlocks.ButtonBlockAppender }
 			/>
-			<div className="inner">
-				<InnerBlocks
-					renderAppender={ InnerBlocks.ButtonBlockAppender }
-				/>
-			</div>
 		</div>
 	</>
 	);

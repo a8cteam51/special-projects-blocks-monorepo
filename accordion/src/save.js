@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 /**
  * Retrieves the translation of text.
  *
@@ -22,9 +23,27 @@ import { useBlockProps, RichText, InnerBlocks } from '@wordpress/block-editor';
  * @return {WPElement} Element to render.
  */
 export default function save( { attributes } ) {
+	const { title, textAlign, level } = attributes;
+	const TagName = 'h' + level;
+
+	const className = clsx({
+		'wpsp-accordion__title': true,
+		[ `has-text-align-${ textAlign }` ]: textAlign,
+	});
+
 	return (
 		<div { ...useBlockProps.save() }>
-			<InnerBlocks.Content />
+			<TagName className={ className }>
+				<button className='wpsp-accordion__toggle'>
+					<RichText.Content 
+						tagName='span'
+						value={ title }
+					/>
+				</button>
+			</TagName>
+			<div className="wpsp-accordion__content">
+				<InnerBlocks.Content />
+			</div>
 		</div>
 	);
 }
