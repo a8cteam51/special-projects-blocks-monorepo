@@ -18,9 +18,10 @@
 		"[^.]*"
 	],
 	"dependencies": {
-		"@wordpress/interactivity": "^6.0.0"
+		"@wordpress/interactivity": "^6.0.0",
+		"clsx": "^2.1.1"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^28.0.0"
+		"@wordpress/scripts": "^27.0.0"
 	}
 }
