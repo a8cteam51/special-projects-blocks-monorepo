@@ -42,4 +42,8 @@
   outline-offset: 2px;
 }
 
+.wp-block-wpsp-accordion.is-open > h3 > .wpsp-accordion__toggle::after {
+  transform: translateY(-50%) rotate(-180deg);
+}
+
 /* Add transition only for users who do not prefer reduced motion */
