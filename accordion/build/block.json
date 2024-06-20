@@ -33,6 +33,10 @@
     },
     "textAlign": {
       "type": "string"
+    },
+    "openByDefault": {
+      "type": "boolean",
+      "default": false
     }
   },
   "textdomain": "accordion",

@@ -23,7 +23,7 @@ import {
 	HeadingLevelDropdown,
 	AlignmentControl,
 } from '@wordpress/block-editor';
-import { PanelBody, PanelRow } from '@wordpress/components';
+import { PanelBody, PanelRow, ToggleControl } from '@wordpress/components';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -41,7 +41,7 @@ import './editor.scss';
  * @return {WPElement} Element to render.
  */
 export default function Edit( { attributes, setAttributes, isSelected } ) {
-	const { level, title, textAlign } = attributes;
+	const { level, title, textAlign, openByDefault } = attributes;
 	const TagName = 'h' + level;
 
 	const headerClassName = clsx( {
@@ -51,39 +51,60 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 
 	return (
 		<>
-		<InspectorControls key="setting">
-			<PanelBody title={ __( 'Settings' ) }>
-				<PanelRow></PanelRow>
-			</PanelBody>
+			<InspectorControls key="setting">
+				<PanelBody title={ __( 'Settings' ) }>
+					<PanelRow>
+						<ToggleControl
+							__nextHasNoMarginBottom
+							label={ __(
+								'Display accordion content by default'
+							) }
+							onChange={ ( value ) => {
+								setAttributes( {
+									openByDefault: value,
+								} );
+							} }
+							checked={ openByDefault }
+						/>
+					</PanelRow>
+				</PanelBody>
 			</InspectorControls>
-		<BlockControls>
-			<HeadingLevelDropdown
-				value={ level }
-				onChange={ ( newLevel ) => setAttributes( { level: newLevel } ) }
-			/>
-			<AlignmentControl
-				value={ textAlign }
-				onChange={ ( nextAlign ) => {
-					setAttributes( { textAlign: nextAlign } );
-				} }
-			/>
-		</BlockControls>
-		<div { ...useBlockProps() }>
-			<TagName className={ headerClassName }>
-				<button className='wpsp-accordion__toggle'>
-					<RichText
-						allowedFormats={ [ 'core/bold', 'core/italic', 'core/strikethrough']}
-					 	tagName='span'
-						value={ title }
-						onChange={ ( newTitle ) => setAttributes( { title: newTitle } ) }
-						placeholder={ __( 'Add text...' ) }
-					/>
-				</button>
-			</TagName>
-			<InnerBlocks
-				renderAppender={ InnerBlocks.ButtonBlockAppender }
-			/>
-		</div>
-	</>
+			<BlockControls>
+				<HeadingLevelDropdown
+					value={ level }
+					onChange={ ( newLevel ) =>
+						setAttributes( { level: newLevel } )
+					}
+				/>
+				<AlignmentControl
+					value={ textAlign }
+					onChange={ ( nextAlign ) => {
+						setAttributes( { textAlign: nextAlign } );
+					} }
+				/>
+			</BlockControls>
+			<div { ...useBlockProps() }>
+				<TagName className={ headerClassName }>
+					<button className="wpsp-accordion__toggle">
+						<RichText
+							allowedFormats={ [
+								'core/bold',
+								'core/italic',
+								'core/strikethrough',
+							] }
+							tagName="span"
+							value={ title }
+							onChange={ ( newTitle ) =>
+								setAttributes( { title: newTitle } )
+							}
+							placeholder={ __( 'Add text...' ) }
+						/>
+					</button>
+				</TagName>
+				<InnerBlocks
+					renderAppender={ InnerBlocks.ButtonBlockAppender }
+				/>
+			</div>
+		</>
 	);
 }

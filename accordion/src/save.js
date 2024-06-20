@@ -26,19 +26,16 @@ export default function save( { attributes } ) {
 	const { title, textAlign, level } = attributes;
 	const TagName = 'h' + level;
 
-	const className = clsx({
+	const className = clsx( {
 		'wpsp-accordion__title': true,
 		[ `has-text-align-${ textAlign }` ]: textAlign,
-	});
+	} );
 
 	return (
 		<div { ...useBlockProps.save() }>
 			<TagName className={ className }>
-				<button className='wpsp-accordion__toggle'>
-					<RichText.Content 
-						tagName='span'
-						value={ title }
-					/>
+				<button className="wpsp-accordion__toggle">
+					<RichText.Content tagName="span" value={ title } />
 				</button>
 			</TagName>
 			<div className="wpsp-accordion__content">
