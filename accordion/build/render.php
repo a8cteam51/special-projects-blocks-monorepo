@@ -1,10 +1,11 @@
 <?php
 $p = new WP_HTML_Tag_Processor( $content );
+$is_open = $attributes['openByDefault'] ? 'true' : 'false';
 
 while ( $p->next_tag() ){
     if ( $p->has_class( 'wp-block-wpsp-accordion') ) {
         $p->set_attribute( 'data-wp-interactive', 'wpsp-accordion' );
-        $p->set_attribute( 'data-wp-context', '{"isOpen": false}' );
+        $p->set_attribute( 'data-wp-context', '{"isOpen":' . $is_open . '}' );
         $p->set_attribute( 'data-wp-watch', 'callbacks.logIsOpen' );
         $p->set_attribute( 'data-wp-class--is-open', 'context.isOpen' );
     }
