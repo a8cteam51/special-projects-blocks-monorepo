@@ -7,6 +7,10 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
+.wp-block-wpsp-accordion .wpsp-accordion__title {
+  color: inherit;
+}
+
 .wpsp-accordion__toggle {
   background: none;
   border: none;
@@ -52,5 +56,10 @@
 }
 
 /* Add transition only for users who do not prefer reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  .wp-block-wpsp-accordion > h3 > .wpsp-accordion__toggle::after {
+    transition: transform 0.1s ease-in-out;
+  }
+}
 
 /*# sourceMappingURL=style-index.css.map*/

@@ -5,7 +5,7 @@
 	"version": "0.1.0",
 	"title": "Accordion",
 	"category": "design",
-	"icon": "smiley",
+	"icon": "plus-alt2",
 	"description": "Accordion block for displaying hidden content via a toggle.",
 	"example": {},
 	"supports": {
@@ -19,7 +19,8 @@
 		"spacing": {
 			"padding": true,
 			"margin": true
-		}
+		},
+		"layout": true
 	},
 	"attributes": {
 		"title": {

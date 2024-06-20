@@ -57,7 +57,7 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 						<ToggleControl
 							__nextHasNoMarginBottom
 							label={ __(
-								'Display accordion content by default'
+								'Display content by default'
 							) }
 							onChange={ ( value ) => {
 								setAttributes( {
@@ -90,7 +90,6 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 							allowedFormats={ [
 								'core/bold',
 								'core/italic',
-								'core/strikethrough',
 							] }
 							tagName="span"
 							value={ title }

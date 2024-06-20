@@ -80,7 +80,7 @@ function Edit({
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
             __nextHasNoMarginBottom: true,
-            label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Display accordion content by default'),
+            label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Display content by default'),
             onChange: value => {
               setAttributes({
                 openByDefault: value
@@ -111,7 +111,7 @@ function Edit({
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
           className: "wpsp-accordion__toggle",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
-            allowedFormats: ['core/bold', 'core/italic', 'core/strikethrough'],
+            allowedFormats: ['core/bold', 'core/italic'],
             tagName: "span",
             value: title,
             onChange: newTitle => setAttributes({
@@ -353,7 +353,7 @@ function r(e){var t,f,n="";if("string"==typeof e||"number"==typeof e)n+=e;else i
   \************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/accordion","version":"0.1.0","title":"Accordion","category":"design","icon":"smiley","description":"Accordion block for displaying hidden content via a toggle.","example":{},"supports":{"color":{"background":true,"gradient":true},"align":true,"border":true,"interactivity":true,"spacing":{"padding":true,"margin":true}},"attributes":{"title":{"type":"rich-text","source":"rich-text","selector":"span"},"level":{"type":"number","default":3},"textAlign":{"type":"string"},"openByDefault":{"type":"boolean","default":false}},"textdomain":"accordion","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/accordion","version":"0.1.0","title":"Accordion","category":"design","icon":"plus-alt2","description":"Accordion block for displaying hidden content via a toggle.","example":{},"supports":{"color":{"background":true,"gradient":true},"align":true,"border":true,"interactivity":true,"spacing":{"padding":true,"margin":true},"layout":true},"attributes":{"title":{"type":"rich-text","source":"rich-text","selector":"span"},"level":{"type":"number","default":3},"textAlign":{"type":"string"},"openByDefault":{"type":"boolean","default":false}},"textdomain":"accordion","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
 
 /***/ })
 
