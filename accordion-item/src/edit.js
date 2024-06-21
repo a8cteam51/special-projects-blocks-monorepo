@@ -23,7 +23,12 @@ import {
 	HeadingLevelDropdown,
 	AlignmentControl,
 } from '@wordpress/block-editor';
-import { BaseControl, PanelBody, PanelRow, ToggleControl } from '@wordpress/components';
+import {
+	BaseControl,
+	PanelBody,
+	PanelRow,
+	ToggleControl,
+} from '@wordpress/components';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -56,9 +61,7 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 					<PanelRow>
 						<ToggleControl
 							__nextHasNoMarginBottom
-							label={ __(
-								'Open by default'
-							) }
+							label={ __( 'Open by default' ) }
 							onChange={ ( value ) => {
 								setAttributes( {
 									openByDefault: value,
@@ -72,8 +75,10 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 			<InspectorControls key="styles">
 				<PanelBody title={ __( 'Display' ) }>
 					<PanelRow>
-						<BaseControl id="icon-position" label={ __( 'Icon Position' ) }>
-						</BaseControl>
+						<BaseControl
+							id="icon-position"
+							label={ __( 'Icon Position' ) }
+						></BaseControl>
 					</PanelRow>
 				</PanelBody>
 			</InspectorControls>
@@ -95,10 +100,7 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 				<TagName className={ headerClassName }>
 					<button className="wpsp-accordion-item__toggle">
 						<RichText
-							allowedFormats={ [
-								'core/bold',
-								'core/italic',
-							] }
+							allowedFormats={ [ 'core/bold', 'core/italic' ] }
 							tagName="span"
 							value={ title }
 							onChange={ ( newTitle ) =>
