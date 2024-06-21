@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name:       Accordion
- * Description:       Accordion block for displaying hidden content via a toggle.
+ * Plugin Name:       Accordion Item
+ * Description:       Accordion item block for displaying hidden content via a toggle.
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Version:           0.1.0
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
-function wpsp_accordion_block_init() {
+function wpsp_accordion_item_block_init() {
 	register_block_type_from_metadata( __DIR__ . '/build' );
 }
-add_action( 'init', 'wpsp_accordion_block_init' );
+add_action( 'init', 'wpsp_accordion_item_block_init' );

@@ -1,6 +1,6 @@
 import { store, getContext } from '@wordpress/interactivity';
 
-store( 'wpsp-accordion', {
+store( 'wpsp-accordion-item', {
 	actions: {
 		toggle: () => {
 			const context = getContext();

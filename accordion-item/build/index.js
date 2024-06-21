@@ -70,7 +70,7 @@ function Edit({
   } = attributes;
   const TagName = 'h' + level;
   const headerClassName = (0,clsx__WEBPACK_IMPORTED_MODULE_1__["default"])({
-    'wpsp-accordion__title': true,
+    'wpsp-accordion-item__title': true,
     [`has-text-align-${textAlign}`]: textAlign
   });
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, {
@@ -110,7 +110,7 @@ function Edit({
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(TagName, {
     className: headerClassName
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    className: "wpsp-accordion__toggle"
+    className: "wpsp-accordion-item__toggle"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
     allowedFormats: ['core/bold', 'core/italic'],
     tagName: "span",
@@ -232,7 +232,7 @@ function save({
   } = attributes;
   const TagName = 'h' + level;
   const className = (0,clsx__WEBPACK_IMPORTED_MODULE_1__["default"])({
-    'wpsp-accordion__title': true,
+    'wpsp-accordion-item__title': true,
     [`has-text-align-${textAlign}`]: textAlign
   });
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -240,12 +240,12 @@ function save({
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(TagName, {
     className: className
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    className: "wpsp-accordion__toggle"
+    className: "wpsp-accordion-item__toggle"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText.Content, {
     tagName: "span",
     value: title
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "wpsp-accordion__content"
+    className: "wpsp-accordion-item__content"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InnerBlocks.Content, null)));
 }
 
@@ -346,7 +346,7 @@ function r(e){var t,f,n="";if("string"==typeof e||"number"==typeof e)n+=e;else i
   \************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/accordion","version":"0.1.0","title":"Accordion","category":"design","icon":"plus-alt2","description":"Accordion item block for displaying hidden content via a toggle.","example":{},"supports":{"color":{"background":true,"gradient":true},"align":true,"border":true,"interactivity":true,"spacing":{"padding":true,"margin":true,"blockGap":true},"layout":true},"attributes":{"title":{"type":"rich-text","source":"rich-text","selector":"span"},"level":{"type":"number","default":3},"textAlign":{"type":"string"},"openByDefault":{"type":"boolean","default":false}},"styles":[{"name":"default","label":"Default","isDefault":true},{"name":"chevron","label":"Chevron"},{"name":"arrow","label":"Arrow"}],"textdomain":"accordion","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/accordion-item","version":"0.1.0","title":"Accordion Item","category":"design","icon":"plus-alt2","description":"Accordion item block for displaying hidden content via a toggle.","example":{},"supports":{"color":{"background":true,"gradient":true},"align":true,"border":true,"interactivity":true,"spacing":{"padding":true,"margin":true,"blockGap":true},"layout":true},"attributes":{"title":{"type":"rich-text","source":"rich-text","selector":"span"},"level":{"type":"number","default":3},"textAlign":{"type":"string"},"openByDefault":{"type":"boolean","default":false}},"styles":[{"name":"default","label":"Default","isDefault":true},{"name":"chevron","label":"Chevron"},{"name":"arrow","label":"Arrow"}],"textdomain":"accordion","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
 
 /***/ })
 

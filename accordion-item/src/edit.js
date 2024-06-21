@@ -45,7 +45,7 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 	const TagName = 'h' + level;
 
 	const headerClassName = clsx( {
-		'wpsp-accordion__title': true,
+		'wpsp-accordion-item__title': true,
 		[ `has-text-align-${ textAlign }` ]: textAlign,
 	} );
 
@@ -93,7 +93,7 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 			</BlockControls>
 			<div { ...useBlockProps() }>
 				<TagName className={ headerClassName }>
-					<button className="wpsp-accordion__toggle">
+					<button className="wpsp-accordion-item__toggle">
 						<RichText
 							allowedFormats={ [
 								'core/bold',

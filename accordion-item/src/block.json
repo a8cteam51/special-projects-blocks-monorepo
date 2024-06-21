@@ -1,9 +1,9 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "wpsp/accordion",
+	"name": "wpsp/accordion-item",
 	"version": "0.1.0",
-	"title": "Accordion",
+	"title": "Accordion Item",
 	"category": "design",
 	"icon": "plus-alt2",
 	"description": "Accordion item block for displaying hidden content via a toggle.",

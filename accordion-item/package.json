@@ -1,5 +1,5 @@
 {
-	"name": "accordion",
+	"name": "accordion-item",
 	"version": "0.1.0",
 	"description": "Accordion block for displaying hidden content via a toggle.",
 	"author": "The WordPress Contributors",

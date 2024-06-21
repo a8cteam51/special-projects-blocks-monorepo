@@ -7,11 +7,11 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-.wp-block-wpsp-accordion .wpsp-accordion__title {
+.wp-block-wpsp-accordion-item .wpsp-accordion-item__title {
   color: inherit;
 }
 
-.wpsp-accordion__toggle {
+.wpsp-accordion-item__toggle {
   background: none;
   border: none;
   color: inherit;
@@ -21,7 +21,7 @@
   outline: none;
 }
 
-.wpsp-accordion__toggle {
+.wpsp-accordion-item__toggle {
   display: flex;
   text-align: inherit;
   padding-left: 24px;
@@ -29,11 +29,11 @@
   width: 100%;
 }
 
-.wpsp-accordion__toggle > span {
+.wpsp-accordion-item__toggle > span {
   width: 100%;
 }
 
-.wpsp-accordion__toggle::after {
+.wpsp-accordion-item__toggle::after {
   background-image: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2.34424 9.19922L11.9442 18.7992L21.5442 9.19922\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"square\" stroke-linejoin=\"round\"/></svg>");
   background-size: contain;
   background-repeat: no-repeat;
@@ -46,18 +46,18 @@
   transform: translateY(-50%);
 }
 
-.wpsp-accordion__toggle:focus-visible {
+.wpsp-accordion-item__toggle:focus-visible {
   outline: 2px solid #0073aa;
   outline-offset: 2px;
 }
 
-.wp-block-wpsp-accordion.is-open > h3 > .wpsp-accordion__toggle::after {
+.wp-block-wpsp-accordion-item.is-open > h3 > .wpsp-accordion-item__toggle::after {
   transform: translateY(-50%) rotate(-180deg);
 }
 
 /* Add transition only for users who do not prefer reduced motion */
 @media (prefers-reduced-motion: no-preference) {
-  .wp-block-wpsp-accordion > h3 > .wpsp-accordion__toggle::after {
+  .wp-block-wpsp-accordion-item > h3 > .wpsp-accordion-item__toggle::after {
     transition: transform 0.1s ease-in-out;
   }
 }
