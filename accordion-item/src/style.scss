@@ -27,15 +27,15 @@
 
 .wpsp-accordion-item__toggle::after {
 	background-color: var(--wpsp--accordion--parent-color);
-    background-size: contain;
-    background-repeat: no-repeat;
+	background-size: contain;
+	background-repeat: no-repeat;
 	content: '';
-    position: absolute;
-    top: 50%;
-    right: 0;
+	position: absolute;
+	top: 50%;
+	right: 0;
 	width: 24px;
 	height: 24px;
-    transform: translateY(-50%);
+	transform: translateY(-50%);
 }
 
 .wpsp-accordion-item__toggle.icon-left {
