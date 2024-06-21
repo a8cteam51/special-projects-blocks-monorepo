@@ -1,3 +1,7 @@
+.wp-block-wpsp-accordion {
+	--wpsp--accordion--parent-color: currentColor;
+}
+
 .wp-block-wpsp-accordion .wpsp-accordion__title {
 	color: inherit;
 }
@@ -10,29 +14,27 @@
 	cursor: pointer;
 	padding: 0;
 	outline: none;
-}
-
-.wpsp-accordion__toggle {
 	display: flex;
 	text-align: inherit;
-	padding-right: 1em;
+	padding-right: 24px;
 	position: relative;
 	width: 100%;
 }
 
 .wpsp-accordion__toggle > span {
 	width: 100%;
-}
+}	
 
 .wpsp-accordion__toggle::after {
+	background-color: var(--wpsp--accordion--parent-color);
     background-size: contain;
     background-repeat: no-repeat;
 	content: '';
     position: absolute;
     top: 50%;
     right: 0;
-	width: .8em;
-	height: .8em;
+	width: 24px;
+	height: 24px;
     transform: translateY(-50%);
 }
 
@@ -47,13 +49,11 @@
 	transform: translateY(-50%);
 }
 
-.wpsp-accordion__toggle:active,
 .wpsp-accordion__toggle:focus,
 .wpsp-accordion__toggle:focus-visible {
 	outline: 2px solid #0073aa;
 	outline-offset: 2px;
 }
-
 
 /* Add transition only for users who do not prefer reduced motion */
 @media (prefers-reduced-motion: no-preference) {
@@ -64,22 +64,22 @@
 
 /* Default block style */
 .wp-block-wpsp-accordion > .wpsp-accordion__title > .wpsp-accordion__toggle::after {
-	background-image: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5L12 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12L19 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+	mask: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 5L12 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12L19 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>');
 }
 .wp-block-wpsp-accordion.is-open > .wpsp-accordion__title > .wpsp-accordion__toggle::after {
 	// Swap for a minus sign:
-	background-image: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12L19 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+	mask: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12L19 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>');
 }
 /* Chevron block style */
 .wp-block-wpsp-accordion.is-style-chevron > .wpsp-accordion__title > .wpsp-accordion__toggle::after {
-	background-image: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.34424 9.19922L11.9442 18.7992L21.5442 9.19922" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="round"/></svg>');
+	mask: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.34424 9.19922L11.9442 18.7992L21.5442 9.19922" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="round"/></svg>');
 }
 .wp-block-wpsp-accordion.is-style-chevron.is-open > .wpsp-accordion__title > .wpsp-accordion__toggle::after {
 	transform: translateY(-50%) rotate(-180deg);
 }
 /* Arrow block style */
 .wp-block-wpsp-accordion.is-style-arrow > .wpsp-accordion__title > .wpsp-accordion__toggle::after {
-	background-image: url("data:image/svg+xml;utf8,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 12L20 12M13 5L20 12L13 19' stroke='currentColor' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	mask: url("data:image/svg+xml;utf8,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 12L20 12M13 5L20 12L13 19' stroke='currentColor' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 .wp-block-wpsp-accordion.is-style-arrow.is-open > .wpsp-accordion__title > .wpsp-accordion__toggle::after {
 	transform: translateY(-50%) rotate(90deg);

@@ -6,7 +6,7 @@
   "title": "Accordion",
   "category": "design",
   "icon": "plus-alt2",
-  "description": "Accordion block for displaying hidden content via a toggle.",
+  "description": "Accordion item block for displaying hidden content via a toggle.",
   "example": {},
   "supports": {
     "color": {
@@ -18,7 +18,8 @@
     "interactivity": true,
     "spacing": {
       "padding": true,
-      "margin": true
+      "margin": true,
+      "blockGap": true
     },
     "layout": true
   },
