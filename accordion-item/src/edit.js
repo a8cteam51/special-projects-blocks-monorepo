@@ -75,10 +75,6 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 			<InspectorControls key="styles">
 				<PanelBody title={ __( 'Display' ) }>
 					<PanelRow>
-						<BaseControl
-							id="icon-position"
-							label={ __( 'Icon Position' ) }
-						></BaseControl>
 					</PanelRow>
 				</PanelBody>
 			</InspectorControls>

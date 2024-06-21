@@ -51,7 +51,7 @@
 
 .wpsp-accordion-item__toggle:focus,
 .wpsp-accordion-item__toggle:focus-visible {
-	outline: 2px solid #0073aa;
+	outline: 2px solid -webkit-focus-ring-color;
 	outline-offset: 2px;
 }
 

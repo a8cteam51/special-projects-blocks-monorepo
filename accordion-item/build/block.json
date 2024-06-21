@@ -21,6 +21,7 @@
       "margin": true,
       "blockGap": true
     },
+    "shadow": true,
     "layout": true
   },
   "attributes": {
