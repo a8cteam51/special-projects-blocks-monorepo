@@ -40,6 +40,21 @@
       "default": false
     }
   },
+  "styles": [
+    {
+      "name": "default",
+      "label": "Default",
+      "isDefault": true
+    },
+    {
+      "name": "chevron",
+      "label": "Chevron"
+    },
+    {
+      "name": "arrow",
+      "label": "Arrow"
+    }
+  ],
   "textdomain": "accordion",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",

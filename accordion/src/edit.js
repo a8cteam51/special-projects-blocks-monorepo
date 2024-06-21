@@ -23,7 +23,7 @@ import {
 	HeadingLevelDropdown,
 	AlignmentControl,
 } from '@wordpress/block-editor';
-import { PanelBody, PanelRow, ToggleControl } from '@wordpress/components';
+import { BaseControl, PanelBody, PanelRow, ToggleControl } from '@wordpress/components';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -57,7 +57,7 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 						<ToggleControl
 							__nextHasNoMarginBottom
 							label={ __(
-								'Display content by default'
+								'Open by default'
 							) }
 							onChange={ ( value ) => {
 								setAttributes( {
@@ -66,6 +66,14 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 							} }
 							checked={ openByDefault }
 						/>
+					</PanelRow>
+				</PanelBody>
+			</InspectorControls>
+			<InspectorControls key="styles">
+				<PanelBody title={ __( 'Display' ) }>
+					<PanelRow>
+						<BaseControl id="icon-position" label={ __( 'Icon Position' ) }>
+						</BaseControl>
 					</PanelRow>
 				</PanelBody>
 			</InspectorControls>
