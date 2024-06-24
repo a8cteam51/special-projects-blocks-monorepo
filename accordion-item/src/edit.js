@@ -24,10 +24,11 @@ import {
 	AlignmentControl,
 } from '@wordpress/block-editor';
 import {
-	BaseControl,
 	PanelBody,
 	PanelRow,
 	ToggleControl,
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 
 /**
@@ -46,21 +47,21 @@ import './editor.scss';
  * @return {WPElement} Element to render.
  */
 export default function Edit( { attributes, setAttributes, isSelected } ) {
-	const { level, title, textAlign, openByDefault } = attributes;
+	const { level, title, textAlign, openByDefault, iconPosition } = attributes;
 	const TagName = 'h' + level;
 
 	const headerClassName = clsx( {
 		'wpsp-accordion-item__title': true,
+		'icon-position-left': iconPosition === 'left',
 		[ `has-text-align-${ textAlign }` ]: textAlign,
 	} );
 
 	return (
 		<>
 			<InspectorControls key="setting">
-				<PanelBody title={ __( 'Settings' ) }>
+				<PanelBody title={ __( 'Display' ) }>
 					<PanelRow>
 						<ToggleControl
-							__nextHasNoMarginBottom
 							label={ __( 'Open by default' ) }
 							onChange={ ( value ) => {
 								setAttributes( {
@@ -70,11 +71,25 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 							checked={ openByDefault }
 						/>
 					</PanelRow>
-				</PanelBody>
-			</InspectorControls>
-			<InspectorControls key="styles">
-				<PanelBody title={ __( 'Display' ) }>
 					<PanelRow>
+						<ToggleGroupControl
+							__nextHasNoMarginBottom
+							isBlock
+							label={ __( 'Icon Position' ) }
+							value={ iconPosition }
+							onChange={ ( value ) => {
+								setAttributes( { iconPosition: value } );
+								} }
+							>
+							<ToggleGroupControlOption
+								label="Left"
+								value="left"
+							/>
+							<ToggleGroupControlOption
+								label="Right"
+								value="right"
+							/>
+						</ToggleGroupControl>
 					</PanelRow>
 				</PanelBody>
 			</InspectorControls>

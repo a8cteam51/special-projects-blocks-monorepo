@@ -40,6 +40,10 @@
 		"openByDefault": {
 			"type": "boolean",
 			"default": false
+		},
+		"iconPosition": {
+			"type": "string",
+			"default": "right"
 		}
 	},
 	"styles": [

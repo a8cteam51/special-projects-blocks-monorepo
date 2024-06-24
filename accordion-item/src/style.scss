@@ -38,12 +38,12 @@
 	transform: translateY(-50%);
 }
 
-.wpsp-accordion-item__toggle.icon-left {
+.wpsp-accordion-item__title.icon-position-left > .wpsp-accordion-item__toggle {
 	padding-right: 0;
-	padding-left: 1em; /* Adjust padding to make space for the icon */
+	padding-left: 24px; /* Adjust padding to make space for the icon */
 }
 
-.wpsp-accordion-item__toggle.icon-left::after {
+.wpsp-accordion-item__title.icon-position-left > .wpsp-accordion-item__toggle::after {
 	left: 0;
 	right: auto;
 	transform: translateY(-50%);

@@ -23,11 +23,12 @@ import { useBlockProps, RichText, InnerBlocks } from '@wordpress/block-editor';
  * @return {WPElement} Element to render.
  */
 export default function save( { attributes } ) {
-	const { title, textAlign, level } = attributes;
+	const { title, textAlign, level, iconPosition } = attributes;
 	const TagName = 'h' + level;
 
 	const className = clsx( {
 		'wpsp-accordion-item__title': true,
+		'icon-position-left': iconPosition === 'left',
 		[ `has-text-align-${ textAlign }` ]: textAlign,
 	} );
 
