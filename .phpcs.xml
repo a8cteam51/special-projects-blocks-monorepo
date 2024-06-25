@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<ruleset name="wpsp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./vendor/squizlabs/php_codesniffer/phpcs.xsd">
+	<description>Custom ruleset for wpsp blocks monorepo</description>
+
+	<rule ref="./vendor/a8cteam51/team51-configs/quality-tools/phpcs.xml.dist"/>
+
+</ruleset>
