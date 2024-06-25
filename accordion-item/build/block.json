@@ -59,6 +59,10 @@
     {
       "name": "arrow",
       "label": "Arrow"
+    },
+    {
+      "name": "no-icon",
+      "label": "No Icon"
     }
   ],
   "textdomain": "accordion",

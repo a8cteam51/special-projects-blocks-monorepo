@@ -41,6 +41,11 @@
   transform: translateY(-50%);
 }
 
+/* No icon block style */
+.is-style-no-icon .wpsp-accordion-item__toggle::after {
+  background-color: unset;
+}
+
 .wpsp-accordion-item__title.icon-position-left > .wpsp-accordion-item__toggle {
   padding-right: 0;
   padding-left: 24px; /* Adjust padding to make space for the icon */
@@ -65,7 +70,7 @@
   }
 }
 /* Default block style */
-.wp-block-wpsp-accordion-item > .wpsp-accordion-item__title > .wpsp-accordion-item__toggle::after {
+.wp-block-wpsp-accordion-item.is-style-default > .wpsp-accordion-item__title > .wpsp-accordion-item__toggle::after {
   -webkit-mask: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 5L12 19\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M5 12L19 12\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>");
           mask: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 5L12 19\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M5 12L19 12\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>");
 }
