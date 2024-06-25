@@ -143,12 +143,15 @@ function Edit({
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./src/style.scss");
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./src/edit.js");
-/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./src/save.js");
-/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./src/block.json");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./style.scss */ "./src/style.scss");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./edit */ "./src/edit.js");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./save */ "./src/save.js");
+/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./block.json */ "./src/block.json");
+
 /**
  * Registers a new block provided a unique name and an object defining its behavior.
  *
@@ -171,21 +174,47 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const AccordionItemIcon = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+  width: "24",
+  height: "24",
+  viewBox: "0 0 24 24",
+  fill: "none",
+  xmlns: "http://www.w3.org/2000/svg"
+}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+  "fill-rule": "evenodd",
+  "clip-rule": "evenodd",
+  d: "M4 16H14V17.5H4V16Z",
+  fill: "#1E1E1E"
+}), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+  "fill-rule": "evenodd",
+  "clip-rule": "evenodd",
+  d: "M4 11.5H20V13H4V11.5Z",
+  fill: "#1E1E1E"
+}), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+  "fill-rule": "evenodd",
+  "clip-rule": "evenodd",
+  d: "M10 7L20 7V8.5L10 8.5V7Z",
+  fill: "#1E1E1E"
+}), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+  d: "M4 5.25L8 7.75L4 10.25V5.25Z",
+  fill: "#1E1E1E"
+}));
 
 /**
  * Every block starts by registering a new block type definition.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_4__.name, {
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_5__.name, {
   /**
    * @see ./edit.js
    */
-  edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
+  edit: _edit__WEBPACK_IMPORTED_MODULE_3__["default"],
+  icon: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(AccordionItemIcon, null),
   /**
    * @see ./save.js
    */
-  save: _save__WEBPACK_IMPORTED_MODULE_3__["default"]
+  save: _save__WEBPACK_IMPORTED_MODULE_4__["default"]
 });
 
 /***/ }),
@@ -358,7 +387,7 @@ function r(e){var t,f,n="";if("string"==typeof e||"number"==typeof e)n+=e;else i
   \************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/accordion-item","version":"0.1.0","title":"Accordion Item","category":"design","icon":"plus-alt2","description":"Accordion item block for displaying hidden content via a toggle.","example":{},"supports":{"color":{"background":true,"gradient":true},"align":true,"border":true,"interactivity":true,"spacing":{"padding":true,"margin":true,"blockGap":true},"shadow":true,"layout":true},"attributes":{"title":{"type":"rich-text","source":"rich-text","selector":"span"},"level":{"type":"number","default":3},"textAlign":{"type":"string"},"openByDefault":{"type":"boolean","default":false},"iconPosition":{"type":"string","default":"right"}},"styles":[{"name":"default","label":"Default","isDefault":true},{"name":"chevron","label":"Chevron"},{"name":"arrow","label":"Arrow"},{"name":"no-icon","label":"No Icon"}],"textdomain":"accordion","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/accordion-item","version":"0.1.0","title":"Accordion Item","category":"design","description":"Accordion item block for displaying hidden content via a toggle.","example":{},"supports":{"color":{"background":true,"gradient":true},"align":true,"border":true,"interactivity":true,"spacing":{"padding":true,"margin":true,"blockGap":true},"shadow":true,"layout":true},"attributes":{"title":{"type":"rich-text","source":"rich-text","selector":"span"},"level":{"type":"number","default":3},"textAlign":{"type":"string"},"openByDefault":{"type":"boolean","default":false},"iconPosition":{"type":"string","default":"right"}},"styles":[{"name":"default","label":"Default","isDefault":true},{"name":"chevron","label":"Chevron"},{"name":"arrow","label":"Arrow"},{"name":"no-icon","label":"No Icon"}],"textdomain":"accordion","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
 
 /***/ })
 

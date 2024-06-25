@@ -5,7 +5,6 @@
 	"version": "0.1.0",
 	"title": "Accordion Item",
 	"category": "design",
-	"icon": "plus-alt2",
 	"description": "Accordion item block for displaying hidden content via a toggle.",
 	"example": {},
 	"supports": {
