@@ -1,5 +1,5 @@
 === Sibling Pages List ===
-Contributors:      The WordPress Contributors
+Contributors:      WordPress.com Special Projects Team
 Tags:              block
 Tested up to:      6.1
 Stable tag:        0.1.0
