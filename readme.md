@@ -39,7 +39,8 @@ git checkout -b %branch_name%
 
 git status //should only show your new folder - nothing else!
 git add -A //adds your new folder and child files
-git commit -m %commit_message% //please add the client we sent 
+composer install //installs the necessary code standard dependencies
+git commit -m %commit_message% //please add the client we sent
 git push
 
 ```
