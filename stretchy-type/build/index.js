@@ -50,6 +50,7 @@ function Edit({
     (0,_utils__WEBPACK_IMPORTED_MODULE_5__.adjustFontSize)(ref.current, nextContent);
   };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, resizeListener, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
+    disableLineBreaks: true,
     tagName: "pre",
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(),
     ref: ref,

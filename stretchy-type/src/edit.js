@@ -23,6 +23,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		<>
 			{ resizeListener }
 			<RichText
+				disableLineBreaks
 				tagName="pre"
 				{ ...useBlockProps() }
 				ref={ ref }
