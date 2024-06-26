@@ -6,19 +6,18 @@
   "title": "Stretchy Type",
   "category": "theme",
   "icon": "smiley",
-  "description": "A block that expands to fill the width of its container.",
+  "description": "Text that expands to fill the width of its container.",
   "example": {},
   "supports": {
-    "html": false
+    "html": false,
+    "interactivity": true
   },
   "textdomain": "stretchy-type",
   "attributes": {
     "content": {
       "type": "rich-text",
       "source": "rich-text",
-      "selector": "pre",
-      "__unstablePreserveWhiteSpace": true,
-      "__experimentalRole": "content"
+      "selector": "pre"
     }
   },
   "editorScript": "file:./index.js",
