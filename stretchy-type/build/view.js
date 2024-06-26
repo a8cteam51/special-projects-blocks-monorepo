@@ -143,7 +143,7 @@ const useInView = () => {
       } = (0,_wordpress_interactivity__WEBPACK_IMPORTED_MODULE_0__.getElement)();
       (0,_utils__WEBPACK_IMPORTED_MODULE_1__.adjustFontSize)(ref, ref.innerHTML);
     },
-    logInView: () => {
+    handleInView: () => {
       const isInView = useInView();
       (0,_wordpress_interactivity__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
         if (isInView) {
