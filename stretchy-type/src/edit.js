@@ -5,18 +5,18 @@ import { useResizeObserver } from '@wordpress/compose';
 import { adjustFontSize } from './utils';
 import './editor.scss';
 
-export default function Edit( { attributes, setAttributes }) {
+export default function Edit( { attributes, setAttributes } ) {
 	const { content } = attributes;
 	const ref = useRef();
 	const [ resizeListener, sizes ] = useResizeObserver();
 
-	useEffect(() => {
+	useEffect( () => {
 		adjustFontSize( ref.current, content );
-	}, [ content, sizes ]);
+	}, [ content, sizes ] );
 
 	const onChange = ( nextContent ) => {
-		setAttributes( { content: nextContent });
-		adjustFontSize(ref.current, nextContent);
+		setAttributes( { content: nextContent } );
+		adjustFontSize( ref.current, nextContent );
 	};
 
 	return (
@@ -24,7 +24,7 @@ export default function Edit( { attributes, setAttributes }) {
 			{ resizeListener }
 			<RichText
 				tagName="pre"
-				{...useBlockProps()}
+				{ ...useBlockProps() }
 				ref={ ref }
 				placeholder="Stretchy text goes here"
 				preserveWhiteSpace
