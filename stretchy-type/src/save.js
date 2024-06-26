@@ -15,10 +15,10 @@ import { RichText, useBlockProps } from '@wordpress/block-editor';
  *
  * @return {Element} Element to render.
  */
-export default function save( { attributes }) {
+export default function save( { attributes } ) {
 	const { content } = attributes;
 	return (
-		<pre className="wpsp-stretchy-type" data-width="100" { ...useBlockProps.save() }>
+		<pre { ...useBlockProps.save() }>
 			<RichText.Content value={ content } />
 		</pre>
 	);
