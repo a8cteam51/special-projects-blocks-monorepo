@@ -25,7 +25,7 @@ store( 'wpsp-stretchy-type', {
 			const { ref } = getElement();
 			adjustFontSize( ref, ref.innerHTML );
 		},
-		logInView: () => {
+		handleInView: () => {
 			const isInView = useInView();
 			useEffect( () => {
 				if ( isInView ) {
