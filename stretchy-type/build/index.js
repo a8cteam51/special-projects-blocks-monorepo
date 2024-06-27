@@ -23,8 +23,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/compose */ "@wordpress/compose");
 /* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
-Object(function webpackMissingModule() { var e = new Error("Cannot find module './editor.scss'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
-
 
 
 
@@ -149,7 +147,7 @@ __webpack_require__.r(__webpack_exports__);
 function adjustFontSize(element, content) {
   if (element) {
     // const containerWidth = window.getComputedStyle( element.parentElement ).width;
-    const containerWidth = element.parentElement.getBoundingClientRect().width;
+    const containerWidth = window.getComputedStyle(element.parentElement).width;
 
     // Create a temporary hidden element for measurement
     const tempElement = document.createElement('div');
