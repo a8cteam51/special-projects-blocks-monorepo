@@ -5,9 +5,9 @@ function handleFontSize() {
 
 	elements.forEach(element => {
 		const content = element.innerHTML;
-		adjustFontSize(element, content);
+		adjustFontSize( element, content );
 	});
 }
 
-document.addEventListener('DOMContentLoaded', handleFontSize);
-window.addEventListener('resize', handleFontSize);
+document.addEventListener( 'DOMContentLoaded', handleFontSize );
+window.addEventListener('resize', handleFontSize );

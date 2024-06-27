@@ -2,7 +2,7 @@ export function adjustFontSize( element, content ) {
 	if ( element ) {
 		// const containerWidth = window.getComputedStyle( element.parentElement ).width;
 		const containerWidth =
-			element.parentElement.getBoundingClientRect().width;
+			window.getComputedStyle( element.parentElement ).width;
 
 		// Create a temporary hidden element for measurement
 		const tempElement = document.createElement( 'div' );
