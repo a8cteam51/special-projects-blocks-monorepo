@@ -32,7 +32,6 @@ function adjustFontSize(element, content) {
     // Avoid division by zero or very small widths
     if (textWidth > 0) {
       const size = parseInt(containerWidth) / textWidth;
-      console.log(size);
       element.style.fontSize = `${size * parseFloat(window.getComputedStyle(element).fontSize)}px`; // Scale based on the current font size
       element.style.whiteSpace = 'nowrap'; // Ensure text does not wrap
     }

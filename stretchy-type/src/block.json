@@ -5,11 +5,17 @@
 	"version": "0.1.0",
 	"title": "Stretchy Type",
 	"category": "theme",
-	"icon": "smiley",
+	"icon": "text",
 	"description": "Text that expands to fill the width of its container.",
 	"example": {},
 	"supports": {
-		"html": false,
+		"color": {
+			"text": true,
+			"background": true,
+			"gradient": true
+		},
+		"align": true,
+		"border": true,
 		"interactivity": true
 	},
 	"textdomain": "stretchy-type",
