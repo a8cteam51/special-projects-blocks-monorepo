@@ -13,17 +13,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 function adjustFontSize(element, content) {
   if (element) {
-    const containerWidth = window.getComputedStyle(element.parentElement).width;
+    // const containerWidth = window.getComputedStyle( element.parentElement ).width;
+    const containerWidth = element.parentElement.getBoundingClientRect().width;
 
     // Create a temporary hidden element for measurement
     const tempElement = document.createElement('div');
     tempElement.style.position = 'absolute';
     tempElement.style.whiteSpace = 'nowrap';
     tempElement.style.visibility = 'hidden';
-    tempElement.style.fontFamily = window.getComputedStyle(element).fontFamily;
-    tempElement.style.fontWeight = window.getComputedStyle(element).fontWeight;
-    tempElement.style.fontStyle = window.getComputedStyle(element).fontStyle;
-    tempElement.style.fontSize = window.getComputedStyle(element).fontSize; // Use the current font size for measurement
+    const computedStyle = window.getComputedStyle(element);
+    tempElement.style.fontFamily = computedStyle.fontFamily;
+    tempElement.style.fontWeight = computedStyle.fontWeight;
+    tempElement.style.fontStyle = computedStyle.fontStyle;
+    tempElement.style.fontSize = computedStyle.fontSize;
+    tempElement.style.letterSpacing = computedStyle.letterSpacing;
+    tempElement.style.textTransform = computedStyle.textTransform;
     tempElement.innerHTML = content;
     document.body.appendChild(tempElement);
     const textWidth = tempElement.offsetWidth;
