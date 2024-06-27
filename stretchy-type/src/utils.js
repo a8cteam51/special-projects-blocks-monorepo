@@ -1,6 +1,6 @@
 export function adjustFontSize( element, content ) {
 	if ( element ) {
-		const containerWidth = element.parentElement.offsetWidth;
+		const containerWidth = window.getComputedStyle( element.parentElement ).width;
 
 		// Create a temporary hidden element for measurement
 		const tempElement = document.createElement( 'div' );
@@ -24,7 +24,8 @@ export function adjustFontSize( element, content ) {
 
 		// Avoid division by zero or very small widths
 		if ( textWidth > 0 ) {
-			const size = containerWidth / textWidth;
+			const size = parseInt( containerWidth ) / textWidth;
+            console.log( size );
 			element.style.fontSize = `${
 				size * parseFloat( window.getComputedStyle( element ).fontSize )
 			}px`; // Scale based on the current font size
