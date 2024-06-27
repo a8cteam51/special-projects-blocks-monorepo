@@ -166,7 +166,6 @@ function adjustFontSize(element, content) {
     // Avoid division by zero or very small widths
     if (textWidth > 0) {
       const size = parseInt(containerWidth) / textWidth;
-      console.log(size);
       element.style.fontSize = `${size * parseFloat(window.getComputedStyle(element).fontSize)}px`; // Scale based on the current font size
       element.style.whiteSpace = 'nowrap'; // Ensure text does not wrap
     }
@@ -265,7 +264,7 @@ module.exports = window["wp"]["i18n"];
   \************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/stretchy-type","version":"0.1.0","title":"Stretchy Type","category":"theme","icon":"smiley","description":"Text that expands to fill the width of its container.","example":{},"supports":{"html":false,"interactivity":true},"textdomain":"stretchy-type","attributes":{"content":{"type":"rich-text","source":"rich-text","selector":"pre"}},"editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/stretchy-type","version":"0.1.0","title":"Stretchy Type","category":"theme","icon":"text","description":"Text that expands to fill the width of its container.","example":{},"supports":{"color":{"text":true,"background":true,"gradient":true},"align":true,"border":true,"interactivity":true},"textdomain":"stretchy-type","attributes":{"content":{"type":"rich-text","source":"rich-text","selector":"pre"}},"editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
 
 /***/ })
 
