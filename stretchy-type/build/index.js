@@ -269,7 +269,7 @@ module.exports = window["wp"]["i18n"];
   \************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/stretchy-type","version":"0.1.0","title":"Stretchy Type","category":"theme","icon":"text","description":"Text that expands to fill the width of its container.","example":{},"supports":{"color":{"text":true,"background":true,"gradient":true},"typography":{"__experimentalFontWeight":true,"__experimentalTextDecoration":true,"__experimentalTextTransform":true},"align":true,"border":true,"interactivity":true},"textdomain":"stretchy-type","attributes":{"content":{"type":"rich-text","source":"rich-text","selector":"pre"}},"editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/stretchy-type","version":"0.1.0","title":"Stretchy Type","category":"theme","icon":"text","description":"Text that expands to fill the width of its container.","example":{},"supports":{"color":{"text":true,"background":true,"gradient":true},"typography":{"__experimentalFontWeight":true,"__experimentalTextDecoration":true,"__experimentalTextTransform":true},"align":true,"border":true},"textdomain":"stretchy-type","attributes":{"content":{"type":"rich-text","source":"rich-text","selector":"pre"}},"editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js","render":"file:./render.php"}');
 
 /***/ })
 
