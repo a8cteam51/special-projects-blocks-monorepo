@@ -52,6 +52,7 @@ function Edit({
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, resizeListener, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
     disableLineBreaks: true,
     tagName: "pre",
+    identifier: "content",
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(),
     ref: ref,
     placeholder: "Stretchy text goes here",
@@ -147,17 +148,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 function adjustFontSize(element, content) {
   if (element) {
-    const containerWidth = window.getComputedStyle(element.parentElement).width;
+    // const containerWidth = window.getComputedStyle( element.parentElement ).width;
+    const containerWidth = element.parentElement.getBoundingClientRect().width;
 
     // Create a temporary hidden element for measurement
     const tempElement = document.createElement('div');
     tempElement.style.position = 'absolute';
     tempElement.style.whiteSpace = 'nowrap';
     tempElement.style.visibility = 'hidden';
-    tempElement.style.fontFamily = window.getComputedStyle(element).fontFamily;
-    tempElement.style.fontWeight = window.getComputedStyle(element).fontWeight;
-    tempElement.style.fontStyle = window.getComputedStyle(element).fontStyle;
-    tempElement.style.fontSize = window.getComputedStyle(element).fontSize; // Use the current font size for measurement
+    const computedStyle = window.getComputedStyle(element);
+    tempElement.style.fontFamily = computedStyle.fontFamily;
+    tempElement.style.fontWeight = computedStyle.fontWeight;
+    tempElement.style.fontStyle = computedStyle.fontStyle;
+    tempElement.style.fontSize = computedStyle.fontSize;
+    tempElement.style.letterSpacing = computedStyle.letterSpacing;
+    tempElement.style.textTransform = computedStyle.textTransform;
     tempElement.innerHTML = content;
     document.body.appendChild(tempElement);
     const textWidth = tempElement.offsetWidth;
@@ -264,7 +269,7 @@ module.exports = window["wp"]["i18n"];
   \************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/stretchy-type","version":"0.1.0","title":"Stretchy Type","category":"theme","icon":"text","description":"Text that expands to fill the width of its container.","example":{},"supports":{"color":{"text":true,"background":true,"gradient":true},"align":true,"border":true,"interactivity":true},"textdomain":"stretchy-type","attributes":{"content":{"type":"rich-text","source":"rich-text","selector":"pre"}},"editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/stretchy-type","version":"0.1.0","title":"Stretchy Type","category":"theme","icon":"text","description":"Text that expands to fill the width of its container.","example":{},"supports":{"color":{"text":true,"background":true,"gradient":true},"typography":{"__experimentalFontWeight":true,"__experimentalTextDecoration":true,"__experimentalTextTransform":true},"align":true,"border":true,"interactivity":true},"textdomain":"stretchy-type","attributes":{"content":{"type":"rich-text","source":"rich-text","selector":"pre"}},"editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
 
 /***/ })
 

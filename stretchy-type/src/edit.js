@@ -25,6 +25,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			<RichText
 				disableLineBreaks
 				tagName="pre"
+				identifier="content"
 				{ ...useBlockProps() }
 				ref={ ref }
 				placeholder="Stretchy text goes here"
