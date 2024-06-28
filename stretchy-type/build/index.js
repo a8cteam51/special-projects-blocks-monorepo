@@ -36,11 +36,12 @@ function Edit({
   const {
     content
   } = attributes;
+  const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)();
   const ref = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useRef)();
   const [resizeListener, sizes] = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_4__.useResizeObserver)();
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
     (0,_utils__WEBPACK_IMPORTED_MODULE_5__.adjustFontSize)(ref.current, content);
-  }, [content, sizes]);
+  }, [content, sizes, blockProps]);
   const onChange = nextContent => {
     setAttributes({
       content: nextContent
@@ -51,7 +52,7 @@ function Edit({
     disableLineBreaks: true,
     tagName: "pre",
     identifier: "content",
-    ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(),
+    ...blockProps,
     ref: ref,
     placeholder: "Stretchy text goes here",
     preserveWhiteSpace: true,
@@ -255,7 +256,7 @@ module.exports = window["wp"]["i18n"];
   \************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/stretchy-type","version":"0.1.0","title":"Stretchy Type","category":"theme","icon":"text","description":"Text that expands to fill the width of its container.","example":{},"supports":{"color":{"text":true,"background":true,"gradient":true},"typography":{"__experimentalFontWeight":true,"__experimentalTextDecoration":true,"__experimentalTextTransform":true},"align":true,"border":true},"textdomain":"stretchy-type","attributes":{"content":{"type":"rich-text","source":"rich-text","selector":"pre"}},"editorScript":"file:./index.js","style":"file:./style-index.css","viewScript":"file:./view.js","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/stretchy-type","version":"0.1.0","title":"Stretchy Type","category":"theme","icon":"text","description":"Text that expands to fill the width of its container.","example":{},"supports":{"color":{"text":true,"background":true,"gradient":true},"typography":{"__experimentalFontWeight":true,"__experimentalTextDecoration":true,"__experimentalTextTransform":true}},"textdomain":"stretchy-type","attributes":{"content":{"type":"rich-text","source":"rich-text","selector":"pre"}},"editorScript":"file:./index.js","style":"file:./style-index.css","viewScript":"file:./view.js","render":"file:./render.php"}');
 
 /***/ })
 

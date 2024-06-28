@@ -18,9 +18,7 @@
       "__experimentalFontWeight": true,
       "__experimentalTextDecoration": true,
       "__experimentalTextTransform": true
-    },
-    "align": true,
-    "border": true
+    }
   },
   "textdomain": "stretchy-type",
   "attributes": {

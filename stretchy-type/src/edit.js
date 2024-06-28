@@ -6,12 +6,13 @@ import { adjustFontSize } from './utils';
 
 export default function Edit( { attributes, setAttributes } ) {
 	const { content } = attributes;
+	const blockProps = useBlockProps();
 	const ref = useRef();
 	const [ resizeListener, sizes ] = useResizeObserver();
 
 	useEffect( () => {
 		adjustFontSize( ref.current, content );
-	}, [ content, sizes ] );
+	}, [ content, sizes, blockProps ] );
 
 	const onChange = ( nextContent ) => {
 		setAttributes( { content: nextContent } );
@@ -25,7 +26,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				disableLineBreaks
 				tagName="pre"
 				identifier="content"
-				{ ...useBlockProps() }
+				{ ...blockProps }
 				ref={ ref }
 				placeholder="Stretchy text goes here"
 				preserveWhiteSpace
