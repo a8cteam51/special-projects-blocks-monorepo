@@ -46,12 +46,12 @@
   background-color: unset;
 }
 
-.wpsp-accordion-item__title.icon-position-left > .wpsp-accordion-item__toggle {
+.wpsp-accordion-item__title.icon-position-left .wpsp-accordion-item__toggle {
   padding-right: 0;
   padding-left: 24px; /* Adjust padding to make space for the icon */
 }
 
-.wpsp-accordion-item__title.icon-position-left > .wpsp-accordion-item__toggle::after {
+.wpsp-accordion-item__title.icon-position-left .wpsp-accordion-item__toggle::after {
   left: 0;
   right: auto;
   transform: translateY(-50%);
@@ -70,33 +70,33 @@
   }
 }
 /* Default block style */
-.wp-block-wpsp-accordion-item.is-style-default > .wpsp-accordion-item__title > .wpsp-accordion-item__toggle::after {
+.wp-block-wpsp-accordion-item.is-style-default .wpsp-accordion-item__toggle::after {
   -webkit-mask: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 5L12 19\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M5 12L19 12\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>");
           mask: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 5L12 19\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M5 12L19 12\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>");
 }
 
-.wp-block-wpsp-accordion-item.is-open > .wpsp-accordion-item__title > .wpsp-accordion-item__toggle::after {
+.wp-block-wpsp-accordion-item.is-open .wpsp-accordion-item__toggle::after {
   -webkit-mask: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5 12L19 12\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>");
           mask: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5 12L19 12\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>");
 }
 
 /* Chevron block style */
-.wp-block-wpsp-accordion-item.is-style-chevron > .wpsp-accordion-item__title > .wpsp-accordion-item__toggle::after {
+.wp-block-wpsp-accordion-item.is-style-chevron .wpsp-accordion-item__toggle::after {
   -webkit-mask: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2.34424 9.19922L11.9442 18.7992L21.5442 9.19922\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"square\" stroke-linejoin=\"round\"/></svg>");
           mask: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2.34424 9.19922L11.9442 18.7992L21.5442 9.19922\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"square\" stroke-linejoin=\"round\"/></svg>");
 }
 
-.wp-block-wpsp-accordion-item.is-style-chevron.is-open > .wpsp-accordion-item__title > .wpsp-accordion-item__toggle::after {
+.wp-block-wpsp-accordion-item.is-style-chevron .wpsp-accordion-item__toggle::after {
   transform: translateY(-50%) rotate(-180deg);
 }
 
 /* Arrow block style */
-.wp-block-wpsp-accordion-item.is-style-arrow > .wpsp-accordion-item__title > .wpsp-accordion-item__toggle::after {
+.wp-block-wpsp-accordion-item.is-style-arrow .wpsp-accordion-item__toggle::after {
   -webkit-mask: url("data:image/svg+xml;utf8,%3Csvg width=%2724%27 height=%2724%27 viewBox=%270 0 24 24%27 fill=%27none%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath d=%27M4 12L20 12M13 5L20 12L13 19%27 stroke=%27currentColor%27 stroke-width=%272.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E");
           mask: url("data:image/svg+xml;utf8,%3Csvg width=%2724%27 height=%2724%27 viewBox=%270 0 24 24%27 fill=%27none%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath d=%27M4 12L20 12M13 5L20 12L13 19%27 stroke=%27currentColor%27 stroke-width=%272.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E");
 }
 
-.wp-block-wpsp-accordion-item.is-style-arrow.is-open > .wpsp-accordion-item__title > .wpsp-accordion-item__toggle::after {
+.wp-block-wpsp-accordion-item.is-style-arrow.is-open .wpsp-accordion-item__toggle::after {
   transform: translateY(-50%) rotate(90deg);
 }
 

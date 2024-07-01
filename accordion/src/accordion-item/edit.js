@@ -79,8 +79,8 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 							value={ iconPosition }
 							onChange={ ( value ) => {
 								setAttributes( { iconPosition: value } );
-								} }
-							>
+							} }
+						>
 							<ToggleGroupControlOption
 								label="Left"
 								value="left"
@@ -107,24 +107,20 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 					} }
 				/>
 			</BlockControls>
-			<div { ...useBlockProps() }>
-				<TagName className={ headerClassName }>
-					<button className="wpsp-accordion-item__toggle">
-						<RichText
-							allowedFormats={ [ 'core/bold', 'core/italic' ] }
-							tagName="span"
-							value={ title }
-							onChange={ ( newTitle ) =>
-								setAttributes( { title: newTitle } )
-							}
-							placeholder={ __( 'Add text...' ) }
-						/>
-					</button>
-				</TagName>
-				<InnerBlocks
-					renderAppender={ InnerBlocks.ButtonBlockAppender }
-				/>
-			</div>
+			<TagName className={ headerClassName } { ...useBlockProps() }>
+				<button className="wpsp-accordion-item__toggle">
+					<RichText
+						allowedFormats={ [ 'core/bold', 'core/italic' ] }
+						tagName="span"
+						value={ title }
+						onChange={ ( newTitle ) =>
+							setAttributes( { title: newTitle } )
+						}
+						placeholder={ __( 'Add text...' ) }
+					/>
+				</button>
+			</TagName>
+			<InnerBlocks renderAppender={ InnerBlocks.ButtonBlockAppender } />
 		</>
 	);
 }

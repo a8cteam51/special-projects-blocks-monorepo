@@ -57,20 +57,5 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_interactivity__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/interactivity */ "@wordpress/interactivity");
 
-(0,_wordpress_interactivity__WEBPACK_IMPORTED_MODULE_0__.store)('wpsp-accordion-item', {
-  actions: {
-    toggle: () => {
-      const context = (0,_wordpress_interactivity__WEBPACK_IMPORTED_MODULE_0__.getContext)();
-      context.isOpen = !context.isOpen;
-    }
-  },
-  callbacks: {
-    logIsOpen: () => {
-      const {
-        isOpen
-      } = (0,_wordpress_interactivity__WEBPACK_IMPORTED_MODULE_0__.getContext)();
-    }
-  }
-});
 
 //# sourceMappingURL=view.js.map
