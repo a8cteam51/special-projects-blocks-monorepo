@@ -1,0 +1,73 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wpsp/accordion-item",
+  "version": "0.1.0",
+  "title": "Accordion Item",
+  "category": "design",
+  "description": "Accordion item block for displaying hidden content via a toggle.",
+  "example": {},
+  "supports": {
+    "color": {
+      "background": true,
+      "gradient": true
+    },
+    "align": true,
+    "border": true,
+    "interactivity": true,
+    "spacing": {
+      "padding": true,
+      "margin": true,
+      "blockGap": true
+    },
+    "shadow": true,
+    "layout": true
+  },
+  "attributes": {
+    "title": {
+      "type": "rich-text",
+      "source": "rich-text",
+      "selector": "span"
+    },
+    "level": {
+      "type": "number",
+      "default": 3
+    },
+    "textAlign": {
+      "type": "string"
+    },
+    "openByDefault": {
+      "type": "boolean",
+      "default": false
+    },
+    "iconPosition": {
+      "type": "string",
+      "default": "right"
+    }
+  },
+  "styles": [
+    {
+      "name": "default",
+      "label": "Default",
+      "isDefault": true
+    },
+    {
+      "name": "chevron",
+      "label": "Chevron"
+    },
+    {
+      "name": "arrow",
+      "label": "Arrow"
+    },
+    {
+      "name": "no-icon",
+      "label": "No Icon"
+    }
+  ],
+  "textdomain": "accordion",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScriptModule": "file:./view.js",
+  "render": "file:./render.php"
+}
