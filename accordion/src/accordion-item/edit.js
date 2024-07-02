@@ -17,12 +17,12 @@ import {
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 
-export default function Edit( { attributes, setAttributes, isSelected } ) {
+export default function Edit( { attributes, setAttributes } ) {
 	const { level, title, textAlign, openByDefault, iconPosition } = attributes;
 	const TagName = 'h' + level;
 
 	const headerClassName = clsx( {
-		'wpsp-accordion-item__title': true,
+		'wpsp-accordion-item__heading': true,
 		'icon-position-left': iconPosition === 'left',
 		[ `has-text-align-${ textAlign }` ]: textAlign,
 	} );
@@ -78,20 +78,22 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 					} }
 				/>
 			</BlockControls>
-			<TagName className={ headerClassName } { ...useBlockProps() }>
-				<button className="wpsp-accordion-item__toggle">
-					<RichText
-						allowedFormats={ [ 'core/bold', 'core/italic' ] }
-						tagName="span"
-						value={ title }
-						onChange={ ( newTitle ) =>
-							setAttributes( { title: newTitle } )
-						}
-						placeholder={ __( 'Add text...' ) }
-					/>
-				</button>
-			</TagName>
-			<InnerBlocks renderAppender={ InnerBlocks.ButtonBlockAppender } />
+			<div { ...useBlockProps }>
+				<TagName className={headerClassName}>
+					<button className="wpsp-accordion-item__toggle">
+						<RichText
+							allowedFormats={ [ 'core/bold', 'core/italic' ] }
+							tagName="span"
+							value={ title }
+							onChange={ ( newTitle ) =>
+								setAttributes( { title: newTitle } )
+							}
+							placeholder={ __( 'Add text...' ) }
+						/>
+					</button>
+				</TagName>
+				<InnerBlocks defaultBlocks={['core/paragraph']} directInsert/>
+			</div>
 		</>
 	);
 }

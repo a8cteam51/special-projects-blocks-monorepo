@@ -22,7 +22,12 @@
 			"blockGap": true
 		},
 		"shadow": true,
-		"layout": true
+		"layout": true,
+		"typography": {
+			"__experimentalFontSize": true,
+			"__experimentalLineHeight": true,
+			"__experimentalFontFamily": true
+		}
 	},
 	"attributes": {
 		"title": {
@@ -68,5 +73,6 @@
 	"textdomain": "accordion",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
 }

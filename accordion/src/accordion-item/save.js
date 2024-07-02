@@ -7,14 +7,18 @@ export default function save( { attributes } ) {
 	const TagName = 'h' + level;
 
 	const className = clsx( {
-		'wpsp-accordion-item__title': true,
+		'wpsp-accordion-item__heading': true,
 		'icon-position-left': iconPosition === 'left',
 		[ `has-text-align-${ textAlign }` ]: textAlign,
 	} );
 
+	const blockProps = useBlockProps.save({
+		className: className,
+	});
+
 	return (
 		<>
-			<TagName className={ className } { ...useBlockProps.save() }>
+			<TagName { ...blockProps }>
 				<button className="wpsp-accordion-item__toggle">
 					<RichText.Content tagName="span" value={ title } />
 				</button>

@@ -5,7 +5,7 @@
   --wpsp--accordion--parent-color: currentColor;
 }
 
-.wp-block-wpsp-accordion-item .wpsp-accordion-item__title {
+.wp-block-wpsp-accordion-item .wpsp-accordion-item__heading {
   color: inherit;
 }
 
@@ -46,12 +46,12 @@
   background-color: unset;
 }
 
-.wpsp-accordion-item__title.icon-position-left .wpsp-accordion-item__toggle {
+.wpsp-accordion-item__heading.icon-position-left .wpsp-accordion-item__toggle {
   padding-left: 0;
   padding-right: 24px; /* Adjust padding to make space for the icon */
 }
 
-.wpsp-accordion-item__title.icon-position-left .wpsp-accordion-item__toggle::after {
+.wpsp-accordion-item__heading.icon-position-left .wpsp-accordion-item__toggle::after {
   right: 0;
   left: auto;
   transform: translateY(-50%);
@@ -70,13 +70,14 @@
   }
 }
 /* Default block style */
-.wp-block-wpsp-accordion-item .wpsp-accordion-item__toggle::after,
-.wp-block-wpsp-accordion-item.is-style-default .wpsp-accordion-item__toggle::after {
+.wpsp-accordion-item__heading .wpsp-accordion-item__toggle::after,
+.wpsp-accordion-item__heading.is-style-default .wpsp-accordion-item__toggle::after {
   -webkit-mask: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 5L12 19\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M5 12L19 12\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>");
           mask: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 5L12 19\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M5 12L19 12\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>");
 }
 
-.wp-block-wpsp-accordion-item.is-style-default .wpsp-accordion-item__toggle.is-open::after {
+.wpsp-accordion-item__heading .wpsp-accordion-item__toggle.is-open::after,
+.wpsp-accordion-item__heading.is-style-default .wpsp-accordion-item__toggle.is-open::after {
   -webkit-mask: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5 12L19 12\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>");
           mask: url("data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5 12L19 12\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>");
 }

@@ -28,8 +28,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function Edit({
   attributes,
-  setAttributes,
-  isSelected
+  setAttributes
 }) {
   const {
     level,
@@ -40,7 +39,7 @@ function Edit({
   } = attributes;
   const TagName = 'h' + level;
   const headerClassName = (0,clsx__WEBPACK_IMPORTED_MODULE_1__["default"])({
-    'wpsp-accordion-item__title': true,
+    'wpsp-accordion-item__heading': true,
     'icon-position-left': iconPosition === 'left',
     [`has-text-align-${textAlign}`]: textAlign
   });
@@ -84,9 +83,10 @@ function Edit({
         textAlign: nextAlign
       });
     }
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(TagName, {
-    className: headerClassName,
-    ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)()
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    ..._wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(TagName, {
+    className: headerClassName
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "wpsp-accordion-item__toggle"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
@@ -98,8 +98,9 @@ function Edit({
     }),
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Add text...')
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InnerBlocks, {
-    renderAppender: _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InnerBlocks.ButtonBlockAppender
-  }));
+    defaultBlocks: ['core/paragraph'],
+    directInsert: true
+  })));
 }
 
 /***/ }),
@@ -202,13 +203,15 @@ function save({
   } = attributes;
   const TagName = 'h' + level;
   const className = (0,clsx__WEBPACK_IMPORTED_MODULE_1__["default"])({
-    'wpsp-accordion-item__title': true,
+    'wpsp-accordion-item__heading': true,
     'icon-position-left': iconPosition === 'left',
     [`has-text-align-${textAlign}`]: textAlign
   });
+  const blockProps = _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps.save({
+    className: className
+  });
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(TagName, {
-    className: className,
-    ..._wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps.save()
+    ...blockProps
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "wpsp-accordion-item__toggle"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText.Content, {
@@ -304,7 +307,7 @@ function r(e){var t,f,n="";if("string"==typeof e||"number"==typeof e)n+=e;else i
   \***************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/accordion-item","version":"0.1.0","title":"Accordion Item","category":"design","description":"Accordion item block for displaying hidden content via a toggle.","example":{},"ancestor":["wpsp/accordion"],"supports":{"color":{"background":true,"gradient":true},"align":true,"border":true,"interactivity":true,"spacing":{"padding":true,"margin":true,"blockGap":true},"shadow":true,"layout":true},"attributes":{"title":{"type":"rich-text","source":"rich-text","selector":"span"},"level":{"type":"number","default":3},"textAlign":{"type":"string"},"openByDefault":{"type":"boolean","default":false},"iconPosition":{"type":"string","default":"right"}},"styles":[{"name":"default","label":"Default","isDefault":true},{"name":"chevron","label":"Chevron"},{"name":"arrow","label":"Arrow"},{"name":"no-icon","label":"No Icon"}],"textdomain":"accordion","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/accordion-item","version":"0.1.0","title":"Accordion Item","category":"design","description":"Accordion item block for displaying hidden content via a toggle.","example":{},"ancestor":["wpsp/accordion"],"supports":{"color":{"background":true,"gradient":true},"align":true,"border":true,"interactivity":true,"spacing":{"padding":true,"margin":true,"blockGap":true},"shadow":true,"layout":true,"typography":{"__experimentalFontSize":true,"__experimentalLineHeight":true,"__experimentalFontFamily":true}},"attributes":{"title":{"type":"rich-text","source":"rich-text","selector":"span"},"level":{"type":"number","default":3},"textAlign":{"type":"string"},"openByDefault":{"type":"boolean","default":false},"iconPosition":{"type":"string","default":"right"}},"styles":[{"name":"default","label":"Default","isDefault":true},{"name":"chevron","label":"Chevron"},{"name":"arrow","label":"Arrow"},{"name":"no-icon","label":"No Icon"}],"textdomain":"accordion","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php"}');
 
 /***/ })
 
