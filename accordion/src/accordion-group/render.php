@@ -10,7 +10,7 @@ while ( $p->next_tag() ){
 
 $content = $p->get_updated_html();
 $p = new WP_HTML_Tag_Processor( $content );
-$unique_id = wp_unique_id( 'p-' );
+$unique_id = wp_unique_id( 'wpsp-accordion-id-' );
 
 while ( $p->next_tag() ){
     if ( $p->has_class( 'wpsp-accordion-item__toggle' ) ) {
