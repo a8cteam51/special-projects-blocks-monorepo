@@ -1,6 +1,7 @@
-import clsx from 'clsx';
+import { RichText } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, RichText, InnerBlocks } from '@wordpress/block-editor';
+import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import clsx from 'clsx';
 
 export default function save( { attributes } ) {
 	const { title, textAlign, level, iconPosition } = attributes;
@@ -12,13 +13,13 @@ export default function save( { attributes } ) {
 		[ `has-text-align-${ textAlign }` ]: textAlign,
 	} );
 
-	const blockProps = useBlockProps.save({
-		className: className,
-	});
-
 	return (
-		<div {...blockProps}>
-			<InnerBlocks.Content/>
-		</div>
+		<TagName {...useBlockProps.save({
+			className: className,
+		})}>
+			<button className="wpsp-accordion-item__toggle">
+				<RichText.Content tagName="span" value={ title } />
+			</button>
+		</TagName>
 	);
 }

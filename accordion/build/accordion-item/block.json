@@ -7,8 +7,12 @@
   "category": "design",
   "description": "Accordion item block for displaying hidden content via a toggle.",
   "example": {},
-  "ancestor": [
+  "parent": [
     "wpsp/accordion"
+  ],
+  "allowedBlocks": [
+    "wpsp/accordion-item-content",
+    "wpsp/accordion-item-heading"
   ],
   "supports": {
     "color": {
@@ -24,26 +28,9 @@
       "blockGap": true
     },
     "shadow": true,
-    "layout": true,
-    "typography": {
-      "__experimentalFontSize": true,
-      "__experimentalLineHeight": true,
-      "__experimentalFontFamily": true
-    }
+    "layout": true
   },
   "attributes": {
-    "title": {
-      "type": "rich-text",
-      "source": "rich-text",
-      "selector": "span"
-    },
-    "level": {
-      "type": "number",
-      "default": 3
-    },
-    "textAlign": {
-      "type": "string"
-    },
     "openByDefault": {
       "type": "boolean",
       "default": false

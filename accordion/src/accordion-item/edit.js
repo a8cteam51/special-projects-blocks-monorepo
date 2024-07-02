@@ -64,35 +64,15 @@ export default function Edit( { attributes, setAttributes } ) {
 					</PanelRow>
 				</PanelBody>
 			</InspectorControls>
-			<BlockControls>
-				<HeadingLevelDropdown
-					value={ level }
-					onChange={ ( newLevel ) =>
-						setAttributes( { level: newLevel } )
-					}
-				/>
-				<AlignmentControl
-					value={ textAlign }
-					onChange={ ( nextAlign ) => {
-						setAttributes( { textAlign: nextAlign } );
-					} }
-				/>
-			</BlockControls>
 			<div { ...useBlockProps }>
-				<TagName className={headerClassName}>
-					<button className="wpsp-accordion-item__toggle">
-						<RichText
-							allowedFormats={ [ 'core/bold', 'core/italic' ] }
-							tagName="span"
-							value={ title }
-							onChange={ ( newTitle ) =>
-								setAttributes( { title: newTitle } )
-							}
-							placeholder={ __( 'Add text...' ) }
-						/>
-					</button>
-				</TagName>
-				<InnerBlocks defaultBlocks={['core/paragraph']} directInsert/>
+				<InnerBlocks 
+					template={[
+						[ 'wpsp/accordion-item-heading', {
+						}],
+						[ 'wpsp/accordion-item-content', {
+						}]
+					]} 
+				/>
 			</div>
 		</>
 	);
