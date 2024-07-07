@@ -34,9 +34,7 @@
 	"attributes": {
 		"title": {
 			"type": "string",
-			"default": "Table of Contents",
-			"source": "html",
-			"selector": "h2"
+			"default": "Table of Contents"
 		}
 	},
 	"textdomain": "dynamic-table-of-contents",
