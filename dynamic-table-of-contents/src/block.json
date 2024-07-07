@@ -5,7 +5,6 @@
 	"version": "0.1",
 	"title": "Dynamic Table of Contents",
 	"category": "design",
-	"icon": "table",
 	"description": "Creates a table of contents that's dynamically (PHP) rendered.",
 	"example": {},
 	"supports": {
