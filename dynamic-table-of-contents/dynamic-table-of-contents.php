@@ -4,7 +4,7 @@
  * Description:       Creates a table of contents that's dynamically (PHP) rendered.
  * Requires at least: 6.1
  * Requires PHP:      8.0
- * Version:           0.1.7
+ * Version:           0.1.8
  * Author:            WordPress Special Projects Team
  * Author URI:        https://wpspecialprojects.wordpress.com/
  * Update URI:        https://opsoasis-develop.mystagingwebsite.com/dynamic-table-of-contents/
@@ -41,7 +41,7 @@ if ( ! class_exists( 'WPSP_Blocks_Self_Update' ) ) {
  */
 add_filter(
 	'wpsp_installed_blocks',
-	function( $blocks ) {
+	function ( $blocks ) {
 		$plugin_data = get_plugin_data( __FILE__ );
 
 		// Add the plugin slug here to enable autoupdates.
@@ -67,7 +67,7 @@ add_action( 'init', 'wpsp_dynamic_table_of_contents_block_init' );
  * Filter the render block output of heading blocks.
  *
  * @param string $block_content The block content about to be rendered.
- * @param array $block          The block object.
+ * @param array  $block         The block object.
  *
  * @return string Block content.
  */
