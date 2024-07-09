@@ -15,7 +15,7 @@ const { state, actions } = store( 'wpsp/accordion', {
 			const id = attributes[ 'aria-controls' ];
 			const context = getContext();
 			if ( context.isOpen.includes( id ) ) {
-				context.isOpen.pop( id );
+				context.isOpen = context.isOpen.filter( ( item ) => item !== id );
 			} else {
 				context.isOpen.push( id );
 			}
