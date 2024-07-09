@@ -25,9 +25,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
 function wpsp_accordion_block_init() {
-	register_block_type( __DIR__ . '/build/accordion-group' );
+	register_block_type( __DIR__ . '/build/accordion' );
 	register_block_type( __DIR__ . '/build/accordion-item' );
-	register_block_type( __DIR__ . '/build/accordion-item-heading' );
+	register_block_type( __DIR__ . '/build/accordion-item-trigger' );
 	register_block_type( __DIR__ . '/build/accordion-item-content' );
 }
 add_action( 'init', 'wpsp_accordion_block_init' );
