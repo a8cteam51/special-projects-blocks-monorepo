@@ -4,7 +4,7 @@ const { state, actions } = store( 'wpsp/accordion', {
 	state: {
 		get isOpen() {
 			const { attributes } = getElement();
-			const id = attributes.id || attributes['aria-controls'];
+			const id = attributes.id || attributes[ 'aria-controls' ];
 			const context = getContext();
 			return context.isOpen.includes( id );
 		},
@@ -15,7 +15,9 @@ const { state, actions } = store( 'wpsp/accordion', {
 			const id = attributes[ 'aria-controls' ];
 			const context = getContext();
 			if ( context.isOpen.includes( id ) ) {
-				context.isOpen = context.isOpen.filter( ( item ) => item !== id );
+				context.isOpen = context.isOpen.filter(
+					( item ) => item !== id
+				);
 			} else {
 				context.isOpen.push( id );
 			}

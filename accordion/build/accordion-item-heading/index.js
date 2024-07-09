@@ -19,9 +19,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
-
 
 
 
@@ -37,8 +34,7 @@ function Edit({
     iconPosition
   } = attributes;
   const TagName = 'h' + level;
-  const headerClassName = (0,clsx__WEBPACK_IMPORTED_MODULE_1__["default"])({
-    'wpsp-accordion-item__heading': true,
+  const headingClassName = (0,clsx__WEBPACK_IMPORTED_MODULE_1__["default"])({
     'icon-position-left': iconPosition === 'left',
     [`has-text-align-${textAlign}`]: textAlign
   });
@@ -56,7 +52,7 @@ function Edit({
     }
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(TagName, {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)({
-      className: headerClassName
+      className: headingClassName
     })
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "wpsp-accordion-item__toggle"
@@ -131,7 +127,6 @@ function save({
   } = attributes;
   const TagName = 'h' + level;
   const className = (0,clsx__WEBPACK_IMPORTED_MODULE_3__["default"])({
-    'wpsp-accordion-item__heading': true,
     'icon-position-left': iconPosition === 'left',
     [`has-text-align-${textAlign}`]: textAlign
   });
@@ -191,16 +186,6 @@ module.exports = window["wp"]["blocks"];
 
 /***/ }),
 
-/***/ "@wordpress/components":
-/*!************************************!*\
-  !*** external ["wp","components"] ***!
-  \************************************/
-/***/ ((module) => {
-
-module.exports = window["wp"]["components"];
-
-/***/ }),
-
 /***/ "@wordpress/i18n":
 /*!******************************!*\
   !*** external ["wp","i18n"] ***!
@@ -232,7 +217,7 @@ function r(e){var t,f,n="";if("string"==typeof e||"number"==typeof e)n+=e;else i
   \***********************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/accordion-item-heading","version":"0.1.0","title":"Accordion Item Heading","category":"design","description":"Accordion item heading ","example":{},"parent":["wpsp/accordion-item"],"supports":{"html":false,"interactivity":true,"color":{"background":true,"text":true},"typography":{"fontSize":true,"lineHeight":true,"textAlign":true,"__experimentalFontFamily":true}},"attributes":{"title":{"type":"rich-text","source":"rich-text","selector":"span"},"level":{"type":"number","default":3},"textAlign":{"type":"string"}},"textdomain":"accordion-heading","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/accordion-item-trigger","version":"0.1.0","title":"Accordion Item Trigger","category":"design","description":"Accordion item trigger ","example":{},"parent":["wpsp/accordion-item"],"supports":{"html":false,"interactivity":true,"color":{"background":true,"text":true},"typography":{"fontSize":true,"lineHeight":true,"textAlign":true,"__experimentalFontFamily":true}},"attributes":{"title":{"type":"rich-text","source":"rich-text","selector":"span"},"level":{"type":"number","default":3},"textAlign":{"type":"string"}},"textdomain":"accordion-heading","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 

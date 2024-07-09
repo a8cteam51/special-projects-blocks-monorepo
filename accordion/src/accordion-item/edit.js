@@ -1,13 +1,9 @@
 import clsx from 'clsx';
 import { __ } from '@wordpress/i18n';
 import {
-	RichText,
 	useBlockProps,
 	InnerBlocks,
 	InspectorControls,
-	BlockControls,
-	HeadingLevelDropdown,
-	AlignmentControl,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -18,11 +14,9 @@ import {
 } from '@wordpress/components';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { level, title, textAlign, openByDefault, iconPosition } = attributes;
-	const TagName = 'h' + level;
+	const { textAlign, openByDefault, iconPosition } = attributes;
 
-	const headerClassName = clsx( {
-		'wpsp-accordion-item__heading': true,
+	const className = clsx( {
 		'icon-position-left': iconPosition === 'left',
 		[ `has-text-align-${ textAlign }` ]: textAlign,
 	} );
@@ -64,14 +58,12 @@ export default function Edit( { attributes, setAttributes } ) {
 					</PanelRow>
 				</PanelBody>
 			</InspectorControls>
-			<div { ...useBlockProps }>
-				<InnerBlocks 
-					template={[
-						[ 'wpsp/accordion-item-heading', {
-						}],
-						[ 'wpsp/accordion-item-content', {
-						}]
-					]} 
+			<div { ...useBlockProps( { className: className } ) }>
+				<InnerBlocks
+					template={ [
+						[ 'wpsp/accordion-item-trigger', {} ],
+						[ 'wpsp/accordion-item-content', {} ],
+					] }
 				/>
 			</div>
 		</>

@@ -8,7 +8,10 @@
 	"description": "Accordion item block for displaying hidden content via a toggle.",
 	"example": {},
 	"parent": [ "wpsp/accordion" ],
-	"allowedBlocks": [ "wpsp/accordion-item-content", "wpsp/accordion-item-heading" ],
+	"allowedBlocks": [
+		"wpsp/accordion-item-content",
+		"wpsp/accordion-item-heading"
+	],
 	"supports": {
 		"color": {
 			"background": true,

@@ -18,7 +18,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
 
 
-const INNER_BLOCKS_TEMPLATE = [['wpsp/accordion-item', {}], ['wpsp/accordion-item', {}]];
+const INNER_BLOCKS_TEMPLATE = [['wpsp/accordion-item', {}]];
 function Edit({
   attributes
 }) {
@@ -96,7 +96,7 @@ module.exports = window["wp"]["blocks"];
   \****************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/accordion","version":"0.1.0","title":"Accordion","category":"design","icon":"list","description":"Container block for accordion items.","example":{},"supports":{"html":false,"align":true,"spacing":{"padding":true,"margin":true,"blockGap":true},"layout":true,"interactivity":true},"allowedBlocks":["wpsp/accordion-item"],"textdomain":"accordion","editorScript":"file:./index.js","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/accordion","version":"0.1.0","title":"Accordion","category":"design","icon":"list","description":"A vertically stacked group of interactive headings that show and hide content.","example":{},"supports":{"html":false,"align":true,"spacing":{"padding":true,"margin":true,"blockGap":true},"layout":true,"interactivity":true},"allowedBlocks":["wpsp/accordion-item"],"textdomain":"accordion","editorScript":"file:./index.js","viewScriptModule":"file:./view.js","render":"file:./render.php"}');
 
 /***/ })
 

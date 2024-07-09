@@ -79,7 +79,7 @@ const {
       const id = attributes['aria-controls'];
       const context = (0,_wordpress_interactivity__WEBPACK_IMPORTED_MODULE_0__.getContext)();
       if (context.isOpen.includes(id)) {
-        context.isOpen.pop(id);
+        context.isOpen = context.isOpen.filter(item => item !== id);
       } else {
         context.isOpen.push(id);
       }

@@ -14,7 +14,7 @@ $content = $p->get_updated_html();
 $p = new WP_HTML_Tag_Processor( $content );
 
 while ( $p->next_tag() ){
-    if ( $p->next_tag( array( 'tag_name' => 'div', 'class_name' => 'wpsp-accordion-item__content' ) ) ) {
+    if ( $p->next_tag( array( 'tag_name' => 'div', 'class_name' => 'wp-block-wpsp-accordion-item-content' ) ) ) {
         $p->set_attribute( 'id', $unique_id );
         $p->set_attribute( 'data-wp-bind--aria-expanded', 'state.isOpen' );
         $p->set_attribute( 'data-wp-bind--hidden', '!state.isOpen' );

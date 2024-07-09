@@ -7,18 +7,16 @@ export default function save( { attributes } ) {
 	const TagName = 'h' + level;
 
 	const className = clsx( {
-		'wpsp-accordion-item__heading': true,
-		'icon-position-left': iconPosition === 'left',
 		[ `has-text-align-${ textAlign }` ]: textAlign,
 	} );
 
-	const blockProps = useBlockProps.save({
+	const blockProps = useBlockProps.save( {
 		className: className,
-	});
+	} );
 
 	return (
-		<div {...blockProps}>
-			<InnerBlocks.Content/>
+		<div { ...blockProps }>
+			<InnerBlocks.Content />
 		</div>
 	);
 }

@@ -31,15 +31,11 @@ function Edit({
   setAttributes
 }) {
   const {
-    level,
-    title,
     textAlign,
     openByDefault,
     iconPosition
   } = attributes;
-  const TagName = 'h' + level;
-  const headerClassName = (0,clsx__WEBPACK_IMPORTED_MODULE_1__["default"])({
-    'wpsp-accordion-item__heading': true,
+  const className = (0,clsx__WEBPACK_IMPORTED_MODULE_1__["default"])({
     'icon-position-left': iconPosition === 'left',
     [`has-text-align-${textAlign}`]: textAlign
   });
@@ -72,9 +68,11 @@ function Edit({
     label: "Right",
     value: "right"
   }))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    ..._wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps
+    ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)({
+      className: className
+    })
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InnerBlocks, {
-    template: [['wpsp/accordion-item-heading', {}], ['wpsp/accordion-item-content', {}]]
+    template: [['wpsp/accordion-item-trigger', {}], ['wpsp/accordion-item-content', {}]]
   })));
 }
 
@@ -178,8 +176,6 @@ function save({
   } = attributes;
   const TagName = 'h' + level;
   const className = (0,clsx__WEBPACK_IMPORTED_MODULE_1__["default"])({
-    'wpsp-accordion-item__heading': true,
-    'icon-position-left': iconPosition === 'left',
     [`has-text-align-${textAlign}`]: textAlign
   });
   const blockProps = _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps.save({

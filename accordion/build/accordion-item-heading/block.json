@@ -1,11 +1,11 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "wpsp/accordion-item-heading",
+  "name": "wpsp/accordion-item-trigger",
   "version": "0.1.0",
-  "title": "Accordion Item Heading",
+  "title": "Accordion Item Trigger",
   "category": "design",
-  "description": "Accordion item heading ",
+  "description": "Accordion item trigger ",
   "example": {},
   "parent": [
     "wpsp/accordion-item"

@@ -6,7 +6,7 @@
 	"title": "Accordion",
 	"category": "design",
 	"icon": "list",
-	"description": "Container block for accordion items.",
+	"description": "A vertically stacked group of interactive headings that show and hide content.",
 	"example": {},
 	"supports": {
 		"html": false,
