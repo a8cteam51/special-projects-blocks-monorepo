@@ -1,25 +1,13 @@
-import clsx from 'clsx';
 import { __ } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	InnerBlocks,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import {
-	PanelBody,
-	PanelRow,
-	ToggleControl,
-	__experimentalToggleGroupControl as ToggleGroupControl,
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
-} from '@wordpress/components';
+import { PanelBody, PanelRow, ToggleControl } from '@wordpress/components';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { textAlign, openByDefault, iconPosition } = attributes;
-
-	const className = clsx( {
-		'icon-position-left': iconPosition === 'left',
-		[ `has-text-align-${ textAlign }` ]: textAlign,
-	} );
+	const { openByDefault } = attributes;
 
 	return (
 		<>
@@ -36,29 +24,9 @@ export default function Edit( { attributes, setAttributes } ) {
 							checked={ openByDefault }
 						/>
 					</PanelRow>
-					<PanelRow>
-						<ToggleGroupControl
-							__nextHasNoMarginBottom
-							isBlock
-							label={ __( 'Icon Position' ) }
-							value={ iconPosition }
-							onChange={ ( value ) => {
-								setAttributes( { iconPosition: value } );
-							} }
-						>
-							<ToggleGroupControlOption
-								label="Left"
-								value="left"
-							/>
-							<ToggleGroupControlOption
-								label="Right"
-								value="right"
-							/>
-						</ToggleGroupControl>
-					</PanelRow>
 				</PanelBody>
 			</InspectorControls>
-			<div { ...useBlockProps( { className: className } ) }>
+			<div { ...useBlockProps() }>
 				<InnerBlocks
 					template={ [
 						[ 'wpsp/accordion-item-trigger', {} ],

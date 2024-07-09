@@ -5,16 +5,14 @@ import {
 	useBlockProps,
 	BlockControls,
 	HeadingLevelDropdown,
-	AlignmentControl,
 } from '@wordpress/block-editor';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { level, title, textAlign, iconPosition } = attributes;
+	const { level, title, iconPosition } = attributes;
 	const TagName = 'h' + level;
 
 	const headingClassName = clsx( {
 		'icon-position-left': iconPosition === 'left',
-		[ `has-text-align-${ textAlign }` ]: textAlign,
 	} );
 
 	return (
@@ -25,12 +23,6 @@ export default function Edit( { attributes, setAttributes } ) {
 					onChange={ ( newLevel ) =>
 						setAttributes( { level: newLevel } )
 					}
-				/>
-				<AlignmentControl
-					value={ textAlign }
-					onChange={ ( nextAlign ) => {
-						setAttributes( { textAlign: nextAlign } );
-					} }
 				/>
 			</BlockControls>
 			<TagName

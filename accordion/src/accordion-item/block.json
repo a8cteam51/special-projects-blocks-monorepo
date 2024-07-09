@@ -5,6 +5,7 @@
 	"version": "0.1.0",
 	"title": "Accordion Item",
 	"category": "design",
+	"icon": "button",
 	"description": "Accordion item block for displaying hidden content via a toggle.",
 	"example": {},
 	"parent": [ "wpsp/accordion" ],
@@ -32,34 +33,9 @@
 		"openByDefault": {
 			"type": "boolean",
 			"default": false
-		},
-		"iconPosition": {
-			"type": "string",
-			"default": "right"
 		}
 	},
-	"styles": [
-		{
-			"name": "default",
-			"label": "Default",
-			"isDefault": true
-		},
-		{
-			"name": "chevron",
-			"label": "Chevron"
-		},
-		{
-			"name": "arrow",
-			"label": "Arrow"
-		},
-		{
-			"name": "no-icon",
-			"label": "No Icon"
-		}
-	],
 	"textdomain": "accordion",
 	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css",
 	"render": "file:./render.php"
 }

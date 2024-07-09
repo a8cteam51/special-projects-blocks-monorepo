@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "title": "Accordion",
   "category": "design",
-  "icon": "list",
+  "icon": "list-view",
   "description": "A vertically stacked group of interactive headings that show and hide content.",
   "example": {},
   "supports": {
@@ -19,11 +19,37 @@
     "layout": true,
     "interactivity": true
   },
+  "attributes": {
+    "iconPosition": {
+      "type": "string",
+      "default": "right"
+    }
+  },
+  "styles": [
+    {
+      "name": "default",
+      "label": "Default",
+      "isDefault": true
+    },
+    {
+      "name": "chevron",
+      "label": "Chevron"
+    },
+    {
+      "name": "arrow",
+      "label": "Arrow"
+    },
+    {
+      "name": "no-icon",
+      "label": "No Icon"
+    }
+  ],
   "allowedBlocks": [
     "wpsp/accordion-item"
   ],
   "textdomain": "accordion",
   "editorScript": "file:./index.js",
   "viewScriptModule": "file:./view.js",
-  "render": "file:./render.php"
+  "render": "file:./render.php",
+  "style": "file:./style-index.css"
 }

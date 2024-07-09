@@ -33,13 +33,8 @@
     "level": {
       "type": "number",
       "default": 3
-    },
-    "textAlign": {
-      "type": "string"
     }
   },
   "textdomain": "accordion-heading",
-  "editorScript": "file:./index.js",
-  "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css"
+  "editorScript": "file:./index.js"
 }
