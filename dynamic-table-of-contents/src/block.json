@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "wpsp/dynamic-table-of-contents",
-	"version": "0.1.8",
+	"version": "0.1.9",
 	"title": "Dynamic Table of Contents",
 	"category": "design",
 	"description": "Creates a table of contents that's dynamically (PHP) rendered.",

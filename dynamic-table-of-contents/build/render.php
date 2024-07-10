@@ -30,7 +30,7 @@ wp_enqueue_script(
 	if ( ! empty( $block_title ) ) {
 		printf(
 			'<h2>%s</h2>',
-			wp_kses_post( $attributes['title'] )
+			wp_kses_post( $block_title )
 		);
 	}
 	?>
