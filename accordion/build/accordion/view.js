@@ -66,7 +66,7 @@ const {
       const {
         attributes
       } = (0,_wordpress_interactivity__WEBPACK_IMPORTED_MODULE_0__.getElement)();
-      const id = attributes.id || attributes['aria-controls'];
+      const id = attributes.id || attributes['aria-controls'] || attributes['data-id'];
       const context = (0,_wordpress_interactivity__WEBPACK_IMPORTED_MODULE_0__.getContext)();
       return context.isOpen.includes(id);
     }

@@ -8,7 +8,12 @@ import {
 	HeadingLevelDropdown,
 	RichText,
 } from '@wordpress/block-editor';
-import { PanelBody, PanelRow, ToggleControl } from '@wordpress/components';
+import {
+	PanelBody,
+	PanelRow,
+	ToggleControl,
+	ToolbarGroup,
+} from '@wordpress/components';
 
 export default function Edit( { attributes, setAttributes } ) {
 	const { openByDefault, level, title, iconPosition } = attributes;
@@ -19,19 +24,21 @@ export default function Edit( { attributes, setAttributes } ) {
 		'icon-position-left': iconPosition === 'left',
 	} );
 
-	const innerBlocksProps = useInnerBlocksProps( 
-		{ className: 'wpsp-accordion-item__content' }
-	);
+	const innerBlocksProps = useInnerBlocksProps( {
+		className: 'wpsp-accordion-item__content',
+	} );
 
 	return (
 		<>
 			<BlockControls>
-				<HeadingLevelDropdown
-					value={ level }
-					onChange={ ( newLevel ) =>
-						setAttributes( { level: newLevel } )
-					}
-				/>
+				<ToolbarGroup>
+					<HeadingLevelDropdown
+						value={ level }
+						onChange={ ( newLevel ) =>
+							setAttributes( { level: newLevel } )
+						}
+					/>
+				</ToolbarGroup>
 			</BlockControls>
 			<InspectorControls key="setting">
 				<PanelBody title={ __( 'Display' ) }>
@@ -62,7 +69,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						/>
 					</button>
 				</TagName>
-				<div { ...innerBlocksProps} />
+				<div { ...innerBlocksProps } />
 			</div>
 		</>
 	);

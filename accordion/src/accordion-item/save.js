@@ -1,8 +1,12 @@
 import clsx from 'clsx';
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, useInnerBlocksProps, RichText } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	useInnerBlocksProps,
+	RichText,
+} from '@wordpress/block-editor';
 
-export default function save( { attributes }) {
+export default function save( { attributes } ) {
 	const { level, title, iconPosition } = attributes;
 	const TagName = 'h' + level;
 
@@ -15,15 +19,14 @@ export default function save( { attributes }) {
 		<div { ...useBlockProps.save() }>
 			<TagName className={ headingClassName }>
 				<button className="wpsp-accordion-item__toggle">
-					<RichText.Content 
-						tagName="span" 
-						value={ title }
-					/>
+					<RichText.Content tagName="span" value={ title } />
 				</button>
 			</TagName>
-			<div { ...useInnerBlocksProps.save({
-				className: 'wpsp-accordion-item__content',
-			})} />
+			<div
+				{ ...useInnerBlocksProps.save( {
+					className: 'wpsp-accordion-item__content',
+				} ) }
+			/>
 		</div>
 	);
 }

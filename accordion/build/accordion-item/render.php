@@ -4,6 +4,7 @@ $unique_id = wp_unique_id( 'wpsp-accordion-item-' );
 
 while ( $p->next_tag() ){
     if ( $p->has_class( 'wp-block-wpsp-accordion-item') ) {
+        $p->set_attribute( 'data-id', $unique_id );
         $p->set_attribute( 'data-wp-class--is-open', 'state.isOpen' );
     }
 }

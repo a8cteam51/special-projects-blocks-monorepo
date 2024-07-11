@@ -4,10 +4,13 @@ const { state, actions } = store( 'wpsp/accordion', {
 	state: {
 		get isOpen() {
 			const { attributes } = getElement();
-			const id = attributes.id || attributes[ 'aria-controls' ];
+			const id =
+				attributes.id ||
+				attributes[ 'aria-controls' ] ||
+				attributes[ 'data-id' ];
 			const context = getContext();
 			return context.isOpen.includes( id );
-		}
+		},
 	},
 	actions: {
 		toggle: () => {
