@@ -11,10 +11,6 @@
   "parent": [
     "wpsp/accordion"
   ],
-  "allowedBlocks": [
-    "wpsp/accordion-item-content",
-    "wpsp/accordion-item-heading"
-  ],
   "supports": {
     "color": {
       "background": true,
@@ -35,6 +31,15 @@
     "openByDefault": {
       "type": "boolean",
       "default": false
+    },
+    "title": {
+      "type": "rich-text",
+      "source": "rich-text",
+      "selector": "span"
+    },
+    "level": {
+      "type": "number",
+      "default": 3
     }
   },
   "textdomain": "accordion",
