@@ -5,15 +5,28 @@
 
 .wp-block-wpsp-accordion-item .wpsp-accordion-item__heading {
 	color: inherit;
+	padding: 0;
+	margin: 0;
+}
+
+.wpsp-accordion-item__toggle,
+.wp-block-wpsp-accordion-item .wpsp-accordion-item__heading {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	letter-spacing: inherit;
+	text-transform: inherit;
+	text-decoration: inherit;
+	word-spacing: inherit;
 }
 
 .wpsp-accordion-item__toggle {
 	background: none;
 	border: none;
 	color: inherit;
-	font: inherit;
-	cursor: pointer;
 	padding: 0;
+	cursor: pointer;
 	outline: none;
 	display: flex;
 	text-align: inherit;
@@ -21,10 +34,6 @@
 	position: relative;
 	width: 100%;
 }
-
-.wpsp-accordion-item__toggle > span {
-	width: 100%;
-}	
 
 .wpsp-accordion-item__toggle::after {
 	background-color: var(--wpsp--accordion--parent-color);
@@ -38,6 +47,7 @@
 	height: 24px;
 	transform: translateY(-50%);
 }
+
 /* No icon block style */
 .is-style-no-icon .wpsp-accordion-item__toggle::after {
 	background-color: unset;
