@@ -31,7 +31,7 @@ class WPSP_Blocks_Self_Update {
 	 * Initialize WordPress hooks
 	 */
 	public function hooks() {
-		add_filter( 'update_plugins_opsoasis-develop.mystagingwebsite.com', array( $this, 'self_update' ), 10, 3 );
+		add_filter( 'update_plugins_opsoasis.wpspecialprojects.com', array( $this, 'self_update' ), 10, 3 );
 	}
 
 	/**
@@ -53,7 +53,7 @@ class WPSP_Blocks_Self_Update {
 
 		// Ask opsoasis.mystagingwebsite.com if there's an update.
 		$response = wp_remote_get(
-			'https://opsoasis-develop.mystagingwebsite.com/wp-json/opsoasis-blocks-version-manager/v1/update-check',
+			'https://opsoasis.wpspecialprojects.com/wp-json/opsoasis-blocks-version-manager/v1/update-check',
 			array(
 				'body' => array(
 					'plugin'  => $plugin_filename_parts[0],
