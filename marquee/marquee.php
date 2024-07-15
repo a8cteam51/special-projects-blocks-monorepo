@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Marquee
- * Description:       Example block scaffolded with Create Block tool.
+ * Description:       Marquee block for the WordPress block editor.
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Version:           0.1.0
@@ -10,7 +10,7 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       marquee
  *
- * @package CreateBlock
+ * @package           wpsp
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

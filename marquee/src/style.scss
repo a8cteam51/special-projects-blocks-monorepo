@@ -1,12 +1,11 @@
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
+.wp-block-wpcomsp-marquee {
+	// This block has customizable padding, border-box makes that more predictable.
+	box-sizing: border-box;
+}
 
-.wp-block-create-block-marquee {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
+// We need this so groups with negative margins overlap as expected.
+:where(
+		.wp-block-wpcomsp-marquee.wp-block-wpcomsp-marquee-is-layout-constrained
+	) {
+	position: relative;
 }

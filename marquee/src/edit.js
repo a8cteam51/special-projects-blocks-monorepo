@@ -1,38 +1,26 @@
 /**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
+ * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { useBlockProps, useInnerBlocksProps } from "@wordpress/block-editor";
+import { useRef } from "@wordpress/element";
 
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
- */
-import { useBlockProps } from '@wordpress/block-editor';
+import "./editor.scss";
 
-/**
- * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
- * Those files can contain any CSS code that gets applied to the editor.
- *
- * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
- */
-import './editor.scss';
+export default function Edit({ attributes }) {
+	const { tagName: TagName = "div", allowedBlocks } = attributes;
 
-/**
- * The edit function describes the structure of your block in the context of the
- * editor. This represents what the editor will render when the block is used.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
- *
- * @return {Element} Element to render.
- */
-export default function Edit() {
+	// Hooks.
+	const ref = useRef();
+	const blockProps = useBlockProps({ ref, attributes });
+
+	const innerBlocksProps = useInnerBlocksProps(blockProps, {
+		dropZoneElement: ref.current,
+		allowedBlocks,
+	});
+
 	return (
-		<p { ...useBlockProps() }>
-			{ __( 'Marquee – hello from the editor!', 'marquee' ) }
-		</p>
+		<>
+			<TagName {...innerBlocksProps} />
+		</>
 	);
 }
