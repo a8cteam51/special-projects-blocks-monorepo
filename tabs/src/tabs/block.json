@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/tabs",
+	"version": "0.1.0",
+	"title": "Tabs",
+	"category": "widgets",
+	"icon": "welcome-widgets-menus",
+	"description": "Organize content using tabs.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "tabs",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}

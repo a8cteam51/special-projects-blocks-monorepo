@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/tab",
+	"version": "0.1.0",
+	"title": "Tab",
+	"category": "widgets",
+	"icon": "text-page",
+	"description": "Customize content inside a tab.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "tab",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}
