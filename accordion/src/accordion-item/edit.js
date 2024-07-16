@@ -55,9 +55,11 @@ export default function Edit( { attributes, setAttributes } ) {
 					</PanelRow>
 				</PanelBody>
 			</InspectorControls>
-			<div { ...useBlockProps({
-				className: 'is-open', // Force the editing interface to be open for now.
-			}) }>
+			<div
+				{ ...useBlockProps( {
+					className: 'is-open', // Force the editing interface to be open for now.
+				} ) }
+			>
 				<TagName className={ headingClassName }>
 					<button className="wpsp-accordion-item__toggle">
 						<RichText
