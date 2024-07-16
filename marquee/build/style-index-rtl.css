@@ -3,8 +3,25 @@
   \***************************************************************************************************************************************************************************************************************************************/
 .wp-block-wpcomsp-marquee {
   box-sizing: border-box;
+  --speed: 10s;
+  --direction: normal;
 }
 
 :where(.wp-block-wpcomsp-marquee.wp-block-wpcomsp-marquee-is-layout-constrained) {
   position: relative;
+}
+
+@keyframes wpcomsp-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+.wp-block-wpcomsp-marquee__inner {
+  animation: wpcomsp-marquee var(--speed) linear infinite var(--direction);
+  display: flex;
+  overflow: hidden;
+  flex-wrap: nowrap;
 }

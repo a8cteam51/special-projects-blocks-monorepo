@@ -11,7 +11,7 @@ export default function Edit({ attributes }) {
 
 	// Hooks.
 	const ref = useRef();
-	const blockProps = useBlockProps({ ref, attributes });
+	const blockProps = useBlockProps({ ref });
 
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
 		dropZoneElement: ref.current,

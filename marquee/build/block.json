@@ -72,7 +72,13 @@
     },
     "layout": {
       "allowSizingOnChildren": false,
-      "allowOrientation": false
+      "allowOrientation": false,
+      "default": {
+        "type": "flex",
+        "flexWrap": "nowrap",
+        "orientation": "horizontal",
+        "justifyContent": "left"
+      }
     },
     "interactivity": {
       "clientNavigation": true
@@ -91,14 +97,6 @@
     },
     "allowedBlocks": {
       "type": "array"
-    },
-    "layout": {
-      "type": "object",
-      "default": {
-        "flexWrap": "nowrap",
-        "type": "flex",
-        "orientation": "horizontal"
-      }
     }
   },
   "textdomain": "marquee",
