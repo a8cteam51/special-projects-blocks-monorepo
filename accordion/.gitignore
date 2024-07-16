@@ -31,3 +31,5 @@ node_modules/
 
 # Build files
 build/
+
+package-lock.json
