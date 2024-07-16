@@ -8,5 +8,4 @@ while ( $p->next_tag() ){
     }
 }
 
-
 echo $p->get_updated_html();

@@ -3,6 +3,16 @@
 	--wpsp--accordion--parent-color: currentColor;
 }
 
+.wp-block-wpsp-accordion-item {
+	display: grid;
+	grid-template-rows: max-content 0fr;
+	transition: grid-template-rows 0.3s ease-out;
+}
+
+.wp-block-wpsp-accordion-item.is-open {
+	grid-template-rows: max-content 1fr;
+}
+
 .wp-block-wpsp-accordion-item .wpsp-accordion-item__heading {
 	color: inherit;
 	padding: 0;
@@ -33,6 +43,10 @@
 	padding-right: 24px;
 	position: relative;
 	width: 100%;
+}
+
+.wpsp-accordion-item__content {
+	overflow: hidden;
 }
 
 .wpsp-accordion-item__toggle::after {

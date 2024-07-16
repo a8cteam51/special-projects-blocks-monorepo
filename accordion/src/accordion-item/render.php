@@ -26,7 +26,7 @@ while ( $p->next_tag() ){
     if ( $p->has_class( 'wpsp-accordion-item__content' ) ) {
         $p->set_attribute( 'id', $unique_id );
         $p->set_attribute( 'data-wp-bind--aria-expanded', 'state.isOpen' );
-        $p->set_attribute( 'data-wp-bind--hidden', '!state.isOpen' );
+        $p->set_attribute( 'data-wp-bind--aria-hidden', '!state.isOpen' );
     }
 }
 
