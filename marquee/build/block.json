@@ -96,7 +96,8 @@
       "type": "object",
       "default": {
         "flexWrap": "nowrap",
-        "type": "flex"
+        "type": "flex",
+        "orientation": "horizontal"
       }
     }
   },
