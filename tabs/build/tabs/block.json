@@ -8,8 +8,33 @@
   "icon": "welcome-widgets-menus",
   "description": "Organize content using tabs.",
   "example": {},
+  "allowedBlocks": [
+    "wpcomsp/tab"
+  ],
+  "attributes": {
+    "templateLock": {
+      "type": [
+        "string",
+        "boolean"
+      ],
+      "enum": [
+        "all",
+        "insert",
+        "contentOnly",
+        false
+      ]
+    }
+  },
   "supports": {
-    "html": false
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "interactivity": {
+      "clientNavigation": true
+    }
   },
   "textdomain": "tabs",
   "editorScript": "file:./index.js",

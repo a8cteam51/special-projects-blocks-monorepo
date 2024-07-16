@@ -8,8 +8,33 @@
   "icon": "text-page",
   "description": "Customize content inside a tab.",
   "example": {},
+  "parent": [
+    "wpcomsp/tabs"
+  ],
+  "attributes": {
+    "allowedBlocks": {
+      "type": "array"
+    },
+    "templateLock": {
+      "type": [
+        "string",
+        "boolean"
+      ],
+      "enum": [
+        "all",
+        "insert",
+        "contentOnly",
+        false
+      ]
+    }
+  },
   "supports": {
-    "html": false
+    "__experimentalOnEnter": true,
+    "html": false,
+    "interactivity": {
+      "clientNavigation": true
+    },
+    "reusable": false
   },
   "textdomain": "tab",
   "editorScript": "file:./index.js",
