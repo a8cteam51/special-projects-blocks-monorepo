@@ -57,9 +57,6 @@
         "width": true
       }
     },
-    "position": {
-      "sticky": true
-    },
     "typography": {
       "fontSize": true,
       "lineHeight": true,
@@ -74,7 +71,8 @@
       }
     },
     "layout": {
-      "allowSizingOnChildren": true
+      "allowSizingOnChildren": false,
+      "allowOrientation": false
     },
     "interactivity": {
       "clientNavigation": true
