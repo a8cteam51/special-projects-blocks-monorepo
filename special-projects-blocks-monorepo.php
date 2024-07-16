@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       WordPress.com Special Projects Blocks Monorepo
+ * Plugin Name:       WordPress.com Special Projects Blocks Monorepo Autoloader
  * Description:       Auto-loads any blocks in the monorepo that have a build directory. Run `npm run build` in the block plugin directory you're working on to create the build directory and auto-load that block plugin.
  * Requires at least: 6.1
  * Requires PHP:      8.0
@@ -22,7 +22,7 @@
  *
  * Example: /dynamic-table-of-contents/dynamic-table-of-contents.php
  */
-function load_add_downloaded_blocks() {
+function wpcomsp_autoload_monorepo_blocks() {
 	$dirs = glob( __DIR__ . '/*', GLOB_ONLYDIR );
 
 	foreach ( $dirs as $dir ) {
@@ -31,5 +31,4 @@ function load_add_downloaded_blocks() {
 		}
 	}
 }
-
-add_action( 'plugins_loaded', 'load_add_downloaded_blocks' );
+add_action( 'plugins_loaded', 'wpcomsp_autoload_monorepo_blocks' );
