@@ -11,19 +11,19 @@
  * Update URI:        https://opsoasis.wpspecialprojects.com/hello-world/
  * Text Domain:       hello-world
  *
- * @package           wpsp
+ * @package           wpcomsp
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// If no other WPSP Block Plugin added the self update class, add it.
-if ( ! class_exists( 'WPSP_Blocks_Self_Update' ) ) {
-	require __DIR__ . '/classes/class-wpsp-blocks-self-update.php';
+// If no other WPCOMSP Block Plugin added the self update class, add it.
+if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
+	require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
 
-	$wpsp_blocks_self_update = WPSP_Blocks_Self_Update::get_instance();
-	$wpsp_blocks_self_update->hooks();
+	$wpcomsp_blocks_self_update = WPCOMSP_Blocks_Self_Update::get_instance();
+	$wpcomsp_blocks_self_update->hooks();
 }
 
 /**
@@ -35,7 +35,7 @@ if ( ! class_exists( 'WPSP_Blocks_Self_Update' ) ) {
  * @return array
  */
 add_filter(
-	'wpsp_installed_blocks',
+	'wpcomsp_installed_blocks',
 	function( $blocks ) {
 		$plugin_data = get_plugin_data( __FILE__ );
 

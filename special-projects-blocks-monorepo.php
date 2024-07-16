@@ -10,9 +10,9 @@
  * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       wpsp-blocks
+ * Text Domain:       wpcomsp-blocks
  *
- * @package           wpsp
+ * @package           wpcomsp
  */
 
 
@@ -23,7 +23,7 @@
  * Example: /dynamic-table-of-contents/dynamic-table-of-contents.php
  */
 function load_add_downloaded_blocks() {
-	$dirs = glob( dirname( __FILE__ ) . '/*', GLOB_ONLYDIR );
+	$dirs = glob( __DIR__ . '/*', GLOB_ONLYDIR );
 
 	foreach ( $dirs as $dir ) {
 		if ( file_exists( $dir . DIRECTORY_SEPARATOR . basename( $dir ) . '.php' ) ) {

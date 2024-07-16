@@ -12,7 +12,7 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       dynamic-table-of-contents
  *
- * @package           wpsp
+ * @package           wpcomsp
  */
 
 // Exit if accessed directly.
@@ -23,12 +23,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Define the plugin folder name.
 
 
-// If no other WPSP Block Plugin added the self update class, add it.
-if ( ! class_exists( 'WPSP_Blocks_Self_Update' ) ) {
-	require __DIR__ . '/classes/class-wpsp-blocks-self-update.php';
+// If no other WPCOMSP Block Plugin added the self update class, add it.
+if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
+	require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
 
-	$wpsp_blocks_self_update = WPSP_Blocks_Self_Update::get_instance();
-	$wpsp_blocks_self_update->hooks();
+	$wpcomsp_blocks_self_update = WPCOMSP_Blocks_Self_Update::get_instance();
+	$wpcomsp_blocks_self_update->hooks();
 }
 
 /**
@@ -40,7 +40,7 @@ if ( ! class_exists( 'WPSP_Blocks_Self_Update' ) ) {
  * @return array
  */
 add_filter(
-	'wpsp_installed_blocks',
+	'wpcomsp_installed_blocks',
 	function ( $blocks ) {
 		$plugin_data = get_plugin_data( __FILE__ );
 
@@ -58,10 +58,10 @@ add_filter(
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
-function wpsp_dynamic_table_of_contents_block_init() {
+function wpcomsp_dynamic_table_of_contents_block_init() {
 	register_block_type( __DIR__ . '/build' );
 }
-add_action( 'init', 'wpsp_dynamic_table_of_contents_block_init' );
+add_action( 'init', 'wpcomsp_dynamic_table_of_contents_block_init' );
 
 /**
  * Filter the render block output of heading blocks.
@@ -71,7 +71,7 @@ add_action( 'init', 'wpsp_dynamic_table_of_contents_block_init' );
  *
  * @return string Block content.
  */
-function wpsp_dynamic_table_of_contents_block_render( $block_content, $block ) {
+function wpcomsp_dynamic_table_of_contents_block_render( $block_content, $block ) {
 	if ( 'core/heading' !== $block['blockName'] ) {
 		return $block_content;
 	}
@@ -91,4 +91,4 @@ function wpsp_dynamic_table_of_contents_block_render( $block_content, $block ) {
 
 	return $processor->get_updated_html();
 }
-add_filter( 'render_block', 'wpsp_dynamic_table_of_contents_block_render', 10, 2 );
+add_filter( 'render_block', 'wpcomsp_dynamic_table_of_contents_block_render', 10, 2 );

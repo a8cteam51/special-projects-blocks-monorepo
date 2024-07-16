@@ -3,21 +3,21 @@
  * Plugin Autoupdate Filter Self Update class.
  * sets up autoupdates for this GitHub-hosted plugin.
  *
- * @package wpsp
+ * @package wpcomsp
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-class WPSP_Blocks_Self_Update {
+class WPCOMSP_Blocks_Self_Update {
 
 	public static $instance;
 
 	/**
 	 * Get instance of this class.
 	 *
-	 * @return WPSP_Blocks_Self_Update
+	 * @return WPCOMSP_Blocks_Self_Update
 	 */
 	public static function get_instance() {
 		if ( ! self::$instance ) {

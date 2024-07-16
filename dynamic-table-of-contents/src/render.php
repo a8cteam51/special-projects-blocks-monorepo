@@ -14,7 +14,7 @@ if ( ! isset( $block->context['postId'] ) ) {
 $asset_deps = require trailingslashit( plugin_dir_path( __FILE__ ) ) . 'view.asset.php';
 
 wp_enqueue_script(
-	'wpsp-dynamic-table-of-contents-view',
+	'wpcomsp-dynamic-table-of-contents-view',
 	plugins_url( 'view.js', __FILE__ ),
 	$asset_deps['dependencies'],
 	$asset_deps['version'],
@@ -25,7 +25,7 @@ wp_enqueue_script(
 <div <?php echo wp_kses_post( get_block_wrapper_attributes() ); ?>>
 	<?php
 	$block_title = isset( $attributes['title'] ) ?? '';
-	$block_title = apply_filters( 'wpsp_dynamic_table_of_contents_block_title', $block_title, $attributes );
+	$block_title = apply_filters( 'wpcomsp_dynamic_table_of_contents_block_title', $block_title, $attributes );
 
 	if ( ! empty( $block_title ) ) {
 		printf(

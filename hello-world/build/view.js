@@ -1,1 +1,1 @@
-console.log("Hello World! (from wpsp-hello-world block)");
+console.log("Hello World! (from wpcomsp-hello-world block)");

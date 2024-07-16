@@ -1,10 +1,10 @@
 # WP Special Projects - All Blocks
 
-All namespacing should use `wpsp` as the value.
+All namespacing should use `wpcomsp` as the value.
 
 Genericize your blocks, do not include site names or data as part of the block markup or content.
 
-Your plugin *must* contain a `CHANGELOG.md` file.
+Your plugin _must_ contain a `CHANGELOG.md` file.
 
 Your plugin must have an entrypoint with the same name as the folder, i.e. `hello-world/hello-world.php`.
 
@@ -28,7 +28,7 @@ More information here: https://git-scm.com/docs/git-sparse-checkout
 
 You can add a new block to the monorepo by running the following steps. Make sure you're starting from the `wp-content/plugins` folder:
 
-``` bash
+```bash
 git clone --no-checkout --sparse https://github.com/a8cteam51/special-projects-blocks-monorepo/
 cd special-projects-blocks-monorepo
 npx @wordpress/create-block
@@ -53,7 +53,7 @@ From here, you can start editing your block and follow the regular process to do
 
 Start by downloading the block's zip file on your plugin folder
 
-``` bash
+```bash
 git clone --no-checkout --sparse https://github.com/a8cteam51/special-projects-blocks-monorepo/
 cd special-projects-blocks-monorepo
 git sparse-checkout init --cone
@@ -66,7 +66,6 @@ git checkout -b %your_new_branch_name%
 ### Deprecating a block's old code
 
 When updating a **static** block — if we add any changes to the edit or save functions, we should deprecate the block to make sure we're not impacting the user experience. This is a great source of information with code examples ranging from simpler to more complex ones here: https://developer.wordpress.org/news/2023/03/10/block-deprecation-a-tutorial/
-
 
 ## Partner Agnostic
 
@@ -84,8 +83,6 @@ Any partner-specific styling rules should be added via a separate stylesheet tha
 
 How to extend or customize blocks in the monorepo, without directly editing the blocks themselves.
 It’s important to avoid modifying blocks in the monorepo unless absolutely necessary. In that case please contact an engineering lead to discuss your modification plans. If you’re importing an existing block into your project block and need to modify the blocks functionality, styling, or output, there’s a variety of hooks and filters available to do this.
-
-
 
 Re-styling the block: https://developer.wordpress.org/themes/features/block-stylesheets/
 

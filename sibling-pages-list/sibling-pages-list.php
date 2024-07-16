@@ -10,19 +10,19 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       sibling-pages-list
  *
- * @package Wpsp
+ * @package wpcomsp
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// If no other WPSP Block Plugin added the self update class, add it.
-if ( ! class_exists( 'WPSP_Blocks_Self_Update' ) ) {
-	require __DIR__ . '/classes/class-wpsp-blocks-self-update.php';
+// If no other WPCOMSP Block Plugin added the self update class, add it.
+if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
+	require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
 
-	$wpsp_blocks_self_update = WPSP_Blocks_Self_Update::get_instance();
-	$wpsp_blocks_self_update->hooks();
+	$wpcomsp_blocks_self_update = WPCOMSP_Blocks_Self_Update::get_instance();
+	$wpcomsp_blocks_self_update->hooks();
 }
 
 /**
@@ -34,7 +34,7 @@ if ( ! class_exists( 'WPSP_Blocks_Self_Update' ) ) {
  * @return array
  */
 add_filter(
-	'wpsp_installed_blocks',
+	'wpcomsp_installed_blocks',
 	function( $blocks ) {
 		$blocks[] = 'sibling-pages-list';
 
@@ -49,7 +49,7 @@ add_filter(
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
-function wpsp_sibling_pages_list_block_init() {
+function wpcomsp_sibling_pages_list_block_init() {
 	register_block_type( __DIR__ . '/build' );
 }
-add_action( 'init', 'wpsp_sibling_pages_list_block_init' );
+add_action( 'init', 'wpcomsp_sibling_pages_list_block_init' );

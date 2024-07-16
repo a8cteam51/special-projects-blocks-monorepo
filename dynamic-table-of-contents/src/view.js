@@ -1,13 +1,13 @@
 const $headings = document.querySelectorAll('.wp-block-post-content h1, .wp-block-post-content h2, .wp-block-post-content h3, .wp-block-post-content h4, .wp-block-post-content h5, .wp-block-post-content h6');
-const $headingList = document.querySelector('.wp-block-wpsp-dynamic-table-of-contents ul');
+const $headingList = document.querySelector('.wp-block-wpcomsp-dynamic-table-of-contents ul');
 
 // This is the observer that will be used to highlight the current heading.
 const $observer = new IntersectionObserver((entries) => {
-	let $links = document.querySelectorAll('.wp-block-wpsp-dynamic-table-of-contents a');
+	let $links = document.querySelectorAll('.wp-block-wpcomsp-dynamic-table-of-contents a');
 
 	entries.forEach((entry) => {
 		const $id = entry.target.id;
-		const $link = document.querySelector(`.wp-block-wpsp-dynamic-table-of-contents a[href="#${$id}"]`);
+		const $link = document.querySelector(`.wp-block-wpcomsp-dynamic-table-of-contents a[href="#${$id}"]`);
 
 		if (entry.isIntersecting) {
 			$links.forEach((link) => {
