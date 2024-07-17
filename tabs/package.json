@@ -15,6 +15,9 @@
 		"plugin-zip": "wp-scripts plugin-zip",
 		"start": "wp-scripts start"
 	},
+	"dependencies": {
+		"@wordpress/icons": "^10.3.0"
+	},
 	"devDependencies": {
 		"@wordpress/scripts": "^27.9.0"
 	}
