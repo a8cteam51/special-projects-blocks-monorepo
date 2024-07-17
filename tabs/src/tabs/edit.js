@@ -77,19 +77,14 @@ function TabsPlaceholder( { clientId } ) {
 					'tabs'
 				) }
 			>
-				<form
-					className="blocks-tabs__placeholder-form"
-					onSubmit={ onCreateTabs }
-				>
+				<form onSubmit={ onCreateTabs }>
 					<TextControl
-						__nextHasNoMarginBottom
 						__next40pxDefaultSize
 						type="number"
 						label={ __( 'Tabs count', 'tabs' ) }
+						min="1"
 						value={ initialTabsCount }
 						onChange={ setInitialColumnCount }
-						min="1"
-						className="blocks-table__placeholder-input"
 					/>
 					<Button
 						__next40pxDefaultSize
