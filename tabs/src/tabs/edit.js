@@ -58,7 +58,12 @@ function TabsInspectorControls( { clientId } ) {
 	const { insertBlock } = useDispatch( blockEditorStore );
 
 	function addNewTab() {
-		insertBlock( createBlock( TAB_BLOCK_NAME ), tabs.length, clientId );
+		insertBlock(
+			createBlock( TAB_BLOCK_NAME ),
+			tabs.length,
+			clientId,
+			false
+		);
 	}
 
 	return (
@@ -102,7 +107,7 @@ function TabsEdit( { attributes: { templateLock }, clientId } ) {
 
 function TabsPlaceholder( { clientId } ) {
 	const blockProps = useBlockProps();
-	const [ initialTabsCount, setInitialColumnCount ] = useState( 3 );
+	const [ initialTabsCount, setInitialColumnCount ] = useState( 2 );
 	const { title, icon } = useBlockDisplayInformation( clientId );
 	const { replaceInnerBlocks } = useDispatch( blockEditorStore );
 
@@ -156,7 +161,6 @@ export default function Edit( props ) {
 			select( blockEditorStore ).getBlocks( props.clientId ).length > 0,
 		[ props.clientId ]
 	);
-
 	const Component = hasInnerBlocks ? TabsEdit : TabsPlaceholder;
 
 	return <Component { ...props } />;
