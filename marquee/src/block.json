@@ -80,7 +80,8 @@
 		"core/paragraph",
 		"core/heading",
 		"core/image",
-		"core/button"
+		"core/button",
+		"core/group"
 	],
 	"attributes": {
 		"tagName": {
