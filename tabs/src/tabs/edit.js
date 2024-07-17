@@ -28,7 +28,12 @@ const TAB_BLOCK = {
 };
 
 function createInnerTabsTemplate( count ) {
-	return [ ...Array( count ).keys() ].map( () => [ TAB_BLOCK_NAME ] );
+	const template = [];
+	for ( let i = 0; i < count; i++ ) {
+		template.push( [ TAB_BLOCK_NAME ] );
+	}
+
+	return template;
 }
 
 function TabsEdit( { attributes: { templateLock } } ) {
