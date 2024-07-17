@@ -11,6 +11,17 @@
   position: relative;
 }
 
+[data-wp-interactive="wpcomsp/marquee"] {
+  overflow: clip;
+  display: flex;
+  flex-direction: row;
+}
+
+.wp-block-wpcomsp-marquee__inner {
+  animation: wpcomsp-marquee var(--speed) linear infinite var(--direction);
+  min-width: 100%;
+}
+
 @keyframes wpcomsp-marquee {
   0% {
     transform: translateX(0);
@@ -18,10 +29,4 @@
   100% {
     transform: translateX(100%);
   }
-}
-.wp-block-wpcomsp-marquee__inner {
-  animation: wpcomsp-marquee var(--speed) linear infinite var(--direction);
-  display: flex;
-  overflow: hidden;
-  flex-wrap: nowrap;
 }
