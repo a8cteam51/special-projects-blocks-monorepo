@@ -23,6 +23,15 @@
 			"clientNavigation": true
 		}
 	},
+	"variations": [
+		{
+			"name": "two-tabs",
+			"title": "Tabs",
+			"isDefault": true,
+			"scope": [ "inserter" ],
+			"innerBlocks": [ [ "wpcomsp/tab" ], [ "wpcomsp/tab" ] ]
+		}
+	],
 	"textdomain": "tabs",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
