@@ -21,7 +21,7 @@ import {
 	TextControl,
 } from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { create } from '@wordpress/icons';
 
@@ -77,7 +77,7 @@ function TabsInspectorControls( { clientId, setAttributes } ) {
 								activeTab: index,
 							} ) }
 						>
-							{ tab.title || __( 'Tab', 'tabs' ) }
+							{ title }
 						</Button>
 					</PanelRow>
 				) ) }
@@ -151,6 +151,13 @@ function TabsEdit( {
 		},
 		[ clientId ]
 	);
+
+	useEffect( () => {
+		if ( tabClientIds.length <= activeTab ) {
+			// Consider __unstableMarkNextChangeAsNotPersistent();
+			setAttributes( { activeTab: 0 } );
+		}
+	}, [ activeTab, setAttributes, tabClientIds ] );
 
 	return (
 		<>
