@@ -151,13 +151,20 @@ function TabsEdit( {
 		},
 		[ clientId ]
 	);
+	const { __unstableMarkNextChangeAsNotPersistent } =
+		useDispatch( blockEditorStore );
 
 	useEffect( () => {
 		if ( tabClientIds.length <= activeTab ) {
-			// Consider __unstableMarkNextChangeAsNotPersistent();
+			__unstableMarkNextChangeAsNotPersistent();
 			setAttributes( { activeTab: 0 } );
 		}
-	}, [ activeTab, setAttributes, tabClientIds ] );
+	}, [
+		activeTab,
+		setAttributes,
+		tabClientIds,
+		__unstableMarkNextChangeAsNotPersistent,
+	] );
 
 	return (
 		<>
