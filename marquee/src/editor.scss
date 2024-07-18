@@ -14,25 +14,3 @@
 		margin-right: 0;
 	}
 }
-
-// Affect the appender of the Row and Stack variants.
-// .wp-block-wpcomsp-marquee.is-layout-flex.block-editor-block-list__block
-// 	> .block-list-appender:only-child {
-// 	gap: inherit;
-
-// 	&,
-// 	.block-editor-default-block-appender__content,
-// 	.block-editor-inserter {
-// 		display: inherit;
-// 		width: 100%;
-// 		flex-direction: inherit;
-// 		flex: 1;
-// 	}
-
-// 	// Let the parent be selectable in the placeholder area.
-// 	pointer-events: none;
-// 	.block-editor-inserter,
-// 	.block-editor-button-block-appender {
-// 		pointer-events: all;
-// 	}
-// }
