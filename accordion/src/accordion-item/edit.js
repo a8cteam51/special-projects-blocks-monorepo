@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { __ } from '@wordpress/i18n';
 import {
+	InnerBlocks,
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
@@ -15,31 +16,35 @@ import {
 	ToolbarGroup,
 } from '@wordpress/components';
 
-export default function Edit( { attributes, setAttributes } ) {
-	const { openByDefault, level, title, iconPosition } = attributes;
-	const TagName = 'h' + level;
-
-	const headingClassName = clsx( {
-		'wpsp-accordion-item__heading': true,
-		'icon-position-left': iconPosition === 'left',
+export default function Edit( {
+	attributes: { allowedBlocks, templateLock, openByDefault },
+	setAttributes,
+} ) {
+	const blockProps = useBlockProps( {
+		template: [
+			[
+				'wpsp/accordion-trigger',
+				{
+					templateLock: 'all',
+				},
+			],
+			[
+				'wpsp/accordion-content',
+				{
+					templateLock: 'insert',
+				},
+			],
+		],
 	} );
 
-	const innerBlocksProps = useInnerBlocksProps( {
+	const innerBlocksProps = useInnerBlocksProps( blockProps, {
+		templateLock,
+		allowedBlocks,
 		className: 'wpsp-accordion-item__content',
 	} );
 
 	return (
 		<>
-			<BlockControls>
-				<ToolbarGroup>
-					<HeadingLevelDropdown
-						value={ level }
-						onChange={ ( newLevel ) =>
-							setAttributes( { level: newLevel } )
-						}
-					/>
-				</ToolbarGroup>
-			</BlockControls>
 			<InspectorControls key="setting">
 				<PanelBody title={ __( 'Display' ) }>
 					<PanelRow>
@@ -55,26 +60,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					</PanelRow>
 				</PanelBody>
 			</InspectorControls>
-			<div
-				{ ...useBlockProps( {
-					className: 'is-open', // Force the editing interface to be open for now.
-				} ) }
-			>
-				<TagName className={ headingClassName }>
-					<button className="wpsp-accordion-item__toggle">
-						<RichText
-							disableLineBreaks
-							tagName="span"
-							value={ title }
-							onChange={ ( newTitle ) =>
-								setAttributes( { title: newTitle } )
-							}
-							placeholder={ __( 'Add text...' ) }
-						/>
-					</button>
-				</TagName>
-				<div { ...innerBlocksProps } />
-			</div>
+			<InnerBlocks { ...innerBlocksProps } />
 		</>
 	);
 }

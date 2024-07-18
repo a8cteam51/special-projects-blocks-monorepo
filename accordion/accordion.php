@@ -27,5 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function wpsp_accordion_block_init() {
 	register_block_type( __DIR__ . '/build/accordion' );
 	register_block_type( __DIR__ . '/build/accordion-item' );
+	register_block_type( __DIR__ . '/build/accordion-trigger' );
+	register_block_type( __DIR__ . '/build/accordion-content' );
 }
 add_action( 'init', 'wpsp_accordion_block_init' );

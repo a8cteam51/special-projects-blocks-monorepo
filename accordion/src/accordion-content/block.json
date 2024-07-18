@@ -1,26 +1,29 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "wpsp/accordion-item",
+	"name": "wpsp/accordion-content",
 	"version": "0.1.0",
-	"title": "Accordion Item",
+	"title": "Accordion Content",
 	"category": "design",
-	"icon": "button",
-	"description": "Accordion item block for displaying hidden content via a toggle.",
+	"icon": "smiley",
+	"description": "Accordion item content",
 	"example": {},
-	"parent": [ "wpsp/accordion" ],
-	"allowedBlocks": [ "wpsp/accordion-trigger", "wpsp/accordion-content" ],
+	"parent": [ "wpsp/accordion-item" ],
 	"supports": {
 		"color": {
 			"background": true,
 			"gradient": true
 		},
-		"align": true,
 		"border": true,
 		"interactivity": true,
 		"spacing": {
+			"padding": true,
 			"margin": [ "top", "bottom" ],
-			"blockGap": true
+			"blockGap": true,
+			"__experimentalDefaultControls": {
+				"padding": true,
+				"blockGap": true
+			}
 		},
 		"__experimentalBorder": {
 			"color": true,
@@ -34,6 +37,19 @@
 				"width": true
 			}
 		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
 		"shadow": true,
 		"layout": true
 	},
@@ -44,19 +60,6 @@
 		"templateLock": {
 			"type": [ "string", "boolean" ],
 			"enum": [ "all", "insert", "contentOnly", false ]
-		},
-		"openByDefault": {
-			"type": "boolean",
-			"default": false
-		},
-		"title": {
-			"type": "rich-text",
-			"source": "rich-text",
-			"selector": "span"
-		},
-		"level": {
-			"type": "number",
-			"default": 3
 		}
 	},
 	"textdomain": "accordion",
