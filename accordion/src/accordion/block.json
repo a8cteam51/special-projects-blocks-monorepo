@@ -11,6 +11,10 @@
 	"supports": {
 		"html": false,
 		"align": true,
+		"color": {
+			"background": true,
+			"gradient": true
+		},
 		"spacing": {
 			"padding": true,
 			"margin": true,
