@@ -18,6 +18,7 @@
 			"enum": [ "all", "insert", "contentOnly", false ]
 		}
 	},
+	"usesContext": [ "tabs/activeTab" ],
 	"supports": {
 		"__experimentalOnEnter": true,
 		"html": false,

@@ -20,6 +20,7 @@ import './editor.scss';
 export default function Edit( {
 	attributes: { allowedBlocks, templateLock },
 	clientId,
+	context: { 'tabs/activeTab': activeTab },
 	isSelected,
 } ) {
 	const { hasChildBlocks, isActive } = useSelect(
@@ -37,14 +38,14 @@ export default function Edit( {
 				! hasSelectedInnerBlock(
 					getBlockRootClientId( clientId ),
 					true
-				) && getBlockIndex( clientId ) === 0;
+				) && getBlockIndex( clientId ) === activeTab;
 
 			return {
 				hasChildBlocks: getBlockOrder( clientId ).length > 0,
 				isActive: isTabSelected || showDefaultTab,
 			};
 		},
-		[ clientId, isSelected ]
+		[ activeTab, clientId, isSelected ]
 	);
 
 	const blockProps = useBlockProps();
@@ -56,5 +57,7 @@ export default function Edit( {
 			: InnerBlocks.ButtonBlockAppender,
 	} );
 
-	return <div hidden={ ! isActive } { ...innerBlocksProps } />;
+	return (
+		<div { ...innerBlocksProps } role="tabpanel" hidden={ ! isActive } />
+	);
 }

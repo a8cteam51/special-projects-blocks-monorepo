@@ -10,10 +10,17 @@
 	"example": {},
 	"allowedBlocks": [ "wpcomsp/tab" ],
 	"attributes": {
+		"activeTab": {
+			"type": "number",
+			"default": 0
+		},
 		"templateLock": {
 			"type": [ "string", "boolean" ],
 			"enum": [ "all", "insert", "contentOnly", false ]
 		}
+	},
+	"providesContext": {
+		"tabs/activeTab": "activeTab"
 	},
 	"supports": {
 		"anchor": true,

@@ -47,7 +47,7 @@ function createInnerTabsTemplate( count ) {
 	return template;
 }
 
-function TabsInspectorControls( { clientId } ) {
+function TabsInspectorControls( { clientId, setAttributes } ) {
 	const tabs = useSelect(
 		( select ) => {
 			return select( blockEditorStore ).getBlocks( clientId );
@@ -69,10 +69,16 @@ function TabsInspectorControls( { clientId } ) {
 	return (
 		<InspectorControls>
 			<PanelBody title={ __( 'Tabs', 'tabs' ) }>
-				{ tabs.map( ( tab ) => (
+				{ tabs.map( ( tab, index ) => (
 					<PanelRow key={ tab.clientId }>
-						<BlockIcon icon={ icon } showColors />
-						{ title }
+						<Button
+							icon={ <BlockIcon icon={ icon } showColors /> }
+							onClick={ setAttributes.bind( null, {
+								activeTab: index,
+							} ) }
+						>
+							{ tab.title || __( 'Tab', 'tabs' ) }
+						</Button>
 					</PanelRow>
 				) ) }
 				<PanelRow>
@@ -87,20 +93,88 @@ function TabsInspectorControls( { clientId } ) {
 	);
 }
 
-function TabsEdit( { attributes: { templateLock }, clientId } ) {
+function TabButton( { clientId, isActiveTab, setActiveTab } ) {
+	const { isSelected, title } = useSelect(
+		( select ) => {
+			const { getBlock, hasSelectedInnerBlock, isBlockSelected } =
+				select( blockEditorStore );
+
+			return {
+				isSelected:
+					isBlockSelected( clientId ) ||
+					hasSelectedInnerBlock( clientId, true ),
+				title: getBlock( clientId ).attributes.title,
+			};
+		},
+		[ clientId ]
+	);
+
+	return (
+		<button
+			type="button"
+			role="tab"
+			aria-selected={ isSelected || isActiveTab }
+			onClick={ setActiveTab }
+		>
+			<span>{ title || __( 'Tab', 'tabs' ) }</span>
+		</button>
+	);
+}
+
+function TabsEdit( {
+	attributes: { activeTab, templateLock },
+	clientId,
+	setAttributes,
+} ) {
 	const blockProps = useBlockProps();
-	const innerBlocksProps = useInnerBlocksProps( blockProps, {
-		defaultBlock: TAB_BLOCK,
-		directInsert: true,
-		orientation: 'horizontal',
-		renderAppender: false,
-		templateLock,
-	} );
+	const innerBlocksProps = useInnerBlocksProps(
+		{
+			className: 'wp-block-wpcomsp-tab__content',
+		},
+		{
+			defaultBlock: TAB_BLOCK,
+			directInsert: true,
+			orientation: 'horizontal',
+			templateLock,
+		}
+	);
+	const { hasTabSelected, tabClientIds } = useSelect(
+		( select ) => {
+			const { getBlocks, hasSelectedInnerBlock } =
+				select( blockEditorStore );
+			return {
+				tabClientIds: getBlocks( clientId ).map(
+					( tab ) => tab.clientId
+				),
+				hasTabSelected: hasSelectedInnerBlock( clientId, true ),
+			};
+		},
+		[ clientId ]
+	);
 
 	return (
 		<>
-			<TabsInspectorControls clientId={ clientId } />
-			<div { ...innerBlocksProps } />
+			<TabsInspectorControls
+				clientId={ clientId }
+				setAttributes={ setAttributes }
+			/>
+			<div { ...blockProps }>
+				<div role="tablist">
+					{ tabClientIds.map( ( tabClientId, index ) => (
+						<TabButton
+							key={ tabClientId }
+							clientId={ tabClientId }
+							isActiveTab={
+								! hasTabSelected && activeTab === index
+							}
+							setActiveTab={ setAttributes.bind( null, {
+								activeTab: index,
+							} ) }
+						/>
+					) ) }
+				</div>
+				<div { ...innerBlocksProps } />
+			</div>
 		</>
 	);
 }
