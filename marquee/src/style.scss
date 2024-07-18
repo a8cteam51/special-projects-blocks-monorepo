@@ -24,7 +24,6 @@
 
 .wp-block-wpcomsp-marquee__inner {
 	animation: wpcomsp-marquee var(--speed) linear infinite var(--direction);
-	min-width: 100%;
 }
 
 @keyframes wpcomsp-marquee {
