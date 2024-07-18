@@ -143,6 +143,7 @@ function TabsEdit( {
 			const { getBlocks, hasSelectedInnerBlock } =
 				select( blockEditorStore );
 			return {
+				// @todo: That will trigger unnecessary rerenders. Maybe we should use the response from the selector.
 				tabClientIds: getBlocks( clientId ).map(
 					( tab ) => tab.clientId
 				),
