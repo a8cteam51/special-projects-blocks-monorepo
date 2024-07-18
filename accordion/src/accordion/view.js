@@ -18,9 +18,19 @@ const { state, actions } = store( 'wpsp/accordion', {
 			const id = attributes[ 'aria-controls' ];
 			const context = getContext();
 			if ( context.isOpen.includes( id ) ) {
-				context.isOpen = [];
+				if ( context.allowMultipleOpen ) {
+					context.isOpen = context.isOpen.filter(
+						( item ) => item !== id
+					);
+				} else {
+					context.isOpen = [];
+				}
 			} else {
-				context.isOpen = [ id ];
+				if ( context.allowMultipleOpen ) {
+					context.isOpen = [ ...context.isOpen, id ];
+				} else {
+					context.isOpen = [ id ];
+				}
 			}
 		},
 	},
