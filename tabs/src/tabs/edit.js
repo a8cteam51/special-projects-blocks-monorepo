@@ -3,11 +3,11 @@
  */
 import {
 	BlockIcon,
+	InnerBlocks,
 	InspectorControls,
 	store as blockEditorStore,
 	useBlockDisplayInformation,
 	useBlockProps,
-	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 import {
 	createBlock,
@@ -93,14 +93,14 @@ function TabsInspectorControls( { clientId, setAttributes } ) {
 	);
 }
 
-function TabButton( { clientId, isActiveTab, setActiveTab } ) {
-	const { isSelected, title } = useSelect(
+function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
+	const { isTabBlockSelected, title } = useSelect(
 		( select ) => {
 			const { getBlock, hasSelectedInnerBlock, isBlockSelected } =
 				select( blockEditorStore );
 
 			return {
-				isSelected:
+				isTabBlockSelected:
 					isBlockSelected( clientId ) ||
 					hasSelectedInnerBlock( clientId, true ),
 				title: getBlock( clientId ).attributes.title,
@@ -111,9 +111,12 @@ function TabButton( { clientId, isActiveTab, setActiveTab } ) {
 
 	return (
 		<button
+			id={ `tab-${ tabNumber }` }
 			type="button"
 			role="tab"
-			aria-selected={ isSelected || isActiveTab }
+			aria-selected={ isTabBlockSelected || isActiveTab }
+			aria-controls={ `tabpanel-${ tabNumber }` }
+			tabIndex={ isTabBlockSelected || isActiveTab ? undefined : '-1' }
 			onClick={ setActiveTab }
 		>
 			<span>{ title || __( 'Tab', 'tabs' ) }</span>
@@ -122,31 +125,17 @@ function TabButton( { clientId, isActiveTab, setActiveTab } ) {
 }
 
 function TabsEdit( {
-	attributes: { activeTab, templateLock },
+	attributes: { activeTab, tabsCount, templateLock },
 	clientId,
 	setAttributes,
 } ) {
 	const blockProps = useBlockProps();
-	const innerBlocksProps = useInnerBlocksProps(
-		{
-			className: 'wp-block-wpcomsp-tab__content',
-		},
-		{
-			defaultBlock: TAB_BLOCK,
-			directInsert: true,
-			orientation: 'horizontal',
-			templateLock,
-		}
-	);
-	const { hasTabSelected, tabClientIds } = useSelect(
+	const { hasTabSelected, tabBlocks } = useSelect(
 		( select ) => {
 			const { getBlocks, hasSelectedInnerBlock } =
 				select( blockEditorStore );
 			return {
-				// @todo: That will trigger unnecessary rerenders. Maybe we should use the response from the selector.
-				tabClientIds: getBlocks( clientId ).map(
-					( tab ) => tab.clientId
-				),
+				tabBlocks: getBlocks( clientId ),
 				hasTabSelected: hasSelectedInnerBlock( clientId, true ),
 			};
 		},
@@ -156,14 +145,19 @@ function TabsEdit( {
 		useDispatch( blockEditorStore );
 
 	useEffect( () => {
-		if ( tabClientIds.length <= activeTab ) {
+		if ( tabBlocks.length <= activeTab ) {
 			__unstableMarkNextChangeAsNotPersistent();
 			setAttributes( { activeTab: 0 } );
+		}
+		if ( tabBlocks.length !== tabsCount ) {
+			__unstableMarkNextChangeAsNotPersistent();
+			setAttributes( { tabsCount: tabBlocks.length } );
 		}
 	}, [
 		activeTab,
 		setAttributes,
-		tabClientIds,
+		tabBlocks,
+		tabsCount,
 		__unstableMarkNextChangeAsNotPersistent,
 	] );
 
@@ -175,20 +169,27 @@ function TabsEdit( {
 			/>
 			<div { ...blockProps }>
 				<div role="tablist">
-					{ tabClientIds.map( ( tabClientId, index ) => (
+					{ tabBlocks.map( ( tabBlock, index ) => (
 						<TabButton
-							key={ tabClientId }
-							clientId={ tabClientId }
+							key={ tabBlock.clientId }
+							clientId={ tabBlock.clientId }
 							isActiveTab={
 								! hasTabSelected && activeTab === index
 							}
+							tabNumber={ index + 1 }
 							setActiveTab={ setAttributes.bind( null, {
 								activeTab: index,
 							} ) }
 						/>
 					) ) }
 				</div>
-				<div { ...innerBlocksProps } />
+				<InnerBlocks
+					__experimentalCaptureToolbars
+					defaultBlock={ TAB_BLOCK }
+					directInsert
+					orientation="horizontal"
+					templateLock={ templateLock }
+				/>
 			</div>
 		</>
 	);

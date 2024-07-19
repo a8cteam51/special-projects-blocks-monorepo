@@ -1,18 +1,42 @@
 /**
  * WordPress dependencies
  */
-import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 
-export default function save() {
+function TabButton( { isSelected, tabNumber } ) {
+	return (
+		<button
+			id={ `tab-${ tabNumber }` }
+			type="button"
+			role="tab"
+			aria-selected={ isSelected }
+			aria-controls={ `tabpanel-${ tabNumber }` }
+			tabIndex={ isSelected ? undefined : '-1' }
+		>
+			{ `Tab ${ tabNumber }` }
+		</button>
+	);
+}
+
+export default function save( { attributes: { activeTab, tabsCount } } ) {
 	const blockProps = useBlockProps.save();
-	const innerBlocksProps = useInnerBlocksProps.save( {
-		className: 'wp-block-wpcomsp-tab__content',
-	} );
+
+	const tabs = [];
+	for ( let index = 0; index < tabsCount; index++ ) {
+		const tabNumber = index + 1;
+		tabs.push(
+			<TabButton
+				key={ index }
+				tabNumber={ tabNumber }
+				isSelected={ index === activeTab }
+			/>
+		);
+	}
 
 	return (
 		<div { ...blockProps }>
-			<div role="tablist"></div>
-			<div { ...innerBlocksProps }></div>
+			<div role="tablist">{ tabs }</div>
+			<InnerBlocks.Content />
 		</div>
 	);
 }

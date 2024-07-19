@@ -10,6 +10,9 @@
 	"example": {},
 	"allowedBlocks": [ "wpcomsp/tab" ],
 	"attributes": {
+		"tabsCount": {
+			"type": "number"
+		},
 		"activeTab": {
 			"type": "number",
 			"default": 0
@@ -26,9 +29,7 @@
 		"anchor": true,
 		"align": [ "wide", "full" ],
 		"html": false,
-		"interactivity": {
-			"clientNavigation": true
-		}
+		"interactivity": true
 	},
 	"variations": [
 		{
