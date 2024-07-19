@@ -10,6 +10,7 @@
 	"example": {},
 	"parent": [ "wpsp/accordion-item" ],
 	"supports": {
+		"anchor": true,
 		"color": {
 			"background": true,
 			"gradient": true
