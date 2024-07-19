@@ -34,10 +34,6 @@
 		},
 		"allowedBlocks": {
 			"type": "array"
-		},
-		"templateLock": {
-			"type": [ "string", "boolean" ],
-			"enum": [ "all", "insert", "contentOnly", false ]
 		}
 	},
 	"styles": [

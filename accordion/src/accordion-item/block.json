@@ -38,13 +38,6 @@
 		"layout": true
 	},
 	"attributes": {
-		"allowedBlocks": {
-			"type": "array"
-		},
-		"templateLock": {
-			"type": [ "string", "boolean" ],
-			"enum": [ "all", "insert", "contentOnly", false ]
-		},
 		"openByDefault": {
 			"type": "boolean",
 			"default": false

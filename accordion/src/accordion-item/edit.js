@@ -17,32 +17,9 @@ import {
 } from '@wordpress/components';
 
 export default function Edit( {
-	attributes: { allowedBlocks, templateLock, openByDefault },
+	attributes: { openByDefault },
 	setAttributes,
 } ) {
-	const blockProps = useBlockProps( {
-		template: [
-			[
-				'wpsp/accordion-trigger',
-				{
-					templateLock: 'all',
-				},
-			],
-			[
-				'wpsp/accordion-content',
-				{
-					templateLock: 'insert',
-				},
-			],
-		],
-	} );
-
-	const innerBlocksProps = useInnerBlocksProps( blockProps, {
-		templateLock,
-		allowedBlocks,
-		className: 'wpsp-accordion-item__content',
-	} );
-
 	return (
 		<>
 			<InspectorControls key="setting">
@@ -60,7 +37,15 @@ export default function Edit( {
 					</PanelRow>
 				</PanelBody>
 			</InspectorControls>
-			<InnerBlocks { ...innerBlocksProps } />
+			<div { ...useBlockProps() }>
+				<InnerBlocks
+					templateLock="all"
+					template={ [
+						[ 'wpsp/accordion-trigger', {} ],
+						[ 'wpsp/accordion-content', {} ],
+					] }
+				/>
+			</div>
 		</>
 	);
 }

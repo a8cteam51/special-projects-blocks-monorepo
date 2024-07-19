@@ -71,6 +71,5 @@
 		}
 	},
 	"textdomain": "accordion",
-	"editorScript": "file:./index.js",
-	"render": "file:./render.php"
+	"editorScript": "file:./index.js"
 }

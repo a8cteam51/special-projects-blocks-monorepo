@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import {
 	InnerBlocks,
 	useBlockProps,
+	useInnerBlocksProps,
 	InspectorControls,
 } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
@@ -14,13 +15,26 @@ import {
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 
-const INNER_BLOCKS_TEMPLATE = [ [ 'wpsp/accordion-item', {} ] ];
+const INNER_BLOCKS_TEMPLATE = [
+	[
+		'wpsp/accordion-item',
+		{
+			templateLock: 'all',
+		},
+	],
+];
 
-export default function Edit( { attributes, setAttributes } ) {
-	const { allowedBlocks, iconPosition, allowMultipleOpen } = attributes;
-
+export default function Edit( {
+	attributes: { iconPosition, allowMultipleOpen },
+	setAttributes,
+} ) {
 	const className = clsx( {
 		'icon-position-left': iconPosition === 'left',
+	} );
+
+	const blockProps = useBlockProps( {
+		className,
+		template: INNER_BLOCKS_TEMPLATE,
 	} );
 
 	return (
@@ -65,12 +79,8 @@ export default function Edit( { attributes, setAttributes } ) {
 					</PanelBody>
 				</Panel>
 			</InspectorControls>
-			<div { ...useBlockProps( { className } ) }>
-				<InnerBlocks
-					allowedBlocks={ allowedBlocks }
-					renderAppender={ InnerBlocks.DefaultBlockAppender }
-					template={ INNER_BLOCKS_TEMPLATE }
-				/>
+			<div { ...blockProps }>
+				<InnerBlocks />
 			</div>
 		</>
 	);

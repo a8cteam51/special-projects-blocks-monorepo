@@ -59,10 +59,10 @@
 		},
 		"templateLock": {
 			"type": [ "string", "boolean" ],
-			"enum": [ "all", "insert", "contentOnly", false ]
+			"enum": [ "all", "insert", "contentOnly", false ],
+			"default": false
 		}
 	},
 	"textdomain": "accordion",
-	"editorScript": "file:./index.js",
-	"render": "file:./render.php"
+	"editorScript": "file:./index.js"
 }

@@ -16,26 +16,17 @@ import {
 	ToolbarGroup,
 } from '@wordpress/components';
 
-export default function Edit( {
-	attributes: { templateLock, allowedBlocks },
-} ) {
-	const blockProps = useBlockProps();
-	const innerBlocksProps = useInnerBlocksProps( blockProps, {
-		templateLock,
-		allowedBlocks,
+export default function Edit( { attributes: { templateLock } } ) {
+	const blockProps = useBlockProps( {
 		className: 'wpsp-accordion-item__content',
+		template: [
+			[
+				'core/paragraph',
+				{ placeholder: 'Accordion item content goes here.' },
+			],
+		],
+		templateLock,
 	} );
 
-	return (
-		<div { ...innerBlocksProps }>
-			<InnerBlocks
-				template={ [
-					[
-						'core/paragraph',
-						{ placeholder: 'Accordion item content goes here.' },
-					],
-				] }
-			/>
-		</div>
-	);
+	return <InnerBlocks { ...blockProps } />;
 }

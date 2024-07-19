@@ -16,10 +16,9 @@ import {
 } from '@wordpress/components';
 
 export default function Edit( {
-	attributes: { level, title, iconPosition, templateLock },
+	attributes: { level, title, iconPosition },
 	setAttributes,
 } ) {
-	// const { openByDefault, level, title, iconPosition } = attributes;
 	const TagName = 'h' + level;
 
 	const headingClassName = clsx( {
@@ -30,7 +29,6 @@ export default function Edit( {
 	const blockProps = useBlockProps( {
 		className: headingClassName,
 	} );
-	console.log( blockProps );
 
 	return (
 		<>
@@ -44,11 +42,7 @@ export default function Edit( {
 					/>
 				</ToolbarGroup>
 			</BlockControls>
-			<TagName
-				{ ...useBlockProps( {
-					className: headingClassName,
-				} ) }
-			>
+			<TagName { ...blockProps }>
 				<button className="wpsp-accordion-item__toggle">
 					<RichText
 						disableLineBreaks
