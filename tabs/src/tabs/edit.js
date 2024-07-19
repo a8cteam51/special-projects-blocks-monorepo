@@ -54,7 +54,7 @@ function TabsInspectorControls( { clientId, setAttributes } ) {
 		},
 		[ clientId ]
 	);
-	const { title, icon } = useBlockDisplayInformation( tabs[ 0 ].clientId );
+	const { icon } = useBlockDisplayInformation( tabs[ 0 ].clientId );
 	const { insertBlock } = useDispatch( blockEditorStore );
 
 	function addNewTab() {
@@ -69,18 +69,21 @@ function TabsInspectorControls( { clientId, setAttributes } ) {
 	return (
 		<InspectorControls>
 			<PanelBody title={ __( 'Tabs', 'tabs' ) }>
-				{ tabs.map( ( tab, index ) => (
-					<PanelRow key={ tab.clientId }>
-						<Button
-							icon={ <BlockIcon icon={ icon } showColors /> }
-							onClick={ setAttributes.bind( null, {
-								activeTab: index,
-							} ) }
-						>
-							{ title }
-						</Button>
-					</PanelRow>
-				) ) }
+				{ tabs.map( ( tab, index ) => {
+					const tabNumber = index + 1;
+					return (
+						<PanelRow key={ tab.clientId }>
+							<Button
+								icon={ <BlockIcon icon={ icon } showColors /> }
+								onClick={ setAttributes.bind( null, {
+									activeTab: tabNumber,
+								} ) }
+							>
+								{ `Tab ${ tabNumber }` }
+							</Button>
+						</PanelRow>
+					);
+				} ) }
 				<PanelRow>
 					<Button
 						icon={ create }
@@ -119,7 +122,7 @@ function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 			tabIndex={ isTabBlockSelected || isActiveTab ? undefined : '-1' }
 			onClick={ setActiveTab }
 		>
-			<span>{ title || __( 'Tab', 'tabs' ) }</span>
+			<span>{ title || `Tab ${ tabNumber }` }</span>
 		</button>
 	);
 }
@@ -145,9 +148,9 @@ function TabsEdit( {
 		useDispatch( blockEditorStore );
 
 	useEffect( () => {
-		if ( tabBlocks.length <= activeTab ) {
+		if ( tabBlocks.length < activeTab ) {
 			__unstableMarkNextChangeAsNotPersistent();
-			setAttributes( { activeTab: 0 } );
+			setAttributes( { activeTab: 1 } );
 		}
 		if ( tabBlocks.length !== tabsCount ) {
 			__unstableMarkNextChangeAsNotPersistent();
@@ -169,19 +172,22 @@ function TabsEdit( {
 			/>
 			<div { ...blockProps }>
 				<div role="tablist">
-					{ tabBlocks.map( ( tabBlock, index ) => (
-						<TabButton
-							key={ tabBlock.clientId }
-							clientId={ tabBlock.clientId }
-							isActiveTab={
-								! hasTabSelected && activeTab === index
-							}
-							tabNumber={ index + 1 }
-							setActiveTab={ setAttributes.bind( null, {
-								activeTab: index,
-							} ) }
-						/>
-					) ) }
+					{ tabBlocks.map( ( tabBlock, index ) => {
+						const tabNumber = index + 1;
+						return (
+							<TabButton
+								key={ tabBlock.clientId }
+								clientId={ tabBlock.clientId }
+								isActiveTab={
+									! hasTabSelected && activeTab === tabNumber
+								}
+								tabNumber={ tabNumber }
+								setActiveTab={ setAttributes.bind( null, {
+									activeTab: tabNumber,
+								} ) }
+							/>
+						);
+					} ) }
 				</div>
 				<InnerBlocks
 					__experimentalCaptureToolbars

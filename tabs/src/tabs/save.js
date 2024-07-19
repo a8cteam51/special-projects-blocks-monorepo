@@ -28,7 +28,7 @@ export default function save( { attributes: { activeTab, tabsCount } } ) {
 			<TabButton
 				key={ index }
 				tabNumber={ tabNumber }
-				isSelected={ index === activeTab }
+				isSelected={ tabNumber === activeTab }
 			/>
 		);
 	}

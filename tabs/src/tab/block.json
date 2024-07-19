@@ -10,6 +10,14 @@
 	"example": {},
 	"parent": [ "wpcomsp/tabs" ],
 	"attributes": {
+		"tabNumber": {
+			"type": "number",
+			"default": 1
+		},
+		"isActive": {
+			"type": "boolean",
+			"default": true
+		},
 		"allowedBlocks": {
 			"type": "array"
 		},

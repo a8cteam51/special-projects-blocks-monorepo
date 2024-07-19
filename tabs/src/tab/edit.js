@@ -7,7 +7,8 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -22,8 +23,9 @@ export default function Edit( {
 	clientId,
 	context: { 'tabs/activeTab': activeTab },
 	isSelected,
+	setAttributes,
 } ) {
-	const { hasChildBlocks, isActive } = useSelect(
+	const { tabNumber, hasChildBlocks, isTabSelected } = useSelect(
 		( select ) => {
 			const {
 				getBlockIndex,
@@ -32,21 +34,25 @@ export default function Edit( {
 				hasSelectedInnerBlock,
 			} = select( blockEditorStore );
 
-			const isTabSelected =
+			const hasAnyBlockSelected =
 				isSelected || hasSelectedInnerBlock( clientId, true );
+			const tabIndex = getBlockIndex( clientId );
 			const showDefaultTab =
 				! hasSelectedInnerBlock(
 					getBlockRootClientId( clientId ),
 					true
-				) && getBlockIndex( clientId ) === activeTab;
+				) && tabIndex + 1 === activeTab;
 
 			return {
+				tabNumber: tabIndex + 1,
 				hasChildBlocks: getBlockOrder( clientId ).length > 0,
-				isActive: isTabSelected || showDefaultTab,
+				isTabSelected: hasAnyBlockSelected || showDefaultTab,
 			};
 		},
 		[ activeTab, clientId, isSelected ]
 	);
+	const { __unstableMarkNextChangeAsNotPersistent } =
+		useDispatch( blockEditorStore );
 
 	const blockProps = useBlockProps();
 	const innerBlocksProps = useInnerBlocksProps( blockProps, {
@@ -57,7 +63,25 @@ export default function Edit( {
 			: InnerBlocks.ButtonBlockAppender,
 	} );
 
+	useEffect( () => {
+		__unstableMarkNextChangeAsNotPersistent();
+		setAttributes( {
+			isActive: tabNumber === activeTab,
+			tabNumber,
+		} );
+	}, [
+		activeTab,
+		tabNumber,
+		setAttributes,
+		__unstableMarkNextChangeAsNotPersistent,
+	] );
+
 	return (
-		<div { ...innerBlocksProps } role="tabpanel" hidden={ ! isActive } />
+		<div
+			{ ...innerBlocksProps }
+			role="tabpanel"
+			aria-labelledby={ `tab-${ tabNumber }` }
+			hidden={ ! isTabSelected }
+		/>
 	);
 }

@@ -3,12 +3,9 @@
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
-export default function save( {} ) {
+export default function save( { attributes: { isActive, tabNumber } } ) {
 	const blockProps = useBlockProps.save();
 	const innerBlocksProps = useInnerBlocksProps.save( blockProps );
-	const tabIndex = 0;
-	const tabNumber = tabIndex + 1;
-	const isActiveTab = false;
 
 	return (
 		<div
@@ -16,7 +13,7 @@ export default function save( {} ) {
 			id={ `tabpanel-${ tabNumber }` }
 			role="tabpanel"
 			aria-labelledby={ `tab-${ tabNumber }` }
-			hidden={ ! isActiveTab }
+			hidden={ ! isActive }
 		/>
 	);
 }
