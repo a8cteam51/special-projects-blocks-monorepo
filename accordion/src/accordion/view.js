@@ -6,8 +6,8 @@ const { state, actions } = store( 'wpsp/accordion', {
 			const { attributes } = getElement();
 			const id =
 				attributes.id ||
-				attributes[ 'aria-controls' ] ||
-				attributes[ 'data-id' ];
+				attributes[ 'aria-controls' ] || 
+				attributes[ 'aria-labelledby' ];
 			const context = getContext();
 			return context.isOpen.includes( id );
 		},
@@ -38,7 +38,7 @@ const { state, actions } = store( 'wpsp/accordion', {
 		open: () => {
 			const context = getContext();
 			const { ref } = getElement();
-			context.isOpen.push( ref.attributes[ 'data-id' ].nodeValue );
+			context.isOpen.push( ref.id );
 		},
 	},
 } );
