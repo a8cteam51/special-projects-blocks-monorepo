@@ -40,7 +40,6 @@
 		"typography": {
 			"textAlign": true,
 			"fontSize": true,
-			"lineHeight": true,
 			"__experimentalFontFamily": true,
 			"__experimentalFontWeight": true,
 			"__experimentalFontStyle": true,
@@ -49,7 +48,6 @@
 			"__experimentalLetterSpacing": true,
 			"__experimentalDefaultControls": {
 				"fontSize": true,
-				"lineHeight": true,
 				"fontFamily": true
 			}
 		},

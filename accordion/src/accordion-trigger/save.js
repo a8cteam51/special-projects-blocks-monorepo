@@ -45,6 +45,11 @@ export default function save( { attributes } ) {
 		>
 			<button className={ buttonClassName } style={ buttonStyle }>
 				<RichText.Content tagName="span" value={ title } />
+				<span className={`wpsp-accordion-item__toggle-icon`} style={{
+					// TO-DO: make this configurable
+					width: `1em`,
+					height: `1em`,
+				}}/>
 			</button>
 		</TagName>
 	);
