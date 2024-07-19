@@ -38,28 +38,27 @@ export default function Edit( { attributes, setAttributes } ) {
 				{ ...blockProps }
 				className={ clsx(
 					blockProps.className,
+					colorProps.className,
+					borderProps.className,
 					'wpsp-accordion-item__heading',
 					{
 						[ `has-custom-font-size` ]: blockProps.style.fontSize,
 						[ `icon-position-left` ]: iconPosition === 'left',
+						[ `has-text-align-${ textAlign }` ]: textAlign,
 					}
 				) }
-				style={ {} }
+				style={ {
+					...borderProps.style,
+					...colorProps.style,
+					...shadowProps.style,
+				} }
 			>
 				<button
 					className={ clsx(
 						'wpsp-accordion-item__toggle',
-						colorProps.className,
-						borderProps.className,
-						{
-							[ `has-text-align-${ textAlign }` ]: textAlign,
-						}
 					) }
 					style={ {
-						...borderProps.style,
-						...colorProps.style,
 						...spacingProps.style,
-						...shadowProps.style,
 					} }
 				>
 					<RichText

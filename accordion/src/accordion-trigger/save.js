@@ -10,7 +10,7 @@ import {
 } from '@wordpress/block-editor';
 
 export default function save( { attributes } ) {
-	const { level, title, iconPosition } = attributes;
+	const { level, title, iconPosition, textAlign } = attributes;
 	const TagName = 'h' + level;
 
 	const blockProps = useBlockProps.save();
@@ -18,32 +18,35 @@ export default function save( { attributes } ) {
 	const colorProps = getColorClassesAndStyles( attributes );
 	const spacingProps = getSpacingClassesAndStyles( attributes );
 	const shadowProps = getShadowClassesAndStyles( attributes );
-	const buttonClassName = clsx(
-		`wpsp-accordion-item__toggle`,
-		colorProps.className,
-		borderProps.className
-	);
-	const buttonStyle = {
-		...borderProps.style,
-		...colorProps.style,
-		...spacingProps.style,
-		...shadowProps.style,
-	};
 
 	return (
 		<TagName
 			{ ...blockProps }
 			className={ clsx(
 				blockProps.className,
+				colorProps.className,
+				borderProps.className,
 				'wpsp-accordion-item__heading',
 				{
 					[ `has-custom-font-size` ]: blockProps?.style?.fontSize,
 					[ `icon-position-left` ]: iconPosition === 'left',
+					[ `has-text-align-${ textAlign }` ]: textAlign,
 				}
 			) }
-			style={ {} }
+			style={ {
+				...borderProps.style,
+				...colorProps.style,
+				...shadowProps.style,
+			} }
 		>
-			<button className={ buttonClassName } style={ buttonStyle }>
+			<button
+				className={ clsx(
+					'wpsp-accordion-item__toggle',
+				) }
+				style={ {
+					...spacingProps.style,
+				} }
+			>
 				<RichText.Content tagName="span" value={ title } />
 				<span className={`wpsp-accordion-item__toggle-icon`} style={{
 					// TO-DO: make this configurable

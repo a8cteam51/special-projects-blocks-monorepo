@@ -11,11 +11,11 @@
 	"parent": [ "wpsp/accordion" ],
 	"allowedBlocks": [ "wpsp/accordion-trigger", "wpsp/accordion-content" ],
 	"supports": {
+		"align": [ "wide", "full" ],
 		"color": {
 			"background": true,
 			"gradient": true
 		},
-		"align": true,
 		"border": true,
 		"interactivity": true,
 		"spacing": {
