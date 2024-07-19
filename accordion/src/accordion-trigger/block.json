@@ -20,10 +20,9 @@
 		"spacing": {
 			"padding": true,
 			"margin": [ "top", "bottom" ],
-			"blockGap": true,
 			"__experimentalDefaultControls": {
 				"padding": true,
-				"blockGap": true
+				"margin": true
 			}
 		},
 		"__experimentalBorder": {
@@ -49,7 +48,9 @@
 			"__experimentalTextDecoration": true,
 			"__experimentalLetterSpacing": true,
 			"__experimentalDefaultControls": {
-				"fontSize": true
+				"fontSize": true,
+				"lineHeight": true,
+				"fontFamily": true
 			}
 		},
 		"shadow": true,
@@ -68,6 +69,10 @@
 		"level": {
 			"type": "number",
 			"default": 3
+		},
+		"textAlignment": {
+			"type": "string",
+			"default": "left"
 		}
 	},
 	"textdomain": "accordion",
