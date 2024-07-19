@@ -13,7 +13,7 @@ function TabButton( { isSelected, tabNumber } ) {
 			aria-controls={ `tabpanel-${ tabNumber }` }
 			tabIndex={ isSelected ? undefined : '-1' }
 		>
-			{ `Tab ${ tabNumber }` }
+			<span>{ `Tab ${ tabNumber }` }</span>
 		</button>
 	);
 }

@@ -39,15 +39,15 @@
 		border-bottom: 1px solid hsl(219deg 1% 72%);
 	}
 
-	[role="tab"] span.focus {
+	[role="tab"] span {
 		display: inline-block;
 		margin: 2px;
 		padding: 4px 6px;
 	}
 
-	[role="tab"]:hover span.focus,
-	[role="tab"]:focus span.focus,
-	[role="tab"]:active span.focus {
+	[role="tab"]:hover span,
+	[role="tab"]:focus span,
+	[role="tab"]:active span {
 		padding: 2px 4px;
 		border: 2px solid rgb(36 116 214);
 		border-radius: 3px;

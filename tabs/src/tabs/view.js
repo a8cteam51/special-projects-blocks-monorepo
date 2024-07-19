@@ -29,7 +29,6 @@ class TabsAutomatic {
 				tab.getAttribute( 'aria-controls' )
 			);
 
-			tab.tabIndex = -1;
 			this.tabpanels.push( tabpanel );
 
 			tab.addEventListener( 'keydown', this.onKeydown.bind( this ) );
