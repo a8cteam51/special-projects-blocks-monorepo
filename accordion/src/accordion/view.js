@@ -34,4 +34,11 @@ const { state, actions } = store( 'wpsp/accordion', {
 			}
 		},
 	},
+	callbacks: {
+		open: () => {
+			const context = getContext();
+			const { ref } = getElement();
+			context.isOpen.push( ref.attributes[ 'data-id' ].nodeValue );
+		},
+	},
 } );
