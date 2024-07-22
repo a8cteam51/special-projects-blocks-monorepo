@@ -2,9 +2,9 @@ import {
 	registerBlockType,
 	registerBlockVariation,
 	unregisterBlockVariation,
-	getBlockVariations,
 } from "@wordpress/blocks";
 import { __, _x } from "@wordpress/i18n";
+import { row } from "@wordpress/icons";
 
 import "./style.scss";
 
@@ -15,40 +15,45 @@ import Edit from "./edit";
 import save from "./save";
 import metadata from "./block.json";
 
-// This doesn't seem to do anything?
-unregisterBlockVariation("core/group", "group");
+setTimeout(() => {
+	unregisterBlockVariation("core/group", ["group-row"]);
 
-const blockVariations = getBlockVariations("core/group");
+	registerBlockVariation("core/group", {
+		name: "wpcomsp/marquee-content",
+		title: "Marquee Content",
+		icon: "editor-table",
+		description: __("A marquee content block."),
+		scope: ["block"],
+		attributes: {
+			layout: { type: "flex", flexWrap: "nowrap" },
+			className: "wpcomsp-marquee-content",
+			allowedBlocks: [
+				"core/paragraph",
+				"core/heading",
+				"core/image",
+				"core/buttons",
+			],
+		},
+		isActive: (blockAttributes) =>
+			blockAttributes.layout?.type === "flex" &&
+			(!blockAttributes.layout?.orientation ||
+				blockAttributes.layout?.orientation === "horizontal"),
+	});
 
-// This doesn't seem to do anything?
-console.log("blockVariations", blockVariations);
-
-registerBlockVariation("core/group", {
-	name: "wpcomsp/marquee-content",
-	title: "Marquee Content",
-	icon: "editor-table",
-	description: __("A marquee content block."),
-	scope: ["block", "inserter", "transform"],
-	isDefault: true,
-	attributes: {
-		layout: { type: "flex", flexWrap: "nowrap" },
-		className: "wpcomsp-marquee-content",
-		isMarquee: true,
-		allowedBlocks: [
-			"core/paragraph",
-			"core/heading",
-			"core/image",
-			"core/buttons",
-		],
-	},
-	isActive: (blockAttributes) =>
-		blockAttributes.isMarquee === true &&
-		blockAttributes.layout?.type === "flex" &&
-		(!blockAttributes.layout?.orientation ||
-			blockAttributes.layout?.orientation === "horizontal"),
-});
-
-// Here I need to re-register the group variation
+	// re-register the Row block variation
+	registerBlockVariation("core/group", {
+		name: "group-row",
+		title: _x("Row", "single horizontal line"),
+		description: __("Arrange blocks horizontally."),
+		attributes: { layout: { type: "flex", flexWrap: "nowrap" } },
+		scope: ["block", "inserter", "transform"],
+		isActive: (blockAttributes) =>
+			blockAttributes.layout?.type === "flex" &&
+			(!blockAttributes.layout?.orientation ||
+				blockAttributes.layout?.orientation === "horizontal"),
+		icon: row,
+	});
+}, 1000);
 
 registerBlockType(metadata.name, {
 	edit: Edit,

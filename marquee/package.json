@@ -21,6 +21,7 @@
 		"@wordpress/scripts": "^27.9.0"
 	},
 	"dependencies": {
+		"@wordpress/icons": "^10.3.0",
 		"@wordpress/interactivity": "^6.3.0"
 	}
 }

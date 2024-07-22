@@ -20,6 +20,7 @@ export default function Edit({ attributes }) {
 				{
 					isMarquee: true,
 					layout: { type: "flex", orientation: "horizontal" },
+					className: "wpcomsp-marquee-content",
 				},
 			],
 		],
