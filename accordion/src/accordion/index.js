@@ -17,16 +17,16 @@ const icon = (
 			fill-rule="evenodd"
 			clip-rule="evenodd"
 			d="M19.5 9.25L9.5 9.25L9.5 7.75L19.5 7.75L19.5 9.25Z"
-			fill="#1E1E1E"
+			fill="currentColor"
 		/>
-		<Path d="M4.5 6L8.5 8.5L4.5 11L4.5 6Z" fill="#1E1E1E" />
+		<Path d="M4.5 6L8.5 8.5L4.5 11L4.5 6Z" fill="currentColor" />
 		<Path
 			fill-rule="evenodd"
 			clip-rule="evenodd"
 			d="M19.5 16.25L9.5 16.25L9.5 14.75L19.5 14.75L19.5 16.25Z"
-			fill="#1E1E1E"
+			fill="currentColor"
 		/>
-		<Path d="M4.5 13L8.5 15.5L4.5 18L4.5 13Z" fill="#1E1E1E" />
+		<Path d="M4.5 13L8.5 15.5L4.5 18L4.5 13Z" fill="currentColor" />
 	</SVG>
 );
 

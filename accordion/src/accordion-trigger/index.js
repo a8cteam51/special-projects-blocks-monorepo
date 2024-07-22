@@ -16,9 +16,9 @@ const icon = (
 			fill-rule="evenodd"
 			clip-rule="evenodd"
 			d="M19.5 12.75L9.5 12.75L9.5 11.25L19.5 11.25L19.5 12.75Z"
-			fill="#1E1E1E"
+			fill="currentColor"
 		/>
-		<Path d="M4.5 9.5L8.5 12L4.5 14.5L4.5 9.5Z" fill="#1E1E1E" />
+		<Path d="M4.5 9.5L8.5 12L4.5 14.5L4.5 9.5Z" fill="currentColor" />
 	</SVG>
 );
 
