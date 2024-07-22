@@ -6,7 +6,7 @@ const { state, actions } = store( 'wpsp/accordion', {
 			const { attributes } = getElement();
 			const id =
 				attributes.id ||
-				attributes[ 'aria-controls' ] || 
+				attributes[ 'aria-controls' ] ||
 				attributes[ 'aria-labelledby' ];
 			const context = getContext();
 			return context.isOpen.includes( id );

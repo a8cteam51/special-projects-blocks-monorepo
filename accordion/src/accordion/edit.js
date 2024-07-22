@@ -28,10 +28,7 @@ export default function Edit( {
 		<>
 			<InspectorControls key="setting">
 				<Panel>
-					<PanelBody
-						title={ __( 'Accordion Settings' ) }
-						initialOpen={ true }
-					>
+					<PanelBody title={ __( 'Settings' ) } initialOpen={ true }>
 						<PanelRow>
 							<ToggleControl
 								label={ __( 'Allow multiple items open' ) }
@@ -43,31 +40,32 @@ export default function Edit( {
 								checked={ allowMultipleOpen }
 							/>
 						</PanelRow>
-						<PanelRow>
-							<ToggleGroupControl
-								__nextHasNoMarginBottom
-								isBlock
-								label={ __( 'Icon Position' ) }
-								value={ iconPosition }
-								onChange={ ( value ) => {
-									setAttributes( { iconPosition: value } );
-								} }
-							>
-								<ToggleGroupControlOption
-									label="Left"
-									value="left"
-								/>
-								<ToggleGroupControlOption
-									label="Right"
-									value="right"
-								/>
-							</ToggleGroupControl>
-						</PanelRow>
+						<ToggleGroupControl
+							__nextHasNoMarginBottom
+							isBlock
+							label={ __( 'Icon Position' ) }
+							value={ iconPosition }
+							onChange={ ( value ) => {
+								setAttributes( { iconPosition: value } );
+							} }
+						>
+							<ToggleGroupControlOption
+								label="Left"
+								value="left"
+							/>
+							<ToggleGroupControlOption
+								label="Right"
+								value="right"
+							/>
+						</ToggleGroupControl>
 					</PanelBody>
 				</Panel>
 			</InspectorControls>
 			<div { ...blockProps }>
-				<InnerBlocks template={ [ [ 'wpsp/accordion-item', {} ] ] } />
+				<InnerBlocks
+					template={ [ [ 'wpsp/accordion-item', {} ] ] }
+					renderAppender={ InnerBlocks.DefaultBlockAppender }
+				/>
 			</div>
 		</>
 	);

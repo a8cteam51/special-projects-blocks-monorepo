@@ -54,9 +54,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				} }
 			>
 				<button
-					className={ clsx(
-						'wpsp-accordion-item__toggle',
-					) }
+					className={ clsx( 'wpsp-accordion-item__toggle' ) }
 					style={ {
 						...spacingProps.style,
 					} }
@@ -70,11 +68,14 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 						placeholder={ __( 'Add text...' ) }
 					/>
-					<span className={`wpsp-accordion-item__toggle-icon`} style={{
-						// TO-DO: make this configurable
-						width: `1em`,
-						height: `1em`,
-					}}/>
+					<span
+						className={ `wpsp-accordion-item__toggle-icon` }
+						style={ {
+							// TO-DO: make this configurable
+							width: `1em`,
+							height: `1em`,
+						} }
+					/>
 				</button>
 			</TagName>
 		</>

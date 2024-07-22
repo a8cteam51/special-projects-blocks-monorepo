@@ -40,19 +40,20 @@ export default function save( { attributes } ) {
 			} }
 		>
 			<button
-				className={ clsx(
-					'wpsp-accordion-item__toggle',
-				) }
+				className={ clsx( 'wpsp-accordion-item__toggle' ) }
 				style={ {
 					...spacingProps.style,
 				} }
 			>
 				<RichText.Content tagName="span" value={ title } />
-				<span className={`wpsp-accordion-item__toggle-icon`} style={{
-					// TO-DO: make this configurable
-					width: `1em`,
-					height: `1em`,
-				}}/>
+				<span
+					className={ `wpsp-accordion-item__toggle-icon` }
+					style={ {
+						// TO-DO: make this configurable
+						width: `1em`,
+						height: `1em`,
+					} }
+				/>
 			</button>
 		</TagName>
 	);

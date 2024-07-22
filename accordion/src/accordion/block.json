@@ -5,7 +5,6 @@
 	"version": "0.1.0",
 	"title": "Accordion",
 	"category": "design",
-	"icon": "list-view",
 	"description": "A vertically stacked group of interactive headings that show and hide content.",
 	"example": {},
 	"supports": {
