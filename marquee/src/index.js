@@ -23,7 +23,7 @@ setTimeout(() => {
 		title: "Marquee Content",
 		icon: "editor-table",
 		description: __("A marquee content block."),
-		scope: ["block"],
+		scope: ["block", "inserter"],
 		attributes: {
 			layout: { type: "flex", flexWrap: "nowrap" },
 			className: "wpcomsp-marquee-content",
