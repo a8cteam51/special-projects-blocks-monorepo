@@ -6,7 +6,6 @@
 .wp-block-wpsp-accordion-item {
 	display: grid;
 	grid-template-rows: max-content 0fr;
-	transition: grid-template-rows 0.3s ease-out;
 }
 
 .wp-block-wpsp-accordion-item.is-open {
@@ -71,11 +70,15 @@
 	outline-offset: 2px;
 }
 
-/* Add transition only for users who do not prefer reduced motion */
+/* Add transitions only for users who do not prefer reduced motion */
 @media (prefers-reduced-motion: no-preference) {
 	.wp-block-wpsp-accordion-item .wpsp-accordion-item__toggle-icon {
         transition: transform 0.2s ease-in-out;
     }
+
+	.wp-block-wpsp-accordion-item {
+		transition: grid-template-rows 0.3s ease-out;
+	}
 }
 
 /* Default block style */
