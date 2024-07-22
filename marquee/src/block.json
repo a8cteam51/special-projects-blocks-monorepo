@@ -6,90 +6,17 @@
 	"title": "Marquee",
 	"category": "widgets",
 	"icon": "smiley",
-	"description": "A simple marquee block that scrolls text horizontally and accepts a Paragraph, Heading or Image as a child block.",
+	"description": "A Marquee block that scrolls content horizontally.",
 	"example": {},
 	"supports": {
-		"__experimentalOnEnter": true,
-		"__experimentalOnMerge": true,
-		"__experimentalSettings": true,
-		"align": ["wide", "full"],
+		"interactivity": true,
 		"anchor": true,
-		"ariaLabel": true,
-		"html": false,
-		"color": {
-			"gradients": true,
-			"heading": true,
-			"button": true,
-			"link": true,
-			"__experimentalDefaultControls": {
-				"background": true,
-				"text": true
-			}
-		},
-		"shadow": true,
-		"spacing": {
-			"margin": ["top", "bottom"],
-			"padding": true,
-			"blockGap": true,
-			"__experimentalDefaultControls": {
-				"padding": true,
-				"blockGap": true
-			}
-		},
-		"dimensions": {
-			"minHeight": true
-		},
-		"__experimentalBorder": {
-			"color": true,
-			"radius": true,
-			"style": true,
-			"width": true,
-			"__experimentalDefaultControls": {
-				"color": true,
-				"radius": true,
-				"style": true,
-				"width": true
-			}
-		},
-		"typography": {
-			"fontSize": true,
-			"lineHeight": true,
-			"__experimentalFontFamily": true,
-			"__experimentalFontWeight": true,
-			"__experimentalFontStyle": true,
-			"__experimentalTextTransform": true,
-			"__experimentalTextDecoration": true,
-			"__experimentalLetterSpacing": true,
-			"__experimentalDefaultControls": {
-				"fontSize": true
-			}
-		},
-		"layout": {
-			"allowSizingOnChildren": false,
-			"allowOrientation": false,
-			"default": {
-				"type": "flex",
-				"flexWrap": "nowrap",
-				"orientation": "horizontal",
-				"justifyContent": "left"
-			}
-		},
-		"interactivity": true
+		"html": false
 	},
-	"allowedBlocks": [
-		"core/paragraph",
-		"core/heading",
-		"core/image",
-		"core/button",
-		"core/group"
-	],
 	"attributes": {
 		"tagName": {
 			"type": "string",
 			"default": "div"
-		},
-		"allowedBlocks": {
-			"type": "array"
 		}
 	},
 	"textdomain": "marquee",

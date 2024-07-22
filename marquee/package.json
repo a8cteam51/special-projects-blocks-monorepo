@@ -14,8 +14,11 @@
 		"plugin-zip": "wp-scripts plugin-zip",
 		"start": "wp-scripts start --experimental-modules"
 	},
+	"files": [
+		"[^.]*"
+	],
 	"devDependencies": {
-		"@wordpress/scripts": "^28.3.0"
+		"@wordpress/scripts": "^27.9.0"
 	},
 	"dependencies": {
 		"@wordpress/interactivity": "^6.3.0"

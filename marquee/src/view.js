@@ -16,13 +16,13 @@ store("wpcomsp/marquee", {
 
 			// If the width of the children is less than the width of the marquee
 			// element, clone the children to fill the marquee element.
-			while (childrenWidth <= width) {
-				children.forEach((child) => {
-					const clone = child.cloneNode(true);
-					ref.appendChild(clone);
-					childrenWidth += child.getBoundingClientRect().width;
-				});
-			}
+			// while (childrenWidth <= width) {
+			// 	children.forEach((child) => {
+			// 		const clone = child.cloneNode(true);
+			// 		ref.appendChild(clone);
+			// 		childrenWidth += child.getBoundingClientRect().width;
+			// 	});
+			// }
 		},
 	},
 });

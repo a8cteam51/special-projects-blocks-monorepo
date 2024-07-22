@@ -2,25 +2,28 @@
  * WordPress dependencies
  */
 import { useBlockProps, useInnerBlocksProps } from "@wordpress/block-editor";
-import { useRef } from "@wordpress/element";
 
 import "./editor.scss";
 
 export default function Edit({ attributes }) {
-	const { tagName: TagName = "div", allowedBlocks } = attributes;
+	const { tagName: TagName = "div" } = attributes;
 
-	// Hooks.
-	const ref = useRef();
-	const blockProps = useBlockProps({ ref });
+	const blockProps = useBlockProps();
 
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
-		dropZoneElement: ref.current,
-		allowedBlocks,
+		allowedBlocks: ["core/group"],
+		orientation: "horizontal",
+		directInsert: true,
+		template: [
+			[
+				"core/group",
+				{
+					isMarquee: true,
+					layout: { type: "flex", orientation: "horizontal" },
+				},
+			],
+		],
 	});
 
-	return (
-		<>
-			<TagName {...innerBlocksProps} />
-		</>
-	);
+	return <TagName {...innerBlocksProps} />;
 }
