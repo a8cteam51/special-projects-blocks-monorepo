@@ -1,10 +1,6 @@
-import {
-	registerBlockType,
-	registerBlockVariation,
-	unregisterBlockVariation,
-} from "@wordpress/blocks";
-import { __, _x } from "@wordpress/i18n";
-import { row } from "@wordpress/icons";
+import { registerBlockType, registerBlockVariation } from "@wordpress/blocks";
+import { __ } from "@wordpress/i18n";
+import domReady from "@wordpress/dom-ready";
 
 import "./style.scss";
 
@@ -15,9 +11,7 @@ import Edit from "./edit";
 import save from "./save";
 import metadata from "./block.json";
 
-setTimeout(() => {
-	unregisterBlockVariation("core/group", ["group-row"]);
-
+domReady(() => {
 	registerBlockVariation("core/group", {
 		name: "wpcomsp/marquee-content",
 		title: "Marquee Content",
@@ -25,6 +19,7 @@ setTimeout(() => {
 		description: __("A marquee content block."),
 		scope: ["block", "inserter"],
 		attributes: {
+			isMarquee: true,
 			layout: { type: "flex", flexWrap: "nowrap" },
 			className: "wpcomsp-marquee-content",
 			allowedBlocks: [
@@ -34,26 +29,9 @@ setTimeout(() => {
 				"core/buttons",
 			],
 		},
-		isActive: (blockAttributes) =>
-			blockAttributes.layout?.type === "flex" &&
-			(!blockAttributes.layout?.orientation ||
-				blockAttributes.layout?.orientation === "horizontal"),
+		isActive: ["layout.type", "isMarquee"],
 	});
-
-	// re-register the Row block variation
-	registerBlockVariation("core/group", {
-		name: "group-row",
-		title: _x("Row", "single horizontal line"),
-		description: __("Arrange blocks horizontally."),
-		attributes: { layout: { type: "flex", flexWrap: "nowrap" } },
-		scope: ["block", "inserter", "transform"],
-		isActive: (blockAttributes) =>
-			blockAttributes.layout?.type === "flex" &&
-			(!blockAttributes.layout?.orientation ||
-				blockAttributes.layout?.orientation === "horizontal"),
-		icon: row,
-	});
-}, 1000);
+});
 
 registerBlockType(metadata.name, {
 	edit: Edit,
