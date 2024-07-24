@@ -13,8 +13,8 @@ const icon = (
 		xmlns="http://www.w3.org/2000/svg"
 	>
 		<Path
-			fill-rule="evenodd"
-			clip-rule="evenodd"
+			fillRule="evenodd"
+			clipRule="evenodd"
 			d="M19.5 12.75L9.5 12.75L9.5 11.25L19.5 11.25L19.5 12.75Z"
 			fill="currentColor"
 		/>
