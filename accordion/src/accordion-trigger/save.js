@@ -8,9 +8,24 @@ import {
 	__experimentalGetShadowClassesAndStyles as getShadowClassesAndStyles,
 	RichText,
 } from '@wordpress/block-editor';
+import {
+	caret,
+	chevron,
+	chevronRight,
+	circlePlus,
+	plus,
+} from '../accordion-item/icons';
+
+const ICONS = {
+	plus,
+	circlePlus,
+	chevron,
+	chevronRight,
+	caret,
+};
 
 export default function save( { attributes } ) {
-	const { level, title, iconPosition, textAlign } = attributes;
+	const { level, title, iconPosition, textAlign, icon } = attributes;
 	const TagName = 'h' + level;
 
 	const blockProps = useBlockProps.save();
@@ -18,6 +33,8 @@ export default function save( { attributes } ) {
 	const colorProps = getColorClassesAndStyles( attributes );
 	const spacingProps = getSpacingClassesAndStyles( attributes );
 	const shadowProps = getShadowClassesAndStyles( attributes );
+
+	const Icon = ICONS[ icon ];
 
 	return (
 		<TagName
@@ -47,13 +64,17 @@ export default function save( { attributes } ) {
 			>
 				<RichText.Content tagName="span" value={ title } />
 				<span
-					className={ `wpsp-accordion-item__toggle-icon` }
+					className={ clsx( `wpsp-accordion-item__toggle-icon`, {
+						[ `has-icon-${ icon }` ]: icon,
+					} ) }
 					style={ {
 						// TO-DO: make this configurable
-						width: `1em`,
-						height: `1em`,
+						width: `1.2em`,
+						height: `1.2em`,
 					} }
-				/>
+				>
+					{ icon && <Icon width={ `1.2em` } height={ `1.2em` } /> }
+				</span>
 			</button>
 		</TagName>
 	);

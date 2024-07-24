@@ -48,19 +48,13 @@
 	overflow: hidden;
 }
 
-.wpsp-accordion-item__toggle-icon {
-	background-color: var(--wpsp--accordion--parent-color);
-	background-size: contain;
-	background-repeat: no-repeat;
-	content: '';
-}
 
 /* No icon block style */
 .is-style-no-icon .wpsp-accordion-item__toggle-icon {
 	background-color: unset;
 }
 
-.wp-block-wpsp-accordion.icon-position-left .wpsp-accordion-item__toggle {
+.wp-block-wpsp-accordion-trigger.icon-position-left .wpsp-accordion-item__toggle {
 	flex-direction: row-reverse;
 }
 
@@ -81,27 +75,52 @@
 	}
 }
 
+.is-open {
+	.wpsp-accordion-item__toggle-icon.has-icon-plus {
+		transform: rotate(45deg);
+	}
+	.wpsp-accordion-item__toggle-icon.has-icon-chevron {
+		transform: rotate(-180deg);
+	}
+	.wpsp-accordion-item__toggle-icon.has-icon-circlePlus {
+		transform: rotate(45deg);
+	}
+	.wpsp-accordion-item__toggle-icon.has-icon-caret {
+		transform: rotate(-180deg);
+	}
+	.wpsp-accordion-item__toggle-icon.has-icon-chevronRight {
+		transform: rotate(90deg);
+	}
+}
+
+// .wpsp-accordion-item__toggle-icon {
+// 	background-color: var(--wpsp--accordion--parent-color);
+// 	background-size: contain;
+// 	background-repeat: no-repeat;
+// 	content: '';
+// }
+
 /* Default block style */
-.wp-block-wpsp-accordion .wpsp-accordion-item__toggle-icon,
-.wp-block-wpsp-accordion.is-style-default .wpsp-accordion-item__toggle-icon {
-	mask: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 5L12 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12L19 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>');
-}
-.wp-block-wpsp-accordion .is-open .wpsp-accordion-item__toggle-icon,
-.wp-block-wpsp-accordion.is-style-default .is-open .wpsp-accordion-item__toggle-icon {
-	transform: rotate(45deg);
-}
-/* Chevron block style */
-.wp-block-wpsp-accordion.is-style-chevron .wpsp-accordion-item__toggle-icon {
-	mask: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.34424 9.19922L11.9442 18.7992L21.5442 9.19922" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="round"/></svg>');
-}
-.wp-block-wpsp-accordion.is-style-chevron .is-open .wpsp-accordion-item__toggle-icon {
-	transform: rotate(-180deg);
-}
-/* Arrow block style */
-.wp-block-wpsp-accordion.is-style-arrow .wpsp-accordion-item__toggle-icon {
-	mask: url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 12L20 12M13 5L20 12L13 19' stroke='currentColor' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-	transform: rotate(90deg);
-}
-.wp-block-wpsp-accordion.is-style-arrow .is-open .wpsp-accordion-item__toggle-icon {
-	transform: rotate(-90deg);
-}
+// .wp-block-wpsp-accordion .wpsp-accordion-item__toggle-icon,
+// .wp-block-wpsp-accordion.is-style-default .wpsp-accordion-item__toggle-icon {
+// 	mask: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 5L12 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12L19 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+// }
+// // .wp-block-wpsp-accordion .is-open .wpsp-accordion-item__toggle-icon,
+// .wp-block-wpsp-accordion.is-style-default .is-open .wpsp-accordion-item__toggle-icon {
+// 	transform: rotate(45deg);
+// }
+// /* Chevron block style */
+// .wp-block-wpsp-accordion.is-style-chevron .wpsp-accordion-item__toggle-icon {
+// 	// mask: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.34424 9.19922L11.9442 18.7992L21.5442 9.19922" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="round"/></svg>');
+// }
+// .wp-block-wpsp-accordion.is-style-chevron .is-open .wpsp-accordion-item__toggle-icon {
+// 	transform: rotate(-180deg);
+// }
+// /* Arrow block style */
+// .wp-block-wpsp-accordion.is-style-arrow .wpsp-accordion-item__toggle-icon {
+// 	// mask: url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 12L20 12M13 5L20 12L13 19' stroke='currentColor' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+// 	transform: rotate(90deg);
+// }
+// .wp-block-wpsp-accordion.is-style-arrow .is-open .wpsp-accordion-item__toggle-icon {
+// 	transform: rotate(-90deg);
+// }

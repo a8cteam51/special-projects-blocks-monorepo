@@ -4,30 +4,31 @@ import {
 	useBlockProps,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { PanelBody, PanelRow, ToggleControl } from '@wordpress/components';
+import { PanelBody, ToggleControl } from '@wordpress/components';
+import clsx from 'clsx';
 
 export default function Edit( {
 	attributes: { openByDefault },
 	setAttributes,
 } ) {
+	const blockProps = useBlockProps();
+
 	return (
 		<>
 			<InspectorControls key="setting">
-				<PanelBody title={ __( 'Display' ) }>
-					<PanelRow>
-						<ToggleControl
-							label={ __( 'Open by default' ) }
-							onChange={ ( value ) => {
-								setAttributes( {
-									openByDefault: value,
-								} );
-							} }
-							checked={ openByDefault }
-						/>
-					</PanelRow>
+				<PanelBody title={ __( 'Settings' ) }>
+					<ToggleControl
+						label={ __( 'Open by default' ) }
+						onChange={ ( value ) => {
+							setAttributes( {
+								openByDefault: value,
+							} );
+						} }
+						checked={ openByDefault }
+					/>
 				</PanelBody>
 			</InspectorControls>
-			<div { ...useBlockProps() }>
+			<div { ...blockProps }>
 				<InnerBlocks
 					templateLock="all"
 					template={ [

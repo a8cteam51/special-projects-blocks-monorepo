@@ -71,6 +71,23 @@
 		"textAlignment": {
 			"type": "string",
 			"default": "left"
+		},
+		"icon": {
+			"type": [ "string", "boolean" ],
+			"enum": [
+				"plus",
+				"chevron",
+				"chevronRight",
+				"caret",
+				"circlePlus",
+				false
+			],
+			"default": "plus"
+		},
+		"iconPosition": {
+			"type": "string",
+			"enum": [ "left", "right" ],
+			"default": "right"
 		}
 	},
 	"textdomain": "accordion",
