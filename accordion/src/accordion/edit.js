@@ -15,7 +15,7 @@ import {
 } from '@wordpress/components';
 
 export default function Edit( {
-	attributes: { iconPosition, allowMultipleOpen },
+	attributes: { iconPosition, autoclose },
 	setAttributes,
 } ) {
 	const blockProps = useBlockProps( {
@@ -31,13 +31,13 @@ export default function Edit( {
 					<PanelBody title={ __( 'Settings' ) } initialOpen={ true }>
 						<PanelRow>
 							<ToggleControl
-								label={ __( 'Allow multiple items open' ) }
+								label={ __( 'Autoclose' ) }
 								onChange={ ( value ) => {
 									setAttributes( {
-										allowMultipleOpen: value,
+										autoclose: value,
 									} );
 								} }
-								checked={ allowMultipleOpen }
+								checked={ autoclose }
 							/>
 						</PanelRow>
 						<ToggleGroupControl

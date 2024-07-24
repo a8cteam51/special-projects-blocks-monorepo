@@ -27,7 +27,7 @@
 			"type": "string",
 			"default": "right"
 		},
-		"allowMultipleOpen": {
+		"autoclose": {
 			"type": "boolean",
 			"default": false
 		},
