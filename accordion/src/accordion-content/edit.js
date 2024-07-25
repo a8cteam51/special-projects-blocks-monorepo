@@ -6,16 +6,26 @@ import {
 	__experimentalUseColorProps as useColorProps,
 	__experimentalGetSpacingClassesAndStyles as useSpacingProps,
 	__experimentalGetShadowClassesAndStyles as useShadowProps,
+	store as blockEditorStore,
 } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 import clsx from 'clsx';
 
-export default function Edit( { attributes } ) {
+export default function Edit( { attributes, clientId } ) {
 	const { allowedBlocks, templateLock } = attributes;
 	const blockProps = useBlockProps();
 	const borderProps = useBorderProps( attributes );
 	const colorProps = useColorProps( attributes );
 	const spacingProps = useSpacingProps( attributes );
 	const shadowProps = useShadowProps( attributes );
+
+	const isSelected = useSelect(
+		( select ) => {
+			const { isBlockSelected, hasSelectedInnerBlock } = select( blockEditorStore );
+			return isBlockSelected( clientId ) || hasSelectedInnerBlock( clientId, true )
+		},
+		[ clientId ]
+	);
 
 	return (
 		<div
@@ -33,6 +43,7 @@ export default function Edit( { attributes } ) {
 				...colorProps.style,
 				...shadowProps.style,
 			} }
+			hidden={ ! isSelected }
 		>
 			<div
 				className="wpcomsp-accordion-content__wrapper"
