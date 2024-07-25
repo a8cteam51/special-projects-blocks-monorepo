@@ -34,7 +34,7 @@ export default function save( { attributes } ) {
 			} }
 		>
 			<div
-				className="wpsp-accordion-content__wrapper"
+				className="wpcomsp-accordion-content__wrapper"
 				style={ {
 					...spacingProps.style,
 				} }

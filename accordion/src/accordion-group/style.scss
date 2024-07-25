@@ -1,0 +1,89 @@
+.wp-block-wpcomsp-accordion-item {
+	display: grid;
+	grid-template-rows: max-content 0fr;
+}
+
+.wp-block-wpcomsp-accordion-item.is-open {
+	grid-template-rows: max-content 1fr;
+}
+
+.wp-block-wpcomsp-accordion-item .wpcomsp-accordion-item__heading {
+	color: inherit;
+	padding: 0;
+	margin: 0;
+}
+
+.wpcomsp-accordion-item__toggle {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	letter-spacing: inherit;
+	text-transform: inherit;
+	text-decoration: inherit;
+	word-spacing: inherit;
+	background: none;
+	border: none;
+	color: inherit;
+	padding: 0;
+	cursor: pointer;
+	outline: none;
+	display: flex;
+	align-items: center;
+	text-align: inherit;
+	position: relative;
+	width: 100%;
+}
+
+.wpcomsp-accordion-item__toggle > span {
+	width: 100%;
+}
+
+.wp-block-wpcomsp-accordion-content {
+	overflow: hidden;
+}
+
+
+/* No icon block style */
+.is-style-no-icon .wpcomsp-accordion-item__toggle-icon {
+	background-color: unset;
+}
+
+.wp-block-wpcomsp-accordion-trigger.icon-position-left .wpcomsp-accordion-item__toggle {
+	flex-direction: row-reverse;
+}
+
+.wpcomsp-accordion-item__toggle:focus,
+.wpcomsp-accordion-item__toggle:focus-visible {
+	outline: 2px solid -webkit-focus-ring-color;
+	outline-offset: 2px;
+}
+
+/* Add transitions only for users who do not prefer reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+	.wp-block-wpcomsp-accordion-item .wpcomsp-accordion-item__toggle-icon {
+        transition: transform 0.2s ease-in-out;
+    }
+
+	.wp-block-wpcomsp-accordion-item {
+		transition: grid-template-rows 0.3s ease-out;
+	}
+}
+
+.is-open {
+	.wpcomsp-accordion-item__toggle-icon.has-icon-plus {
+		transform: rotate(45deg);
+	}
+	.wpcomsp-accordion-item__toggle-icon.has-icon-chevron {
+		transform: rotate(-180deg);
+	}
+	.wpcomsp-accordion-item__toggle-icon.has-icon-circlePlus {
+		transform: rotate(45deg);
+	}
+	.wpcomsp-accordion-item__toggle-icon.has-icon-caret {
+		transform: rotate(-180deg);
+	}
+	.wpcomsp-accordion-item__toggle-icon.has-icon-chevronRight {
+		transform: rotate(90deg);
+	}
+}

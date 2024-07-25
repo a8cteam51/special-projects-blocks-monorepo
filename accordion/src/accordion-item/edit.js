@@ -5,7 +5,6 @@ import {
 	InspectorControls,
 } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
-import clsx from 'clsx';
 
 export default function Edit( {
 	attributes: { openByDefault },
@@ -32,8 +31,8 @@ export default function Edit( {
 				<InnerBlocks
 					templateLock="all"
 					template={ [
-						[ 'wpsp/accordion-trigger', {} ],
-						[ 'wpsp/accordion-content', {} ],
+						[ 'wpcomsp/accordion-trigger', {} ],
+						[ 'wpcomsp/accordion-content', {} ],
 					] }
 				/>
 			</div>

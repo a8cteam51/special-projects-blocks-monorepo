@@ -1,6 +1,6 @@
 import { store, getContext, getElement } from '@wordpress/interactivity';
 
-const { state, actions } = store( 'wpsp/accordion', {
+const { state, actions } = store( 'wpcomsp/accordion', {
 	state: {
 		get isOpen() {
 			const { attributes } = getElement();

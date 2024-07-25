@@ -24,10 +24,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
-function wpsp_accordion_block_init() {
-	register_block_type( __DIR__ . '/build/accordion' );
+function wpcomsp_accordion_block_init() {
+	register_block_type( __DIR__ . '/build/accordion-group' );
 	register_block_type( __DIR__ . '/build/accordion-item' );
 	register_block_type( __DIR__ . '/build/accordion-trigger' );
 	register_block_type( __DIR__ . '/build/accordion-content' );
 }
-add_action( 'init', 'wpsp_accordion_block_init' );
+add_action( 'init', 'wpcomsp_accordion_block_init' );

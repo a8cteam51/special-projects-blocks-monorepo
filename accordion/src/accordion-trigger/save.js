@@ -43,7 +43,7 @@ export default function save( { attributes } ) {
 				blockProps.className,
 				colorProps.className,
 				borderProps.className,
-				'wpsp-accordion-item__heading',
+				'wpcomsp-accordion-item__heading',
 				{
 					[ `has-custom-font-size` ]: blockProps?.style?.fontSize,
 					[ `icon-position-left` ]: iconPosition === 'left',
@@ -57,14 +57,14 @@ export default function save( { attributes } ) {
 			} }
 		>
 			<button
-				className={ clsx( 'wpsp-accordion-item__toggle' ) }
+				className={ clsx( 'wpcomsp-accordion-item__toggle' ) }
 				style={ {
 					...spacingProps.style,
 				} }
 			>
 				<RichText.Content tagName="span" value={ title } />
 				<span
-					className={ clsx( `wpsp-accordion-item__toggle-icon`, {
+					className={ clsx( `wpcomsp-accordion-item__toggle-icon`, {
 						[ `has-icon-${ icon }` ]: icon,
 					} ) }
 					style={ {

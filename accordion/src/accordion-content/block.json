@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "wpsp/accordion-content",
+	"name": "wpcomsp/accordion-content",
 	"version": "0.1.0",
 	"title": "Content",
 	"category": "design",
 	"description": "Accordion item content",
 	"example": {},
-	"parent": [ "wpsp/accordion-item" ],
+	"parent": [ "wpcomsp/accordion-item" ],
 	"supports": {
 		"color": {
 			"background": true,

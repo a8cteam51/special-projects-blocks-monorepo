@@ -1,11 +1,11 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "wpsp/accordion",
+	"name": "wpcomsp/accordion-group",
 	"version": "0.1.0",
-	"title": "Accordion",
+	"title": "Accordion Group",
 	"category": "design",
-	"description": "A vertically stacked group of interactive headings that show and hide content.",
+	"description": "A group of headers and associated expandable content.",
 	"example": {},
 	"supports": {
 		"html": false,
@@ -35,7 +35,7 @@
 			"type": "array"
 		}
 	},
-	"allowedBlocks": [ "wpsp/accordion-item" ],
+	"allowedBlocks": [ "wpcomsp/accordion-item" ],
 	"textdomain": "accordion",
 	"editorScript": "file:./index.js",
 	"viewScriptModule": "file:./view.js",

@@ -27,7 +27,7 @@ export default function Edit( { attributes: { autoclose }, setAttributes } ) {
 			</InspectorControls>
 			<div { ...blockProps }>
 				<InnerBlocks
-					template={ [ [ 'wpsp/accordion-item', {} ] ] }
+					template={ [ [ 'wpcomsp/accordion-item', {} ] ] }
 					renderAppender={ InnerBlocks.DefaultBlockAppender }
 				/>
 			</div>

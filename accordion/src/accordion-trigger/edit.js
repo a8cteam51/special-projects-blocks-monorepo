@@ -119,7 +119,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					blockProps.className,
 					colorProps.className,
 					borderProps.className,
-					'wpsp-accordion-item__heading',
+					'wpcomsp-accordion-item__heading',
 					{
 						[ `has-custom-font-size` ]: blockProps.style.fontSize,
 						[ `icon-position-left` ]: iconPosition === 'left',
@@ -133,7 +133,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				} }
 			>
 				<button
-					className={ clsx( 'wpsp-accordion-item__toggle' ) }
+					className={ clsx( 'wpcomsp-accordion-item__toggle' ) }
 					style={ {
 						...spacingProps.style,
 					} }
@@ -148,9 +148,12 @@ export default function Edit( { attributes, setAttributes } ) {
 						placeholder={ __( 'Add text...' ) }
 					/>
 					<span
-						className={ clsx( `wpsp-accordion-item__toggle-icon`, {
-							[ `has-icon-${ icon }` ]: icon,
-						} ) }
+						className={ clsx(
+							`wpcomsp-accordion-item__toggle-icon`,
+							{
+								[ `has-icon-${ icon }` ]: icon,
+							}
+						) }
 						style={ {
 							// TO-DO: make this configurable
 							width: `1.2em`,

@@ -1,14 +1,17 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "wpsp/accordion-item",
+	"name": "wpcomsp/accordion-item",
 	"version": "0.1.0",
-	"title": "Item",
+	"title": "Accordion",
 	"category": "design",
-	"description": "Accordion item block for displaying hidden content via a toggle.",
+	"description": "A single accordion that displays a header and expandable content.",
 	"example": {},
-	"parent": [ "wpsp/accordion" ],
-	"allowedBlocks": [ "wpsp/accordion-trigger", "wpsp/accordion-content" ],
+	"parent": [ "wpcomsp/accordion-group" ],
+	"allowedBlocks": [
+		"wpcomsp/accordion-trigger",
+		"wpcomsp/accordion-content"
+	],
 	"supports": {
 		"align": [ "wide", "full" ],
 		"color": {
