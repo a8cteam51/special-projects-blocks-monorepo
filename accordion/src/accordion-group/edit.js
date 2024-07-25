@@ -6,6 +6,11 @@ import {
 import { __ } from '@wordpress/i18n';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 
+const ACCORDION_BLOCK_NAME = 'wpcomsp/accordion-item';
+const ACCORDION_BLOCK = {
+	name: ACCORDION_BLOCK_NAME,
+};
+
 export default function Edit( { attributes: { autoclose }, setAttributes } ) {
 	const blockProps = useBlockProps();
 
@@ -27,8 +32,8 @@ export default function Edit( { attributes: { autoclose }, setAttributes } ) {
 			</InspectorControls>
 			<div { ...blockProps }>
 				<InnerBlocks
-					template={ [ [ 'wpcomsp/accordion-item', {} ] ] }
-					renderAppender={ InnerBlocks.DefaultBlockAppender }
+					defaultBlock={ ACCORDION_BLOCK }
+					directInsert
 				/>
 			</div>
 		</>
