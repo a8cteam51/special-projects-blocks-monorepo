@@ -69,34 +69,34 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 					>
 						<ToggleGroupControlOptionIcon
-							label=""
-							icon={ false }
-							value={ false }
-						/>
-						<ToggleGroupControlOptionIcon
-							label="plus"
+							label="Plus"
 							icon={ plus }
 							value="plus"
 						/>
 						<ToggleGroupControlOptionIcon
-							label="chevron"
+							label="Chevron"
 							icon={ chevron }
 							value="chevron"
 						/>
 						<ToggleGroupControlOptionIcon
-							label="circle-plus"
+							label="Circle Plus"
 							icon={ circlePlus }
 							value="circlePlus"
 						/>
 						<ToggleGroupControlOptionIcon
-							label="caret-down"
+							label="Caret"
 							icon={ caret }
 							value="caret"
 						/>
 						<ToggleGroupControlOptionIcon
-							label="chevron-right"
+							label="Chevron Right"
 							icon={ chevronRight }
 							value="chevronRight"
+						/>
+						<ToggleGroupControlOptionIcon
+							label="None"
+							icon={ false }
+							value={ false }
 						/>
 					</ToggleGroupControl>
 					<ToggleGroupControl
