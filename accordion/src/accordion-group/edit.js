@@ -1,6 +1,6 @@
 import {
-	InnerBlocks,
 	useBlockProps,
+	useInnerBlocksProps,
 	InspectorControls,
 } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
@@ -13,6 +13,12 @@ const ACCORDION_BLOCK = {
 
 export default function Edit( { attributes: { autoclose }, setAttributes } ) {
 	const blockProps = useBlockProps();
+
+	const innerBlocksProps = useInnerBlocksProps( blockProps, {
+		template: [ [ ACCORDION_BLOCK_NAME ], [ ACCORDION_BLOCK_NAME ] ],
+		defaultBlock: ACCORDION_BLOCK,
+		directInsert: true,
+	} );
 
 	return (
 		<>
@@ -30,12 +36,7 @@ export default function Edit( { attributes: { autoclose }, setAttributes } ) {
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<div { ...blockProps }>
-				<InnerBlocks
-					defaultBlock={ ACCORDION_BLOCK }
-					directInsert
-				/>
-			</div>
+			<div { ...innerBlocksProps } />
 		</>
 	);
 }

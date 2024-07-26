@@ -30,7 +30,6 @@ while ( $p->next_tag() ){
     if ( $p->has_class( 'wp-block-wpcomsp-accordion-content' ) ) {
         $p->set_attribute( 'aria-labelledby', $unique_id );
         $p->set_attribute( 'data-wp-bind--aria-hidden', '!state.isOpen' );
-        $p->set_attribute( 'data-wp-bind--hidden', '!state.isOpen' );
     }
 }
 

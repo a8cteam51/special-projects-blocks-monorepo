@@ -1,30 +1,42 @@
 import { __ } from '@wordpress/i18n';
 import {
-	InnerBlocks,
 	useBlockProps,
+	useInnerBlocksProps,
 	__experimentalUseBorderProps as useBorderProps,
 	__experimentalUseColorProps as useColorProps,
 	__experimentalGetSpacingClassesAndStyles as useSpacingProps,
 	__experimentalGetShadowClassesAndStyles as useShadowProps,
-	store as blockEditorStore,
 } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
 import clsx from 'clsx';
 
-export default function Edit( { attributes, clientId } ) {
-	const { allowedBlocks, templateLock } = attributes;
-	const blockProps = useBlockProps();
+export default function Edit( { attributes } ) {
+	const { allowedBlocks, templateLock, openByDefault, isSelected } =
+		attributes;
 	const borderProps = useBorderProps( attributes );
 	const colorProps = useColorProps( attributes );
 	const spacingProps = useSpacingProps( attributes );
 	const shadowProps = useShadowProps( attributes );
 
-	const isSelected = useSelect(
-		( select ) => {
-			const { isBlockSelected, hasSelectedInnerBlock } = select( blockEditorStore );
-			return isBlockSelected( clientId ) || hasSelectedInnerBlock( clientId, true )
+	const blockProps = useBlockProps();
+	const innerBlocksProps = useInnerBlocksProps(
+		{
+			className: 'wpcomsp-accordion-content__wrapper',
+			style: {
+				...spacingProps.style,
+			},
 		},
-		[ clientId ]
+		{
+			allowedBlocks,
+			template: [
+				[
+					'core/paragraph',
+					{
+						placeholder: 'Accordion item content goes here.',
+					},
+				],
+			],
+			templateLock,
+		}
 	);
 
 	return (
@@ -43,28 +55,9 @@ export default function Edit( { attributes, clientId } ) {
 				...colorProps.style,
 				...shadowProps.style,
 			} }
-			hidden={ ! isSelected }
+			ariaHidden={ ! isSelected && ! openByDefault }
 		>
-			<div
-				className="wpcomsp-accordion-content__wrapper"
-				style={ {
-					...spacingProps.style,
-				} }
-			>
-				<InnerBlocks
-					allowedBlocks={ allowedBlocks }
-					template={ [
-						[
-							'core/paragraph',
-							{
-								placeholder:
-									'Accordion item content goes here.',
-							},
-						],
-					] }
-					templateLock={ templateLock }
-				/>
-			</div>
+			<div { ...innerBlocksProps } />
 		</div>
 	);
 }
