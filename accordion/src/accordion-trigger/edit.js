@@ -145,7 +145,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						onChange={ ( newTitle ) =>
 							setAttributes( { title: newTitle } )
 						}
-						placeholder={ __( 'Add text...' ) }
+						placeholder={ __( 'Accordion title' ) }
 					/>
 					<span
 						className={ clsx(

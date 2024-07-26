@@ -27,14 +27,7 @@ export default function Edit( { attributes } ) {
 		},
 		{
 			allowedBlocks,
-			template: [
-				[
-					'core/paragraph',
-					{
-						placeholder: 'Accordion item content goes here.',
-					},
-				],
-			],
+			template: [ [ 'core/paragraph', {} ] ],
 			templateLock,
 		}
 	);
