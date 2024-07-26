@@ -48,7 +48,7 @@ export default function Edit( { attributes } ) {
 				...colorProps.style,
 				...shadowProps.style,
 			} }
-			ariaHidden={ ! isSelected && ! openByDefault }
+			aria-hidden={ ! isSelected && ! openByDefault }
 		>
 			<div { ...innerBlocksProps } />
 		</div>
