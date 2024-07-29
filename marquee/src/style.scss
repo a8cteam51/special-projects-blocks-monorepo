@@ -14,8 +14,6 @@
 	position: relative;
 }
 
-// TODO: This should be a class but for some reason I can't set the class
-// property on the block in render.php without it messing up the HTML output.
 .wp-block-wpcomsp-marquee {
 	overflow: clip;
 	display: flex;
