@@ -1,0 +1,52 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/accordion-group",
+	"version": "0.1.0",
+	"title": "Accordion Group",
+	"category": "design",
+	"description": "A group of headers and associated expandable content.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"background": {
+			"backgroundImage": true,
+			"backgroundSize": true,
+			"__experimentalDefaultControls": {
+				"backgroundImage": true
+			}
+		},
+		"color": {
+			"background": true,
+			"gradient": true
+		},
+		"spacing": {
+			"padding": true,
+			"margin": [ "top", "bottom" ],
+			"blockGap": true
+		},
+		"shadow": true,
+		"layout": true,
+		"interactivity": true
+	},
+	"attributes": {
+		"iconPosition": {
+			"type": "string",
+			"default": "right"
+		},
+		"autoclose": {
+			"type": "boolean",
+			"default": false
+		},
+		"allowedBlocks": {
+			"type": "array"
+		}
+	},
+	"allowedBlocks": [ "wpcomsp/accordion-item" ],
+	"textdomain": "accordion",
+	"editorScript": "file:./index.js",
+	"viewScriptModule": "file:./view.js",
+	"render": "file:./render.php",
+	"style": "file:./style-index.css"
+}
