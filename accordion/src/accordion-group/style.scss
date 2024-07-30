@@ -39,8 +39,10 @@
 	width: 100%;
 }
 
+.is-layout-flow > .wp-block-wpcomsp-accordion-content,
 .wp-block-wpcomsp-accordion-content {
 	overflow: hidden;
+	margin: 0;
 }
 
 
