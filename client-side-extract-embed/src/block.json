@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/client-side-extract-embed",
+	"version": "0.1.0",
+	"title": "Client Side Extract Embed",
+	"category": "widgets",
+	"icon": "smiley",
+	"description": "Extracts an embed URL from post content and renders it as an embed block. For use in query loop post templates with region-based client side navigation enabled, where one is unable to read from the post content directly.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"interactivity": true
+	},
+	"textdomain": "client-side-extract-embed",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}
