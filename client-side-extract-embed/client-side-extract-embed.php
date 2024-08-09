@@ -36,7 +36,7 @@ function render_block_client_side_extract_embed( $attributes, $content, $block )
 	$embed_url     = '';
 
 	foreach ( $parsed_blocks as $block ) {
-		if ( 'core/embed' === isset( $block['blockName'] ) && $block['blockName'] ) {
+		if ( isset( $block['blockName'] ) && 'core/embed' === $block['blockName'] ) {
 			if ( isset( $block['attrs']['url'] ) ) {
 				$embed_url = $block['attrs']['url'];
 				break; // Stop the loop once the first embed URL is found
