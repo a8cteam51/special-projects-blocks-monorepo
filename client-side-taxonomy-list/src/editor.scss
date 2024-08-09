@@ -1,0 +1,16 @@
+.client-side-taxonomy-list ul {
+	padding-left: 2.5em;
+
+	ul {
+		margin-top: 6px;
+	}
+}
+
+/* Center alignment for classic themes. */
+[data-align="center"] .client-side-taxonomy-list {
+	text-align: center;
+}
+
+.client-side-taxonomy-list__indentation {
+	padding-left: 16px;
+}

@@ -1,0 +1,75 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/client-side-taxonomy-list",
+	"version": "0.1.0",
+	"title": "Client Side Taxonomy List",
+	"category": "widgets",
+	"description": "Display a list of terms in a selected taxonomy and adds Interactivity API directives to them to enable client-side navigation.",
+	"attributes": {
+		"selectedTaxonomy": {
+			"type": "string",
+			"default": "category"
+		},
+		"displayAsDropdown": {
+			"type": "boolean",
+			"default": false
+		},
+		"showHierarchy": {
+			"type": "boolean",
+			"default": false
+		},
+		"showPostCounts": {
+			"type": "boolean",
+			"default": false
+		},
+		"showOnlyTopLevel": {
+			"type": "boolean",
+			"default": false
+		},
+		"showEmpty": {
+			"type": "boolean",
+			"default": false
+		},
+		"label": {
+			"type": "string",
+			"__experimentalRole": "content"
+		},
+		"showLabel": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"align": true,
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"__experimentalDefaultControls": {
+				"margin": false,
+				"padding": false
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"interactivity": {
+			"clientNavigation": true
+		}
+	},
+	"textdomain": "client-side-taxonomy-list",
+	"editorScript": "file:./index.js",
+	"editorStyle": "client-side-taxonomy-list-editor",
+	"style": "client-side-taxonomy-list"
+}

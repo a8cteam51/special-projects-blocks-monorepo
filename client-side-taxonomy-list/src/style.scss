@@ -1,0 +1,25 @@
+.client-side-taxonomy-list {
+	// This block has customizable padding,
+	// border-box makes that more predictable.
+	box-sizing: border-box;
+
+	&.alignleft {
+
+		/*rtl:ignore*/
+		margin-right: 2em;
+	}
+	&.alignright {
+
+		/*rtl:ignore*/
+		margin-left: 2em;
+	}
+
+	/* Only apply the text align on dropdowns, not lists. */
+	&.client-side-taxonomy-list.aligncenter {
+		text-align: center;
+	}
+	.client-side-taxonomy-list__label {
+		width: 100%;
+		display: block;
+	}
+}
