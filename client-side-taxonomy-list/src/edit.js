@@ -20,7 +20,7 @@ import { __ } from '@wordpress/i18n';
 import { useEntityRecords } from '@wordpress/core-data';
 import { withSelect } from '@wordpress/data';
 
-export default function VideoCategoriesEdit( {
+export default function TaxonomyListEdit( {
 	attributes: {
 		selectedTaxonomy,
 		displayAsDropdown,
@@ -35,7 +35,7 @@ export default function VideoCategoriesEdit( {
 	className,
 } ) {
 	const selectId = useInstanceId(
-		VideoCategoriesEdit,
+		TaxonomyListEdit,
 		'blocks-category-select'
 	);
 	const query = { per_page: -1, hide_empty: ! showEmpty, context: 'view' };
