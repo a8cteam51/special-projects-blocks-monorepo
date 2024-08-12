@@ -1,4 +1,4 @@
-.client-side-taxonomy-list ul {
+.taxonomy-list ul {
 	padding-left: 2.5em;
 
 	ul {
@@ -7,10 +7,10 @@
 }
 
 /* Center alignment for classic themes. */
-[data-align="center"] .client-side-taxonomy-list {
+[data-align="center"] .taxonomy-list {
 	text-align: center;
 }
 
-.client-side-taxonomy-list__indentation {
+.taxonomy-list__indentation {
 	padding-left: 16px;
 }

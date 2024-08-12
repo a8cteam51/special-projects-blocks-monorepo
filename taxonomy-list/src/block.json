@@ -1,9 +1,9 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "wpcomsp/client-side-taxonomy-list",
+	"name": "wpcomsp/taxonomy-list",
 	"version": "0.1.0",
-	"title": "Client Side Taxonomy List",
+	"title": "Taxonomy List",
 	"category": "widgets",
 	"description": "Display a list of terms in a selected taxonomy and adds Interactivity API directives to them to enable client-side navigation.",
 	"attributes": {
@@ -68,8 +68,8 @@
 			"clientNavigation": true
 		}
 	},
-	"textdomain": "client-side-taxonomy-list",
+	"textdomain": "taxonomy-list",
 	"editorScript": "file:./index.js",
-	"editorStyle": "client-side-taxonomy-list-editor",
-	"style": "client-side-taxonomy-list"
+	"editorStyle": "taxonomy-list-editor",
+	"style": "taxonomy-list"
 }

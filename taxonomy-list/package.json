@@ -1,5 +1,5 @@
 {
-	"name": "client-side-taxonomy-list",
+	"name": "taxonomy-list",
 	"version": "0.1.0",
 	"description": "Display a list of terms in a selected taxonomy and adds Interactivity API directives to them to enable client-side navigation.",
 	"author": "The WordPress Contributors",

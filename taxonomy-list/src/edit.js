@@ -70,49 +70,49 @@ export default function TaxonomyListEdit( {
 		);
 	} );
 
-	const { records: categories, isResolving } = useEntityRecords(
+	const { records: terms, isResolving } = useEntityRecords(
 		'taxonomy',
 		selectedTaxonomy,
 		query
 	);
 
-	const getCategoriesList = ( parentId ) => {
-		if ( ! categories?.length ) {
+	const getTermsList = ( parentId ) => {
+		if ( ! terms?.length ) {
 			return [];
 		}
 		if ( parentId === null ) {
-			return categories;
+			return terms;
 		}
-		return categories.filter( ( { parent } ) => parent === parentId );
+		return terms.filter( ( { parent } ) => parent === parentId );
 	};
 
 	const toggleAttribute = ( attributeName ) => ( newValue ) =>
 		setAttributes( { [ attributeName ]: newValue } );
 
-	const renderCategoryName = ( name ) =>
+	const renderTermName = ( name ) =>
 		! name ? __( '(Untitled)' ) : decodeEntities( name ).trim();
 
-	const renderCategoryList = () => {
+	const renderTermList = () => {
 		const parentId = showHierarchy ? 0 : null;
-		const categoriesList = getCategoriesList( parentId );
-		return categoriesList.map( ( category ) =>
-			renderCategoryListItem( category )
+		const termsList = getTermsList( parentId );
+		return termsList.map( ( category ) =>
+			renderTermListItem( category )
 		);
 	};
 
-	const renderCategoryListItem = ( category ) => {
-		const childCategories = getCategoriesList( category.id );
+	const renderTermListItem = ( category ) => {
+		const childTerms = getTermsList( category.id );
 		const { id, link, count, name } = category;
 		return (
 			<li key={ id } className={ `cat-item cat-item-${ id }` }>
 				<a href={ link } target="_blank" rel="noreferrer noopener">
-					{ renderCategoryName( name ) }
+					{ renderTermName( name ) }
 				</a>
 				{ showPostCounts && ` (${ count })` }
-				{ showHierarchy && !! childCategories.length && (
+				{ showHierarchy && !! childTerms.length && (
 					<ul className="children">
-						{ childCategories.map( ( childCategory ) =>
-							renderCategoryListItem( childCategory )
+						{ childTerms.map( ( childCategory ) =>
+							renderTermListItem( childCategory )
 						) }
 					</ul>
 				) }
@@ -120,16 +120,16 @@ export default function TaxonomyListEdit( {
 		);
 	};
 
-	const renderCategoryDropdown = () => {
+	const renderTermDropdown = () => {
 		const parentId = showHierarchy ? 0 : null;
-		const categoriesList = getCategoriesList( parentId );
+		const termsList = getTermsList( parentId );
 		return (
 			<>
 				{ showLabel ? (
 					<RichText
 						className="wp-block-categories__label"
 						aria-label={ __( 'Label text' ) }
-						placeholder={ __( 'Categories' ) }
+						placeholder={ __( 'Terms' ) }
 						withoutInteractiveFormatting
 						value={ label }
 						onChange={ ( html ) =>
@@ -138,49 +138,49 @@ export default function TaxonomyListEdit( {
 					/>
 				) : (
 					<VisuallyHidden as="label" htmlFor={ selectId }>
-						{ label ? label : __( 'Categories' ) }
+						{ label ? label : __( 'Terms' ) }
 					</VisuallyHidden>
 				) }
 				<select id={ selectId }>
-					<option>{ __( 'Select Category' ) }</option>
-					{ categoriesList.map( ( category ) =>
-						renderCategoryDropdownItem( category, 0 )
+					<option>{ __( 'Select Term' ) }</option>
+					{ termsList.map( ( category ) =>
+						renderTermDropdownItem( category, 0 )
 					) }
 				</select>
 			</>
 		);
 	};
 
-	const renderCategoryDropdownItem = ( category, level ) => {
+	const renderTermDropdownItem = ( category, level ) => {
 		const { id, count, name } = category;
-		const childCategories = getCategoriesList( id );
+		const childTerms = getTermsList( id );
 		return [
 			<option key={ id } className={ `level-${ level }` }>
 				{ Array.from( { length: level * 3 } ).map( () => '\xa0' ) }
-				{ renderCategoryName( name ) }
+				{ renderTermName( name ) }
 				{ showPostCounts && ` (${ count })` }
 			</option>,
 			showHierarchy &&
-				!! childCategories.length &&
-				childCategories.map( ( childCategory ) =>
-					renderCategoryDropdownItem( childCategory, level + 1 )
+				!! childTerms.length &&
+				childTerms.map( ( childCategory ) =>
+					renderTermDropdownItem( childCategory, level + 1 )
 				),
 		];
 	};
 
 	const TagName =
-		!! categories?.length && ! displayAsDropdown && ! isResolving
+		!! terms?.length && ! displayAsDropdown && ! isResolving
 			? 'ul'
 			: 'div';
 
 	let classes = className;
 	classes +=
-		!! categories?.length && ! displayAsDropdown && ! isResolving
-			? 'wp-block-categories-list'
+		!! terms?.length && ! displayAsDropdown && ! isResolving
+			? 'wp-block-taxonomy-list-terms'
 			: '';
 	classes +=
-		!! categories?.length && displayAsDropdown && ! isResolving
-			? 'wp-block-categories-dropdown'
+		!! terms?.length && displayAsDropdown && ! isResolving
+			? 'wp-block-taxonomy-list-terms-dropdown'
 			: '';
 
 	const blockProps = useBlockProps( {
@@ -218,13 +218,13 @@ export default function TaxonomyListEdit( {
 					/>
 					<ToggleControl
 						__nextHasNoMarginBottom
-						label={ __( 'Show only top level categories' ) }
+						label={ __( 'Show only top level terms' ) }
 						checked={ showOnlyTopLevel }
 						onChange={ toggleAttribute( 'showOnlyTopLevel' ) }
 					/>
 					<ToggleControl
 						__nextHasNoMarginBottom
-						label={ __( 'Show empty categories' ) }
+						label={ __( 'Show empty terms' ) }
 						checked={ showEmpty }
 						onChange={ toggleAttribute( 'showEmpty' ) }
 					/>
@@ -239,11 +239,11 @@ export default function TaxonomyListEdit( {
 				</PanelBody>
 			</InspectorControls>
 			{ isResolving && (
-				<Placeholder label={ __( 'Video Categories' ) }>
+				<Placeholder label={ __( 'Taxonomy Terms' ) }>
 					<Spinner />
 				</Placeholder>
 			) }
-			{ ! isResolving && categories?.length === 0 && (
+			{ ! isResolving && terms?.length === 0 && (
 				<p>
 					{ __(
 						'Your site does not have any posts, so there is nothing to display here at the moment.'
@@ -251,10 +251,10 @@ export default function TaxonomyListEdit( {
 				</p>
 			) }
 			{ ! isResolving &&
-				categories?.length > 0 &&
+				terms?.length > 0 &&
 				( displayAsDropdown
-					? renderCategoryDropdown()
-					: renderCategoryList() ) }
+					? renderTermDropdown()
+					: renderTermList() ) }
 		</TagName>
 	);
 }

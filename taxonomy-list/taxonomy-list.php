@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Client Side Taxonomy List
+ * Plugin Name:       Taxonomy List
  * Description:       Display a list of terms in a selected taxonomy and
  *                    adds Interactivity API directives to them to enable
  *                    client-side navigation.
@@ -25,7 +25,7 @@
  *
  * @return string Returns the categories list/dropdown markup.
  */
-function render_block_video_categories( $attributes ) {
+function render_block_taxonomy_list( $attributes ) {
 	static $block_id = 0;
 	++$block_id;
 
@@ -72,7 +72,7 @@ function render_block_video_categories( $attributes ) {
 		$type           = 'list';
 	}
 
-	$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => "client-side-taxonomy-list-{$type}" ) );
+	$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => "taxonomy-list-{$type}" ) );
 
 	$p = new WP_HTML_Tag_Processor( $items_markup );
 
@@ -97,18 +97,18 @@ function render_block_video_categories( $attributes ) {
  *
  * @return string Returns the dropdown onChange redirection script.
  */
-function build_dropdown_script_block_video_categories( $dropdown_id ) {
+function build_dropdown_script_block_taxonomy_terms( $dropdown_id ) {
 	ob_start();
 	?>
 	<script>
 	( function() {
 		var dropdown = document.getElementById( '<?php echo esc_js( $dropdown_id ); ?>' );
-		function onCatChange() {
+		function onTermChange() {
 			if ( dropdown.options[ dropdown.selectedIndex ].value > 0 ) {
 				location.href = "<?php echo esc_url( home_url() ); ?>/?cat=" + dropdown.options[ dropdown.selectedIndex ].value;
 			}
 		}
-		dropdown.onchange = onCatChange;
+		dropdown.onchange = onTermChange;
 	})();
 	</script>
 	<?php
@@ -122,12 +122,12 @@ function build_dropdown_script_block_video_categories( $dropdown_id ) {
  *
  * @return void
  */
-function register_block_video_categories() {
+function register_block_taxonomy_list() {
 	register_block_type_from_metadata(
 		plugin_dir_path( __FILE__ ) . 'build',
 		array(
-			'render_callback' => 'render_block_video_categories',
+			'render_callback' => 'render_block_taxonomy_list',
 		)
 	);
 }
-add_action( 'init', 'register_block_video_categories' );
+add_action( 'init', 'register_block_taxonomy_list' );
