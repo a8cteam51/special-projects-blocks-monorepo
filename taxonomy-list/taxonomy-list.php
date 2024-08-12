@@ -72,19 +72,12 @@ function render_block_taxonomy_list( $attributes ) {
 		$type           = 'list';
 	}
 
-	$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => "taxonomy-list-{$type}" ) );
-
-	$p = new WP_HTML_Tag_Processor( $items_markup );
-
-	while ( $p->next_tag( 'a' ) ) {
-		$p->set_attribute( 'data-wp-on--click', 'core/query::actions.navigate' );
-	}
-	$processed_items_markup = $p->get_updated_html();
+	$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => "wp-block-categories-{$type}" ) );
 
 	return sprintf(
 		$wrapper_markup,
 		$wrapper_attributes,
-		$processed_items_markup
+		$items_markup
 	);
 }
 
