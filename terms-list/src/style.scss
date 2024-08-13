@@ -1,4 +1,4 @@
-.taxonomy-list {
+.terms-list {
 	// This block has customizable padding,
 	// border-box makes that more predictable.
 	box-sizing: border-box;
@@ -15,10 +15,10 @@
 	}
 
 	/* Only apply the text align on dropdowns, not lists. */
-	&.taxonomy-list.aligncenter {
+	&.terms-list.aligncenter {
 		text-align: center;
 	}
-	.taxonomy-list__label {
+	.terms-list__label {
 		width: 100%;
 		display: block;
 	}

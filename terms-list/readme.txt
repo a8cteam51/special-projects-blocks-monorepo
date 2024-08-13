@@ -1,4 +1,4 @@
-=== Client Side Taxonomy List ===
+=== Terms List ===
 Contributors:      The WordPress Contributors
 Tags:              block
 Tested up to:      6.1

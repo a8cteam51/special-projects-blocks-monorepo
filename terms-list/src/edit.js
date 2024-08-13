@@ -20,7 +20,7 @@ import { __ } from '@wordpress/i18n';
 import { useEntityRecords } from '@wordpress/core-data';
 import { withSelect } from '@wordpress/data';
 
-export default function TaxonomyListEdit( {
+export default function TermsListEdit( {
 	attributes: {
 		selectedTaxonomy,
 		displayAsDropdown,
@@ -35,7 +35,7 @@ export default function TaxonomyListEdit( {
 	className,
 } ) {
 	const selectId = useInstanceId(
-		TaxonomyListEdit,
+		TermsListEdit,
 		'blocks-category-select'
 	);
 	const query = { per_page: -1, hide_empty: ! showEmpty, context: 'view' };
@@ -95,24 +95,24 @@ export default function TaxonomyListEdit( {
 	const renderTermList = () => {
 		const parentId = showHierarchy ? 0 : null;
 		const termsList = getTermsList( parentId );
-		return termsList.map( ( category ) =>
-			renderTermListItem( category )
+		return termsList.map( ( term ) =>
+			renderTermListItem( term )
 		);
 	};
 
-	const renderTermListItem = ( category ) => {
-		const childTerms = getTermsList( category.id );
-		const { id, link, count, name } = category;
+	const renderTermListItem = ( term ) => {
+		const childTerms = getTermsList( term.id );
+		const { id, link, count, name } = term;
 		return (
-			<li key={ id } className={ `cat-item cat-item-${ id }` }>
+			<li key={ id } className={ `term-item term-item-${ id }` }>
 				<a href={ link } target="_blank" rel="noreferrer noopener">
 					{ renderTermName( name ) }
 				</a>
 				{ showPostCounts && ` (${ count })` }
 				{ showHierarchy && !! childTerms.length && (
 					<ul className="children">
-						{ childTerms.map( ( childCategory ) =>
-							renderTermListItem( childCategory )
+						{ childTerms.map( ( childTerm ) =>
+							renderTermListItem( childTerm )
 						) }
 					</ul>
 				) }
@@ -151,8 +151,8 @@ export default function TaxonomyListEdit( {
 		);
 	};
 
-	const renderTermDropdownItem = ( category, level ) => {
-		const { id, count, name } = category;
+	const renderTermDropdownItem = ( term, level ) => {
+		const { id, count, name } = term;
 		const childTerms = getTermsList( id );
 		return [
 			<option key={ id } className={ `level-${ level }` }>
@@ -162,8 +162,8 @@ export default function TaxonomyListEdit( {
 			</option>,
 			showHierarchy &&
 				!! childTerms.length &&
-				childTerms.map( ( childCategory ) =>
-					renderTermDropdownItem( childCategory, level + 1 )
+				childTerms.map( ( childTerm ) =>
+					renderTermDropdownItem( childTerm, level + 1 )
 				),
 		];
 	};
@@ -176,11 +176,11 @@ export default function TaxonomyListEdit( {
 	let classes = className;
 	classes +=
 		!! terms?.length && ! displayAsDropdown && ! isResolving
-			? 'wp-block-taxonomy-list-terms'
+			? 'wp-block-terms-list'
 			: '';
 	classes +=
 		!! terms?.length && displayAsDropdown && ! isResolving
-			? 'wp-block-taxonomy-list-terms-dropdown'
+			? 'wp-block-terms-dropdown'
 			: '';
 
 	const blockProps = useBlockProps( {
@@ -239,7 +239,7 @@ export default function TaxonomyListEdit( {
 				</PanelBody>
 			</InspectorControls>
 			{ isResolving && (
-				<Placeholder label={ __( 'Taxonomy Terms' ) }>
+				<Placeholder label={ __( 'Terms' ) }>
 					<Spinner />
 				</Placeholder>
 			) }

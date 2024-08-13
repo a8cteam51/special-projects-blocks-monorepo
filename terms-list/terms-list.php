@@ -1,16 +1,14 @@
 <?php
 /**
- * Plugin Name:       Taxonomy List
- * Description:       Display a list of terms in a selected taxonomy and
- *                    adds Interactivity API directives to them to enable
- *                    client-side navigation.
+ * Plugin Name:       Terms List
+ * Description:       Display a list of terms in a selected taxonomy.
  * Version:           0.1.0
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Author:            The WordPress Contributors
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       client-side-taxonomy-list
+ * Text Domain:       terms-list
  *
  * @package           wpcomsp
  *
@@ -23,9 +21,9 @@
  *
  * @param array $attributes The block attributes.
  *
- * @return string Returns the categories list/dropdown markup.
+ * @return string Returns the terms list/dropdown markup.
  */
-function render_block_taxonomy_list( $attributes ) {
+function render_block_terms_list( $attributes ) {
 	static $block_id = 0;
 	++$block_id;
 
@@ -47,13 +45,13 @@ function render_block_taxonomy_list( $attributes ) {
 	}
 
 	if ( ! empty( $attributes['displayAsDropdown'] ) ) {
-		$id                       = 'client-side-taxonomy-list-' . $block_id;
+		$id                       = 'terms-list-' . $block_id;
 		$args['id']               = $id;
-		$args['show_option_none'] = __( 'Select Video Category' );
+		$args['show_option_none'] = __( 'Select Term' );
 		$show_label               = empty( $attributes['showLabel'] ) ? ' screen-reader-text' : '';
-		$default_label            = __( 'Video Categories' );
+		$default_label            = __( 'Terms' );
 		$label_text               = ! empty( $attributes['label'] ) ? $attributes['label'] : $default_label;
-		$wrapper_markup           = '<div %1$s><label class="client-side-taxonomy-list__label' . $show_label . '" for="' . esc_attr( $id ) . '">' . $label_text . '</label>%2$s</div>';
+		$wrapper_markup           = '<div %1$s><label class="client-side-terms-list__label' . $show_label . '" for="' . esc_attr( $id ) . '">' . $label_text . '</label>%2$s</div>';
 		$items_markup             = wp_dropdown_categories( $args );
 		$type                     = 'dropdown';
 
@@ -72,7 +70,7 @@ function render_block_taxonomy_list( $attributes ) {
 		$type           = 'list';
 	}
 
-	$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => "wp-block-categories-{$type}" ) );
+	$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => "wp-block-terms-{$type}" ) );
 
 	return sprintf(
 		$wrapper_markup,
@@ -82,7 +80,7 @@ function render_block_taxonomy_list( $attributes ) {
 }
 
 /**
- * Generates the inline script for a categories dropdown field.
+ * Generates the inline script for a terms dropdown field.
  *
  * @since 5.0.0
  *
@@ -90,7 +88,7 @@ function render_block_taxonomy_list( $attributes ) {
  *
  * @return string Returns the dropdown onChange redirection script.
  */
-function build_dropdown_script_block_taxonomy_terms( $dropdown_id ) {
+function build_dropdown_script_block_terms_list ( $dropdown_id ) {
 	ob_start();
 	?>
 	<script>
@@ -109,18 +107,18 @@ function build_dropdown_script_block_taxonomy_terms( $dropdown_id ) {
 }
 
 /**
- * Registers the `core/categories` block on server.
+ * Registers the `wpcomsp/terms-list` block on server.
  *
  * @since 5.0.0
  *
  * @return void
  */
-function register_block_taxonomy_list() {
+function register_block_terms_list() {
 	register_block_type_from_metadata(
 		plugin_dir_path( __FILE__ ) . 'build',
 		array(
-			'render_callback' => 'render_block_taxonomy_list',
+			'render_callback' => 'render_block_terms_list',
 		)
 	);
 }
-add_action( 'init', 'register_block_taxonomy_list' );
+add_action( 'init', 'register_block_terms_list' );
