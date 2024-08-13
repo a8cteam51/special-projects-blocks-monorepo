@@ -32,7 +32,6 @@ import {
 	store as coreStore,
 } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
-import { parse } from '@wordpress/blocks';
 import { SandBox } from '@wordpress/components';
 import { getAuthority } from '@wordpress/url';
 import { View } from '@wordpress/primitives';
@@ -46,7 +45,7 @@ import { View } from '@wordpress/primitives';
  * @return {Element} Element to render.
  */
 export default function Edit( props ) {
-	const { attributes, context = {}, className } = props;
+	const { context = {}, className } = props;
 	const { postType, postId } = context;
 
 	const [ blocks ] = useEntityBlockEditor(
@@ -70,17 +69,11 @@ export default function Edit( props ) {
 
 	const {
 		preview,
-		fetching,
-		themeSupportsResponsive,
-		hasResolved,
 	} = useSelect(
 		( select ) => {
 			const {
 				getEmbedPreview,
-				isPreviewEmbedFallback,
-				isRequestingEmbedPreview,
 				getThemeSupports,
-				hasFinishedResolution,
 			} = select( coreStore );
 			if ( ! embedUrl ) {
 				return { fetching: false, cannotEmbed: false };
@@ -88,21 +81,15 @@ export default function Edit( props ) {
 
 			const embedPreview = getEmbedPreview( embedUrl );
 
-			const previewIsFallback = isPreviewEmbedFallback( embedUrl );
-
 			// The external oEmbed provider does not exist. We got no type info and no html.
 			const badEmbedProvider =
 				embedPreview?.html === false &&
 				embedPreview?.type === undefined;
-			// Some WordPress URLs that can't be embedded will cause the API to return
-			// a valid JSON response with no HTML and `data.status` set to 404, rather
-			// than generating a fallback response as other embeds do.
-			const wordpressCantEmbed = embedPreview?.data?.status === 404;
+
 			const validPreview =
-				!! embedPreview && ! badEmbedProvider && ! wordpressCantEmbed;
+				!! embedPreview && ! badEmbedProvider;
 			return {
 				preview: validPreview ? embedPreview : undefined,
-				fetching: isRequestingEmbedPreview( embedUrl ),
 				themeSupportsResponsive:
 					getThemeSupports()[ 'responsive-embeds' ],
 			};
@@ -129,25 +116,24 @@ export default function Edit( props ) {
 		'wp-block-embed__wrapper'
 	);
 
-	if ( ! hasResolved || fetching ) {
-		return (
-			<View { ...blockProps }>
-				<figure
-				className={ clsx( className, 'wp-block-embed', {
-					'is-type-video': 'video' === type,
-				} ) }
-			>
-					<div className="wp-block-embed__wrapper">
-						<SandBox
-							html={ html }
-							scripts={ scripts }
-							title={ iframeTitle }
-							type={ type }
-							className={ sandboxClassnames }
-						/>
-					</div>
-				</figure>
-			</View>
-		);
-	}
+	return (
+		<View { ...blockProps }>
+			<figure
+			className={ clsx( className, 'wp-block-embed', {
+				'is-type-video': 'video' === type,
+			} ) }
+		>
+				<div className="wp-block-embed__wrapper">
+					<SandBox
+						html={ html }
+						scripts={ scripts }
+						title={ iframeTitle }
+						type={ type }
+						className={ sandboxClassnames }
+					/>
+				</div>
+			</figure>
+		</View>
+	);
+
 }
