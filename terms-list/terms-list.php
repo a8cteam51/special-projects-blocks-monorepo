@@ -27,7 +27,7 @@ function render_block_terms_list( $attributes ) {
 	static $block_id = 0;
 	++$block_id;
 
-	if (empty( $attributes['selectedTaxonomy']) ) {
+	if ( empty( $attributes['selectedTaxonomy'] ) ) {
 		return '';
 	}
 
@@ -38,7 +38,7 @@ function render_block_terms_list( $attributes ) {
 		'show_count'   => ! empty( $attributes['showPostCounts'] ),
 		'title_li'     => '',
 		'hide_empty'   => empty( $attributes['showEmpty'] ),
-		'taxonomy' 	   => $attributes['selectedTaxonomy'],
+		'taxonomy'     => $attributes['selectedTaxonomy'],
 	);
 	if ( ! empty( $attributes['showOnlyTopLevel'] ) && $attributes['showOnlyTopLevel'] ) {
 		$args['parent'] = 0;
@@ -88,7 +88,7 @@ function render_block_terms_list( $attributes ) {
  *
  * @return string Returns the dropdown onChange redirection script.
  */
-function build_dropdown_script_block_terms_list ( $dropdown_id ) {
+function build_dropdown_script_block_terms_list( $dropdown_id ) {
 	ob_start();
 	?>
 	<script>

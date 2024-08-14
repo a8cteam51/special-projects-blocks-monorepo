@@ -34,10 +34,7 @@ export default function TermsListEdit( {
 	setAttributes,
 	className,
 } ) {
-	const selectId = useInstanceId(
-		TermsListEdit,
-		'blocks-category-select'
-	);
+	const selectId = useInstanceId( TermsListEdit, 'blocks-category-select' );
 	const query = { per_page: -1, hide_empty: ! showEmpty, context: 'view' };
 	if ( showOnlyTopLevel ) {
 		query.parent = 0;
@@ -95,9 +92,7 @@ export default function TermsListEdit( {
 	const renderTermList = () => {
 		const parentId = showHierarchy ? 0 : null;
 		const termsList = getTermsList( parentId );
-		return termsList.map( ( term ) =>
-			renderTermListItem( term )
-		);
+		return termsList.map( ( term ) => renderTermListItem( term ) );
 	};
 
 	const renderTermListItem = ( term ) => {
@@ -169,9 +164,7 @@ export default function TermsListEdit( {
 	};
 
 	const TagName =
-		!! terms?.length && ! displayAsDropdown && ! isResolving
-			? 'ul'
-			: 'div';
+		!! terms?.length && ! displayAsDropdown && ! isResolving ? 'ul' : 'div';
 
 	let classes = className;
 	classes +=
