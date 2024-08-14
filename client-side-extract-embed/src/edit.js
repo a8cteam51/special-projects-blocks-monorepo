@@ -1,11 +1,4 @@
 /**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
- */
-import { __ } from '@wordpress/i18n';
-
-/**
  * External dependencies
  */
 import clsx from 'clsx';
@@ -25,12 +18,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
  */
 import './editor.scss';
-
-import {
-	useEntityProp,
-	useEntityBlockEditor,
-	store as coreStore,
-} from '@wordpress/core-data';
+import { useEntityBlockEditor, store as coreStore } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
 import { SandBox } from '@wordpress/components';
 import { getAuthority } from '@wordpress/url';
@@ -40,7 +28,7 @@ import { View } from '@wordpress/primitives';
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
+ * @param {Object} props Properties passed from the editor.
  *
  * @return {Element} Element to render.
  */
@@ -48,33 +36,26 @@ export default function Edit( props ) {
 	const { context = {}, className } = props;
 	const { postType, postId } = context;
 
-	const [ blocks ] = useEntityBlockEditor(
-		'postType',
-		postType,
-		{ id: postId }
-	);
+	const [ blocks ] = useEntityBlockEditor( 'postType', postType, {
+		id: postId,
+	} );
 
 	const blockProps = useBlockProps();
 
 	let embedUrl = '';
 
 	for ( const block of blocks ) {
-		if ( block['name'] && block['name'] === 'core/embed' ) {
+		if ( block.name && block.name === 'core/embed' ) {
 			if ( block.attributes?.url ) {
 				embedUrl = block.attributes.url;
 				break; // Stop the loop once the first embed URL is found
 			}
 		}
-	};
+	}
 
-	const {
-		preview,
-	} = useSelect(
+	const { preview } = useSelect(
 		( select ) => {
-			const {
-				getEmbedPreview,
-				getThemeSupports,
-			} = select( coreStore );
+			const { getEmbedPreview, getThemeSupports } = select( coreStore );
 			if ( ! embedUrl ) {
 				return { fetching: false, cannotEmbed: false };
 			}
@@ -86,8 +67,7 @@ export default function Edit( props ) {
 				embedPreview?.html === false &&
 				embedPreview?.type === undefined;
 
-			const validPreview =
-				!! embedPreview && ! badEmbedProvider;
+			const validPreview = !! embedPreview && ! badEmbedProvider;
 			return {
 				preview: validPreview ? embedPreview : undefined,
 				themeSupportsResponsive:
@@ -97,7 +77,7 @@ export default function Edit( props ) {
 		[ embedUrl ]
 	);
 
-	if(!preview) {
+	if ( ! preview ) {
 		return null;
 	}
 
@@ -105,24 +85,17 @@ export default function Edit( props ) {
 
 	const html = preview.html;
 	const embedSourceUrl = getAuthority( embedUrl );
-	const iframeTitle = sprintf(
-		// translators: %s: host providing embed content e.g: www.youtube.com
-		__( 'Embedded content from %s' ),
-		embedSourceUrl
-	);
+	const iframeTitle = `Embedded content from ${ embedSourceUrl }`;
 
-	const sandboxClassnames = clsx(
-		type,
-		'wp-block-embed__wrapper'
-	);
+	const sandboxClassnames = clsx( type, 'wp-block-embed__wrapper' );
 
 	return (
 		<View { ...blockProps }>
 			<figure
-			className={ clsx( className, 'wp-block-embed', {
-				'is-type-video': 'video' === type,
-			} ) }
-		>
+				className={ clsx( className, 'wp-block-embed', {
+					'is-type-video': 'video' === type,
+				} ) }
+			>
 				<div className="wp-block-embed__wrapper">
 					<SandBox
 						html={ html }
@@ -135,5 +108,4 @@ export default function Edit( props ) {
 			</figure>
 		</View>
 	);
-
 }
