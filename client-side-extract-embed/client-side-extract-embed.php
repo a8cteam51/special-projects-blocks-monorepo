@@ -18,7 +18,9 @@
  */
 
 /**
- * Renders the `core/embed` block on server.
+ * Retrieves an embed URL from the post content
+ * and dynamically renders it as an embed block.
+ * Borrows heavily from the core/embed block.
  *
  * @since 5.0.0
  *
@@ -60,6 +62,7 @@ function render_block_client_side_extract_embed( $attributes, $content, $block )
 
 	$parsed = do_blocks( $youtube_block );
 
+	// Create iframe embeds
 	global $wp_embed;
 	$content = $wp_embed->autoembed( $parsed );
 
