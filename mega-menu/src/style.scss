@@ -6,6 +6,8 @@
  */
 
 .wp-block-wpcomsp-mega-menu {
+	text-align: right;
+
 	button {
 		background: transparent;
 		border: none;
@@ -19,6 +21,11 @@
 	.wp-block-wpcomsp-mega-menu__menu-container {
 		height: auto;
 		display: none;
+		max-width: calc(
+			100vw - var(--wp--style--root--padding-right) - var(
+					--wp--style--root--padding-left
+				)
+		);
 		right: 0;
 		overflow: hidden;
 		opacity: 0;
@@ -27,6 +34,10 @@
 		width: var(--wp--style--global--wide-size);
 		visibility: hidden;
 		z-index: 2;
+
+		@media screen and (max-width: 599px) {
+			position: relative;
+		}
 	}
 
 	button[aria-expanded='true'] + .wp-block-wpcomsp-mega-menu__menu-container {
