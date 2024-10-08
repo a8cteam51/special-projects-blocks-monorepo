@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/mega-menu",
+	"version": "0.1.0",
+	"title": "Mega Menu",
+	"category": "theme",
+	"icon": "media-interactive",
+	"description": "Add a menu item that opens a template part area to display as a mega menu.",
+	"attributes": {
+		"label": {
+			"type": "string"
+		},
+		"menuSlug": {
+			"type": "string"
+		}
+	},
+	"example": {},
+	"supports": {
+		"interactivity": true
+	},
+	"textdomain": "mega-menu",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"viewScriptModule": "file:./view.js"
+}
