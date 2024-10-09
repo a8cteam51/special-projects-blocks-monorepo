@@ -1,0 +1,53 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-wpcomsp-mega-menu {
+	list-style: none;
+	text-align: right;
+
+	button {
+		background: transparent;
+		border: none;
+		color: inherit;
+		cursor: pointer;
+		font-size: inherit;
+		font-weight: revert;
+		padding: 0.1em;
+
+		&.active {
+			background: #ccc;
+		}
+	}
+
+	.wp-block-wpcomsp-mega-menu__menu-container {
+		height: auto;
+		display: none;
+		max-width: calc(
+			100vw - var(--wp--style--root--padding-right) - var(
+					--wp--style--root--padding-left
+				)
+		);
+		right: 0;
+		overflow: hidden;
+		opacity: 0;
+		position: absolute;
+		transition: opacity 0.1s linear;
+		width: var(--wp--style--global--wide-size);
+		visibility: hidden;
+		z-index: 2;
+
+		@media screen and (max-width: 599px) {
+			position: relative;
+		}
+	}
+
+	button[aria-expanded='true'] + .wp-block-wpcomsp-mega-menu__menu-container {
+		display: block;
+		opacity: 1;
+		visibility: visible;
+	}
+}
