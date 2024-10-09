@@ -24,6 +24,13 @@ $mega_menu_extra_block_wrapper_attributes = apply_filters( 'wpcomsp_mega_menu_ex
 $mega_menu_button_classes                 = apply_filters( 'wpcomsp_mega_menu_button_classes', array() );
 $mega_menu_container_classes              = apply_filters( 'wpcomsp_mega_menu_container_classes', array( 'wp-block-wpcomsp-mega-menu__menu-container' ) );
 
+wp_interactivity_state(
+	'wpcomsp/mega-menu',
+	array(
+		'selected' => null,
+	)
+);
+
 ?>
 <li
 	<?php echo wp_kses_data( get_block_wrapper_attributes( $mega_menu_extra_block_wrapper_attributes ) ); ?>
@@ -32,9 +39,8 @@ $mega_menu_container_classes              = apply_filters( 'wpcomsp_mega_menu_co
 		echo wp_kses_data(
 			wp_interactivity_data_wp_context(
 				array(
-					'isMenuOpen' => false,
-					'id'         => $mega_menu_blocks_unique_id,
-					'button'     => $mega_menu_blocks_unique_button,
+					'id'     => $mega_menu_blocks_unique_id,
+					'button' => $mega_menu_blocks_unique_button,
 				)
 			)
 		);
@@ -42,12 +48,13 @@ $mega_menu_container_classes              = apply_filters( 'wpcomsp_mega_menu_co
 >
 	<button
 		data-wp-on--click="actions.toggleMenu"
-		data-wp-bind--aria-expanded="context.isMenuOpen"
+		data-wp-bind--aria-expanded="state.isOpen"
 		data-wp-on--keydown="actions.handleMenuKeydown"
 		id="<?php echo esc_attr( $mega_menu_blocks_unique_button ); ?>"
 		aria-haspopup="menu"
 		role="button"
 		aria-controls="<?php echo esc_attr( $mega_menu_blocks_unique_id ); ?>"
+		data-wp-class--active="state.isOpen"
 		class="<?php echo esc_attr( implode( ' ', $mega_menu_button_classes ) ); ?>"
 	>
 		<?php echo esc_html( $mega_menu_blocks_label ); ?>

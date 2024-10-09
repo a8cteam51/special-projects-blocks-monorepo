@@ -6,6 +6,7 @@
  */
 
 .wp-block-wpcomsp-mega-menu {
+	list-style: none;
 	text-align: right;
 
 	button {
@@ -15,7 +16,11 @@
 		cursor: pointer;
 		font-size: inherit;
 		font-weight: revert;
-		padding: 0;
+		padding: 0.1em;
+
+		&.active {
+			background: #ccc;
+		}
 	}
 
 	.wp-block-wpcomsp-mega-menu__menu-container {

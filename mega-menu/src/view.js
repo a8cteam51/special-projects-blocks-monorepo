@@ -4,6 +4,12 @@
 import { store, getContext } from '@wordpress/interactivity';
 
 const { state, actions, helpers } = store( 'wpcomsp/mega-menu', {
+	state: {
+		get isOpen() {
+			const { id } = getContext();
+			return state.selected === id;
+		},
+	},
 	selectors: {
 		toggleText: () => {
 			const context = getContext();
@@ -15,25 +21,27 @@ const { state, actions, helpers } = store( 'wpcomsp/mega-menu', {
 		toggleMenu() {
 			const context = getContext();
 
-			if ( context.isMenuOpen ) {
+			if ( state.isOpen ) {
 				actions.closeMenu();
 			} else {
 				actions.openMenu();
 			}
 		},
 		closeMenu() {
-			const context = getContext();
+			const { id } = getContext();
 
-			context.isMenuOpen = false;
-			const { pageBody } = helpers.getDivs();
+			const { pageBody } = helpers.getDivs( id );
+
+			state.selected = null;
 
 			pageBody.classList.remove( 'mega-menu-open' );
 		},
 		openMenu() {
-			const context = getContext();
-			context.isMenuOpen = true;
+			const { id } = getContext();
 
-			const { pageBody, megaMenuContainer } = helpers.getDivs();
+			state.selected = id;
+
+			const { pageBody, megaMenuContainer } = helpers.getDivs( id );
 
 			pageBody.classList.add( 'mega-menu-open' );
 
@@ -63,9 +71,9 @@ const { state, actions, helpers } = store( 'wpcomsp/mega-menu', {
 		getButton: ( id ) => {
 			return document.getElementById( id );
 		},
-		getDivs: () => {
+		getDivs: ( id ) => {
 			return {
-				megaMenuContainer: document.getElementById( 'mega-menu-1' ),
+				megaMenuContainer: document.getElementById( id ),
 				pageBody: document.querySelector( 'body' ),
 			};
 		},

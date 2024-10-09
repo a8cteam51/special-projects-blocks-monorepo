@@ -4,7 +4,8 @@
 	"name": "wpcomsp/mega-menu",
 	"version": "0.1.0",
 	"title": "Mega Menu",
-	"category": "theme",
+	"category": "design",
+	"parent": [ "core/navigation" ],
 	"icon": "media-interactive",
 	"description": "Add a menu item that opens a template part area to display as a mega menu.",
 	"attributes": {
