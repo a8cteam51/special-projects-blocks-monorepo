@@ -114,3 +114,30 @@ function wpcomsp_extend_query_loop_url_params( $parsed_block ) {
 	return $parsed_block;
 }
 add_filter( 'render_block_data', 'wpcomsp_extend_query_loop_url_params', 10, 1 );
+
+register_block_style(
+	'core/categories',
+	array(
+		'name'         => 'row-wrapped',
+		'label'        => __( 'Row Wrapped', 'textdomain' ),
+		'inline_style' => '.wp-block-categories.is-style-row-wrapped { display: flex; gap: 8px; }',
+		'is_default'   => true,
+	)
+);
+
+register_block_style(
+	'core/categories',
+	array(
+		'name'         => 'row-scroll',
+		'label'        => __( 'Row Scroll', 'textdomain' ),
+		'inline_style' => '.wp-block-categories.is-style-row-scroll { display: flex; gap: 8px; overflow: auto; white-space: nowrap; }',
+	)
+);
+
+register_block_style(
+	'core/categories',
+	array(
+		'name'  => 'column',
+		'label' => __( 'Column', 'textdomain' ),
+	)
+);
