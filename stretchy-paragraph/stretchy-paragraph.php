@@ -71,3 +71,18 @@ function wpcomsp_enqueue_stretchy_paragraph() {
 }
 
 add_action( 'enqueue_block_editor_assets', 'wpcomsp_enqueue_stretchy_paragraph' );
+
+/**
+ * Change markup when `isStretchy` is active.
+ */
+function wpcomsp_extend_stretchy_paragraph( $block_content, $block, $block_instance ) {
+	if ( empty( $block['attrs']['isStretchy'] ) ) {
+		return $block_content;
+	}
+
+	$p = new WP_HTML_Tag_Processor( $block_content );
+	$p->next_tag( 'p' );
+	$p->add_class( 'is-stretchy' );
+	return $p->get_updated_html();
+}
+add_filter( 'render_block_core/paragraph', 'wpcomsp_extend_stretchy_paragraph', 10, 3 );
