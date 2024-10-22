@@ -1,8 +1,7 @@
-const { InspectorControls } = wp.blockEditor;
-const { ToggleControl, PanelBody } = wp.components;
-const { createHigherOrderComponent } = wp.compose;
-const { Fragment, createElement: h } = wp.element;
-const { addFilter } = wp.hooks;
+import { InspectorControls } from "@wordpress/block-editor";
+import { ToggleControl, PanelBody } from "@wordpress/components";
+import { createHigherOrderComponent } from "@wordpress/compose";
+import { addFilter } from "@wordpress/hooks";
 
 const extendCategoriesBlockSettings = (settings, name) => {
 	if (name !== "core/categories") {
@@ -22,7 +21,7 @@ const extendCategoriesBlockSettings = (settings, name) => {
 addFilter(
 	"blocks.registerBlockType",
 	"wpcomsp/extend-categories-block-settings",
-	extendCategoriesBlockSettings
+	extendCategoriesBlockSettings,
 );
 
 const addIsFilterToggle = createHigherOrderComponent((BlockEdit) => {
@@ -30,28 +29,30 @@ const addIsFilterToggle = createHigherOrderComponent((BlockEdit) => {
 		const { attributes, context, name, setAttributes } = props;
 
 		if (name !== "core/categories" || !context.enhancedPagination) {
-			return h(BlockEdit, props);
+			return <BlockEdit {...props} />;
 		}
 
 		const { isFilter } = attributes;
 
-		return h(Fragment, {}, [
-			h(BlockEdit, props),
-			h(InspectorControls, {}, [
-				h(PanelBody, { title: "Settings" }, [
-					h(ToggleControl, {
-						label: "Enable as filter",
-						checked: !!isFilter,
-						onChange: () => setAttributes({ isFilter: !isFilter }),
-					}),
-				]),
-			]),
-		]);
+		return (
+			<>
+				<BlockEdit {...props} />
+				<InspectorControls>
+					<PanelBody title="Settings">
+						<ToggleControl
+							label="Enable as filter"
+							checked={!!isFilter}
+							onChange={() => setAttributes({ isFilter: !isFilter })}
+						/>
+					</PanelBody>
+				</InspectorControls>
+			</>
+		);
 	};
 }, "withIsFilterToggle");
 
 addFilter(
 	"editor.BlockEdit",
 	"wpcomsp/categories-add-is-filter-toggle",
-	addIsFilterToggle
+	addIsFilterToggle,
 );
