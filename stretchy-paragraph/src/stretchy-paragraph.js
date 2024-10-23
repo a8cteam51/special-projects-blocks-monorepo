@@ -1,9 +1,10 @@
 import { registerBlockVariation } from "@wordpress/blocks";
 import { addFilter } from "@wordpress/hooks";
 import { InspectorControls } from "@wordpress/block-editor";
-import { ToggleControl, PanelBody } from "@wordpress/components";
+import { ToggleControl } from "@wordpress/components";
 import { createHigherOrderComponent } from "@wordpress/compose";
 import { RichText } from "@wordpress/block-editor";
+import { __ } from "@wordpress/i18n";
 
 registerBlockVariation("core/paragraph", {
 	name: "paragraph-stretchy",
@@ -66,14 +67,15 @@ addFilter(
 					) : (
 						<BlockEdit {...props} />
 					)}
-					<InspectorControls>
-						<PanelBody title="Experimental">
-							<ToggleControl
-								label="Enable stretchy type"
-								checked={!!isStretchy}
-								onChange={() => setAttributes({ isStretchy: !isStretchy })}
-							/>
-						</PanelBody>
+					<InspectorControls group="advanced">
+						<ToggleControl
+							label={__("Stretchy")}
+							help={__(
+								"Enable this option to make the paragraph stretchy and fit its container width.",
+							)}
+							checked={!!isStretchy}
+							onChange={() => setAttributes({ isStretchy: !isStretchy })}
+						/>
 					</InspectorControls>
 				</>
 			);
