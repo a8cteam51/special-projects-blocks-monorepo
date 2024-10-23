@@ -93,6 +93,11 @@ function wpcomsp_extend_stretchy_paragraph( $block_content, $block, $block_insta
 		return $block_content;
 	}
 
+	// Don't stretch paragraph if it is empty.
+	if ( trim( wp_strip_all_tags( $block_content ) ) === '' ) {
+		return $block_content;
+	}
+
 	$p = new WP_HTML_Tag_Processor( $block_content );
 	$p->next_tag( 'p' );
 	$p->set_attribute( 'aria-hidden', 'true' );

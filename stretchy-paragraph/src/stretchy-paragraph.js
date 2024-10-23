@@ -54,7 +54,7 @@ addFilter(
 
 			return (
 				<>
-					{isStretchy ? (
+					{isStretchy && content.text ? (
 						<div class="wpcomsp-stretchy-paragraph">
 							<div>
 								<BlockEdit {...props} />
