@@ -53,9 +53,12 @@ addFilter(
 
 			const { isStretchy, content } = attributes;
 
+			// Content can be a string or an object.
+			const isNotEmpty = content?.trim() || content?.text;
+
 			return (
 				<>
-					{isStretchy && content.text ? (
+					{isStretchy && isNotEmpty ? (
 						<div class="wpcomsp-stretchy-paragraph">
 							<div>
 								<BlockEdit {...props} />
