@@ -9,6 +9,7 @@ store("wpcomsp/stretchy-paragraph", {
 			tempElement.style.position = "absolute";
 			tempElement.style.whiteSpace = "nowrap";
 			tempElement.style.visibility = "hidden";
+			tempElement.style.fontSize = "200px";
 
 			tempElement.innerHTML = ref.innerHTML;
 			ref.appendChild(tempElement);
@@ -20,7 +21,7 @@ store("wpcomsp/stretchy-paragraph", {
 
 			tempElement.remove();
 
-			ref.style.fontSize = `calc( ${fontSize / textWidth} * 100cqw );`;
+			ref.style.fontSize = `calc( ${fontSize / textWidth} * 100cqw )`;
 			ref.parentElement.style.containerType = "inline-size";
 		},
 	},
