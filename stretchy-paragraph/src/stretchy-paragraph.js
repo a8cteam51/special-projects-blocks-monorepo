@@ -10,6 +10,14 @@ registerBlockVariation("core/paragraph", {
 	title: "Stretchy Paragraph",
 	attributes: {
 		isStretchy: true,
+		style: {
+			spacing: {
+				margin: {
+					top: "0",
+					bottom: "0",
+				},
+			},
+		},
 	},
 	isActive: ["isStretchy"],
 });
