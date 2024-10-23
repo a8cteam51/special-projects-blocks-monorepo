@@ -83,7 +83,7 @@ function wpcomsp_enqueue_stretchy_paragraph_styles() {
 		filemtime( plugin_dir_path( __FILE__ ) . 'src/stretchy-paragraph.css' )
 	);
 }
-add_action( 'wp_enqueue_scripts', 'wpcomsp_enqueue_stretchy_paragraph_styles' );
+add_action( 'enqueue_block_assets', 'wpcomsp_enqueue_stretchy_paragraph_styles' );
 
 /**
  * Change markup when `isStretchy` is active.
