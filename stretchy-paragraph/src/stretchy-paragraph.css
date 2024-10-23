@@ -22,7 +22,7 @@
 			--ratio: tan(atan2(var(--container-width), var(--text-width)));
 
 			font-size: calc(1em * var(--ratio));
-			white-space: nowrap;
+			white-space: nowrap !important;
 		}
 	}
 }
