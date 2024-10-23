@@ -41,11 +41,20 @@ addFilter(
 				return <BlockEdit {...props} />;
 			}
 
-			const { isStretchy } = attributes;
+			const { isStretchy, content } = attributes;
 
 			return (
 				<>
-					<BlockEdit {...props} />
+					{isStretchy ? (
+						<div class="wpcomsp-stretchy-paragraph">
+							<div>
+								<BlockEdit {...props} />
+							</div>
+							<p aria-hidden="true">{content.originalHTML}</p>
+						</div>
+					) : (
+						<BlockEdit {...props} />
+					)}
 					<InspectorControls>
 						<PanelBody title="Experimental">
 							<ToggleControl
