@@ -101,7 +101,7 @@ function wpcomsp_extend_stretchy_paragraph( $block_content, $block, $block_insta
 
 	return <<<HTML
 	<div class="wpcomsp-stretchy-paragraph">
-		<div class="inner-container">
+		<div>
 			$block_content
 		</div>
 		$block_content_hidden

@@ -3,21 +3,23 @@
 	overflow-x: hidden;
 	container-type: inline-size;
 
-	p[aria-hidden='true'] {
+	> p[aria-hidden="true"] {
 		visibility: hidden;
 	}
 
-	.inner-container {
+	> div {
 		flex-grow: 1;
 		container-type: inline-size;
+		--container-width: 100cqi;
 
-		--captured-length: 100cqi;
-		--available-space: var(--captured-length);
+		> p {
+			--text-width: calc(var(--container-width) - 100cqi);
 
-		p {
-			--captured-length: 100cqi;
-			--ratio: tan(atan2(var(--available-space),
-						var(--available-space) - var(--captured-length)));
+			/* Ratio can't be calculated by dividing CSS properties yet.
+			 * Until it is supported, use the following workaround:
+			 * https://dev.to/janeori/css-type-casting-to-numeric-tanatan2-scalars-582j.
+			 */
+			--ratio: tan(atan2(var(--container-width), var(--text-width)));
 
 			font-size: calc(1em * var(--ratio));
 			white-space: nowrap;
@@ -25,8 +27,14 @@
 	}
 }
 
-@property --captured-length {
+@property --container-width {
 	syntax: "<length>";
-	initial-value: 0px;
+	initial-value: 0;
+	inherits: true;
+}
+
+@property --text-width {
+	syntax: "<length>";
+	initial-value: 0;
 	inherits: true;
 }
