@@ -73,18 +73,17 @@ add_action( 'enqueue_block_editor_assets', 'wpcomsp_enqueue_stretchy_paragraph' 
 
 
 /**
- * Load JS necessary to extend the paragraph  in the view.
+ * Enqueue the stylesheet.
  */
-function wpcomsp_enqueue_stretchy_paragraph_view() {
-	wp_enqueue_script_module(
-		'wpcomsp-stretchy-paragraph-view',
-		plugins_url( 'src/view.js', __FILE__ ),
-		array( '@wordpress/interactivity' ),
-		filemtime( plugin_dir_path( __FILE__ ) . 'src/view.js' ),
-		true
+function wpcomsp_enqueue_stretchy_paragraph_styles() {
+	wp_enqueue_style(
+		'wpcomsp-stretchy-paragraph-styles',
+		plugins_url( 'src/stretchy-paragraph.css', __FILE__ ),
+		array(),
+		filemtime( plugin_dir_path( __FILE__ ) . 'src/stretchy-paragraph.css' )
 	);
 }
-add_action( 'wp_enqueue_scripts', 'wpcomsp_enqueue_stretchy_paragraph_view' );
+add_action( 'wp_enqueue_scripts', 'wpcomsp_enqueue_stretchy_paragraph_styles' );
 
 /**
  * Change markup when `isStretchy` is active.
@@ -96,9 +95,17 @@ function wpcomsp_extend_stretchy_paragraph( $block_content, $block, $block_insta
 
 	$p = new WP_HTML_Tag_Processor( $block_content );
 	$p->next_tag( 'p' );
-	$p->add_class( 'is-stretchy' );
-	$p->set_attribute( 'data-wp-interactive', 'wpcomsp/stretchy-paragraph' );
-	$p->set_attribute( 'data-wp-init', 'callbacks.init' );
-	return $p->get_updated_html();
+	$p->set_attribute( 'aria-hidden', 'true' );
+
+	$block_content_hidden = $p->get_updated_html();
+
+	return <<<HTML
+	<div class="wpcomsp-stretchy-paragraph">
+		<div class="inner-container">
+			$block_content
+		</div>
+		$block_content_hidden
+	</div>
+HTML;
 }
 add_filter( 'render_block_core/paragraph', 'wpcomsp_extend_stretchy_paragraph', 10, 3 );

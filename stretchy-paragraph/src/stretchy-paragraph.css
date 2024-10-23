@@ -1,0 +1,32 @@
+.wpcomsp-stretchy-paragraph {
+	display: flex;
+	overflow-x: hidden;
+	container-type: inline-size;
+
+	p[aria-hidden='true'] {
+		visibility: hidden;
+	}
+
+	.inner-container {
+		flex-grow: 1;
+		container-type: inline-size;
+
+		--captured-length: 100cqi;
+		--available-space: var(--captured-length);
+
+		p {
+			--captured-length: 100cqi;
+			--ratio: tan(atan2(var(--available-space),
+						var(--available-space) - var(--captured-length)));
+
+			font-size: calc(1em * var(--ratio));
+			white-space: nowrap;
+		}
+	}
+}
+
+@property --captured-length {
+	syntax: "<length>";
+	initial-value: 0px;
+	inherits: true;
+}
