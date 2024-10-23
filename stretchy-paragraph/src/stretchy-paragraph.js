@@ -3,6 +3,7 @@ import { addFilter } from "@wordpress/hooks";
 import { InspectorControls } from "@wordpress/block-editor";
 import { ToggleControl, PanelBody } from "@wordpress/components";
 import { createHigherOrderComponent } from "@wordpress/compose";
+import { RichText } from "@wordpress/block-editor";
 
 registerBlockVariation("core/paragraph", {
 	name: "paragraph-stretchy",
@@ -50,7 +51,9 @@ addFilter(
 							<div>
 								<BlockEdit {...props} />
 							</div>
-							<p aria-hidden="true">{content.originalHTML}</p>
+							<p aria-hidden="true" {...props}>
+								<RichText.Content value={content} />
+							</p>
 						</div>
 					) : (
 						<BlockEdit {...props} />
