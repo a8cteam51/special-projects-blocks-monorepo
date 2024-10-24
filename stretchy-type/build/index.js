@@ -34,31 +34,71 @@ function Edit({
   setAttributes
 }) {
   const {
-    content
+    content,
+    dimensions
   } = attributes;
-  const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)();
-  const ref = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useRef)();
-  const [resizeListener, sizes] = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_4__.useResizeObserver)();
+  const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(dimensions ? {
+    viewBox: `0 0 ${dimensions}`
+  } : {});
+  const wrapperRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useRef)();
+  const richTextRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useRef)();
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
-    (0,_utils__WEBPACK_IMPORTED_MODULE_5__.adjustFontSize)(ref.current, content);
-  }, [content, sizes, blockProps]);
+    const observer = new ResizeObserver(() => {
+      const {
+        offsetWidth,
+        offsetHeight
+      } = wrapperRef.current;
+      setAttributes({
+        dimensions: `${offsetWidth} ${offsetHeight}`
+      });
+      // This hack is required to prevent RichText to overwrite `white-space`.
+      richTextRef.current.style.whiteSpace = "nowrap";
+    });
+    observer.observe(wrapperRef.current);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
   const onChange = nextContent => {
     setAttributes({
       content: nextContent
     });
-    (0,_utils__WEBPACK_IMPORTED_MODULE_5__.adjustFontSize)(ref.current, nextContent);
+
+    // const { offsetWidth, offsetHeight } = ref.current;
+    // setDimensions(`${offsetWidth} ${offsetHeight}`);
   };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, resizeListener, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
-    disableLineBreaks: true,
-    tagName: "pre",
-    identifier: "content",
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
     ...blockProps,
-    ref: ref,
+    style: {
+      display: "inline-block",
+      width: "100%",
+      fontFamily: "inherit",
+      maxWidth: "none !important"
+    }
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("foreignObject", {
+    x: "0",
+    y: "0",
+    width: "100%",
+    height: "100%"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    ref: wrapperRef,
+    style: {
+      fontSize: "1em",
+      whiteSpace: "nowrap",
+      display: "inline-block",
+      width: "fit-content",
+      height: "fit-content"
+    }
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
+    disableLineBreaks: true,
+    tagName: "span",
+    identifier: "content",
     placeholder: "Stretchy text goes here",
     preserveWhiteSpace: true,
     value: content,
-    onChange: onChange
-  }));
+    onChange: onChange,
+    ref: richTextRef
+  }))));
 }
 
 /***/ }),
@@ -124,13 +164,22 @@ function save({
   attributes
 }) {
   const {
-    content
+    content,
+    dimensions
   } = attributes;
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("pre", {
-    ..._wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save()
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText.Content, {
+  const blockProps = _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save(dimensions ? {
+    viewBox: `0 0 ${dimensions}`
+  } : {});
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+    ...blockProps
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("foreignObject", {
+    x: "0",
+    y: "0",
+    width: "100%",
+    height: "100%"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText.Content, {
     value: content
-  }));
+  }))));
 }
 
 /***/ }),
@@ -256,7 +305,7 @@ module.exports = window["wp"]["i18n"];
   \************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/stretchy-type","version":"0.1.0","title":"Stretchy Type","category":"theme","icon":"text","description":"Text that expands to fill the width of its container.","example":{},"supports":{"color":{"text":true,"background":true,"gradient":true},"typography":{"__experimentalFontWeight":true,"__experimentalTextDecoration":true,"__experimentalTextTransform":true}},"textdomain":"stretchy-type","attributes":{"content":{"type":"rich-text","source":"rich-text","selector":"pre"}},"editorScript":"file:./index.js","style":"file:./style-index.css","viewScript":"file:./view.js","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/stretchy-type","version":"0.1.0","title":"Stretchy Type","category":"theme","icon":"text","description":"Text that expands to fill the width of its container.","example":{},"supports":{"color":{"text":true,"background":true,"gradient":true},"typography":{"__experimentalFontWeight":true,"__experimentalTextDecoration":true,"__experimentalTextTransform":true}},"textdomain":"stretchy-type","attributes":{"content":{"type":"rich-text","source":"rich-text","selector":"svg > foreignObject > span"},"dimensions":{"type":"string"}},"editorScript":"file:./index.js","style":"file:./style-index.css","editorStyle":"file:./style-index.css","viewScript":"file:./view.js","render":"file:./render.php"}');
 
 /***/ })
 

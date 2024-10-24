@@ -1,13 +1,14 @@
-import { adjustFontSize } from './utils';
-
-function handleFontSize() {
-	const elements = document.querySelectorAll('.wp-block-wpsp-stretchy-type');
-
-	elements.forEach(element => {
-		const content = element.innerHTML;
-		adjustFontSize( element, content );
+document.addEventListener("DOMContentLoaded", () => {
+	const observer = new ResizeObserver((entries) => {
+		entries.forEach(({ target }) => {
+			const { offsetWidth, offsetHeight } = target;
+			target
+				.closest("svg")
+				.setAttribute("viewBox", `0 0 ${offsetWidth} ${offsetHeight}`);
+		});
 	});
-}
 
-document.addEventListener( 'DOMContentLoaded', handleFontSize );
-window.addEventListener('resize', handleFontSize );
+	document
+		.querySelectorAll(".wp-block-wpsp-stretchy-type > foreignObject > span")
+		.forEach((element) => observer.observe(element));
+});
