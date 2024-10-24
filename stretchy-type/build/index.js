@@ -20,11 +20,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/compose */ "@wordpress/compose");
-/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
-
-
 
 
 
@@ -35,10 +30,10 @@ function Edit({
 }) {
   const {
     content,
-    dimensions
+    viewBox
   } = attributes;
-  const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(dimensions ? {
-    viewBox: `0 0 ${dimensions}`
+  const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(viewBox ? {
+    viewBox
   } : {});
   const wrapperRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useRef)();
   const richTextRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useRef)();
@@ -49,7 +44,7 @@ function Edit({
         offsetHeight
       } = wrapperRef.current;
       setAttributes({
-        dimensions: `${offsetWidth} ${offsetHeight}`
+        viewBox: `0 0 ${offsetWidth} ${offsetHeight}`
       });
       // This hack is required to prevent RichText to overwrite `white-space`.
       richTextRef.current.style.whiteSpace = "nowrap";
@@ -63,9 +58,6 @@ function Edit({
     setAttributes({
       content: nextContent
     });
-
-    // const { offsetWidth, offsetHeight } = ref.current;
-    // setDimensions(`${offsetWidth} ${offsetHeight}`);
   };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
     ...blockProps,
@@ -165,10 +157,10 @@ function save({
 }) {
   const {
     content,
-    dimensions
+    viewBox
   } = attributes;
-  const blockProps = _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save(dimensions ? {
-    viewBox: `0 0 ${dimensions}`
+  const blockProps = _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save(viewBox ? {
+    viewBox
   } : {});
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
     ...blockProps
@@ -180,49 +172,6 @@ function save({
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText.Content, {
     value: content
   }))));
-}
-
-/***/ }),
-
-/***/ "./src/utils.js":
-/*!**********************!*\
-  !*** ./src/utils.js ***!
-  \**********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   adjustFontSize: () => (/* binding */ adjustFontSize)
-/* harmony export */ });
-function adjustFontSize(element, content) {
-  if (element) {
-    // const containerWidth = window.getComputedStyle( element.parentElement ).width;
-    const containerWidth = window.getComputedStyle(element.parentElement).width;
-
-    // Create a temporary hidden element for measurement
-    const tempElement = document.createElement('div');
-    tempElement.style.position = 'absolute';
-    tempElement.style.whiteSpace = 'nowrap';
-    tempElement.style.visibility = 'hidden';
-    const computedStyle = window.getComputedStyle(element);
-    tempElement.style.fontFamily = computedStyle.fontFamily;
-    tempElement.style.fontWeight = computedStyle.fontWeight;
-    tempElement.style.fontStyle = computedStyle.fontStyle;
-    tempElement.style.fontSize = computedStyle.fontSize;
-    tempElement.style.letterSpacing = computedStyle.letterSpacing;
-    tempElement.style.textTransform = computedStyle.textTransform;
-    tempElement.innerHTML = content;
-    document.body.appendChild(tempElement);
-    const textWidth = tempElement.offsetWidth;
-    document.body.removeChild(tempElement); // Clean up the temporary element
-
-    // Avoid division by zero or very small widths
-    if (textWidth > 0) {
-      const size = parseInt(containerWidth) / textWidth;
-      element.style.fontSize = `${size * parseFloat(window.getComputedStyle(element).fontSize)}px`; // Scale based on the current font size
-      element.style.whiteSpace = 'nowrap'; // Ensure text does not wrap
-    }
-  }
 }
 
 /***/ }),
@@ -269,16 +218,6 @@ module.exports = window["wp"]["blocks"];
 
 /***/ }),
 
-/***/ "@wordpress/compose":
-/*!*********************************!*\
-  !*** external ["wp","compose"] ***!
-  \*********************************/
-/***/ ((module) => {
-
-module.exports = window["wp"]["compose"];
-
-/***/ }),
-
 /***/ "@wordpress/element":
 /*!*********************************!*\
   !*** external ["wp","element"] ***!
@@ -305,7 +244,7 @@ module.exports = window["wp"]["i18n"];
   \************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/stretchy-type","version":"0.1.0","title":"Stretchy Type","category":"theme","icon":"text","description":"Text that expands to fill the width of its container.","example":{},"supports":{"color":{"text":true,"background":true,"gradient":true},"typography":{"__experimentalFontWeight":true,"__experimentalTextDecoration":true,"__experimentalTextTransform":true}},"textdomain":"stretchy-type","attributes":{"content":{"type":"rich-text","source":"rich-text","selector":"svg > foreignObject > span"},"dimensions":{"type":"string"}},"editorScript":"file:./index.js","style":"file:./style-index.css","editorStyle":"file:./style-index.css","viewScript":"file:./view.js","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpsp/stretchy-type","version":"0.1.0","title":"Stretchy Type","category":"theme","icon":"text","description":"Text that expands to fill the width of its container.","example":{},"supports":{"color":{"text":true,"background":true,"gradient":true},"typography":{"__experimentalFontWeight":true,"__experimentalTextDecoration":true,"__experimentalTextTransform":true}},"textdomain":"stretchy-type","attributes":{"content":{"type":"rich-text","source":"rich-text","selector":"svg > foreignObject > span"},"viewBox":{"type":"string"}},"editorScript":"file:./index.js","style":"file:./style-index.css","editorStyle":"file:./style-index.css","viewScript":"file:./view.js","render":"file:./render.php"}');
 
 /***/ })
 
