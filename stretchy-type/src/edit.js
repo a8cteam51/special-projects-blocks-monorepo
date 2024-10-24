@@ -1,21 +1,17 @@
 import { __ } from "@wordpress/i18n";
 import { RichText, useBlockProps } from "@wordpress/block-editor";
-import { useRef, useEffect, useCallback } from "@wordpress/element";
-import { useResizeObserver } from "@wordpress/compose";
-import { adjustFontSize } from "./utils";
+import { useRef, useEffect } from "@wordpress/element";
 
 export default function Edit({ attributes, setAttributes }) {
-	const { content, dimensions } = attributes;
-	const blockProps = useBlockProps(
-		dimensions ? { viewBox: `0 0 ${dimensions}` } : {},
-	);
+	const { content, viewBox } = attributes;
+	const blockProps = useBlockProps(viewBox ? { viewBox } : {});
 	const wrapperRef = useRef();
 	const richTextRef = useRef();
 
 	useEffect(() => {
 		const observer = new ResizeObserver(() => {
 			const { offsetWidth, offsetHeight } = wrapperRef.current;
-			setAttributes({ dimensions: `${offsetWidth} ${offsetHeight}` });
+			setAttributes({ viewBox: `0 0 ${offsetWidth} ${offsetHeight}` });
 			// This hack is required to prevent RichText to overwrite `white-space`.
 			richTextRef.current.style.whiteSpace = "nowrap";
 		});
@@ -28,9 +24,6 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const onChange = (nextContent) => {
 		setAttributes({ content: nextContent });
-
-		// const { offsetWidth, offsetHeight } = ref.current;
-		// setDimensions(`${offsetWidth} ${offsetHeight}`);
 	};
 
 	return (

@@ -27,7 +27,7 @@
       "source": "rich-text",
       "selector": "svg > foreignObject > span"
     },
-    "dimensions": {
+    "viewBox": {
       "type": "string"
     }
   },
