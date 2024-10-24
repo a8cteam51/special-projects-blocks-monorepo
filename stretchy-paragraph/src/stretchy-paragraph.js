@@ -56,20 +56,9 @@ addFilter(
 			// Content can be a string or an object.
 			const isNotEmpty = content?.trim() || content?.text;
 
-			return (
-				<>
-					{isStretchy && isNotEmpty ? (
-						<div class="wpcomsp-stretchy-paragraph">
-							<div>
-								<BlockEdit {...props} />
-							</div>
-							<p aria-hidden="true" {...props}>
-								<RichText.Content value={content} />
-							</p>
-						</div>
-					) : (
-						<BlockEdit {...props} />
-					)}
+			const StretchyControls = (props) => {
+				const { isStretchy } = props;
+				return (
 					<InspectorControls group="advanced">
 						<BaseControl label="Experimental">
 							<ToggleControl
@@ -82,6 +71,27 @@ addFilter(
 							/>
 						</BaseControl>
 					</InspectorControls>
+				);
+			};
+
+			return (
+				<>
+					{isStretchy && isNotEmpty ? (
+						<div class="wpcomsp-stretchy-paragraph">
+							<div>
+								<BlockEdit {...props} />
+								<StretchyControls isStretchy={isStretchy} />
+							</div>
+							<p aria-hidden="true" {...props}>
+								<RichText.Content value={content} />
+							</p>
+						</div>
+					) : (
+						<>
+							<BlockEdit {...props} />
+							<StretchyControls isStretchy={isStretchy} />
+						</>
+					)}
 				</>
 			);
 		};
