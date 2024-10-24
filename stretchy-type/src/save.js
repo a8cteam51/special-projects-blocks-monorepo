@@ -4,7 +4,7 @@
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import { RichText, useBlockProps } from '@wordpress/block-editor';
+import { RichText, useBlockProps } from "@wordpress/block-editor";
 
 /**
  * The save function defines the way in which the different attributes should
@@ -15,11 +15,18 @@ import { RichText, useBlockProps } from '@wordpress/block-editor';
  *
  * @return {Element} Element to render.
  */
-export default function save( { attributes } ) {
-	const { content } = attributes;
+export default function save({ attributes }) {
+	const { content, dimensions } = attributes;
+	const blockProps = useBlockProps.save(
+		dimensions ? { viewBox: `0 0 ${dimensions}` } : {},
+	);
 	return (
-		<pre { ...useBlockProps.save() }>
-			<RichText.Content value={ content } />
-		</pre>
+		<svg {...blockProps}>
+			<foreignObject x="0" y="0" width="100%" height="100%">
+				<span>
+					<RichText.Content value={content} />
+				</span>
+			</foreignObject>
+		</svg>
 	);
 }

@@ -1,5 +1,19 @@
 .wp-block-wpsp-stretchy-type {
 	display: inline-block;
+	width: 100%;
 	font-family: inherit;
 	max-width: none !important;
+	overflow: visible;
+
+	& > foreignObject {
+		overflow: visible;
+		&> span {
+		font-size: 1em;
+		white-space: nowrap;
+		display: inline-block;
+		width: fit-content;
+		height: fit-content;
+	}}
 }
+
+

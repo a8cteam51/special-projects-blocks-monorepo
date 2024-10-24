@@ -3,8 +3,22 @@
   \***************************************************************************************************************************************************************************************************************************************/
 .wp-block-wpsp-stretchy-type {
   display: inline-block;
+  width: 100%;
   font-family: inherit;
   max-width: none !important;
+  overflow: visible;
+}
+.wp-block-wpsp-stretchy-type > foreignObject {
+  overflow: visible;
+}
+.wp-block-wpsp-stretchy-type > foreignObject > span {
+  font-size: 1em;
+  white-space: nowrap;
+  display: inline-block;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
 }
 
 /*# sourceMappingURL=style-index.css.map*/
