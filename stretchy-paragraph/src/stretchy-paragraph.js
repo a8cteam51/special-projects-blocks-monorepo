@@ -3,7 +3,7 @@ import { addFilter } from "@wordpress/hooks";
 import { InspectorControls } from "@wordpress/block-editor";
 import { BaseControl, ToggleControl } from "@wordpress/components";
 import { createHigherOrderComponent } from "@wordpress/compose";
-import { RichText } from "@wordpress/block-editor";
+import { RichText, useBlockProps } from "@wordpress/block-editor";
 import { __ } from "@wordpress/i18n";
 
 registerBlockVariation("core/paragraph", {
@@ -71,6 +71,10 @@ addFilter(
 				</InspectorControls>
 			);
 
+			const blockProps = useBlockProps({
+				"aria-hidden": "true",
+			});
+
 			return (
 				<>
 					{isStretchy && isNotEmpty ? (
@@ -79,9 +83,7 @@ addFilter(
 								<BlockEdit {...props} />
 								{stretchyControls}
 							</div>
-							<p aria-hidden="true" {...props}>
-								<RichText.Content value={content} />
-							</p>
+							<RichText {...blockProps} tagName="p" value={content} />
 						</div>
 					) : (
 						<>
