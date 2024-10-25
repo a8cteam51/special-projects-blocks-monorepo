@@ -14,7 +14,9 @@ export default function Edit({ attributes, setAttributes }) {
 				viewBox: `0 0 ${offsetWidth} ${offsetHeight}`,
 			});
 			// This hack is required to prevent RichText to overwrite `white-space`.
-			richTextRef.current.style.whiteSpace = "nowrap";
+			if (richTextRef.current) {
+				richTextRef.current.style.whiteSpace = "nowrap";
+			}
 		});
 		observer.observe(wrapperRef.current);
 
