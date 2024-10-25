@@ -1,10 +1,30 @@
-import { registerBlockType } from '@wordpress/blocks';
-import './style.scss';
-import Edit from './edit';
-import save from './save';
-import metadata from './block.json';
+import {
+	createBlock,
+	getBlockType,
+	registerBlockType,
+} from "@wordpress/blocks";
+import { subscribe } from "@wordpress/data";
+import "./style.scss";
+import Edit from "./edit";
+import save from "./save";
+import metadata from "./block.json";
 
-registerBlockType( metadata.name, {
-	edit: Edit,
-	save,
-} );
+// Subscribe is needed to wait for the core/paragraph block to be registered.
+const unsubscribe = subscribe(() => {
+	const paragraphBlockType = getBlockType("core/paragraph");
+	if (paragraphBlockType) {
+		unsubscribe();
+		registerBlockType(metadata.name, {
+			edit: Edit,
+			save,
+			supports: {
+				...paragraphBlockType.supports,
+				typography: {
+					...paragraphBlockType.supports.typography,
+					fontSize: false,
+					lineHeight: false,
+				},
+			},
+		});
+	}
+});

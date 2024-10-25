@@ -8,18 +8,6 @@
 	"icon": "text",
 	"description": "Text that expands to fill the width of its container.",
 	"example": {},
-	"supports": {
-		"color": {
-			"text": true,
-			"background": true,
-			"gradient": true
-		},
-		"typography": {
-			"__experimentalFontWeight": true,
-			"__experimentalTextDecoration": true,
-			"__experimentalTextTransform": true
-		}
-	},
 	"textdomain": "stretchy-type",
 	"attributes": {
 		"content": {
