@@ -22,8 +22,31 @@ const unsubscribe = subscribe(() => {
 				typography: {
 					...paragraphBlockType.supports.typography,
 					fontSize: false,
-					lineHeight: false,
 				},
+			},
+			transforms: {
+				from: [
+					{
+						type: "block",
+						blocks: ["core/paragraph", "core/heading"],
+						transform: ({ content }) => {
+							return createBlock(metadata.name, {
+								content,
+							});
+						},
+					},
+				],
+				to: [
+					{
+						type: "block",
+						blocks: ["core/paragraph"],
+						transform: ({ content }) => {
+							return createBlock("core/paragraph", {
+								content,
+							});
+						},
+					},
+				],
 			},
 		});
 	}
