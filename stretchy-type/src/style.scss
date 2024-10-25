@@ -8,12 +8,13 @@
 	& > foreignObject {
 		overflow: visible;
 		&> span {
-		font-size: 1em;
-		white-space: nowrap;
-		display: inline-block;
-		width: fit-content;
-		height: fit-content;
-	}}
+			font-size: 1em;
+			white-space: nowrap;
+			display: inline-block;
+			width: fit-content;
+			height: fit-content;
+		}
+	}
 }
 
 
