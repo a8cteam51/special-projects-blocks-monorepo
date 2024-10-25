@@ -4,7 +4,7 @@ var __webpack_exports__ = {};
   !*** ./src/view.js ***!
   \*********************/
 document.addEventListener('DOMContentLoaded', () => {
-  const observer = new ResizeObserver(entries => {
+  const observer = new window.ResizeObserver(entries => {
     entries.forEach(({
       target
     }) => {

@@ -1,5 +1,5 @@
 document.addEventListener( 'DOMContentLoaded', () => {
-	const observer = new ResizeObserver( ( entries ) => {
+	const observer = new window.ResizeObserver( ( entries ) => {
 		entries.forEach( ( { target } ) => {
 			const { offsetWidth, offsetHeight } = target;
 			target
