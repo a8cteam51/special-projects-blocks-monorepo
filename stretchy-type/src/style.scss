@@ -5,9 +5,10 @@
 	max-width: none !important;
 	overflow: visible;
 
-	& > foreignObject {
+	> foreignObject {
 		overflow: visible;
-		&> span {
+
+		> span {
 			font-size: 1em;
 			white-space: nowrap;
 			display: inline-block;
@@ -16,5 +17,3 @@
 		}
 	}
 }
-
-
