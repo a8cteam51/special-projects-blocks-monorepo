@@ -47,7 +47,7 @@ function Edit({
         viewBox: `0 0 ${offsetWidth} ${offsetHeight}`
       });
       // This hack is required to prevent RichText to overwrite `white-space`.
-      richTextRef.current.style.whiteSpace = "nowrap";
+      richTextRef.current.style.whiteSpace = 'nowrap';
     });
     observer.observe(wrapperRef.current);
     return () => {
@@ -62,10 +62,10 @@ function Edit({
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
     ...blockProps,
     style: {
-      display: "inline-block",
-      width: "100%",
-      fontFamily: "inherit",
-      maxWidth: "none !important"
+      display: 'inline-block',
+      width: '100%',
+      fontFamily: 'inherit',
+      maxWidth: 'none !important'
     }
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("foreignObject", {
     x: "0",
@@ -75,11 +75,11 @@ function Edit({
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     ref: wrapperRef,
     style: {
-      fontSize: "1em",
-      whiteSpace: "nowrap",
-      display: "inline-block",
-      width: "fit-content",
-      height: "fit-content"
+      fontSize: '1em',
+      whiteSpace: 'nowrap',
+      display: 'inline-block',
+      width: 'fit-content',
+      height: 'fit-content'
     }
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
     disableLineBreaks: true,
@@ -148,6 +148,8 @@ __webpack_require__.r(__webpack_exports__);
  * be combined into the final markup, which is then serialized by the block
  * editor into `post_content`.
  *
+ * @param  root0
+ * @param  root0.attributes
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#save
  *
  * @return {Element} Element to render.
