@@ -3,7 +3,7 @@ var __webpack_exports__ = {};
 /*!*********************!*\
   !*** ./src/view.js ***!
   \*********************/
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   const observer = new ResizeObserver(entries => {
     entries.forEach(({
       target
@@ -12,10 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
         offsetWidth,
         offsetHeight
       } = target;
-      target.closest("svg").setAttribute("viewBox", `0 0 ${offsetWidth} ${offsetHeight}`);
+      target.closest('svg').setAttribute('viewBox', `0 0 ${offsetWidth} ${offsetHeight}`);
     });
   });
-  document.querySelectorAll(".wp-block-wpsp-stretchy-type > foreignObject > span").forEach(element => observer.observe(element));
+  document.querySelectorAll('.wp-block-wpsp-stretchy-type > foreignObject > span').forEach(element => observer.observe(element));
 });
 /******/ })()
 ;
