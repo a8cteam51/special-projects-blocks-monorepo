@@ -1,8 +1,9 @@
 import { InspectorControls } from "@wordpress/block-editor";
 import { registerBlockVariation } from "@wordpress/blocks";
-import { ToggleControl, PanelBody } from "@wordpress/components";
+import { ToggleControl, BaseControl } from "@wordpress/components";
 import { createHigherOrderComponent } from "@wordpress/compose";
 import { addFilter } from "@wordpress/hooks";
+import { __ } from "@wordpress/i18n";
 
 const extendCategoriesBlockSettings = (settings, name) => {
 	if (name !== "core/categories") {
@@ -38,14 +39,17 @@ const addIsFilterToggle = createHigherOrderComponent((BlockEdit) => {
 		return (
 			<>
 				<BlockEdit {...props} />
-				<InspectorControls>
-					<PanelBody title="Settings">
+				<InspectorControls group="advanced">
+					<BaseControl label={__("Categories filter")}>
 						<ToggleControl
-							label="Enable as filter"
+							label={__("Act as a filter")}
 							checked={!!isFilter}
 							onChange={() => setAttributes({ isFilter: !isFilter })}
+							help={__(
+								"When enabled, this block will act as a filter for the query block. If not, it will act as a regular categories block.",
+							)}
 						/>
-					</PanelBody>
+					</BaseControl>
 				</InspectorControls>
 			</>
 		);
