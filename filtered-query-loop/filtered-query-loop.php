@@ -50,11 +50,14 @@ add_filter(
  * Load JS necessary to extend the query  in the editor.
  */
 function wpcomsp_enqueue_filtered_query_loop() {
+	$asset_file = plugin_dir_path( __FILE__ ) . 'build/filtered-query-loop.asset.php';
+	$asset      = include_once $asset_file;
+
 	wp_enqueue_script(
 		'wpcomsp-filtered-query-loop',
-		plugins_url( 'build/filtered-query-loop.js', __FILE__ ),
-		array( 'wp-block-editor', 'wp-components', 'wp-compose', 'wp-element', 'wp-hooks' ),
-		filemtime( plugin_dir_path( __FILE__ ) . 'build/filtered-query-loop.js' ),
+		plugin_dir_path( __FILE__ ) . 'build/filtered-query-loop.js',
+		$asset['dependencies'] ?? array(),
+		$asset['version'] ?? array(),
 		true
 	);
 }
