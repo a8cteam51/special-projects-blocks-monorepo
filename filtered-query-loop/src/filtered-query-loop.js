@@ -1,4 +1,5 @@
 import { InspectorControls } from "@wordpress/block-editor";
+import { registerBlockVariation } from "@wordpress/blocks";
 import { ToggleControl, PanelBody } from "@wordpress/components";
 import { createHigherOrderComponent } from "@wordpress/compose";
 import { addFilter } from "@wordpress/hooks";
@@ -56,3 +57,25 @@ addFilter(
 	"wpcomsp/categories-add-is-filter-toggle",
 	addIsFilterToggle,
 );
+
+registerBlockVariation("core/query", {
+	name: "filtered-query",
+	title: "Filtered Query Loop",
+	attributes: {
+		enhancedPagination: true,
+	},
+	innerBlocks: [
+		["core/categories", { isFilter: true }],
+		["core/post-template"],
+		["core/query-pagination"],
+	],
+});
+
+registerBlockVariation("core/categories", {
+	name: "categories-filter",
+	title: "Categories Filter",
+	attributes: {
+		isFilter: true,
+	},
+	isActive: ["isFilter"],
+});
