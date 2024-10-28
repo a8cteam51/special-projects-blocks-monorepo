@@ -55,7 +55,7 @@ function wpcomsp_enqueue_filtered_query_loop() {
 
 	wp_enqueue_script(
 		'wpcomsp-filtered-query-loop',
-		plugin_dir_path( __FILE__ ) . 'build/filtered-query-loop.js',
+		plugins_url( 'build/filtered-query-loop.js', __FILE__ ),
 		$asset['dependencies'] ?? array(),
 		$asset['version'] ?? array(),
 		true
