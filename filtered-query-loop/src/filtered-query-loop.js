@@ -69,7 +69,7 @@ registerBlockVariation("core/query", {
 		enhancedPagination: true,
 	},
 	innerBlocks: [
-		["core/categories", { isFilter: true }],
+		["core/categories", { className: "is-style-row-wrapped", isFilter: true }],
 		["core/post-template"],
 		["core/query-pagination"],
 	],
@@ -79,6 +79,7 @@ registerBlockVariation("core/categories", {
 	name: "categories-filter",
 	title: "Categories Filter",
 	attributes: {
+		className: "is-style-row-wrapped",
 		isFilter: true,
 	},
 	isActive: ["isFilter"],
