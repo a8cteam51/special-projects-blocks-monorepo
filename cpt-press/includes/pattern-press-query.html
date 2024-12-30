@@ -1,0 +1,45 @@
+<!-- wp:query {"queryId":0,"query":{"perPage":10,"pages":0,"offset":0,"postType":"press","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false},"enhancedPagination":true,"metadata":{"categories":["cpt-press"],"patternName":"cpt-press/press-query","name":"Press Query"},"align":"wide","className":"press-query","layout":{"type":"default"}} -->
+<div class="wp-block-query alignwide press-query">
+
+	<!-- wp:post-template {"align":"full","layout":{"type":"grid","columnCount":3}} -->
+
+	<!-- wp:post-featured-image {"isLink":true,"aspectRatio":"16/9","align":"wide"} /-->
+
+	<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center"}} -->
+	<div class="wp-block-group">
+		<!-- wp:a8csp/press-release-fields {"prefix":"Published on","metaKey":"_press_outlet"} /-->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- wp:post-title {"isLink":true} /-->
+
+	<!-- wp:group {"style":{"spacing":{"blockGap":"3px"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center"}} -->
+	<div class="wp-block-group">
+		<!-- wp:a8csp/press-release-fields {"prefix":"By","suffix":"-","metaKey":"_press_author","fontSize":"small"} /-->
+		<!-- wp:post-date /-->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- /wp:post-template -->
+
+	<!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}}} -->
+	<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--30);margin-bottom:var(--wp--preset--spacing--30)">
+
+		<!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"}} -->
+			<!-- wp:query-pagination-previous /-->
+			<!-- wp:query-pagination-numbers /-->
+			<!-- wp:query-pagination-next /-->
+		<!-- /wp:query-pagination -->
+
+	</div>
+	<!-- /wp:group -->
+
+	<!-- wp:query-no-results -->
+		<!-- wp:paragraph -->
+		<p>No press items were found.</p>
+		<!-- /wp:paragraph -->
+	<!-- /wp:query-no-results -->
+
+
+</div>
+<!-- /wp:query -->

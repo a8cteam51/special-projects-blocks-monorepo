@@ -1,0 +1,30 @@
+{
+	"name": "cpt-press",
+	"version": "1.0.0",
+	"description": "Block for CPT Press Release metadata",
+	"author": "The WordPress Contributors",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start"
+	},
+	"devDependencies": {
+		"@wordpress/block-editor": "^14.9.0",
+		"@wordpress/blocks": "^14.3.0",
+		"@wordpress/components": "^29.0.0",
+		"@wordpress/core-data": "^7.14.0",
+		"@wordpress/data": "^10.14.0",
+		"@wordpress/editor": "^14.14.0",
+		"@wordpress/element": "^6.14.0",
+		"@wordpress/i18n": "^5.14.0",
+		"@wordpress/plugins": "^7.14.0",
+		"@wordpress/scripts": "^30.7.0",
+		"@wordpress/url": "^4.14.0"
+	}
+}

@@ -1,0 +1,25 @@
+.editor-styles-wrapper .wp-block-a8csp-press-release-fields {
+	width: 100%;
+
+	input {
+		margin: 0;
+		padding: 0;
+		cursor: text;
+		border: none;
+		color: inherit;
+		background-color: inherit;
+		font-size: inherit;
+		line-height: inherit;
+		font-family: inherit;
+		font-weight: inherit;
+
+		&:first-of-type {
+			text-align: right;
+		}
+
+		&:focus {
+			border: none;
+			outline: none;
+		}
+	}
+}

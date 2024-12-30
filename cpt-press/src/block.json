@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/press-release-fields",
+	"version": "1.0.0",
+	"title": "Press Release fields",
+	"category": "common",
+	"icon": "paperclip",
+	"description": "Block for CPT Press Release metadata",
+	"attributes": {
+		"prefix": {
+			"type": "string",
+			"default": ""
+		},
+		"suffix": {
+			"type": "string",
+			"default": ""
+		},
+		"metaKey": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"usesContext": [ "postId" ],
+	"supports": {
+		"html": false,
+		"color": {
+			"text": true
+		},
+		"interactivity": {
+			"clientNavigation": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"letterSpacing": true,
+			"textDecoration": true,
+			"textTransform": true,
+			"fontFamily": true,
+			"fontWeight": true
+		}
+	},
+	"textdomain": "cpt-press",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
