@@ -177,31 +177,36 @@ add_filter( 'render_block_core/post-excerpt', 'wpcomsp_maybe_modify_post_link', 
  * @return void
  */
 function wpcomsp_exit_post_if_external_link() {
+	if ( ! is_single() ) {
+		return;
+	}
 
 	$post_type            = get_post_type();
 	$supported_post_types = wpcomsp_supported_post_types();
 
-	if ( in_array( $post_type, $supported_post_types, true ) ) {
-		$news_url = wpcomsp_get_news_data_value( 'url', get_the_ID() );
-
-		if ( empty( $news_url ) ) {
-			return;
-		}
-
-		$redirect_url = apply_filters(
-			'wpcomsp_override_post_links_redirect_url',
-			get_post_type_archive_link( 'post' ),
-			$news_url
-		);
-
-		if ( ! empty( $redirect_url ) ) {
-			wp_safe_redirect( $redirect_url );
-			exit;
-		}
+	if ( ! in_array( $post_type, $supported_post_types, true ) ) {
+		return;
 	}
-}
 
-add_action( 'template_redirect', 'wpcomsp_exit_post_if_external_link' );
+	$news_url = wpcomsp_get_news_data_value( 'url', get_the_ID() );
+
+	if ( empty( $news_url ) ) {
+		return;
+	}
+
+	$redirect_url = apply_filters(
+		'wpcomsp_override_post_links_redirect_url',
+		get_post_type_archive_link( 'post' ),
+		$news_url
+	);
+
+	if ( empty( $redirect_url ) ) {
+		return;
+	}
+
+	wp_safe_redirect( $redirect_url );
+	exit;
+}
 
 /**
  * Register Block Bindings for the External News Link Source.
