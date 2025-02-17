@@ -1,0 +1,40 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-wpcomsp-videopress-download {
+	align-items: center;
+	display: flex;
+	gap: 8px;
+	cursor: wait;
+	text-decoration: none;
+
+	svg {
+		path {
+			fill: currentColor;
+		}
+	}
+
+	&.is-ready {
+		cursor: pointer;
+	}
+
+	&.is-error {
+		pointer-events: none;
+
+		svg {
+			display: none;
+		}
+	}
+
+	&.has-text-align-right {
+		justify-content: flex-end;
+	}
+
+	&.has-text-align-center {
+		justify-content: center;
+	}
+}
