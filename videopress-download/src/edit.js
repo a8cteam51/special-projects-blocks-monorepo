@@ -27,8 +27,6 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	const [ selectedVideo, setSelectedVideo ] = useState( attributes.guid );
 
-	console.log( attributes );
-
 	const changeVideo = ( value ) => {
 		setAttributes( { guid: '', src: '' } );
 		setSelectedVideo( value );
@@ -117,11 +115,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		return { value: block.attributes.guid, label: block.attributes?.title || block.attributes?.guid };
 	} );
 
-	console.log(attributes?.layout);
-
 	const alignmentClass = clsx( attributes?.style?.typography?.textAlign && `has-text-align-${ attributes?.style?.typography?.textAlign }` );
-
-	console.log( alignmentClass );
 
 	return (
 		<>
