@@ -1,4 +1,4 @@
-import { __ } from '@wordpress/i18n';
+import { __ , sprintf } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { useRefEffect } from '@wordpress/compose';
 import { useState } from '@wordpress/element';
@@ -6,6 +6,7 @@ import {
 	addToggleModeListener,
 	toggleColorMode,
 	updateToggleClass,
+	updateToggleAriaLabel,
 } from './shared';
 import { PanelBody, SelectControl } from '@wordpress/components';
 
@@ -50,7 +51,14 @@ export default function Edit( { attributes, setAttributes } ) {
 			return;
 		}
 		toggleColorMode( localWindow );
+		updateToggleAriaLabel( localWindow );
 	};
+
+	const ariaLabel = sprintf(
+		/* translators: %s: color mode */
+		__( 'Switch to %s mode', 'light-dark-toggle' ),
+		defaultMode
+	);
 
 	return (
 		<div>
@@ -87,6 +95,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			<button
 				{ ...useBlockProps( { ref: containerRef } ) }
 				onClick={ toggle }
+				aria-label={ ariaLabel }
 			></button>
 		</div>
 	);
