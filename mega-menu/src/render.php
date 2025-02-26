@@ -56,6 +56,7 @@ wp_interactivity_state(
 		aria-controls="<?php echo esc_attr( $mega_menu_blocks_unique_id ); ?>"
 		data-wp-class--active="state.isOpen"
 		class="<?php echo esc_attr( implode( ' ', $mega_menu_button_classes ) ); ?>"
+		data-wp-on-async-document--click="callbacks.handleModalOutsideClick"
 	>
 		<?php echo esc_html( $mega_menu_blocks_label ); ?>
 	</button>

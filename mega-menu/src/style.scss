@@ -31,17 +31,20 @@
 					--wp--style--root--padding-left
 				)
 		);
-		right: 0;
+		right: 50%;
 		overflow: hidden;
 		opacity: 0;
 		position: absolute;
 		transition: opacity 0.1s linear;
+		transform: translateX(50%);
 		width: var(--wp--style--global--wide-size);
 		visibility: hidden;
 		z-index: 2;
 
 		@media screen and (max-width: 599px) {
 			position: relative;
+			right: unset;
+			transform: unset;
 		}
 	}
 
@@ -49,5 +52,16 @@
 		display: block;
 		opacity: 1;
 		visibility: visible;
+	}
+}
+
+@media screen and (min-width: 600px) {
+	body.mega-menu-open {
+		.wp-block-navigation,
+		.wp-block-navigation__container,
+		.wp-block-navigation__responsive-container,
+		.wp-block-navigation__responsive-dialog {
+			position: unset !important;
+		}
 	}
 }
