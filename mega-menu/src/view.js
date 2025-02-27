@@ -67,6 +67,26 @@ const { state, actions, helpers } = store( 'a8csp/mega-menu', {
 			}
 		},
 	},
+	callbacks: {
+		handleModalOutsideClick( event ) {
+			const { id } = getContext();
+
+			if ( state.selected !== id ) {
+				return;
+			}
+
+			if ( id === event.target.getAttribute('aria-controls') ) {
+				return;
+			}
+			
+			const modal = helpers.getDivs( id );
+			const modalInner = modal.megaMenuContainer;
+
+			if ( ! modalInner.contains( event.target ) ) {
+				actions.closeMenu();
+			}
+		},
+	},
 	helpers: {
 		getButton: ( id ) => {
 			return document.getElementById( id );
