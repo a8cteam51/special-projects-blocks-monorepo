@@ -1,0 +1,30 @@
+.wp-block-wpcomsp-marquee {
+	// This block has customizable padding, border-box makes that more predictable.
+	box-sizing: border-box;
+
+	// TODO: This should be a setting of the block.
+	--speed: 10s;
+	--direction: normal;
+}
+
+// We need this so groups with negative margins overlap as expected.
+:where(
+		.wp-block-wpcomsp-marquee.wp-block-wpcomsp-marquee-is-layout-constrained
+	) {
+	position: relative;
+}
+
+.wp-block-wpcomsp-marquee {
+	overflow: clip;
+	display: flex;
+	flex-direction: row;
+}
+
+@keyframes wpcomsp-marquee {
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(calc(-100%));
+	}
+}
