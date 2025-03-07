@@ -3,6 +3,9 @@ import { useBlockProps } from '@wordpress/block-editor';
 export default function save({ attributes }) {
 	const { pre, post, start, end, duration } = attributes;
 
+	console.log({"pre": pre, "post": post, "start": start, "end": end, "duration": duration});
+
+
 	// Get block props (but don't apply styles to div)
 	const blockProps = useBlockProps.save();
 

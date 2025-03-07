@@ -7,26 +7,8 @@ import './editor.scss';
 
 export default function Edit({ attributes, setAttributes }) {
 	// The block attributes
-	const [pre, setPre] = useState(attributes.pre);
-	const [post, setPost] = useState(attributes.post);
-	const [start, setStart] = useState(attributes.start);
-	const [end, setEnd] = useState(attributes.end);
-	const [duration, setDuration] = useState(attributes.duration);
-
-	// Save attributes to block
-	useEffect(() => {
-		setAttributes({
-			pre,
-			post,
-			start,
-			end,
-			duration,
-		});
-	}, [pre, post, start, end, duration, setAttributes]);
-
-	// Get block props
+	const { pre, post, start, end, duration } = attributes;
 	const blockProps = useBlockProps();
-
 
 	return (
 
@@ -43,7 +25,7 @@ export default function Edit({ attributes, setAttributes }) {
 						<RichText
 							id="counter-pre"
 							value={pre}
-							onChange={(pre) => setPre(pre)}
+							onChange={(pre) => setAttributes({pre: pre})}
 							placeholder={__('eg. Miles traveled ', 'counter')}
 							preserveWhiteSpace={true}
 							tagName="span"
@@ -58,7 +40,7 @@ export default function Edit({ attributes, setAttributes }) {
 						<RichText
 							id="counter-post"
 							value={post}
-							onChange={(post) => setPost(post)}
+							onChange={(post) => setAttributes({post: post})}
 							placeholder={__('eg. % or years', 'counter')}
 							preserveWhiteSpace={true}
 							tagName="span"
@@ -72,7 +54,7 @@ export default function Edit({ attributes, setAttributes }) {
 						<TextControl
 							id="counter-start"
 							value={start}
-							onChange={(start) => setStart(start)}
+							onChange={(start) => setAttributes({start: Number(start)})}
 							type="number"
 							__nextHasNoMarginBottom={true}
 						/>
@@ -86,7 +68,7 @@ export default function Edit({ attributes, setAttributes }) {
 						<TextControl
 							id="counter-end"
 							value={end}
-							onChange={(end) => setEnd(end)}
+							onChange={(end) => setAttributes({end: Number(end)})}
 							type="number"
 						/>
 					</BaseControl>
@@ -99,7 +81,7 @@ export default function Edit({ attributes, setAttributes }) {
 						<TextControl
 							id="counter-duration"
 							value={duration}
-							onChange={(duration) => setDuration(duration)}
+							onChange={(duration) => setAttributes({duration: Number(duration)})}
 							type="number"
 							__nextHasNoMarginBottom={true}
 						/>
