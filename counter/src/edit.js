@@ -109,7 +109,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 			{ /* Block Markup */}
 			<p {...blockProps}>
-				<span className="counter__pre" dangerouslySetInnerHTML={{ __html: pre }} />
+				{pre && (<span className="counter__pre" dangerouslySetInnerHTML={{ __html: pre }} />)}
 				<span
 					className="counter__number"
 					data-start={start}
@@ -118,7 +118,7 @@ export default function Edit({ attributes, setAttributes }) {
 				>
 					{start}
 				</span>
-				<span className="counter__post" dangerouslySetInnerHTML={{ __html: post }} />
+				{post && (<span className="counter__post" dangerouslySetInnerHTML={{ __html: post }} />)}
 			</p>
 		</div>
 	);

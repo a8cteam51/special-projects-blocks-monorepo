@@ -8,7 +8,7 @@ export default function save({ attributes }) {
 
 	return (
 		<p {...blockProps}>
-			<span className="counter__pre" dangerouslySetInnerHTML={{ __html: pre }} />
+			{pre && (<span className="counter__pre" dangerouslySetInnerHTML={{ __html: pre }} />)}
 			<span
 				className="counter__number"
 				data-start={start}
@@ -17,7 +17,7 @@ export default function save({ attributes }) {
 			>
 				{start}
 			</span>
-			<span className="counter__post" dangerouslySetInnerHTML={{ __html: post }} />
+			{post && (<span className="counter__post" dangerouslySetInnerHTML={{ __html: post }} />)}
 		</p>
 	);
 }
