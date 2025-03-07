@@ -1,26 +1,33 @@
 import { useBlockProps } from '@wordpress/block-editor';
 
-export default function save({ attributes }) {
+export default function save( { attributes } ) {
 	const { pre, post, start, end, duration } = attributes;
-
-	console.log({"pre": pre, "post": post, "start": start, "end": end, "duration": duration});
-
 
 	// Get block props (but don't apply styles to div)
 	const blockProps = useBlockProps.save();
 
 	return (
-		<p {...blockProps}>
-			{pre && (<span className="counter__pre" dangerouslySetInnerHTML={{ __html: pre }} />)}
+		<p { ...blockProps }>
+			{ pre && (
+				<span
+					className="counter__pre"
+					dangerouslySetInnerHTML={ { __html: pre } }
+				/>
+			) }
 			<span
 				className="counter__number"
-				data-start={start}
-				data-end={end}
-				data-duration={duration}
+				data-start={ start }
+				data-end={ end }
+				data-duration={ duration }
 			>
-				{start}
+				{ start }
 			</span>
-			{post && (<span className="counter__post" dangerouslySetInnerHTML={{ __html: post }} />)}
+			{ post && (
+				<span
+					className="counter__post"
+					dangerouslySetInnerHTML={ { __html: post } }
+				/>
+			) }
 		</p>
 	);
 }
