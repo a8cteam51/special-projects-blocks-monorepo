@@ -3,6 +3,8 @@ import { InspectorControls, useBlockProps, RichText } from '@wordpress/block-edi
 import { useState, useEffect } from '@wordpress/element';
 import { PanelBody, BaseControl, TextControl } from '@wordpress/components';
 
+import './editor.scss';
+
 export default function Edit({ attributes, setAttributes }) {
 	// The block attributes
 	const [pre, setPre] = useState(attributes.pre);
@@ -11,6 +13,7 @@ export default function Edit({ attributes, setAttributes }) {
 	const [end, setEnd] = useState(attributes.end);
 	const [duration, setDuration] = useState(attributes.duration);
 
+	// Save attributes to block
 	useEffect(() => {
 		setAttributes({
 			pre,
@@ -26,6 +29,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 
 	return (
+
 		<div>
 			{ /* Sidebar Settings */}
 			<InspectorControls>
@@ -104,20 +108,18 @@ export default function Edit({ attributes, setAttributes }) {
 			</InspectorControls>
 
 			{ /* Block Markup */}
-			<div {...blockProps}>
-				<p>
-					<span className='counter__pre'>{pre}</span>
-					<span
-						className="counter__number"
-						data-start={start}
-						data-end={end}
-						data-duration={duration}
-					>
-						{start}
-					</span>
-					<span className="counter__post">{post}</span>
-				</p>
-			</div>
+			<p {...blockProps}>
+				<span className="counter__pre" dangerouslySetInnerHTML={{ __html: pre }} />
+				<span
+					className="counter__number"
+					data-start={start}
+					data-end={end}
+					data-duration={duration}
+				>
+					{start}
+				</span>
+				<span className="counter__post" dangerouslySetInnerHTML={{ __html: post }} />
+			</p>
 		</div>
 	);
 }

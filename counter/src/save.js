@@ -7,19 +7,17 @@ export default function save({ attributes }) {
 	const blockProps = useBlockProps.save();
 
 	return (
-		<div {...blockProps}>
-			<p>
-				<span className='counter__pre'>{pre}</span>
-				<span
-					className="counter__number"
-					data-start={start}
-					data-end={end}
-					data-duration={duration}
-				>
-					{start}
-				</span>
-				<span className="counter__post">{post}</span>
-			</p>
-        </div >
-    );
+		<p {...blockProps}>
+			<span className="counter__pre" dangerouslySetInnerHTML={{ __html: pre }} />
+			<span
+				className="counter__number"
+				data-start={start}
+				data-end={end}
+				data-duration={duration}
+			>
+				{start}
+			</span>
+			<span className="counter__post" dangerouslySetInnerHTML={{ __html: post }} />
+		</p>
+	);
 }

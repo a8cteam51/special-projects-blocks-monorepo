@@ -5,7 +5,7 @@
     "version": "0.1.0",
     "title": "Counter",
     "category": "widgets",
-    "icon": "dashicons-sort",
+    "icon": "sort",
     "description": "Allows adding an animated counter to your content. Just pick a start and end",
     "example": {},
     "supports": {
@@ -32,19 +32,17 @@
                 "vh",
                 "vw"
             ]
-        }
+        },
+        "align": ["left", "center", "right"],
+        "inserter": true
     },
     "attributes": {
         "pre": {
             "type": "string",
-            "source": "html",
-            "selector": "span",
             "default": ""
         },
         "post": {
             "type": "string",
-            "source": "html",
-            "selector": "span",
             "default": ""
         },
         "start": {
@@ -62,6 +60,7 @@
     },
     "textdomain": "counter",
     "editorScript": "file:./index.js",
-    "style": "file:./style-index.css",
-    "viewScript": "file:./view.js"
+    "style": "file:./index.css",
+    "viewScript": "file:./view.js",
+    "editorStyle": "file:./index.css"
 }
