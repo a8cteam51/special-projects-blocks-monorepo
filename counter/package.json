@@ -1,0 +1,20 @@
+{
+	"name": "counter",
+	"version": "0.1.0",
+	"description": "Allows adding an animated counter to your content. Just pick a start and end",
+	"author": "The WordPress Contributors",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build --webpack-copy-php --experimental-modules",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start --webpack-copy-php --experimental-modules"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^30.3.0"
+	}
+}
