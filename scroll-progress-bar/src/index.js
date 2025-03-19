@@ -31,10 +31,10 @@ registerBlockType( metadata.name, {
 		align: {
 			type: 'string',
 			default: 'none',
-		}
+		},
 	},
 	supports: {
-		align: ['wide', 'full'],
+		align: [ 'wide', 'full' ],
 		spacing: {
 			margin: true,
 		},
