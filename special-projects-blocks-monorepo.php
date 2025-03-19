@@ -4,7 +4,7 @@
  * Description:       Auto-loads any blocks in the monorepo that have a build directory. Run `npm run build` in the block plugin directory you're working on to create the build directory and auto-load that block plugin.
  * Requires at least: 6.1
  * Requires PHP:      8.0
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            WordPress.com Special Projects Team
  * Author URI:        https://wpspecialprojects.wordpress.com/
  * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/
