@@ -28,14 +28,6 @@ import metadata from './block.json';
  */
 registerBlockType( metadata.name, {
 	attributes: {
-		backgroundColor: {
-			type: 'string',
-			default: 'white',
-		},
-		progressBarColor: {
-			type: 'string',
-			default: 'black',
-		},
 		align: {
 			type: 'string',
 			default: 'none',
@@ -43,6 +35,9 @@ registerBlockType( metadata.name, {
 	},
 	supports: {
 		align: ['wide', 'full'],
+		spacing: {
+			margin: true,
+		},
 	},
 	/**
 	 * @see ./edit.js
