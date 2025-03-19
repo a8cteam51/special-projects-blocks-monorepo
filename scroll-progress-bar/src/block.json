@@ -2,10 +2,10 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "a8csp/scroll-progress-bar",
-	"version": "0.1.1",
+	"version": "0.1.0",
 	"title": "Scroll Progress Bar",
 	"category": "widgets",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Progress bar that reflects the user's scroll position within the document.",
 	"example": {},
 	"supports": {
 		"html": false
