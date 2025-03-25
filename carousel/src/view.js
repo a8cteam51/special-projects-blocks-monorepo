@@ -6,6 +6,9 @@
 	} );
 
 	function initCarousel( carousel ) {
+		const track = carousel.querySelector(
+			'.wp-block-query, .wp-block-gallery, .wc-block-product-template'
+		);
 		const prevButton = carousel.querySelector(
 			'.wp-block-wpcomsp-carousel__prev-next-button.prev'
 		);

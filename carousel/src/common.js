@@ -9,14 +9,27 @@ import { __ } from '@wordpress/i18n';
  * @return {Object} The HTML attributes.
  */
 export function getAttributes( attributes ) {
-	const { itemCount, overflow } = attributes;
+	const { itemCount, overflow, style } = attributes;
+
+	let itemGap = style?.spacing?.blockGap ?? '0px';
+
+	if ( itemGap ) {
+		itemGap =
+			itemGap.replace(
+				'var:preset|spacing|',
+				'var(--wp--preset--spacing--'
+			) + ')';
+	}
 
 	return {
 		'aria-label': 'block title', // TODO: Add block title.
 		'aria-roledescription': 'carousel',
 		className: `has-overflow-${ overflow }`,
-		'data-item-count': itemCount,
 		role: 'region',
+		style: {
+			'--item-count': String( itemCount ),
+			'--item-gap': itemGap,
+		},
 	};
 }
 

@@ -20,3 +20,10 @@
 		color: #fff;
 	}
 }
+
+.wp-block-wpcomsp-carousel {
+
+	.wp-block-gallery.has-nested-images figure.wp-block-image {
+		flex-direction: unset;
+	}
+}

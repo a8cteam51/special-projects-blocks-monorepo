@@ -1,6 +1,8 @@
 .wp-block-wpcomsp-carousel {
 	position: relative;
 	width: 100%;
+	container-type: inline-size;
+	container-name: carousel;
 
 	&.has-overflow-hidden {
 		overflow-x: hidden;
@@ -18,12 +20,35 @@
 		display: flex;
 		flex-wrap: nowrap;
 		margin: 0;
+		--wp--style--block-gap: var(--item-gap, var(--wp--preset--spacing--20));
 	}
 
 	.wp-block-gallery .wp-block-image,
 	.wp-block-post,
 	.wc-block-product {
-		flex: 0 0 25%;
+		flex: 0 0 auto;
 		margin: 0;
+		height: 100%;
+	}
+
+	.wp-block-gallery.has-nested-images[class*="columns-"] {
+
+		/* Handle cropped images */
+		&.is-cropped figure.wp-block-image:not(#individual-image) {
+			aspect-ratio: 2/1.5;
+			width: calc(25% - var(--item-gap, 0));
+
+			@container carousel (max-width: 768px) {
+				width: calc(33.333% - var(--item-gap, 0));
+			}
+
+			@container carousel (max-width: 480px) {
+				width: calc(50% - var(--item-gap, 0));
+			}
+
+			@container carousel (max-width: 320px) {
+				width: 100%;
+			}
+		}
 	}
 }
