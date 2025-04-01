@@ -28,7 +28,6 @@
 	.wc-block-product {
 		flex: 0 0 auto;
 		margin: 0;
-		height: 100%;
 	}
 
 	.wp-block-gallery.has-nested-images[class*="columns-"] {
@@ -48,6 +47,25 @@
 
 			@container carousel (max-width: 320px) {
 				width: 100%;
+			}
+		}
+
+		/* Handle non-cropped images */
+		&:not(.is-cropped) figure.wp-block-image:not(#individual-image) {
+			height: var(--base-height);
+			width: auto;
+			display: flex;
+
+			@container carousel (max-width: 768px) {
+				height: calc(var(--base-height) * 2);
+			}
+
+			@container carousel (max-width: 480px) {
+				height: calc(var(--base-height) * 3);
+			}
+
+			img {
+				height: 100%;
 			}
 		}
 	}

@@ -34,6 +34,90 @@ export function getAttributes( attributes ) {
 }
 
 /**
+ * Adds a base height to the carousel.
+ *
+ * @param {Object} carousel The carousel element.
+ *
+ * @return {Function} A cleanup function to remove event listeners.
+ */
+export function addBaseHeight( carousel ) {
+	if ( ! carousel ) {
+		return () => {};
+	}
+
+	const track = carousel.querySelector(
+		'.wp-block-gallery:not(.is-cropped)'
+	);
+
+	if ( ! track ) {
+		return () => {};
+	}
+
+	const images = track.querySelectorAll( 'img' );
+	const containerWidth = carousel.offsetWidth;
+	const itemGap = parseFloat(
+		getComputedStyle( track ).getPropertyValue( 'column-gap' )
+	);
+	const targetWidth = containerWidth / 3 - itemGap;
+
+	let widestImage = null;
+	let maxWidth = 0;
+
+	const handleImageLoad = ( img ) => {
+		const rect = img.getBoundingClientRect();
+		const width = rect.width;
+		const height = rect.height;
+		const aspectRatio = width / height;
+		const scaledWidth = targetWidth * aspectRatio;
+
+		if ( scaledWidth > maxWidth ) {
+			maxWidth = scaledWidth;
+			widestImage = img;
+		}
+	};
+
+	const handleLastImageLoad = () => {
+		if ( widestImage ) {
+			const rect = widestImage.getBoundingClientRect();
+			const width = Math.min( targetWidth, Number( rect.width ) );
+			const aspectRatio = Number( rect.width ) / Number( rect.height );
+			const baseHeight = Math.round( width / aspectRatio );
+			carousel.style.setProperty( '--base-height', `${ baseHeight }px` );
+		}
+	};
+
+	// Store cleanup functions
+	const cleanupFns = [];
+
+	images.forEach( ( img ) => {
+		if ( img.complete ) {
+			handleImageLoad( img );
+		} else {
+			img.addEventListener( 'load', () => handleImageLoad( img ) );
+			cleanupFns.push( () =>
+				img.removeEventListener( 'load', () => handleImageLoad( img ) )
+			);
+		}
+	} );
+
+	const lastImage = images[ images.length - 1 ];
+	if ( lastImage ) {
+		if ( lastImage.complete ) {
+			handleLastImageLoad();
+		} else {
+			lastImage.addEventListener( 'load', handleLastImageLoad );
+			cleanupFns.push( () =>
+				lastImage.removeEventListener( 'load', handleLastImageLoad )
+			);
+		}
+	}
+
+	return () => {
+		cleanupFns.forEach( ( fn ) => fn() );
+	};
+}
+
+/**
  * Renders previous/next buttons for a carousel.
  *
  * @return {Object} The rendered previous/next buttons.
