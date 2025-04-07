@@ -1,0 +1,29 @@
+.wp-block-wpcomsp-carousel {
+	position: relative;
+	width: 100%;
+
+	&.has-overflow-hidden {
+		overflow-x: hidden;
+	}
+
+	.wp-block-gallery,
+	.wp-block-query,
+	.wc-block-product-collection {
+		width: 100%;
+	}
+
+	.wp-block-gallery,
+	.wp-block-post-template,
+	.wc-block-product-template {
+		display: flex;
+		flex-wrap: nowrap;
+		margin: 0;
+	}
+
+	.wp-block-gallery .wp-block-image,
+	.wp-block-post,
+	.wc-block-product {
+		flex: 0 0 25%;
+		margin: 0;
+	}
+}

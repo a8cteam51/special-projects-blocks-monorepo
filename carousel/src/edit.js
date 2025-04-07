@@ -8,10 +8,12 @@ import {
 import { createBlock } from '@wordpress/blocks';
 import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 // Internal dependencies.
 import CarouselPlaceHolder from './placeholder';
+import { getAttributes, prevNextButtons, paginationButtons } from './common';
 import './editor.css';
 
 /**
@@ -29,21 +31,23 @@ const createBlockWithInnerBlocks = ( block ) => {
 	);
 };
 
-export default function Edit( { clientId, name, setAttributes } ) {
+export default function Edit( { attributes, clientId, name, setAttributes } ) {
+	const { overflow, pagination, prevNext } = attributes;
+
 	const { children, ...innerBlockProps } = useInnerBlocksProps(
-		useBlockProps(),
+		useBlockProps( getAttributes( attributes ) ),
 		{
 			renderAppender: false,
 		}
 	);
 
-	const { hasInnerBlocks } = useSelect(
+	const { hasInnerBlocks, itemCount } = useSelect(
 		( select ) => {
 			const { getBlock } = select( blockEditorStore );
 			const block = getBlock( clientId );
 
 			if ( ! block?.innerBlocks?.length ) {
-				return { hasInnerBlocks: false };
+				return { hasInnerBlocks: false, itemCount: 0 };
 			}
 
 			const innerBlock = block.innerBlocks[ 0 ];
@@ -62,6 +66,10 @@ export default function Edit( { clientId, name, setAttributes } ) {
 		[ clientId ]
 	);
 
+	useEffect( () => {
+		setAttributes( { itemCount: Number( itemCount ) } );
+	}, [ itemCount, setAttributes ] );
+
 	const { selectBlock, insertBlock } = useDispatch( blockEditorStore );
 
 	const selectVariation = ( nextVariation ) => {
@@ -78,6 +86,49 @@ export default function Edit( { clientId, name, setAttributes } ) {
 		selectBlock( clientId );
 	};
 
+	const defaultInspectorControls = (
+		<InspectorControls>
+			<PanelBody title={ __( 'Carousel Settings', 'carousel' ) }>
+				<ToggleControl
+					checked={ prevNext }
+					label={ __( 'Previous/Next buttons', 'carousel' ) }
+					onChange={ ( v ) => setAttributes( { prevNext: v } ) }
+					__nextHasNoMarginBottom
+				/>
+				<ToggleControl
+					checked={ pagination }
+					label={ __( 'Pagination buttons', 'carousel' ) }
+					onChange={ ( v ) => setAttributes( { pagination: v } ) }
+					__nextHasNoMarginBottom
+				/>
+				<SelectControl
+					label={ __( 'Overflow', 'carousel' ) }
+					onChange={ ( v ) => setAttributes( { overflow: v } ) }
+					options={ [
+						{
+							value: 'hidden',
+							label: __( 'Hidden', 'carousel' ),
+						},
+						{
+							value: 'right',
+							label: __( 'Right', 'carousel' ),
+						},
+						{
+							value: 'left',
+							label: __( 'Left', 'carousel' ),
+						},
+						{
+							value: 'both',
+							label: __( 'Left and right', 'carousel' ),
+						},
+					] }
+					value={ overflow }
+					__nextHasNoMarginBottom
+				/>
+			</PanelBody>
+		</InspectorControls>
+	);
+
 	return (
 		<>
 			{ ! hasInnerBlocks ? (
@@ -90,7 +141,10 @@ export default function Edit( { clientId, name, setAttributes } ) {
 				</>
 			) : (
 				<>
+					{ defaultInspectorControls }
 					<div { ...innerBlockProps }>
+						{ prevNext && prevNextButtons() }
+						{ pagination && paginationButtons( itemCount ) }
 						{ children }
 					</div>
 				</>
