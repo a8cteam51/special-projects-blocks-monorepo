@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Mega Menu
  * Description:       Add a menu item that opens a template part area to display as a mega menu.
- * Version:           0.2.0
+ * Version:           0.2.1
  * Requires at least: 6.6
  * Requires PHP:      7.2
  * Author:            The WordPress Contributors

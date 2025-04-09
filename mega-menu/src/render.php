@@ -49,7 +49,6 @@ wp_interactivity_state(
 	<button
 		data-wp-on--click="actions.toggleMenu"
 		data-wp-bind--aria-expanded="state.isOpen"
-		data-wp-on--keydown="actions.handleMenuKeydown"
 		id="<?php echo esc_attr( $mega_menu_blocks_unique_button ); ?>"
 		aria-haspopup="menu"
 		role="button"
@@ -57,13 +56,13 @@ wp_interactivity_state(
 		data-wp-class--active="state.isOpen"
 		class="<?php echo esc_attr( implode( ' ', $mega_menu_button_classes ) ); ?>"
 		data-wp-on-async-document--click="callbacks.handleModalOutsideClick"
+		data-wp-on-async-document--keydown="actions.handleMenuKeydown"
 	>
 		<?php echo esc_html( $mega_menu_blocks_label ); ?>
 	</button>
 	<div
 		class="<?php echo esc_attr( implode( ' ', $mega_menu_container_classes ) ); ?>"
 		id="<?php echo esc_attr( $mega_menu_blocks_unique_id ); ?>"
-		data-wp-on--keydown="actions.handleMenuKeydown"
 		aria-labelledby="<?php echo esc_attr( $mega_menu_blocks_unique_button ); ?>"
 	>
 		<?php block_template_part( $mega_menu_blocks_menu_slug ); ?>
