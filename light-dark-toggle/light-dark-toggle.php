@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Light Dark Toggle
  * Description:       Allows a site to have a light and dark mode toggle.
- * Version:           0.1.0
+ * Version:           0.2.0
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            The WordPress Contributors
@@ -51,4 +51,3 @@ add_filter(
 		return $blocks;
 	}
 );
-

@@ -1,3 +1,5 @@
+import { __, sprintf } from '@wordpress/i18n';
+
 let startingColorScheme = 'light';
 
 /**
@@ -74,4 +76,25 @@ export function updateToggleClass( window ) {
 		'wpcomsp-light-dark-active',
 		colorScheme === 'light'
 	);
+}
+
+/**
+ * Updates the aria label for the toggle button
+ * @param {window} window The window object
+ */
+export function updateToggleAriaLabel( window ) {
+	const toggle = window.document.querySelector( '.wp-block-wpcomsp-light-dark-toggle' );
+
+	if ( ! toggle ) {
+		return;
+	}
+
+	const colorScheme = getColorScheme( window );
+	const label = sprintf(
+		/* translators: %s: color mode */
+		__( 'Switch to %s mode', 'light-dark-toggle' ),
+		colorScheme
+	);
+
+	toggle.setAttribute( 'aria-label', label );
 }

@@ -4,6 +4,7 @@ import {
 	getColorScheme,
 	toggleColorMode,
 	updateToggleClass,
+	updateToggleAriaLabel,
 } from './shared';
 
 domReady( wpcomDarkLightMode );
@@ -40,6 +41,7 @@ function wpcomDarkLightMode() {
 		}
 
 		toggleColorMode( window );
+		updateToggleAriaLabel( window );
 	} );
 
 	toggle?.addEventListener( 'pointermove', ( ev ) => {
@@ -91,9 +93,11 @@ function wpcomDarkLightMode() {
 		// click
 		if ( Math.abs( deltaX ) < 10 ) {
 			toggleColorMode( window );
+			updateToggleAriaLabel( window );
 			// slide
 		} else if ( newScheme !== getColorScheme( window ) ) {
 			toggleColorMode( window );
+			updateToggleAriaLabel( window );
 		}
 	}
 }
