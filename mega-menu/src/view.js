@@ -46,24 +46,28 @@ const { state, actions, helpers } = store( 'a8csp/mega-menu', {
 			pageBody.classList.add( 'mega-menu-open' );
 
 			const internalLinks = megaMenuContainer.querySelectorAll( 'a, button' );
-			
+
 			if ( internalLinks.length ) {
 				//	Wait for the menu to be visible before focusing on the first link.
-				setTimeout( function() { 
+				setTimeout( function() {
 						[...internalLinks][ 0 ].focus();
 					}, 100
 				);
 			}
 		},
 		handleMenuKeydown( event ) {
-			const context = getContext();
+			const { id, button } = getContext();
+
+			if ( state.selected !== id ) {
+				return;
+			}
 
 			// If Escape close the menu.
 			if ( event?.key === 'Escape' ) {
-				const button = helpers.getButton( context.button );
+				const closeButton = helpers.getButton( button );
 
 				actions.closeMenu();
-				button.focus();
+				closeButton.focus();
 			}
 		},
 	},
@@ -78,7 +82,7 @@ const { state, actions, helpers } = store( 'a8csp/mega-menu', {
 			if ( id === event.target.getAttribute('aria-controls') ) {
 				return;
 			}
-			
+
 			const modal = helpers.getDivs( id );
 			const modalInner = modal.megaMenuContainer;
 
