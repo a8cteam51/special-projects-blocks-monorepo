@@ -1,4 +1,5 @@
 .wp-block-wpcomsp-carousel {
+	--item-gap: 0px; /* stylelint-disable-line length-zero-no-unit */
 	position: relative;
 	width: 100%;
 	container-type: inline-size;
@@ -30,19 +31,31 @@
 		margin: 0;
 	}
 
+	@media (prefers-reduced-motion: no-preference) {
+
+		&.is-animating {
+
+			.wp-block-gallery .wp-block-image,
+			.wp-block-post,
+			.wc-block-product {
+				transition: transform 0.3s ease-in-out;
+			}
+		}
+	}
+
 	.wp-block-gallery.has-nested-images[class*="columns-"] {
 
 		/* Handle cropped images */
 		&.is-cropped figure.wp-block-image:not(#individual-image) {
 			aspect-ratio: 2/1.5;
-			width: calc(25% - var(--item-gap, 0));
+			width: calc(25% - var(--item-gap));
 
 			@container carousel (max-width: 768px) {
-				width: calc(33.333% - var(--item-gap, 0));
+				width: calc(33.333% - var(--item-gap));
 			}
 
 			@container carousel (max-width: 480px) {
-				width: calc(50% - var(--item-gap, 0));
+				width: calc(50% - var(--item-gap));
 			}
 
 			@container carousel (max-width: 320px) {
