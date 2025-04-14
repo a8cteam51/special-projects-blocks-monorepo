@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Carousel
- * Description:       Example block scaffolded with Create Block tool.
+ * Description:       Display a horizontal series of content.
  * Version:           0.1.0
  * Requires at least: 6.7
  * Requires PHP:      7.4
