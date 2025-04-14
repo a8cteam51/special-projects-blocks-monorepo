@@ -1,5 +1,5 @@
 .wp-block-wpcomsp-carousel {
-	--item-gap: 0px; /* stylelint-disable-line length-zero-no-unit */
+	--item-gap: var(--wp--preset--spacing--20);
 	position: relative;
 	width: 100%;
 	container-type: inline-size;
@@ -21,7 +21,7 @@
 		display: flex;
 		flex-wrap: nowrap;
 		margin: 0;
-		--wp--style--block-gap: var(--item-gap, var(--wp--preset--spacing--20));
+		--wp--style--block-gap: var(--item-gap);
 	}
 
 	.wp-block-gallery .wp-block-image,
