@@ -8,12 +8,17 @@ import {
 import { createBlock } from '@wordpress/blocks';
 import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 // Internal dependencies.
 import CarouselPlaceHolder from './placeholder';
-import { getAttributes, prevNextButtons, paginationButtons } from './common';
+import {
+	addBaseHeight,
+	getAttributes,
+	prevNextButtons,
+	paginationButtons,
+} from './common';
 import './editor.css';
 
 /**
@@ -33,6 +38,8 @@ const createBlockWithInnerBlocks = ( block ) => {
 
 export default function Edit( { attributes, clientId, name, setAttributes } ) {
 	const { overflow, pagination, prevNext } = attributes;
+
+	const carouselRef = useRef( null );
 
 	const { children, ...innerBlockProps } = useInnerBlocksProps(
 		useBlockProps( getAttributes( attributes ) ),
@@ -69,6 +76,26 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 	useEffect( () => {
 		setAttributes( { itemCount: Number( itemCount ) } );
 	}, [ itemCount, setAttributes ] );
+
+	useEffect( () => {
+		const carousel = carouselRef.current;
+		if ( ! carousel ) {
+			return;
+		}
+
+		const cleanupBaseHeight = addBaseHeight( carousel );
+
+		const resizeObserver = new ResizeObserver( () => {
+			addBaseHeight( carousel );
+		} );
+
+		resizeObserver.observe( carousel );
+
+		return () => {
+			cleanupBaseHeight();
+			resizeObserver.disconnect();
+		};
+	}, [ carouselRef ] );
 
 	const { selectBlock, insertBlock } = useDispatch( blockEditorStore );
 
@@ -142,7 +169,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 			) : (
 				<>
 					{ defaultInspectorControls }
-					<div { ...innerBlockProps }>
+					<div { ...innerBlockProps } ref={ carouselRef }>
 						{ prevNext && prevNextButtons() }
 						{ pagination && paginationButtons( itemCount ) }
 						{ children }

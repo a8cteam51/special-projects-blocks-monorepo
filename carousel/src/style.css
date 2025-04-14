@@ -1,6 +1,9 @@
 .wp-block-wpcomsp-carousel {
+	--item-gap: var(--wp--preset--spacing--20);
 	position: relative;
 	width: 100%;
+	container-type: inline-size;
+	container-name: carousel;
 
 	&.has-overflow-hidden {
 		overflow-x: hidden;
@@ -18,12 +21,65 @@
 		display: flex;
 		flex-wrap: nowrap;
 		margin: 0;
+		--wp--style--block-gap: var(--item-gap);
 	}
 
 	.wp-block-gallery .wp-block-image,
 	.wp-block-post,
 	.wc-block-product {
-		flex: 0 0 25%;
+		flex: 0 0 auto;
 		margin: 0;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+
+		&.is-animating {
+
+			.wp-block-gallery .wp-block-image,
+			.wp-block-post,
+			.wc-block-product {
+				transition: transform 0.3s ease-in-out;
+			}
+		}
+	}
+
+	.wp-block-gallery.has-nested-images[class*="columns-"] {
+
+		/* Handle cropped images */
+		&.is-cropped figure.wp-block-image:not(#individual-image) {
+			aspect-ratio: 2/1.5;
+			width: calc(25% - var(--item-gap));
+
+			@container carousel (max-width: 768px) {
+				width: calc(33.333% - var(--item-gap));
+			}
+
+			@container carousel (max-width: 480px) {
+				width: calc(50% - var(--item-gap));
+			}
+
+			@container carousel (max-width: 320px) {
+				width: 100%;
+			}
+		}
+
+		/* Handle non-cropped images */
+		&:not(.is-cropped) figure.wp-block-image:not(#individual-image) {
+			height: var(--base-height);
+			width: auto;
+			display: flex;
+
+			@container carousel (max-width: 768px) {
+				height: calc(var(--base-height) * 2);
+			}
+
+			@container carousel (max-width: 480px) {
+				height: calc(var(--base-height) * 3);
+			}
+
+			img {
+				height: 100%;
+			}
+		}
 	}
 }

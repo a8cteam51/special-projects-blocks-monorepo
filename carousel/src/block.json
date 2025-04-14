@@ -15,6 +15,7 @@
 		},
 		"html": false,
 		"spacing": {
+			"blockGap": true,
 			"margin": true,
 			"padding": true
 		}
