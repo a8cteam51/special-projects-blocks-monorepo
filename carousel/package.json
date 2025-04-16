@@ -15,6 +15,7 @@
 		"start": "wp-scripts start && wp-scripts build-blocks-manifest"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^30.13.0"
+		"@wordpress/scripts": "^30.13.0",
+		"clsx": "^2.1.1"
 	}
 }
