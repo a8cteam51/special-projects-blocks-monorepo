@@ -11,7 +11,7 @@
 
 	function initCarousel( carousel ) {
 		const track = carousel.querySelector(
-			'.wp-block-gallery, .wp-block-query, .wc-block-product-template'
+			'.wp-block-gallery, .wp-block-query, .wp-block-group, .wc-block-product-template'
 		);
 
 		if ( ! track ) {
@@ -19,8 +19,8 @@
 		}
 
 		const slides = Array.from(
-			track.querySelectorAll(
-				'.wp-block-image, .wp-block-post, .wc-block-product'
+			carousel.querySelectorAll(
+				'.wp-block-gallery > .wp-block-image, .wp-block-query .wp-block-post, :scope > .wp-block-group > *, .wc-block-product-template .wc-block-product'
 			)
 		);
 
