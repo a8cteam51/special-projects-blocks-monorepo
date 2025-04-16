@@ -1,3 +1,4 @@
+/* global getComputedStyle, IntersectionObserver, ResizeObserver */
 {
 	document.addEventListener( 'DOMContentLoaded', () => {
 		const carousels = document.querySelectorAll(
@@ -46,7 +47,7 @@
 		}
 
 		setupResizeObserver( carousel, track, slides, uncroppedGallery );
-		setupSlideObserver( carousel, slides, prevButton, nextButton );
+		setupSlideObserver( track, slides, prevButton, nextButton );
 		setupNavigation(
 			carousel,
 			track,
@@ -55,7 +56,7 @@
 			nextButton,
 			paginationButtons
 		);
-		setupKeyboardNavigation( carousel, prevButton, nextButton );
+		setupKeyboardNavigation( carousel, slides, prevButton, nextButton );
 	}
 
 	function setupResizeObserver( carousel, track, slides, uncroppedGallery ) {
@@ -70,7 +71,7 @@
 		resizeObserver.observe( carousel );
 	}
 
-	function setupSlideObserver( carousel, slides, prevButton, nextButton ) {
+	function setupSlideObserver( track, slides, prevButton, nextButton ) {
 		const slideObserver = new IntersectionObserver(
 			( entries ) => {
 				entries.forEach( ( entry ) => {
@@ -88,7 +89,7 @@
 				} );
 			},
 			{
-				root: carousel,
+				root: track,
 				threshold: 0.95,
 				margin: '5px',
 			}
@@ -126,7 +127,12 @@
 		} );
 	}
 
-	function setupKeyboardNavigation( carousel, prevButton, nextButton ) {
+	function setupKeyboardNavigation(
+		carousel,
+		slides,
+		prevButton,
+		nextButton
+	) {
 		carousel.addEventListener( 'keydown', ( e ) => {
 			if (
 				e.key === 'ArrowLeft' &&
@@ -147,19 +153,19 @@
 			return;
 		}
 
-		let offsetter = slides.find(
+		const offsetter = slides.find(
 			( slide ) => ! slide.getAttribute( 'aria-hidden' )
 		);
 
-		let prevSlide = offsetter?.previousElementSibling;
+		let previous = offsetter?.previousElementSibling;
 
 		if ( carousel.classList.contains( 'animate-visible' ) ) {
-			const carouselWidth = carousel.offsetWidth;
+			const carouselWidth = track.offsetWidth;
 			const gap = parseFloat(
 				getComputedStyle( track ).getPropertyValue( 'gap' )
 			);
 
-			let currentSlide = prevSlide;
+			let currentSlide = previous;
 			let totalWidth = 0;
 			let targetSlide = null;
 
@@ -181,12 +187,12 @@
 			}
 
 			if ( targetSlide ) {
-				prevSlide = targetSlide;
+				previous = targetSlide;
 			}
 		}
 
-		if ( prevSlide ) {
-			updateCarousel( carousel, slides, prevSlide.offsetLeft * -1 );
+		if ( previous ) {
+			updateCarousel( carousel, slides, previous.offsetLeft * -1 );
 		}
 	}
 
@@ -200,10 +206,10 @@
 					( slide ) => ! slide.getAttribute( 'aria-hidden' )
 			  )
 			: slides.find( ( slide ) => ! slide.getAttribute( 'aria-hidden' ) );
-		const nextSlide = offsetter?.nextElementSibling;
+		const next = offsetter?.nextElementSibling;
 
-		if ( nextSlide ) {
-			updateCarousel( carousel, slides, nextSlide.offsetLeft * -1 );
+		if ( next ) {
+			updateCarousel( carousel, slides, next.offsetLeft * -1 );
 		}
 	}
 

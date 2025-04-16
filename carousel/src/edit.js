@@ -1,3 +1,5 @@
+/* global ResizeObserver */
+
 // WordPress dependencies.
 import {
 	InspectorControls,
@@ -37,7 +39,8 @@ const createBlockWithInnerBlocks = ( block ) => {
 };
 
 export default function Edit( { attributes, clientId, name, setAttributes } ) {
-	const { overflow, pagination, prevNext } = attributes;
+	const { animate, overflow, pagination, prevNext, prevNextPosition } =
+		attributes;
 
 	const carouselRef = useRef( null );
 
@@ -122,6 +125,38 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					onChange={ ( v ) => setAttributes( { prevNext: v } ) }
 					__nextHasNoMarginBottom
 				/>
+				{ prevNext && (
+					<div
+						style={ { marginBottom: '24px', paddingLeft: '12px' } }
+					>
+						<SelectControl
+							label={ __( 'Position', 'carousel' ) }
+							onChange={ ( v ) =>
+								setAttributes( { prevNextPosition: v } )
+							}
+							options={ [
+								{
+									value: 'sides',
+									label: __( 'Sides', 'carousel' ),
+								},
+								{
+									value: 'top',
+									label: __( 'Top', 'carousel' ),
+								},
+								{
+									value: 'top-right',
+									label: __( 'Top right', 'carousel' ),
+								},
+								{
+									value: 'left',
+									label: __( 'Left', 'carousel' ),
+								},
+							] }
+							value={ prevNextPosition }
+							__nextHasNoMarginBottom
+						/>
+					</div>
+				) }
 				<ToggleControl
 					checked={ pagination }
 					label={ __( 'Pagination buttons', 'carousel' ) }
@@ -150,6 +185,22 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 						},
 					] }
 					value={ overflow }
+					__nextHasNoMarginBottom
+				/>
+				<SelectControl
+					label={ __( 'Animate', 'carousel' ) }
+					onChange={ ( v ) => setAttributes( { animate: v } ) }
+					options={ [
+						{
+							value: 'one',
+							label: __( 'One slide at a time', 'carousel' ),
+						},
+						{
+							value: 'all-visible',
+							label: __( 'All visible slides', 'carousel' ),
+						},
+					] }
+					value={ animate }
 					__nextHasNoMarginBottom
 				/>
 			</PanelBody>

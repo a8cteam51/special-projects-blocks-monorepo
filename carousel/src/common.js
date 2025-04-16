@@ -1,3 +1,8 @@
+/* global getComputedStyle */
+
+// External dependencies.
+import clsx from 'clsx';
+
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
 
@@ -9,9 +14,10 @@ import { __ } from '@wordpress/i18n';
  * @return {Object} The HTML attributes.
  */
 export function getAttributes( attributes ) {
-	const { itemCount, overflow, style } = attributes;
+	const { animate, itemCount, overflow, prevNext, prevNextPosition, style } =
+		attributes;
 
-	let itemGap = style?.spacing?.blockGap ?? '0px';
+	let itemGap = style?.spacing?.blockGap ?? 'var:preset|spacing|20';
 
 	if ( itemGap ) {
 		itemGap =
@@ -24,7 +30,11 @@ export function getAttributes( attributes ) {
 	return {
 		'aria-label': 'block title', // TODO: Add block title.
 		'aria-roledescription': 'carousel',
-		className: `has-overflow-${ overflow }`,
+		className: clsx(
+			'all-visible' === animate && 'animate-visible',
+			`has-overflow-${ overflow }`,
+			prevNext && prevNextPosition && `has-arrows-${ prevNextPosition }`
+		),
 		role: 'region',
 		style: {
 			'--item-count': String( itemCount ),

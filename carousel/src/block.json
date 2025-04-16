@@ -21,6 +21,10 @@
 		}
 	},
 	"attributes": {
+		"animate": {
+			"type": "string",
+			"default": "one"
+		},
 		"itemCount": {
 			"type": "number",
 			"default": 0
@@ -37,6 +41,10 @@
 		"prevNext": {
 			"type": "boolean",
 			"default": true
+		},
+		"prevNextPosition": {
+			"type": "string",
+			"default": "sides"
 		},
 		"type": {
 			"type": "string"
