@@ -14,8 +14,15 @@ import { __ } from '@wordpress/i18n';
  * @return {Object} The HTML attributes.
  */
 export function getAttributes( attributes ) {
-	const { animate, itemCount, overflow, prevNext, prevNextPosition, style } =
-		attributes;
+	const {
+		animate,
+		itemCount,
+		overflow,
+		pagination,
+		prevNext,
+		prevNextPosition,
+		style,
+	} = attributes;
 
 	let itemGap = style?.spacing?.blockGap ?? 'var:preset|spacing|20';
 
@@ -33,6 +40,7 @@ export function getAttributes( attributes ) {
 		className: clsx(
 			'all-visible' === animate && 'animate-visible',
 			`has-overflow-${ overflow }`,
+			pagination && 'has-pagination',
 			prevNext && prevNextPosition && `has-arrows-${ prevNextPosition }`
 		),
 		role: 'region',
@@ -44,16 +52,78 @@ export function getAttributes( attributes ) {
 }
 
 /**
- * Adds a base height to the carousel.
+ * Renders previous/next buttons for a carousel.
  *
- * @param {Object} carousel The carousel element.
+ * @return {Object} The rendered previous/next buttons.
+ */
+export function prevNextButtons() {
+	return (
+		<div
+			aria-label={ __( 'Previous/next controls', 'carousel' ) }
+			className="wp-block-wpcomsp-carousel__prev-next"
+			role="group"
+		>
+			<button className="wp-block-wpcomsp-carousel__prev-next-button prev">
+				<span className="screen-reader-text">
+					{ __( 'Previous slide', 'carousel' ) }
+				</span>
+			</button>
+			<button className="wp-block-wpcomsp-carousel__prev-next-button next">
+				<span className="screen-reader-text">
+					{ __( 'Next slide', 'carousel' ) }
+				</span>
+			</button>
+		</div>
+	);
+}
+
+/**
+ * Renders pagination buttons for a carousel.
+ *
+ * @param {number} count The number of items to paginate.
+ *
+ * @return {Object} The rendered pagination buttons.
+ */
+export function paginationButtons( count ) {
+	return (
+		<div
+			aria-label={ __( 'Slide controls', 'carousel' ) }
+			className="wp-block-wpcomsp-carousel__pagination"
+			role="group"
+		>
+			{ Array.from( { length: count }, ( _, index ) => (
+				<button
+					className="wp-block-wpcomsp-carousel__pagination-button"
+					key={ index }
+				>
+					<span className="screen-reader-text">
+						{ `Slide ${ index + 1 } of ${ count }` }
+					</span>
+				</button>
+			) ) }
+		</div>
+	);
+}
+
+/**
+ * Sets a `--base-height` CSS variable on the Carousel block.
+ *
+ * Adding a `ref` to the Carousel block itself interferes with its selectability,
+ * so one is added to an empty div below the Carousel's contents instead.
+ *
+ * This is used only for Gallery carousels with
+ * the "Crop images to fit" option disabled.
+ *
+ * @param {Object} bhTracker The base height tracker element.
  *
  * @return {Function} A cleanup function to remove event listeners.
  */
-export function addBaseHeight( carousel ) {
-	if ( ! carousel ) {
+export function setBaseHeight( bhTracker ) {
+	if ( ! bhTracker ) {
 		return () => {};
 	}
+
+	const carousel = bhTracker.closest( '.wp-block-wpcomsp-carousel' );
 
 	const track = carousel.querySelector(
 		'.wp-block-gallery:not(.is-cropped)'
@@ -125,58 +195,4 @@ export function addBaseHeight( carousel ) {
 	return () => {
 		cleanupFns.forEach( ( fn ) => fn() );
 	};
-}
-
-/**
- * Renders previous/next buttons for a carousel.
- *
- * @return {Object} The rendered previous/next buttons.
- */
-export function prevNextButtons() {
-	return (
-		<div
-			aria-label={ __( 'Previous/next controls', 'carousel' ) }
-			className="wp-block-wpcomsp-carousel__prev-next"
-			role="group"
-		>
-			<button className="wp-block-wpcomsp-carousel__prev-next-button prev">
-				<span className="screen-reader-text">
-					{ __( 'Previous slide', 'carousel' ) }
-				</span>
-			</button>
-			<button className="wp-block-wpcomsp-carousel__prev-next-button next">
-				<span className="screen-reader-text">
-					{ __( 'Next slide', 'carousel' ) }
-				</span>
-			</button>
-		</div>
-	);
-}
-
-/**
- * Renders pagination buttons for a carousel.
- *
- * @param {number} count The number of items to paginate.
- *
- * @return {Object} The rendered pagination buttons.
- */
-export function paginationButtons( count ) {
-	return (
-		<div
-			aria-label={ __( 'Slide controls', 'carousel' ) }
-			className="wp-block-wpcomsp-carousel__pagination"
-			role="group"
-		>
-			{ Array.from( { length: count }, ( _, index ) => (
-				<button
-					className="wp-block-wpcomsp-carousel__pagination-button"
-					key={ index }
-				>
-					<span className="screen-reader-text">
-						{ `Slide ${ index + 1 } of ${ count }` }
-					</span>
-				</button>
-			) ) }
-		</div>
-	);
 }

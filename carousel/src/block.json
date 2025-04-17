@@ -53,6 +53,7 @@
 	"allowedBlocks": [
 		"core/query",
 		"core/gallery",
+		"core/group",
 		"woocommerce/product-collection"
 	],
 	"textdomain": "carousel",

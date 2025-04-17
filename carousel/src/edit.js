@@ -16,10 +16,10 @@ import { __ } from '@wordpress/i18n';
 // Internal dependencies.
 import CarouselPlaceHolder from './placeholder';
 import {
-	addBaseHeight,
 	getAttributes,
 	prevNextButtons,
 	paginationButtons,
+	setBaseHeight,
 } from './common';
 import './editor.css';
 
@@ -42,7 +42,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 	const { animate, overflow, pagination, prevNext, prevNextPosition } =
 		attributes;
 
-	const carouselRef = useRef( null );
+	const baseHeightRef = useRef( null );
 
 	const { children, ...innerBlockProps } = useInnerBlocksProps(
 		useBlockProps( getAttributes( attributes ) ),
@@ -65,10 +65,16 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 
 			switch ( innerBlock.name ) {
 				case 'core/gallery':
+				case 'core/group':
 					count = innerBlock.innerBlocks?.length || 0;
 					break;
-				default:
+				case 'core/query':
+				case 'core/product-collection':
+					// @TODO: Find a better way, this may not be reflective of displayed items.
 					count = innerBlock.attributes.query?.perPage || 0;
+					break;
+				default:
+					count = 0;
 			}
 
 			return { hasInnerBlocks: true, itemCount: count };
@@ -81,24 +87,24 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 	}, [ itemCount, setAttributes ] );
 
 	useEffect( () => {
-		const carousel = carouselRef.current;
-		if ( ! carousel ) {
+		const baseHeightTracker = baseHeightRef.current;
+		if ( ! baseHeightTracker ) {
 			return;
 		}
 
-		const cleanupBaseHeight = addBaseHeight( carousel );
+		const cleanupBaseHeight = setBaseHeight( baseHeightTracker );
 
 		const resizeObserver = new ResizeObserver( () => {
-			addBaseHeight( carousel );
+			setBaseHeight( baseHeightTracker );
 		} );
 
-		resizeObserver.observe( carousel );
+		resizeObserver.observe( baseHeightTracker );
 
 		return () => {
 			cleanupBaseHeight();
 			resizeObserver.disconnect();
 		};
-	}, [ carouselRef ] );
+	}, [ baseHeightRef ] );
 
 	const { selectBlock, insertBlock } = useDispatch( blockEditorStore );
 
@@ -208,7 +214,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 	);
 
 	return (
-		<>
+		<div { ...innerBlockProps }>
 			{ ! hasInnerBlocks ? (
 				<>
 					{ children }
@@ -220,13 +226,12 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 			) : (
 				<>
 					{ defaultInspectorControls }
-					<div { ...innerBlockProps } ref={ carouselRef }>
-						{ prevNext && prevNextButtons() }
-						{ pagination && paginationButtons( itemCount ) }
-						{ children }
-					</div>
+					{ prevNext && prevNextButtons() }
+					{ pagination && paginationButtons( itemCount ) }
+					{ children }
+					<div ref={ baseHeightRef }></div>
 				</>
 			) }
-		</>
+		</div>
 	);
 }

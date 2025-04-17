@@ -58,6 +58,54 @@ const baseVariations = [
 		isActive: [ 'type' ],
 		attributes: { type: 'query' },
 	},
+	{
+		name: 'wpcomsp/carousel-cards',
+		title: __( 'Cards Carousel', 'carousel' ),
+		description: __( 'Display cards in a horizontal series.', 'carousel' ),
+		scope: [ 'block' ],
+		innerBlocks: [
+			{
+				name: 'core/group',
+				innerBlocks: [
+					{
+						name: 'core/group',
+						innerBlocks: [
+							{
+								name: 'core/paragraph',
+								attributes: {
+									placeholder: __( 'Card 1', 'carousel' ),
+								},
+							},
+						],
+					},
+					{
+						name: 'core/group',
+						innerBlocks: [
+							{
+								name: 'core/paragraph',
+								attributes: {
+									placeholder: __( 'Card 2', 'carousel' ),
+								},
+							},
+						],
+					},
+					{
+						name: 'core/group',
+						innerBlocks: [
+							{
+								name: 'core/paragraph',
+								attributes: {
+									placeholder: __( 'Card 3', 'carousel' ),
+								},
+							},
+						],
+					},
+				],
+			},
+		],
+		isActive: [ 'type' ],
+		attributes: { type: 'group' },
+	},
 ];
 
 const productVariation = {
