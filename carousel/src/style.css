@@ -6,11 +6,17 @@
 	container-name: carousel;
 	display: grid;
 	grid-template-columns: auto;
-	grid-template-rows: auto auto;
+	grid-template-rows: auto;
 	grid-template-areas:
 		"items"
 		"pagination";
-	gap: var(--item-gap);
+
+	&.has-pagination,
+	&.has-arrows-top,
+	&.has-arrows-top-right,
+	&.has-arrows-left {
+		gap: var(--item-gap);
+	}
 
 	&.has-overflow-hidden {
 		overflow-x: hidden;

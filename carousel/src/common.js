@@ -14,8 +14,15 @@ import { __ } from '@wordpress/i18n';
  * @return {Object} The HTML attributes.
  */
 export function getAttributes( attributes ) {
-	const { animate, itemCount, overflow, prevNext, prevNextPosition, style } =
-		attributes;
+	const {
+		animate,
+		itemCount,
+		overflow,
+		pagination,
+		prevNext,
+		prevNextPosition,
+		style,
+	} = attributes;
 
 	let itemGap = style?.spacing?.blockGap ?? 'var:preset|spacing|20';
 
@@ -33,6 +40,7 @@ export function getAttributes( attributes ) {
 		className: clsx(
 			'all-visible' === animate && 'animate-visible',
 			`has-overflow-${ overflow }`,
+			pagination && 'has-pagination',
 			prevNext && prevNextPosition && `has-arrows-${ prevNextPosition }`
 		),
 		role: 'region',
