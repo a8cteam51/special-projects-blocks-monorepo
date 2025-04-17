@@ -9,69 +9,89 @@
 		} );
 	} );
 
+	/**
+	 * Initialize the carousel.
+	 *
+	 * @param {Element} carousel The carousel element.
+	 */
 	function initCarousel( carousel ) {
-		const track = carousel.querySelector(
-			'.wp-block-gallery, .wp-block-query, .wp-block-group, .wc-block-product-template'
-		);
+		const instance = {
+			carousel,
+			track: carousel.querySelector(
+				'.wp-block-gallery, .wp-block-query, .wp-block-group, .wc-block-product-template'
+			),
+			slides: [],
+			prevButton: null,
+			nextButton: null,
+			paginationButtons: null,
+			uncroppedGallery: false,
+		};
 
-		if ( ! track ) {
+		if ( ! instance.track ) {
 			return;
 		}
 
-		const slides = Array.from(
+		instance.slides = Array.from(
 			carousel.querySelectorAll(
 				'.wp-block-gallery > .wp-block-image, .wp-block-query .wp-block-post, :scope > .wp-block-group > *, .wc-block-product-template .wc-block-product'
 			)
 		);
 
-		if ( slides.length === 0 ) {
+		if ( instance.slides.length === 0 ) {
 			return;
 		}
 
-		const prevButton = carousel.querySelector(
+		instance.prevButton = carousel.querySelector(
 			'.wp-block-wpcomsp-carousel__prev-next-button.prev'
 		);
-		const nextButton = carousel.querySelector(
+		instance.nextButton = carousel.querySelector(
 			'.wp-block-wpcomsp-carousel__prev-next-button.next'
 		);
-		const paginationButtons = carousel.querySelectorAll(
+		instance.paginationButtons = carousel.querySelectorAll(
 			'.wp-block-wpcomsp-carousel__pagination-button'
 		);
 
-		const uncroppedGallery =
-			track.classList.contains( 'wp-block-gallery' ) &&
-			! track.classList.contains( 'is-cropped' );
+		instance.uncroppedGallery =
+			instance.track.classList.contains( 'wp-block-gallery' ) &&
+			! instance.track.classList.contains( 'is-cropped' );
 
-		if ( uncroppedGallery ) {
-			setBaseHeight( carousel, track );
+		if ( instance.uncroppedGallery ) {
+			setBaseHeight( instance );
 		}
 
-		setupResizeObserver( carousel, track, slides, uncroppedGallery );
-		setupSlideObserver( track, slides, prevButton, nextButton );
-		setupNavigation(
-			carousel,
-			track,
-			slides,
-			prevButton,
-			nextButton,
-			paginationButtons
-		);
-		setupKeyboardNavigation( carousel, slides, prevButton, nextButton );
+		setupResizeObserver( instance );
+		setupSlideObserver( instance );
+		setupNavigation( instance );
+		setupKeyboardNavigation( instance );
 	}
 
-	function setupResizeObserver( carousel, track, slides, uncroppedGallery ) {
+	/**
+	 * Set up the observer for handling carousel resizing.
+	 *
+	 * @param {Object} instance The carousel instance.
+	 */
+	function setupResizeObserver( instance ) {
+		const { carousel, uncroppedGallery } = instance;
+
 		const resizeObserver = new ResizeObserver( () => {
 			if ( uncroppedGallery ) {
-				setBaseHeight( carousel, track );
+				setBaseHeight( instance );
 			}
 
-			recalculateSlidePositions( carousel, track, slides );
+			recalculateSlidePositions( instance );
 		} );
 
 		resizeObserver.observe( carousel );
 	}
 
-	function setupSlideObserver( track, slides, prevButton, nextButton ) {
+	/**
+	 * Set up the observer for handling slide accessbility.
+	 *
+	 * @param {Object} instance The carousel instance.
+	 */
+	function setupSlideObserver( instance ) {
+		const { slides, track } = instance;
+
 		const slideObserver = new IntersectionObserver(
 			( entries ) => {
 				entries.forEach( ( entry ) => {
@@ -85,13 +105,13 @@
 						slide.setAttribute( 'tabindex', '-1' );
 					}
 
-					updateButtonStates( slides, prevButton, nextButton );
+					updateButtonStates( instance );
 				} );
 			},
 			{
 				root: track,
-				threshold: 0.95,
-				margin: '5px',
+				threshold: 0.95, // Give slides some grace during resizing.
+				margin: '5px', // Give slides some grace during resizing.
 			}
 		);
 
@@ -100,152 +120,60 @@
 		} );
 	}
 
-	function setupNavigation(
-		carousel,
-		track,
-		slides,
-		prevButton,
-		nextButton,
-		paginationButtons
-	) {
+	/**
+	 * Set up the navigation for the carousel.
+	 *
+	 * @param {Object} instance The carousel instance.
+	 */
+	function setupNavigation( instance ) {
+		const { paginationButtons, prevButton, nextButton, slides } = instance;
+
 		prevButton?.addEventListener( 'click', () => {
-			previousSlide( carousel, track, slides, prevButton );
+			navigatePrevious( instance );
 		} );
 
 		nextButton?.addEventListener( 'click', () => {
-			nextSlide( carousel, slides, nextButton );
+			navigateNext( instance );
 		} );
 
 		paginationButtons?.forEach( ( button, index ) => {
 			button.addEventListener( 'click', () => {
-				updateCarousel(
-					carousel,
-					slides,
-					slides[ index ].offsetLeft * -1
-				);
+				updateCarousel( instance, slides[ index ].offsetLeft * -1 );
 			} );
 		} );
 	}
 
-	function setupKeyboardNavigation(
-		carousel,
-		slides,
-		prevButton,
-		nextButton
-	) {
+	/**
+	 * Set up the keyboard navigation for the carousel.
+	 *
+	 * @param {Object} instance The carousel instance.
+	 */
+	function setupKeyboardNavigation( instance ) {
+		const { carousel, prevButton, nextButton } = instance;
+
 		carousel.addEventListener( 'keydown', ( e ) => {
 			if (
 				e.key === 'ArrowLeft' &&
 				prevButton.getAttribute( 'aria-disabled' ) !== 'true'
 			) {
-				previousSlide( carousel, slides, prevButton );
+				navigatePrevious( instance );
 			} else if (
 				e.key === 'ArrowRight' &&
 				nextButton.getAttribute( 'aria-disabled' ) !== 'true'
 			) {
-				nextSlide( carousel, slides, nextButton );
+				navigateNext( instance );
 			}
 		} );
 	}
 
-	function previousSlide( carousel, track, slides, prevButton ) {
-		if ( prevButton.getAttribute( 'aria-disabled' ) === 'true' ) {
-			return;
-		}
+	/**
+	 * Recalculate the slide positions during resize.
+	 *
+	 * @param {Object} instance The carousel instance.
+	 */
+	function recalculateSlidePositions( instance ) {
+		const { slides, track } = instance;
 
-		const offsetter = slides.find(
-			( slide ) => ! slide.getAttribute( 'aria-hidden' )
-		);
-
-		let previous = offsetter?.previousElementSibling;
-
-		if ( carousel.classList.contains( 'animate-visible' ) ) {
-			const carouselWidth = track.offsetWidth;
-			const gap = parseFloat(
-				getComputedStyle( track ).getPropertyValue( 'gap' )
-			);
-
-			let currentSlide = previous;
-			let totalWidth = 0;
-			let targetSlide = null;
-
-			while ( currentSlide ) {
-				const slideWidth = currentSlide.offsetWidth;
-
-				if ( totalWidth === 0 ) {
-					totalWidth = slideWidth;
-				} else {
-					totalWidth += slideWidth + gap;
-				}
-
-				if ( totalWidth > carouselWidth ) {
-					break;
-				}
-
-				targetSlide = currentSlide;
-				currentSlide = currentSlide.previousElementSibling;
-			}
-
-			if ( targetSlide ) {
-				previous = targetSlide;
-			}
-		}
-
-		if ( previous ) {
-			updateCarousel( carousel, slides, previous.offsetLeft * -1 );
-		}
-	}
-
-	function nextSlide( carousel, slides, nextButton ) {
-		if ( nextButton.getAttribute( 'aria-disabled' ) === 'true' ) {
-			return;
-		}
-
-		const offsetter = carousel.classList.contains( 'animate-visible' )
-			? slides.findLast(
-					( slide ) => ! slide.getAttribute( 'aria-hidden' )
-			  )
-			: slides.find( ( slide ) => ! slide.getAttribute( 'aria-hidden' ) );
-		const next = offsetter?.nextElementSibling;
-
-		if ( next ) {
-			updateCarousel( carousel, slides, next.offsetLeft * -1 );
-		}
-	}
-
-	function updateCarousel( carousel, slides, offset, resize = false ) {
-		if ( ! resize ) {
-			carousel.classList.add( 'is-animating' );
-		}
-
-		slides.forEach( ( slide ) => {
-			slide.style.transform = `translate3d(${ offset }px, 0, 0)`;
-		} );
-
-		slides[ 0 ].addEventListener( 'transitionend', () => {
-			carousel.classList.remove( 'is-animating' );
-		} );
-	}
-
-	function updateButtonStates( slides, prevButton, nextButton ) {
-		if ( prevButton ) {
-			if ( ! slides[ 0 ].getAttribute( 'aria-hidden' ) ) {
-				prevButton.setAttribute( 'aria-disabled', 'true' );
-			} else {
-				prevButton.removeAttribute( 'aria-disabled' );
-			}
-		}
-
-		if ( nextButton ) {
-			if ( ! slides[ slides.length - 1 ].getAttribute( 'aria-hidden' ) ) {
-				nextButton.setAttribute( 'aria-disabled', 'true' );
-			} else {
-				nextButton.removeAttribute( 'aria-disabled' );
-			}
-		}
-	}
-
-	function recalculateSlidePositions( carousel, track, slides ) {
 		const firstVisible = slides.find(
 			( slide ) => ! slide.getAttribute( 'aria-hidden' )
 		);
@@ -267,17 +195,147 @@
 				totalOffset += slides[ i ].offsetWidth + gap;
 			}
 
-			updateCarousel(
-				carousel,
-				slides,
-				Math.round( totalOffset * -1 ),
-				true
-			);
+			updateCarousel( instance, Math.round( totalOffset * -1 ), true );
 		}
 	}
 
-	// Add base height for uncropped galleries.
-	function setBaseHeight( carousel, track ) {
+	/**
+	 * Navigate to the previous slide(s).
+	 *
+	 * @param {Object} instance The carousel instance.
+	 */
+	function navigatePrevious( instance ) {
+		const { carousel, slides, prevButton, track } = instance;
+
+		if ( prevButton.getAttribute( 'aria-disabled' ) === 'true' ) {
+			return;
+		}
+
+		const offsetter = slides.find(
+			( slide ) => ! slide.getAttribute( 'aria-hidden' )
+		);
+
+		let previous = offsetter?.previousElementSibling;
+
+		if ( carousel.classList.contains( 'animate-visible' ) ) {
+			const trackWidth = track.offsetWidth;
+			const gap = parseFloat(
+				getComputedStyle( track ).getPropertyValue( 'gap' )
+			);
+
+			let currentSlide = previous;
+			let totalWidth = 0;
+			let targetSlide = null;
+
+			while ( currentSlide ) {
+				const slideWidth = currentSlide.offsetWidth;
+
+				if ( totalWidth === 0 ) {
+					totalWidth = slideWidth;
+				} else {
+					totalWidth += slideWidth + gap;
+				}
+
+				if ( totalWidth > trackWidth ) {
+					break;
+				}
+
+				targetSlide = currentSlide;
+				currentSlide = currentSlide.previousElementSibling;
+			}
+
+			if ( targetSlide ) {
+				previous = targetSlide;
+			}
+		}
+
+		if ( previous ) {
+			updateCarousel( instance, previous.offsetLeft * -1 );
+		}
+	}
+
+	/**
+	 * Navigate to the next slide(s).
+	 *
+	 * @param {Object} instance The carousel instance.
+	 */
+	function navigateNext( instance ) {
+		const { carousel, slides, nextButton } = instance;
+
+		if ( nextButton.getAttribute( 'aria-disabled' ) === 'true' ) {
+			return;
+		}
+
+		const offsetter = carousel.classList.contains( 'animate-visible' )
+			? slides.findLast(
+					( slide ) => ! slide.getAttribute( 'aria-hidden' )
+			  )
+			: slides.find( ( slide ) => ! slide.getAttribute( 'aria-hidden' ) );
+
+		const next = offsetter?.nextElementSibling;
+
+		if ( next ) {
+			updateCarousel( instance, next.offsetLeft * -1 );
+		}
+	}
+
+	/**
+	 * Update the carousel.
+	 *
+	 * @param {Object}  instance The carousel instance.
+	 * @param {number}  offset   The offset to move the carousel to.
+	 * @param {boolean} resizing Whether the carousel is being resized.
+	 */
+	function updateCarousel( instance, offset, resizing = false ) {
+		const { carousel, slides } = instance;
+
+		if ( ! resizing ) {
+			carousel.classList.add( 'is-animating' );
+		}
+
+		slides.forEach( ( slide ) => {
+			slide.style.transform = `translate3d(${ offset }px, 0, 0)`;
+		} );
+
+		slides[ 0 ].addEventListener( 'transitionend', () => {
+			carousel.classList.remove( 'is-animating' );
+		} );
+	}
+
+	/**
+	 * Update the button states.
+	 *
+	 * @param {Object}  instance            The carousel instance.
+	 * @param {Element} instance.slides     The slides.
+	 * @param {Element} instance.prevButton The previous button.
+	 * @param {Element} instance.nextButton The next button.
+	 */
+	function updateButtonStates( { slides, prevButton, nextButton } ) {
+		if ( prevButton ) {
+			if ( ! slides[ 0 ].getAttribute( 'aria-hidden' ) ) {
+				prevButton.setAttribute( 'aria-disabled', 'true' );
+			} else {
+				prevButton.removeAttribute( 'aria-disabled' );
+			}
+		}
+
+		if ( nextButton ) {
+			if ( ! slides[ slides.length - 1 ].getAttribute( 'aria-hidden' ) ) {
+				nextButton.setAttribute( 'aria-disabled', 'true' );
+			} else {
+				nextButton.removeAttribute( 'aria-disabled' );
+			}
+		}
+	}
+
+	/**
+	 * Set the base height for uncropped galleries.
+	 *
+	 * @param {Object}  instance          The carousel instance.
+	 * @param {Element} instance.carousel The carousel element.
+	 * @param {Element} instance.track    The track element.
+	 */
+	function setBaseHeight( { carousel, track } ) {
 		const images = track.querySelectorAll( 'img' );
 		const itemGap = parseFloat(
 			getComputedStyle( track ).getPropertyValue( 'column-gap' )
@@ -287,8 +345,8 @@
 		let widestImage = track.querySelector( '.is-widest' );
 		let maxWidth = 0;
 
+		// Find the proportionally widest image.
 		if ( ! widestImage ) {
-			// Find the proportionally widest image.
 			images.forEach( ( img ) => {
 				const width = Number( img.getAttribute( 'width' ) );
 				const height = Number( img.getAttribute( 'height' ) );
