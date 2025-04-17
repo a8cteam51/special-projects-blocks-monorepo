@@ -65,10 +65,16 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 
 			switch ( innerBlock.name ) {
 				case 'core/gallery':
+				case 'core/group':
 					count = innerBlock.innerBlocks?.length || 0;
 					break;
-				default:
+				case 'core/query':
+				case 'core/product-collection':
+					// @TODO: Find a better way, this may not be reflective of displayed items.
 					count = innerBlock.attributes.query?.perPage || 0;
+					break;
+				default:
+					count = 0;
 			}
 
 			return { hasInnerBlocks: true, itemCount: count };
