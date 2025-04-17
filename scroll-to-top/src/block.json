@@ -1,0 +1,63 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/scroll-to-top",
+	"version": "0.1.0",
+	"title": "Scroll to top block",
+	"category": "widgets",
+	"icon": "arrow-up-alt",
+	"description": "A button that scrolls the page to the top.",
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"backgroundColor": {
+			"type": "string",
+			"default": "var(--wp--preset--color--purple)"
+		},
+		"backgroundColorHover": {
+			"type": "string",
+			"default": "var(--wp--preset--color--green)"
+		},
+		"borderColor": {
+			"type": "string",
+			"default": "var(--wp--preset--color--blackish)"
+		},
+		"borderRadius": {
+			"type": "number",
+			"default": 0
+		},
+		"borderWidth": {
+			"type": "number",
+			"default": 1
+		},
+		"iconColor": {
+			"type": "string",
+			"default": "var(--wp--preset--color--white)"
+		},
+		"iconUpload": {
+			"type": "object"
+		},
+		"useCustomIcon": {
+			"type": "boolean",
+			"default": false
+		},
+		"buttonPosition": {
+			"type": "string",
+			"default": "fixed"
+		},
+		"buttonFloatingRight": {
+			"type": "number",
+			"default": 20
+		},
+		"buttonFloatingBottom": {
+			"type": "number",
+			"default": 20
+		}
+	},
+	"textdomain": "scroll-to-top",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}
