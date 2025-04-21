@@ -63,6 +63,7 @@
 		setupSlideObserver( instance );
 		setupNavigation( instance );
 		setupKeyboardNavigation( instance );
+		setupDragNavigation( instance );
 	}
 
 	/**
@@ -162,6 +163,69 @@
 				nextButton.getAttribute( 'aria-disabled' ) !== 'true'
 			) {
 				navigateNext( instance );
+			}
+		} );
+	}
+
+	/**
+	 * Set up the drag/swipe navigation for the carousel.
+	 *
+	 * @param {Object} instance The carousel instance.
+	 */
+	function setupDragNavigation( instance ) {
+		const { carousel } = instance;
+		const minSwipeDistance = 5;
+
+		let startX;
+		let dragging = false;
+
+		carousel.addEventListener( 'mousedown', ( e ) => {
+			e.preventDefault();
+			startX = e.clientX;
+			dragging = true;
+		} );
+
+		carousel.addEventListener( 'mousemove', ( e ) => {
+			if ( dragging ) {
+				if ( Math.abs( e.clientX - startX ) > minSwipeDistance ) {
+					if ( e.clientX > startX ) {
+						navigatePrevious( instance );
+					} else {
+						navigateNext( instance );
+					}
+
+					dragging = false;
+				}
+			}
+		} );
+
+		carousel.addEventListener( 'mouseup', () => {
+			dragging = false;
+		} );
+
+		carousel.addEventListener( 'mouseleave', () => {
+			dragging = false;
+		} );
+
+		carousel.addEventListener( 'touchstart', ( e ) => {
+			e.preventDefault();
+			startX = e.touches[ 0 ].clientX;
+			dragging = true;
+		} );
+
+		carousel.addEventListener( 'touchmove', ( e ) => {
+			if ( dragging ) {
+				if (
+					Math.abs( e.touches[ 0 ].clientX - startX ) >
+					minSwipeDistance
+				) {
+					if ( e.touches[ 0 ].clientX > startX ) {
+						navigatePrevious( instance );
+					} else {
+						navigateNext( instance );
+					}
+					dragging = false;
+				}
 			}
 		} );
 	}
