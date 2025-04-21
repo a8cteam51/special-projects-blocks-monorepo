@@ -14,6 +14,9 @@
 		"plugin-zip": "wp-scripts plugin-zip",
 		"start": "wp-scripts start && wp-scripts build-blocks-manifest"
 	},
+	"files": [
+		"[^.]*"
+	],
 	"devDependencies": {
 		"@wordpress/scripts": "^30.13.0",
 		"clsx": "^2.1.1"
