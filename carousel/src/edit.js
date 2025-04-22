@@ -8,7 +8,12 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
+import {
+	PanelBody,
+	SelectControl,
+	TextControl,
+	ToggleControl,
+} from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -39,7 +44,7 @@ const createBlockWithInnerBlocks = ( block ) => {
 };
 
 export default function Edit( { attributes, clientId, name, setAttributes } ) {
-	const { animate, overflow, pagination, prevNext, prevNextPosition } =
+	const { animate, overflow, pagination, prevNext, prevNextPosition, title } =
 		attributes;
 
 	const baseHeightRef = useRef( null );
@@ -125,6 +130,15 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 	const defaultInspectorControls = (
 		<InspectorControls>
 			<PanelBody title={ __( 'Carousel Settings', 'carousel' ) }>
+				<TextControl
+					help={ __(
+						'Briefly describe the carousel for screen reader users.',
+						'carousel'
+					) }
+					label={ __( 'Title', 'carousel' ) }
+					onChange={ ( v ) => setAttributes( { title: v } ) }
+					value={ title }
+				/>
 				<ToggleControl
 					checked={ prevNext }
 					label={ __( 'Previous/Next buttons', 'carousel' ) }
