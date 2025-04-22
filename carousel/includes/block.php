@@ -41,6 +41,7 @@ function render( array $attributes, string $content ): string {
 			'pagination'       => false,
 			'prevNext'         => true,
 			'prevNextPosition' => 'sides',
+			'title'            => 'Carousel',
 		)
 	);
 
@@ -60,12 +61,15 @@ function render( array $attributes, string $content ): string {
 	}
 
 	$extra_attributes = array(
-		'aria-label'           => 'block title', // TODO: Add block title.
-		'aria-roledescription' => 'carousel',
-		'class'                => implode( ' ', $classnames ),
-		'role'                 => 'region',
-		'style'                => implode( '; ', $styles ),
+		'aria-label' => $attrs['title'],
+		'class'      => implode( ' ', $classnames ),
+		'role'       => 'region',
+		'style'      => implode( '; ', $styles ),
 	);
+
+	if ( 'Carousel' !== $attrs['title'] ) {
+		$extra_attributes['aria-roledescription'] = 'carousel';
+	}
 
 	$arrows     = $attrs['prevNext'] ? prev_next_buttons() : '';
 	$pagination = $attrs['pagination'] ? pagination_buttons( $attrs['itemCount'] ) : '';

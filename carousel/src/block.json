@@ -46,6 +46,9 @@
 			"type": "string",
 			"default": "sides"
 		},
+		"title": {
+			"type": "string"
+		},
 		"type": {
 			"type": "string"
 		}

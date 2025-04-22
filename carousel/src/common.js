@@ -22,6 +22,7 @@ export function getAttributes( attributes ) {
 		prevNext,
 		prevNextPosition,
 		style,
+		title,
 	} = attributes;
 
 	let itemGap = style?.spacing?.blockGap ?? 'var:preset|spacing|20';
@@ -34,21 +35,27 @@ export function getAttributes( attributes ) {
 			) + ')';
 	}
 
-	return {
-		'aria-label': 'block title', // TODO: Add block title.
-		'aria-roledescription': 'carousel',
+	const htmlAttributes = {
+		'aria-label': title || __( 'Carousel', 'carousel' ),
+		role: 'region',
 		className: clsx(
 			'all-visible' === animate && 'animate-visible',
 			`has-overflow-${ overflow }`,
 			pagination && 'has-pagination',
 			prevNext && prevNextPosition && `has-arrows-${ prevNextPosition }`
 		),
-		role: 'region',
 		style: {
 			'--item-count': String( itemCount ),
 			'--item-gap': itemGap,
 		},
 	};
+
+	// Only add aria-roledescription if `title` is set - it's redundant otherwise.
+	if ( title ) {
+		htmlAttributes[ 'aria-roledescription' ] = 'carousel';
+	}
+
+	return htmlAttributes;
 }
 
 /**
