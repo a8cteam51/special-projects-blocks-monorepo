@@ -16,6 +16,7 @@ import { __ } from '@wordpress/i18n';
 export function getAttributes( attributes ) {
 	const {
 		animate,
+		animationSpeed,
 		itemCount,
 		overflow,
 		pagination,
@@ -45,6 +46,7 @@ export function getAttributes( attributes ) {
 			prevNext && prevNextPosition && `has-arrows-${ prevNextPosition }`
 		),
 		style: {
+			'--animation-speed': `${ animationSpeed }s`,
 			'--item-count': String( itemCount ),
 			'--item-gap': itemGap,
 		},

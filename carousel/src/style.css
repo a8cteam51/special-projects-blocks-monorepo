@@ -1,5 +1,6 @@
 .wp-block-wpcomsp-carousel {
 	--item-gap: var(--wp--preset--spacing--20);
+	--animation-speed: 0.3s;
 	position: relative;
 	width: 100%;
 	container-type: inline-size;
@@ -61,7 +62,7 @@
 			.wp-block-post,
 			> .wp-block-group > *,
 			.wc-block-product {
-				transition: transform 0.3s ease-in-out;
+				transition: transform var(--animation-speed) ease-in-out;
 			}
 		}
 	}

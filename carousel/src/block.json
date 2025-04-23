@@ -25,6 +25,10 @@
 			"type": "string",
 			"default": "one"
 		},
+		"animationSpeed": {
+			"type": "number",
+			"default": 0.3
+		},
 		"itemCount": {
 			"type": "number",
 			"default": 0
