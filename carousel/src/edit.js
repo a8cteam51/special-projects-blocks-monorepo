@@ -44,8 +44,15 @@ const createBlockWithInnerBlocks = ( block ) => {
 };
 
 export default function Edit( { attributes, clientId, name, setAttributes } ) {
-	const { animate, overflow, pagination, prevNext, prevNextPosition, title } =
-		attributes;
+	const {
+		animate,
+		animationSpeed,
+		overflow,
+		pagination,
+		prevNext,
+		prevNextPosition,
+		title,
+	} = attributes;
 
 	const baseHeightRef = useRef( null );
 
@@ -222,6 +229,17 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					] }
 					value={ animate }
 					__nextHasNoMarginBottom
+				/>
+				<TextControl
+					label={ __( 'Animation speed (in seconds)', 'carousel' ) }
+					max="10"
+					min="0.1"
+					step="0.1"
+					type="number"
+					onChange={ ( v ) =>
+						setAttributes( { animationSpeed: Number( v ) } )
+					}
+					value={ animationSpeed }
 				/>
 			</PanelBody>
 		</InspectorControls>

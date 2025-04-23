@@ -36,6 +36,7 @@ function render( array $attributes, string $content ): string {
 		$attributes,
 		array(
 			'animate'          => 'one',
+			'animationSpeed'   => 0.3,
 			'itemCount'        => 0,
 			'overflow'         => 'hidden',
 			'pagination'       => false,
@@ -53,7 +54,11 @@ function render( array $attributes, string $content ): string {
 	);
 	$classnames = array_keys( array_filter( $classnames ) );
 
-	$styles    = array( '--item-count: ' . $attrs['itemCount'] );
+	$styles = array(
+		'--animation-speed: ' . $attrs['animationSpeed'] . 's',
+		'--item-count: ' . $attrs['itemCount']
+	);
+
 	$block_gap = $attrs['style']['spacing']['blockGap'] ?? 'var:preset|spacing|20';
 	if ( $block_gap ) {
 		$block_gap = str_replace( 'var:preset|spacing|', 'var(--wp--preset--spacing--', $block_gap ) . ')';
