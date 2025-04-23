@@ -79,7 +79,7 @@ function render( array $attributes, string $content ): string {
 		wp_kses_data( get_block_wrapper_attributes( $extra_attributes ) ),
 		wp_kses_post( $arrows ),
 		wp_kses_post( $pagination ),
-		wp_kses_post( $content ),
+		$content,
 	);
 
 	return $block;
