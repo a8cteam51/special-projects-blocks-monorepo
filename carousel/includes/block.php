@@ -36,6 +36,7 @@ function render( array $attributes, string $content ): string {
 		$attributes,
 		array(
 			'animate'          => 'one',
+			'animateEnd'       => 'stop',
 			'animationSpeed'   => 0.3,
 			'itemCount'        => 0,
 			'overflow'         => 'hidden',
@@ -74,6 +75,10 @@ function render( array $attributes, string $content ): string {
 
 	if ( 'Carousel' !== $attrs['title'] ) {
 		$extra_attributes['aria-roledescription'] = 'carousel';
+	}
+
+	if ( 'end' !== $attrs['animateEnd'] ) {
+		$extra_attributes['data-animate-end'] = $attrs['animateEnd'];
 	}
 
 	$arrows     = $attrs['prevNext'] ? prev_next_buttons() : '';
