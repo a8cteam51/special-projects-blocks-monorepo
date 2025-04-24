@@ -174,59 +174,83 @@
 	 */
 	function setupDragNavigation( instance ) {
 		const { carousel } = instance;
-		const minSwipeDistance = 5;
+		const minDistance = 5;
 
 		let startX;
+		let startY;
+		let isHorizontal;
 		let dragging = false;
 
-		carousel.addEventListener( 'mousedown', ( e ) => {
-			e.preventDefault();
-			startX = e.clientX;
+		function onStart( x, y ) {
+			startX = x;
+			startY = y;
+			isHorizontal = false;
 			dragging = true;
+		}
+
+		function onMove( x, y, event ) {
+			if ( ! dragging ) {
+				return;
+			}
+
+			const xDiff = x - startX;
+			const yDiff = y - startY;
+
+			if ( Math.abs( xDiff ) < minDistance ) {
+				return;
+			}
+
+			// Determine if direction is generally horizontal.
+			// Not as applicable for mouse events,
+			// but the math is lightweight enough.
+			if ( ! isHorizontal ) {
+				const angle = Math.atan2(
+					Math.abs( yDiff ),
+					Math.abs( xDiff )
+				);
+
+				// ~30 degree threshold.
+				isHorizontal = angle < Math.PI / 6;
+			}
+
+			if ( isHorizontal ) {
+				event.preventDefault();
+
+				if ( xDiff > 0 ) {
+					navigatePrevious( instance );
+				} else {
+					navigateNext( instance );
+				}
+
+				dragging = false;
+			}
+		}
+
+		function onEnd() {
+			dragging = false;
+		}
+
+		carousel.addEventListener( 'mousedown', ( e ) => {
+			// Prevent text selection.
+			e.preventDefault();
+
+			onStart( e.clientX, e.clientY );
 		} );
 
 		carousel.addEventListener( 'mousemove', ( e ) => {
-			if ( dragging ) {
-				if ( Math.abs( e.clientX - startX ) > minSwipeDistance ) {
-					if ( e.clientX > startX ) {
-						navigatePrevious( instance );
-					} else {
-						navigateNext( instance );
-					}
-
-					dragging = false;
-				}
-			}
-		} );
-
-		carousel.addEventListener( 'mouseup', () => {
-			dragging = false;
-		} );
-
-		carousel.addEventListener( 'mouseleave', () => {
-			dragging = false;
+			onMove( e.clientX, e.clientY, e );
 		} );
 
 		carousel.addEventListener( 'touchstart', ( e ) => {
-			e.preventDefault();
-			startX = e.touches[ 0 ].clientX;
-			dragging = true;
+			onStart( e.touches[ 0 ].clientX, e.touches[ 0 ].clientY );
 		} );
 
 		carousel.addEventListener( 'touchmove', ( e ) => {
-			if ( dragging ) {
-				if (
-					Math.abs( e.touches[ 0 ].clientX - startX ) >
-					minSwipeDistance
-				) {
-					if ( e.touches[ 0 ].clientX > startX ) {
-						navigatePrevious( instance );
-					} else {
-						navigateNext( instance );
-					}
-					dragging = false;
-				}
-			}
+			onMove( e.touches[ 0 ].clientX, e.touches[ 0 ].clientY, e );
+		} );
+
+		[ 'touchend', 'mouseup', 'mouseleave' ].forEach( ( eventType ) => {
+			carousel.addEventListener( eventType, onEnd );
 		} );
 	}
 
