@@ -25,6 +25,7 @@
 			nextButton: null,
 			paginationButtons: null,
 			uncroppedGallery: false,
+			animateEnd: null,
 		};
 
 		if ( ! instance.track ) {
@@ -55,8 +56,14 @@
 			instance.track.classList.contains( 'wp-block-gallery' ) &&
 			! instance.track.classList.contains( 'is-cropped' );
 
+		instance.animateEnd = instance.carousel.dataset.animateEnd;
+
 		if ( instance.uncroppedGallery ) {
 			setBaseHeight( instance );
+		}
+
+		if ( 'infinite' === instance.animateEnd ) {
+			setupInfiniteCarousel( instance );
 		}
 
 		setupResizeObserver( instance );
@@ -127,19 +134,26 @@
 	 * @param {Object} instance The carousel instance.
 	 */
 	function setupNavigation( instance ) {
-		const { paginationButtons, prevButton, nextButton, slides } = instance;
+		const { carousel, paginationButtons, prevButton, nextButton, slides } =
+			instance;
 
 		prevButton?.addEventListener( 'click', () => {
-			navigatePrevious( instance );
+			if ( ! carousel.classList.contains( 'is-animating' ) ) {
+				navigatePrevious( instance );
+			}
 		} );
 
 		nextButton?.addEventListener( 'click', () => {
-			navigateNext( instance );
+			if ( ! carousel.classList.contains( 'is-animating' ) ) {
+				navigateNext( instance );
+			}
 		} );
 
 		paginationButtons?.forEach( ( button, index ) => {
 			button.addEventListener( 'click', () => {
-				updateCarousel( instance, slides[ index ].offsetLeft * -1 );
+				if ( ! carousel.classList.contains( 'is-animating' ) ) {
+					updateCarousel( instance, slides[ index ].offsetLeft * -1 );
+				}
 			} );
 		} );
 	}
@@ -153,6 +167,10 @@
 		const { carousel, prevButton, nextButton } = instance;
 
 		carousel.addEventListener( 'keydown', ( e ) => {
+			if ( carousel.classList.contains( 'is-animating' ) ) {
+				return;
+			}
+
 			if (
 				e.key === 'ArrowLeft' &&
 				prevButton.getAttribute( 'aria-disabled' ) !== 'true'
@@ -293,7 +311,7 @@
 	 * @param {Object} instance The carousel instance.
 	 */
 	function navigatePrevious( instance ) {
-		const { carousel, slides, prevButton, track } = instance;
+		const { carousel, slides, prevButton, track, animateEnd } = instance;
 
 		if ( prevButton.getAttribute( 'aria-disabled' ) === 'true' ) {
 			return;
@@ -304,6 +322,26 @@
 		);
 
 		let previous = offsetter?.previousElementSibling;
+
+		// Move the last slide to the beginning of the carousel if there is no previous slide.
+		// This is very rough and will need to be revisited.
+		if ( 'infinite' === animateEnd && ! previous ) {
+			const lastSlide = slides[ slides.length - 1 ];
+
+			instance.slides.pop();
+			instance.slides.unshift( lastSlide );
+
+			track.prepend( lastSlide );
+
+			const itemGap = parseFloat(
+				getComputedStyle( track ).getPropertyValue( 'column-gap' )
+			);
+			const offset = lastSlide.offsetWidth + itemGap;
+
+			updateCarousel( instance, -offset, true );
+
+			previous = lastSlide;
+		}
 
 		if ( carousel.classList.contains( 'animate-visible' ) ) {
 			const trackWidth = track.offsetWidth;
@@ -348,7 +386,7 @@
 	 * @param {Object} instance The carousel instance.
 	 */
 	function navigateNext( instance ) {
-		const { carousel, slides, nextButton } = instance;
+		const { carousel, track, slides, nextButton, animateEnd } = instance;
 
 		if ( nextButton.getAttribute( 'aria-disabled' ) === 'true' ) {
 			return;
@@ -364,6 +402,28 @@
 
 		if ( next ) {
 			updateCarousel( instance, next.offsetLeft * -1 );
+		}
+
+		// Move the first slide to the end of the carousel after animating.
+		// This is also very rough and will need to be revisited.
+		if ( 'infinite' === animateEnd ) {
+			const firstSlide = slides[ 0 ];
+
+			const onInfiniteNext = () => {
+				firstSlide.removeEventListener(
+					'transitionend',
+					onInfiniteNext
+				);
+
+				instance.slides.shift();
+				instance.slides.push( firstSlide );
+
+				track.append( firstSlide );
+
+				updateCarousel( instance, 0, true );
+			};
+
+			firstSlide.addEventListener( 'transitionend', onInfiniteNext );
 		}
 	}
 
@@ -385,9 +445,15 @@
 			slide.style.transform = `translate3d(${ offset }px, 0, 0)`;
 		} );
 
-		slides[ 0 ].addEventListener( 'transitionend', () => {
+		const firstSlide = slides[ 0 ];
+
+		const onTransitionEnd = () => {
+			firstSlide.removeEventListener( 'transitionend', onTransitionEnd );
+
 			carousel.classList.remove( 'is-animating' );
-		} );
+		};
+
+		firstSlide.addEventListener( 'transitionend', onTransitionEnd );
 	}
 
 	/**
@@ -397,8 +463,18 @@
 	 * @param {Element} instance.slides     The slides.
 	 * @param {Element} instance.prevButton The previous button.
 	 * @param {Element} instance.nextButton The next button.
+	 * @param {string}  instance.animateEnd The animation end.
 	 */
-	function updateButtonStates( { slides, prevButton, nextButton } ) {
+	function updateButtonStates( {
+		slides,
+		prevButton,
+		nextButton,
+		animateEnd,
+	} ) {
+		if ( 'infinite' === animateEnd ) {
+			return;
+		}
+
 		if ( prevButton ) {
 			if ( ! slides[ 0 ].getAttribute( 'aria-hidden' ) ) {
 				prevButton.setAttribute( 'aria-disabled', 'true' );
@@ -461,6 +537,19 @@
 			const baseHeight = Math.round( width / aspectRatio );
 
 			carousel.style.setProperty( '--base-height', `${ baseHeight }px` );
+		}
+	}
+
+	/**
+	 * Set up the infinite carousel.
+	 *
+	 * @param {Object} instance The carousel instance.
+	 */
+	function setupInfiniteCarousel( instance ) {
+		const { carousel } = instance;
+
+		if ( ! carousel.classList.contains( 'has-overflow-hidden' ) ) {
+			// Placeholder for future infinite carousel setup.
 		}
 	}
 }

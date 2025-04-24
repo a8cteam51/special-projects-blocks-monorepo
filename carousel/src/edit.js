@@ -46,6 +46,7 @@ const createBlockWithInnerBlocks = ( block ) => {
 export default function Edit( { attributes, clientId, name, setAttributes } ) {
 	const {
 		animate,
+		animateEnd,
 		animationSpeed,
 		overflow,
 		pagination,
@@ -145,6 +146,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					label={ __( 'Title', 'carousel' ) }
 					onChange={ ( v ) => setAttributes( { title: v } ) }
 					value={ title }
+					__next40pxDefaultSize
 				/>
 				<ToggleControl
 					checked={ prevNext }
@@ -181,11 +183,13 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 							] }
 							value={ prevNextPosition }
 							__nextHasNoMarginBottom
+							__next40pxDefaultSize
 						/>
 					</div>
 				) }
 				<ToggleControl
 					checked={ pagination }
+					disabled={ ! itemCount || 'infinite' === animateEnd }
 					label={ __( 'Pagination buttons', 'carousel' ) }
 					onChange={ ( v ) => setAttributes( { pagination: v } ) }
 					__nextHasNoMarginBottom
@@ -213,6 +217,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					] }
 					value={ overflow }
 					__nextHasNoMarginBottom
+					__next40pxDefaultSize
 				/>
 				<SelectControl
 					label={ __( 'Animate', 'carousel' ) }
@@ -229,6 +234,34 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					] }
 					value={ animate }
 					__nextHasNoMarginBottom
+					__next40pxDefaultSize
+				/>
+				<SelectControl
+					label={ __( 'At end', 'carousel' ) }
+					onChange={ ( v ) => {
+						setAttributes( { animateEnd: v } );
+
+						if ( 'infinite' === v ) {
+							setAttributes( { pagination: false } );
+						}
+					} }
+					options={ [
+						{
+							value: 'stop',
+							label: __( 'Stop', 'carousel' ),
+						},
+						{
+							value: 'back',
+							label: __( 'Go back to first slide', 'carousel' ),
+						},
+						{
+							value: 'infinite',
+							label: __( 'Infinite loop', 'carousel' ),
+						},
+					] }
+					value={ animateEnd }
+					__nextHasNoMarginBottom
+					__next40pxDefaultSize
 				/>
 				<TextControl
 					label={ __( 'Animation speed (in seconds)', 'carousel' ) }
@@ -240,6 +273,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 						setAttributes( { animationSpeed: Number( v ) } )
 					}
 					value={ animationSpeed }
+					__next40pxDefaultSize
 				/>
 			</PanelBody>
 		</InspectorControls>
