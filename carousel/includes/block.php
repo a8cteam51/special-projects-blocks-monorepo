@@ -82,7 +82,9 @@ function render( array $attributes, string $content ): string {
 	}
 
 	$arrows     = $attrs['prevNext'] ? prev_next_buttons() : '';
-	$pagination = $attrs['pagination'] ? pagination_buttons( $attrs['itemCount'] ) : '';
+	$pagination = $attrs['pagination'] && $attrs['itemCount'] > 1 && 'end' !== $attrs['animateEnd']
+		? pagination_buttons( $attrs['itemCount'] )
+		: '';
 
 	$block = sprintf(
 		'<div %s>%s%s%s</div>',

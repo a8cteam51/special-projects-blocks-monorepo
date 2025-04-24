@@ -189,6 +189,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 				) }
 				<ToggleControl
 					checked={ pagination }
+					disabled={ ! itemCount || 'infinite' === animateEnd }
 					label={ __( 'Pagination buttons', 'carousel' ) }
 					onChange={ ( v ) => setAttributes( { pagination: v } ) }
 					__nextHasNoMarginBottom
@@ -237,7 +238,13 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 				/>
 				<SelectControl
 					label={ __( 'At end', 'carousel' ) }
-					onChange={ ( v ) => setAttributes( { animateEnd: v } ) }
+					onChange={ ( v ) => {
+						setAttributes( { animateEnd: v } );
+
+						if ( 'infinite' === v ) {
+							setAttributes( { pagination: false } );
+						}
+					} }
 					options={ [
 						{
 							value: 'stop',

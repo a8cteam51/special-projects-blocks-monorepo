@@ -24,7 +24,6 @@
 			prevButton: null,
 			nextButton: null,
 			paginationButtons: null,
-			itemGap: 0,
 			uncroppedGallery: false,
 			animateEnd: null,
 		};
@@ -135,19 +134,26 @@
 	 * @param {Object} instance The carousel instance.
 	 */
 	function setupNavigation( instance ) {
-		const { paginationButtons, prevButton, nextButton, slides } = instance;
+		const { carousel, paginationButtons, prevButton, nextButton, slides } =
+			instance;
 
 		prevButton?.addEventListener( 'click', () => {
-			navigatePrevious( instance );
+			if ( ! carousel.classList.contains( 'is-animating' ) ) {
+				navigatePrevious( instance );
+			}
 		} );
 
 		nextButton?.addEventListener( 'click', () => {
-			navigateNext( instance );
+			if ( ! carousel.classList.contains( 'is-animating' ) ) {
+				navigateNext( instance );
+			}
 		} );
 
 		paginationButtons?.forEach( ( button, index ) => {
 			button.addEventListener( 'click', () => {
-				updateCarousel( instance, slides[ index ].offsetLeft * -1 );
+				if ( ! carousel.classList.contains( 'is-animating' ) ) {
+					updateCarousel( instance, slides[ index ].offsetLeft * -1 );
+				}
 			} );
 		} );
 	}
@@ -161,6 +167,10 @@
 		const { carousel, prevButton, nextButton } = instance;
 
 		carousel.addEventListener( 'keydown', ( e ) => {
+			if ( carousel.classList.contains( 'is-animating' ) ) {
+				return;
+			}
+
 			if (
 				e.key === 'ArrowLeft' &&
 				prevButton.getAttribute( 'aria-disabled' ) !== 'true'
@@ -323,7 +333,10 @@
 
 			track.prepend( lastSlide );
 
-			const offset = lastSlide.offsetWidth + instance.itemGap;
+			const itemGap = parseFloat(
+				getComputedStyle( track ).getPropertyValue( 'column-gap' )
+			);
+			const offset = lastSlide.offsetWidth + itemGap;
 
 			updateCarousel( instance, -offset, true );
 
