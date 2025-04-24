@@ -25,6 +25,11 @@
 			"type": "string",
 			"default": "one"
 		},
+		"animateEnd": {
+			"type": "string",
+			"default": "stop",
+			"enum": [ "stop", "back", "infinite" ]
+		},
 		"animationSpeed": {
 			"type": "number",
 			"default": 0.3
