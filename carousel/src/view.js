@@ -445,9 +445,15 @@
 			slide.style.transform = `translate3d(${ offset }px, 0, 0)`;
 		} );
 
-		slides[ 0 ].addEventListener( 'transitionend', () => {
+		const firstSlide = slides[ 0 ];
+
+		const onTransitionEnd = () => {
+			firstSlide.removeEventListener( 'transitionend', onTransitionEnd );
+
 			carousel.classList.remove( 'is-animating' );
-		} );
+		};
+
+		firstSlide.addEventListener( 'transitionend', onTransitionEnd );
 	}
 
 	/**
