@@ -18,7 +18,7 @@
 		const instance = {
 			carousel,
 			track: carousel.querySelector(
-				'.wp-block-gallery, .wp-block-query, .wp-block-group, .wc-block-product-template'
+				'.wp-block-gallery, .wp-block-post-template, .wp-block-group, .wc-block-product-template'
 			),
 			slides: [],
 			prevButton: null,
@@ -34,7 +34,7 @@
 
 		instance.slides = Array.from(
 			carousel.querySelectorAll(
-				'.wp-block-gallery > .wp-block-image, .wp-block-query .wp-block-post, :scope > .wp-block-group > *, .wc-block-product-template .wc-block-product'
+				'.wp-block-gallery > .wp-block-image, .wp-block-post-template > .wp-block-post, :scope > .wp-block-group > *, .wc-block-product-template .wc-block-product'
 			)
 		);
 
