@@ -327,16 +327,12 @@
 		// This is very rough and will need to be revisited.
 		if ( 'infinite' === animateEnd && ! previous ) {
 			const lastSlide = slides[ slides.length - 1 ];
+			const offset = lastSlide.offsetWidth + getItemGap( instance );
 
 			instance.slides.pop();
 			instance.slides.unshift( lastSlide );
 
 			track.prepend( lastSlide );
-
-			const itemGap = parseFloat(
-				getComputedStyle( track ).getPropertyValue( 'column-gap' )
-			);
-			const offset = lastSlide.offsetWidth + itemGap;
 
 			updateCarousel( instance, -offset, true );
 
@@ -501,10 +497,7 @@
 	 */
 	function setBaseHeight( { carousel, track } ) {
 		const images = track.querySelectorAll( 'img' );
-		const itemGap = parseFloat(
-			getComputedStyle( track ).getPropertyValue( 'column-gap' )
-		);
-		const targetWidth = carousel.offsetWidth / 3 - itemGap;
+		const targetWidth = carousel.offsetWidth / 3 - getItemGap( instance );
 
 		let widestImage = track.querySelector( '.is-widest' );
 		let maxWidth = 0;
@@ -551,5 +544,26 @@
 		if ( ! carousel.classList.contains( 'has-overflow-hidden' ) ) {
 			// Placeholder for future infinite carousel setup.
 		}
+	}
+
+	/**
+	 * Get the item gap.
+	 *
+	 * It might make sense to make this a property of the instance.
+	 * In that case, it would need to be recalculated on resize to
+	 * accommodate themes that change gap via clamp or breakpoints.
+	 *
+	 * @param {Object} instance The carousel instance.
+	 *
+	 * @return {number} The item gap.
+	 */
+	function getItemGap( instance ) {
+		return (
+			parseFloat(
+				getComputedStyle( instance.track ).getPropertyValue(
+					'column-gap'
+				)
+			) || 0
+		);
 	}
 }
