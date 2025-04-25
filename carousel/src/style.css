@@ -27,6 +27,7 @@
 	.wp-block-query,
 	> .wp-block-group,
 	.wc-block-product-collection {
+		grid-area: items;
 		width: 100%;
 	}
 
@@ -36,7 +37,6 @@
 	.wc-block-product-template {
 		display: flex;
 		flex-wrap: nowrap;
-		grid-area: items;
 		margin: 0;
 		--wp--style--block-gap: var(--item-gap);
 	}
