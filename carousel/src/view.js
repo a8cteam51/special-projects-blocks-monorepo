@@ -100,17 +100,29 @@
 	function setupSlideObserver( instance ) {
 		const { slides, track } = instance;
 
+		const focusable = 'a, button, input, select, textarea';
+
 		const slideObserver = new IntersectionObserver(
 			( entries ) => {
 				entries.forEach( ( entry ) => {
 					const slide = entry.target;
 
 					if ( entry.isIntersecting ) {
+						slide.removeAttribute( 'inert' );
+
+						// Inert should be good enough, but just in case.
 						slide.removeAttribute( 'aria-hidden' );
-						slide.removeAttribute( 'tabindex' );
+						slide.querySelectorAll( focusable ).forEach( ( child ) => {
+							child.removeAttribute( 'tabindex' );
+						} );
 					} else {
+						slide.setAttribute( 'inert', '' );
+
+						// Inert should be good enough, but just in case.
 						slide.setAttribute( 'aria-hidden', 'true' );
-						slide.setAttribute( 'tabindex', '-1' );
+						slide.querySelectorAll( focusable ).forEach( ( child ) => {
+							child.setAttribute( 'tabindex', '-1' );
+						} );
 					}
 
 					updateButtonStates( instance );
