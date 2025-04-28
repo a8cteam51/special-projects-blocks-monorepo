@@ -112,17 +112,21 @@
 
 						// Inert should be good enough, but just in case.
 						slide.removeAttribute( 'aria-hidden' );
-						slide.querySelectorAll( focusable ).forEach( ( child ) => {
-							child.removeAttribute( 'tabindex' );
-						} );
+						slide
+							.querySelectorAll( focusable )
+							.forEach( ( child ) => {
+								child.removeAttribute( 'tabindex' );
+							} );
 					} else {
 						slide.setAttribute( 'inert', '' );
 
 						// Inert should be good enough, but just in case.
 						slide.setAttribute( 'aria-hidden', 'true' );
-						slide.querySelectorAll( focusable ).forEach( ( child ) => {
-							child.setAttribute( 'tabindex', '-1' );
-						} );
+						slide
+							.querySelectorAll( focusable )
+							.forEach( ( child ) => {
+								child.setAttribute( 'tabindex', '-1' );
+							} );
 					}
 
 					updateButtonStates( instance );
@@ -329,6 +333,11 @@
 			return;
 		}
 
+		// Flag the potential need for a focus update.
+		// If the currently focused element is within the track,
+		// we can assume it's within a slide.
+		const updateFocus = track.contains( track.ownerDocument.activeElement );
+
 		const offsetter = slides.find(
 			( slide ) => ! slide.getAttribute( 'aria-hidden' )
 		);
@@ -384,7 +393,12 @@
 		}
 
 		if ( previous ) {
-			updateCarousel( instance, previous.offsetLeft * -1 );
+			updateCarousel(
+				instance,
+				previous.offsetLeft * -1,
+				false,
+				updateFocus
+			);
 		}
 	}
 
@@ -400,6 +414,11 @@
 			return;
 		}
 
+		// Flag the potential need for a focus update.
+		// If the currently focused element is within the track,
+		// we can assume it's within a slide.
+		const updateFocus = track.contains( track.ownerDocument.activeElement );
+
 		const offsetter = carousel.classList.contains( 'animate-visible' )
 			? slides.findLast(
 					( slide ) => ! slide.getAttribute( 'aria-hidden' )
@@ -409,7 +428,12 @@
 		const next = offsetter?.nextElementSibling;
 
 		if ( next ) {
-			updateCarousel( instance, next.offsetLeft * -1 );
+			updateCarousel(
+				instance,
+				next.offsetLeft * -1,
+				false,
+				updateFocus
+			);
 		}
 
 		// Move the first slide to the end of the carousel after animating.
@@ -438,12 +462,18 @@
 	/**
 	 * Update the carousel.
 	 *
-	 * @param {Object}  instance The carousel instance.
-	 * @param {number}  offset   The offset to move the carousel to.
-	 * @param {boolean} resizing Whether the carousel is being resized.
+	 * @param {Object}  instance    The carousel instance.
+	 * @param {number}  offset      The offset to move the carousel to.
+	 * @param {boolean} resizing    Whether the carousel is being resized.
+	 * @param {boolean} updateFocus Whether to update the focus.
 	 */
-	function updateCarousel( instance, offset, resizing = false ) {
-		const { carousel, slides } = instance;
+	function updateCarousel(
+		instance,
+		offset,
+		resizing = false,
+		updateFocus = false
+	) {
+		const { carousel, track, slides } = instance;
 
 		if ( ! resizing ) {
 			carousel.classList.add( 'is-animating' );
@@ -459,6 +489,21 @@
 			firstSlide.removeEventListener( 'transitionend', onTransitionEnd );
 
 			carousel.classList.remove( 'is-animating' );
+
+			// If the flag is set and there is currently no focused element,
+			// we can assume the focus was lost during the transition.
+			// In that case, set focus within the first slide.
+			if (
+				updateFocus &&
+				track.ownerDocument.activeElement === track.ownerDocument.body
+			) {
+				// Delay slightly to account for DOM updates.
+				setTimeout( () => {
+					slides[ 0 ]
+						.querySelector( 'a, button, input, select, textarea' )
+						?.focus();
+				}, 50 );
+			}
 		};
 
 		firstSlide.addEventListener( 'transitionend', onTransitionEnd );
@@ -572,9 +617,7 @@
 	function getItemGap( track ) {
 		return (
 			parseFloat(
-				getComputedStyle( track ).getPropertyValue(
-					'column-gap'
-				)
+				getComputedStyle( track ).getPropertyValue( 'column-gap' )
 			) || 0
 		);
 	}
