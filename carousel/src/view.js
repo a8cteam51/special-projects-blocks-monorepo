@@ -327,7 +327,7 @@
 		// This is very rough and will need to be revisited.
 		if ( 'infinite' === animateEnd && ! previous ) {
 			const lastSlide = slides[ slides.length - 1 ];
-			const offset = lastSlide.offsetWidth + getItemGap( instance );
+			const offset = lastSlide.offsetWidth + getItemGap( track );
 
 			instance.slides.pop();
 			instance.slides.unshift( lastSlide );
@@ -497,7 +497,7 @@
 	 */
 	function setBaseHeight( { carousel, track } ) {
 		const images = track.querySelectorAll( 'img' );
-		const targetWidth = carousel.offsetWidth / 3 - getItemGap( instance );
+		const targetWidth = carousel.offsetWidth / 3 - getItemGap( track );
 
 		let widestImage = track.querySelector( '.is-widest' );
 		let maxWidth = 0;
@@ -553,14 +553,14 @@
 	 * In that case, it would need to be recalculated on resize to
 	 * accommodate themes that change gap via clamp or breakpoints.
 	 *
-	 * @param {Object} instance The carousel instance.
+	 * @param {Element} track The track element.
 	 *
 	 * @return {number} The item gap.
 	 */
-	function getItemGap( instance ) {
+	function getItemGap( track ) {
 		return (
 			parseFloat(
-				getComputedStyle( instance.track ).getPropertyValue(
+				getComputedStyle( track ).getPropertyValue(
 					'column-gap'
 				)
 			) || 0
