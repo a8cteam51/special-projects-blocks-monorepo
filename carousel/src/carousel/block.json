@@ -9,6 +9,7 @@
 	"description": "Display a horizontal series of content.",
 	"example": {},
 	"supports": {
+		"anchor": true,
 		"color": {
 			"background": true,
 			"text": false
@@ -47,14 +48,6 @@
 			"type": "boolean",
 			"default": false
 		},
-		"prevNext": {
-			"type": "boolean",
-			"default": true
-		},
-		"prevNextPosition": {
-			"type": "string",
-			"default": "sides"
-		},
 		"title": {
 			"type": "string"
 		},
@@ -66,11 +59,13 @@
 		"core/query",
 		"core/gallery",
 		"core/group",
-		"woocommerce/product-collection"
+		"woocommerce/product-collection",
+		"wpcomsp/carousel-nav"
 	],
 	"textdomain": "carousel",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
-	"viewScript": "file:./view.js"
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
 }

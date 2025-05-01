@@ -1,0 +1,24 @@
+.wp-block-wpcomsp-carousel-nav {
+
+	.wp-block-wpcomsp-carousel-nav--button {
+		background: var(--color-background);
+		border-color: currentcolor;
+		border-radius: var(--border-radius, 0);
+		border-width: var(--border-width, 0);
+		color: var(--color-icon, currentcolor);
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: var(--padding, 0);
+
+		&[aria-disabled="true"] {
+			cursor: not-allowed;
+			opacity: 0.5;
+		}
+
+		svg {
+			fill: currentcolor;
+		}
+	}
+}

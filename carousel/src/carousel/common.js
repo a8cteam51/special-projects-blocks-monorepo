@@ -16,12 +16,11 @@ import { __ } from '@wordpress/i18n';
 export function getAttributes( attributes ) {
 	const {
 		animate,
+		animateEnd,
 		animationSpeed,
 		itemCount,
 		overflow,
 		pagination,
-		prevNext,
-		prevNextPosition,
 		style,
 		title,
 	} = attributes;
@@ -38,12 +37,12 @@ export function getAttributes( attributes ) {
 
 	const htmlAttributes = {
 		'aria-label': title || __( 'Carousel', 'carousel' ),
+		'data-animate-end': animateEnd,
 		role: 'region',
 		className: clsx(
 			'all-visible' === animate && 'animate-visible',
 			`has-overflow-${ overflow }`,
-			pagination && 'has-pagination',
-			prevNext && prevNextPosition && `has-arrows-${ prevNextPosition }`
+			pagination && 'has-pagination'
 		),
 		style: {
 			'--animation-speed': `${ animationSpeed }s`,
@@ -58,32 +57,6 @@ export function getAttributes( attributes ) {
 	}
 
 	return htmlAttributes;
-}
-
-/**
- * Renders previous/next buttons for a carousel.
- *
- * @return {Object} The rendered previous/next buttons.
- */
-export function prevNextButtons() {
-	return (
-		<div
-			aria-label={ __( 'Previous/next controls', 'carousel' ) }
-			className="wp-block-wpcomsp-carousel__prev-next"
-			role="group"
-		>
-			<button className="wp-block-wpcomsp-carousel__prev-next-button prev">
-				<span className="screen-reader-text">
-					{ __( 'Previous slide', 'carousel' ) }
-				</span>
-			</button>
-			<button className="wp-block-wpcomsp-carousel__prev-next-button next">
-				<span className="screen-reader-text">
-					{ __( 'Next slide', 'carousel' ) }
-				</span>
-			</button>
-		</div>
-	);
 }
 
 /**

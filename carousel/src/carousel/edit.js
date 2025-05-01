@@ -20,12 +20,7 @@ import { __ } from '@wordpress/i18n';
 
 // Internal dependencies.
 import CarouselPlaceHolder from './placeholder';
-import {
-	getAttributes,
-	prevNextButtons,
-	paginationButtons,
-	setBaseHeight,
-} from './common';
+import { getAttributes, paginationButtons, setBaseHeight } from './common';
 import './editor.css';
 
 /**
@@ -44,16 +39,8 @@ const createBlockWithInnerBlocks = ( block ) => {
 };
 
 export default function Edit( { attributes, clientId, name, setAttributes } ) {
-	const {
-		animate,
-		animateEnd,
-		animationSpeed,
-		overflow,
-		pagination,
-		prevNext,
-		prevNextPosition,
-		title,
-	} = attributes;
+	const { animate, animateEnd, animationSpeed, overflow, pagination, title } =
+		attributes;
 
 	const baseHeightRef = useRef( null );
 
@@ -73,7 +60,15 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 				return { hasInnerBlocks: false, itemCount: 0 };
 			}
 
-			const innerBlock = block.innerBlocks[ 0 ];
+			const innerBlock = block.innerBlocks.find( ( iBlock ) =>
+				[
+					'core/gallery',
+					'core/group',
+					'core/query',
+					'core/product-collection',
+				].includes( iBlock.name )
+			);
+
 			let count = 0;
 
 			switch ( innerBlock.name ) {
@@ -122,6 +117,12 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 	const { selectBlock, insertBlock } = useDispatch( blockEditorStore );
 
 	const selectVariation = ( nextVariation ) => {
+		insertBlock(
+			createBlock( 'wpcomsp/carousel-nav', {}, [] ),
+			undefined,
+			clientId
+		);
+
 		nextVariation.innerBlocks.forEach( ( block ) => {
 			insertBlock(
 				createBlockWithInnerBlocks( block ),
@@ -148,45 +149,6 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					value={ title }
 					__next40pxDefaultSize
 				/>
-				<ToggleControl
-					checked={ prevNext }
-					label={ __( 'Previous/Next buttons', 'carousel' ) }
-					onChange={ ( v ) => setAttributes( { prevNext: v } ) }
-					__nextHasNoMarginBottom
-				/>
-				{ prevNext && (
-					<div
-						style={ { marginBottom: '24px', paddingLeft: '12px' } }
-					>
-						<SelectControl
-							label={ __( 'Position', 'carousel' ) }
-							onChange={ ( v ) =>
-								setAttributes( { prevNextPosition: v } )
-							}
-							options={ [
-								{
-									value: 'sides',
-									label: __( 'Sides', 'carousel' ),
-								},
-								{
-									value: 'top',
-									label: __( 'Top', 'carousel' ),
-								},
-								{
-									value: 'top-right',
-									label: __( 'Top right', 'carousel' ),
-								},
-								{
-									value: 'left',
-									label: __( 'Left', 'carousel' ),
-								},
-							] }
-							value={ prevNextPosition }
-							__nextHasNoMarginBottom
-							__next40pxDefaultSize
-						/>
-					</div>
-				) }
 				<ToggleControl
 					checked={ pagination }
 					disabled={ ! itemCount || 'infinite' === animateEnd }
@@ -293,7 +255,6 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 			) : (
 				<>
 					{ defaultInspectorControls }
-					{ prevNext && prevNextButtons() }
 					{ pagination && paginationButtons( itemCount ) }
 					{ children }
 					<div ref={ baseHeightRef }></div>

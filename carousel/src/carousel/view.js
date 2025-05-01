@@ -43,10 +43,10 @@
 		}
 
 		instance.prevButton = carousel.querySelector(
-			'.wp-block-wpcomsp-carousel__prev-next-button.prev'
+			'.wp-block-wpcomsp-carousel-nav--button_prev'
 		);
 		instance.nextButton = carousel.querySelector(
-			'.wp-block-wpcomsp-carousel__prev-next-button.next'
+			'.wp-block-wpcomsp-carousel-nav--button_next'
 		);
 		instance.paginationButtons = carousel.querySelectorAll(
 			'.wp-block-wpcomsp-carousel__pagination-button'
@@ -490,12 +490,12 @@
 
 			carousel.classList.remove( 'is-animating' );
 
-			// If the flag is set and there is currently no focused element,
+			// If the flag is set and the track no longer contains the focused element,
 			// we can assume the focus was lost during the transition.
 			// In that case, set focus within the first slide.
 			if (
 				updateFocus &&
-				track.ownerDocument.activeElement === track.ownerDocument.body
+				! track.contains( track.ownerDocument.activeElement )
 			) {
 				// Delay slightly to account for DOM updates.
 				setTimeout( () => {
