@@ -1,0 +1,22 @@
+.wp-block-wpcomsp-carousel {
+
+	.wp-block-gallery,
+	.wp-block-query,
+	> .wp-block-group,
+	.wc-block-product-collection {
+		width: 100%;
+	}
+
+	.wp-block-gallery,
+	.wp-block-post-template,
+	> .wp-block-group,
+	.wc-block-product-template {
+		container-name: carousel-track;
+		container-type: inline-size;
+		display: flex;
+		flex-wrap: nowrap;
+		margin: 0;
+		position: relative;
+		--wp--style--block-gap: var(--item-gap);
+	}
+}

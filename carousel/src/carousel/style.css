@@ -8,27 +8,6 @@
 		overflow-x: hidden;
 	}
 
-	.wp-block-gallery,
-	.wp-block-query,
-	> .wp-block-group,
-	.wc-block-product-collection {
-		grid-area: items;
-		width: 100%;
-	}
-
-	.wp-block-gallery,
-	.wp-block-post-template,
-	> .wp-block-group,
-	.wc-block-product-template {
-		container-name: carousel;
-		container-type: inline-size;
-		display: flex;
-		flex-wrap: nowrap;
-		margin: 0;
-		position: relative;
-		--wp--style--block-gap: var(--item-gap);
-	}
-
 	> .wp-block-group {
 		gap: var(--wp--style--block-gap);
 	}
@@ -63,15 +42,15 @@
 
 			width: calc(25% - var(--item-gap) * 0.75);
 
-			@container carousel (max-width: 768px) {
+			@container carousel-track (max-width: 768px) {
 				width: calc(33.333% - var(--item-gap) * 0.666);
 			}
 
-			@container carousel (max-width: 480px) {
+			@container carousel-track (max-width: 480px) {
 				width: calc(50% - var(--item-gap) * 0.5);
 			}
 
-			@container carousel (max-width: 320px) {
+			@container carousel-track (max-width: 320px) {
 				width: 100%;
 			}
 		}
@@ -82,11 +61,11 @@
 			width: auto;
 			display: flex;
 
-			@container carousel (max-width: 768px) {
+			@container carousel-track (max-width: 768px) {
 				height: calc(var(--base-height) * 2);
 			}
 
-			@container carousel (max-width: 480px) {
+			@container carousel-track (max-width: 480px) {
 				height: calc(var(--base-height) * 3);
 			}
 

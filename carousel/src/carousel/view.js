@@ -1,4 +1,7 @@
 /* global getComputedStyle, IntersectionObserver, ResizeObserver */
+
+import './view.css';
+
 {
 	document.addEventListener( 'DOMContentLoaded', () => {
 		const carousels = document.querySelectorAll(
