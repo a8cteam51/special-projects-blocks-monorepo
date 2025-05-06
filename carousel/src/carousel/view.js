@@ -49,7 +49,7 @@
 			'.wp-block-wpcomsp-carousel-nav--button_next'
 		);
 		instance.paginationButtons = carousel.querySelectorAll(
-			'.wp-block-wpcomsp-carousel__pagination-button'
+			'.wp-block-wpcomsp-carousel-pagination--button'
 		);
 
 		instance.uncroppedGallery =

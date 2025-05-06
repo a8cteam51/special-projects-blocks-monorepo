@@ -8,20 +8,22 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import {
-	PanelBody,
-	SelectControl,
-	TextControl,
-	ToggleControl,
-} from '@wordpress/components';
+import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 // Internal dependencies.
 import CarouselPlaceHolder from './placeholder';
-import { getAttributes, paginationButtons, setBaseHeight } from './common';
+import { getAttributes, setBaseHeight } from './common';
 import './editor.css';
+
+const CONTENT_BLOCKS = [
+	'core/query',
+	'core/gallery',
+	'core/group',
+	'woocommerce/product-collection',
+];
 
 /**
  * Recursively creates a block and its inner blocks.
@@ -39,55 +41,87 @@ const createBlockWithInnerBlocks = ( block ) => {
 };
 
 export default function Edit( { attributes, clientId, name, setAttributes } ) {
-	const { animate, animateEnd, animationSpeed, overflow, pagination, title } =
-		attributes;
+	const { animate, animateEnd, animationSpeed, overflow, title } = attributes;
 
 	const baseHeightRef = useRef( null );
 
-	const { children, ...innerBlockProps } = useInnerBlocksProps(
-		useBlockProps( getAttributes( attributes ) ),
-		{
-			renderAppender: false,
-		}
-	);
-
-	const { hasInnerBlocks, itemCount } = useSelect(
+	const { hasInnerBlocks, innerBlocks, itemCount } = useSelect(
 		( select ) => {
 			const { getBlock } = select( blockEditorStore );
 			const block = getBlock( clientId );
 
 			if ( ! block?.innerBlocks?.length ) {
-				return { hasInnerBlocks: false, itemCount: 0 };
+				return { hasInnerBlocks: false, itemCount: 0, innerBlocks: [] };
 			}
 
-			const innerBlock = block.innerBlocks.find( ( iBlock ) =>
-				[
-					'core/gallery',
-					'core/group',
-					'core/query',
-					'core/product-collection',
-				].includes( iBlock.name )
+			const contentBlock = block.innerBlocks.find( ( innerBlock ) =>
+				CONTENT_BLOCKS.includes( innerBlock.name )
 			);
+
+			if ( ! contentBlock ) {
+				return { hasInnerBlocks: false, itemCount: 0, innerBlocks: [] };
+			}
 
 			let count = 0;
 
-			switch ( innerBlock.name ) {
+			switch ( contentBlock.name ) {
 				case 'core/gallery':
 				case 'core/group':
-					count = innerBlock.innerBlocks?.length || 0;
+					count = contentBlock.innerBlocks?.length || 0;
 					break;
 				case 'core/query':
 				case 'core/product-collection':
 					// @TODO: Find a better way, this may not be reflective of displayed items.
-					count = innerBlock.attributes.query?.perPage || 0;
+					count = contentBlock.attributes.query?.perPage || 0;
 					break;
 				default:
 					count = 0;
 			}
 
-			return { hasInnerBlocks: true, itemCount: count };
+			return {
+				hasInnerBlocks: true,
+				innerBlocks: block.innerBlocks,
+				itemCount: count,
+			};
 		},
 		[ clientId ]
+	);
+
+	const { children, ...innerBlockProps } = useInnerBlocksProps(
+		useBlockProps( getAttributes( attributes ) ),
+		{
+			allowedBlocks: ( () => {
+				// Attempt to limit allowed blocks.
+				// @TODO: Determing why this is not working as expected.
+				if ( ! hasInnerBlocks ) {
+					return [
+						...CONTENT_BLOCKS,
+						'wpcomsp/carousel-nav',
+						'wpcomsp/carousel-pagination',
+					];
+				}
+
+				const hasNav = innerBlocks.some(
+					( innerBlock ) => innerBlock.name === 'wpcomsp/carousel-nav'
+				);
+				const hasPagination = innerBlocks.some(
+					( innerBlock ) =>
+						innerBlock.name === 'wpcomsp/carousel-pagination'
+				);
+
+				const allowed = [];
+
+				if ( ! hasNav ) {
+					allowed.push( 'wpcomsp/carousel-nav' );
+				}
+
+				if ( ! hasPagination ) {
+					allowed.push( 'wpcomsp/carousel-pagination' );
+				}
+
+				return allowed;
+			} )(),
+		}
 	);
 
 	useEffect( () => {
@@ -148,12 +182,6 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					onChange={ ( v ) => setAttributes( { title: v } ) }
 					value={ title }
 					__next40pxDefaultSize
-				/>
-				<ToggleControl
-					checked={ pagination }
-					disabled={ ! itemCount || 'infinite' === animateEnd }
-					label={ __( 'Pagination buttons', 'carousel' ) }
-					onChange={ ( v ) => setAttributes( { pagination: v } ) }
 					__nextHasNoMarginBottom
 				/>
 				<SelectControl
@@ -237,6 +265,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					}
 					value={ animationSpeed }
 					__next40pxDefaultSize
+					__nextHasNoMarginBottom
 				/>
 			</PanelBody>
 		</InspectorControls>
@@ -255,7 +284,6 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 			) : (
 				<>
 					{ defaultInspectorControls }
-					{ pagination && paginationButtons( itemCount ) }
 					{ children }
 					<div ref={ baseHeightRef }></div>
 				</>

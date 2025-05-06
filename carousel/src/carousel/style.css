@@ -95,19 +95,4 @@
 			}
 		}
 	}
-
-	.wp-block-wpcomsp-carousel__pagination {
-		grid-area: pagination;
-		display: flex;
-		gap: 0.5rem;
-	}
-
-	.wp-block-wpcomsp-carousel__pagination-button {
-		all: unset;
-		cursor: pointer;
-		width: 0.75rem;
-		height: 0.75rem;
-		border-radius: 50%;
-		background: #808080;
-	}
 }

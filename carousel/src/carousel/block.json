@@ -44,10 +44,6 @@
 			"default": "hidden",
 			"enum": [ "hidden", "right", "left", "both" ]
 		},
-		"pagination": {
-			"type": "boolean",
-			"default": false
-		},
 		"title": {
 			"type": "string"
 		},
@@ -60,8 +56,12 @@
 		"core/gallery",
 		"core/group",
 		"woocommerce/product-collection",
-		"wpcomsp/carousel-nav"
+		"wpcomsp/carousel-nav",
+		"wpcomsp/carousel-pagination"
 	],
+	"providesContext": {
+		"wpcomsp/item-count": "itemCount"
+	},
 	"textdomain": "carousel",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

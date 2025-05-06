@@ -20,7 +20,6 @@ export function getAttributes( attributes ) {
 		animationSpeed,
 		itemCount,
 		overflow,
-		pagination,
 		style,
 		title,
 	} = attributes;
@@ -41,8 +40,7 @@ export function getAttributes( attributes ) {
 		role: 'region',
 		className: clsx(
 			'all-visible' === animate && 'animate-visible',
-			`has-overflow-${ overflow }`,
-			pagination && 'has-pagination'
+			`has-overflow-${ overflow }`
 		),
 		style: {
 			'--animation-speed': `${ animationSpeed }s`,
@@ -57,34 +55,6 @@ export function getAttributes( attributes ) {
 	}
 
 	return htmlAttributes;
-}
-
-/**
- * Renders pagination buttons for a carousel.
- *
- * @param {number} count The number of items to paginate.
- *
- * @return {Object} The rendered pagination buttons.
- */
-export function paginationButtons( count ) {
-	return (
-		<div
-			aria-label={ __( 'Slide controls', 'carousel' ) }
-			className="wp-block-wpcomsp-carousel__pagination"
-			role="group"
-		>
-			{ Array.from( { length: count }, ( _, index ) => (
-				<button
-					className="wp-block-wpcomsp-carousel__pagination-button"
-					key={ index }
-				>
-					<span className="screen-reader-text">
-						{ `Slide ${ index + 1 } of ${ count }` }
-					</span>
-				</button>
-			) ) }
-		</div>
-	);
 }
 
 /**
