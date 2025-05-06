@@ -5,7 +5,13 @@
 	width: 100%;
 
 	&.has-overflow-hidden {
-		overflow-x: hidden;
+
+		.wp-block-gallery,
+		.wp-block-query,
+		> .wp-block-group,
+		.wc-block-product-collection {
+			overflow-x: hidden;
+		}
 	}
 
 	> .wp-block-group {

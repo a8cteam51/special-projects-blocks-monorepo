@@ -15,6 +15,13 @@
 			"text": false
 		},
 		"html": false,
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"default": {
+				"type": "flex"
+			}
+		},
 		"spacing": {
 			"blockGap": true,
 			"margin": true,
