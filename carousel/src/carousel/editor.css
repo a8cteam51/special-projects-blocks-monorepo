@@ -42,7 +42,7 @@
 	.wp-block-query:not(.has-child-selected):not(.is-selected) .wp-block-post-template,
 	> .wp-block-group:not(.has-child-selected):not(.is-child-selected),
 	.wc-block-product-collection:not(.has-child-selected):not(.is-selected) .wc-block-product-template {
-		container-name: track;
+		container-name: carousel-track;
 		container-type: inline-size;
 		display: flex;
 		flex-wrap: nowrap;
