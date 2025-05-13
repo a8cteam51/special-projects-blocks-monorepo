@@ -13,7 +13,7 @@ import { __ } from '@wordpress/i18n';
  *
  * @return {Object} The HTML attributes.
  */
-export function getAttributes( attributes ) {
+export function getHTMLAttributes( attributes ) {
 	const {
 		animate,
 		animateEnd,

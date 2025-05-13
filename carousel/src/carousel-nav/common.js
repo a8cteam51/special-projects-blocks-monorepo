@@ -6,15 +6,45 @@ import { Path, SVG } from '@wordpress/primitives';
 import { __ } from '@wordpress/i18n';
 
 /**
- * Returns attributes for the carousel nav buttons container.
+ * Returns HTML attributes for the carousel nav buttons container.
+ *
+ * @param {Object} attributes The block attributes.
  *
  * @return {Object} The HTML attributes.
  */
-export function getAttributes() {
-	return {
+export function getHTMLAttributes( attributes ) {
+	const { borderColor, buttonColors, buttonSize, style = {} } = attributes;
+	const { background, icon } = buttonColors || {};
+	const { border = {} } = style;
+	const { color, radius, width } = border;
+
+	const bColor = borderColor
+		? `var(--wp--preset--color--${ borderColor })`
+		: color;
+
+	const sizePx = buttonSize ? `${ buttonSize }px` : null;
+
+	const styles = Object.fromEntries(
+		Object.entries( {
+			'--button-background': background,
+			'--button-icon': icon,
+			'--button-border-color': bColor || '',
+			'--button-border-radius': radius,
+			'--button-border-width': width,
+			'--button-size': sizePx,
+		} ).filter( ( [ , value ] ) => value )
+	);
+
+	const htmlAttributes = {
 		'aria-label': __( 'Previous/next slide controls', 'carousel' ),
 		role: 'group',
 	};
+
+	if ( Object.keys( styles ).length > 0 ) {
+		htmlAttributes.style = styles;
+	}
+
+	return htmlAttributes;
 }
 
 /**
@@ -25,11 +55,6 @@ export function getAttributes() {
  * @return {Object} The rendered navigation buttons.
  */
 export function navigationButtons( attributes ) {
-	const { buttonColors, style = {} } = attributes;
-	const { background, icon } = buttonColors || {};
-	const { border = {} } = style;
-	const { radius, width } = border;
-
 	const buttonClass = 'wp-block-wpcomsp-carousel-nav--button';
 
 	const previousButtonClasses = clsx(
@@ -42,18 +67,9 @@ export function navigationButtons( attributes ) {
 		'wp-block-wpcomsp-carousel-nav--button_next'
 	);
 
-	const styles = Object.fromEntries(
-		Object.entries( {
-			'--color-background': background,
-			'--color-icon': icon,
-			'--border-radius': radius,
-			'--border-width': width,
-		} ).filter( ( [ , value ] ) => value !== undefined )
-	);
-
 	return (
 		<>
-			<button className={ previousButtonClasses } style={ styles }>
+			<button className={ previousButtonClasses }>
 				<SVG
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 24 24"
@@ -68,7 +84,7 @@ export function navigationButtons( attributes ) {
 					{ __( 'Previous slide', 'carousel' ) }
 				</span>
 			</button>
-			<button className={ nextButtonClasses } style={ styles }>
+			<button className={ nextButtonClasses }>
 				<SVG
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 24 24"

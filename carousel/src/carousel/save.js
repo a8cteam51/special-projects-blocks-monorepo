@@ -2,11 +2,11 @@
 import { useInnerBlocksProps, useBlockProps } from '@wordpress/block-editor';
 
 // Internal dependencies.
-import { getAttributes } from './common';
+import { getHTMLAttributes } from './common';
 
 export default function save( { attributes } ) {
 	const { children, ...innerBlockProps } = useInnerBlocksProps.save(
-		useBlockProps.save( getAttributes( attributes ) ),
+		useBlockProps.save( getHTMLAttributes( attributes ) ),
 		{
 			renderAppender: false,
 		}

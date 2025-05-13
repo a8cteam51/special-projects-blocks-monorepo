@@ -15,7 +15,7 @@ import { __ } from '@wordpress/i18n';
 
 // Internal dependencies.
 import CarouselPlaceHolder from './placeholder';
-import { getAttributes, setBaseHeight } from './common';
+import { getHTMLAttributes, setBaseHeight } from './common';
 import './editor.css';
 
 const CONTENT_BLOCKS = [
@@ -88,7 +88,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 	);
 
 	const { children, ...innerBlockProps } = useInnerBlocksProps(
-		useBlockProps( getAttributes( attributes ) ),
+		useBlockProps( getHTMLAttributes( attributes ) ),
 		{
 			allowedBlocks: ( () => {
 				// Attempt to limit allowed blocks.

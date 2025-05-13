@@ -2,23 +2,28 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * Returns attributes for the carousel nav buttons container.
+ * Returns HTML attributes for the carousel nav buttons container.
  *
  * @param {Object} attributes The block attributes.
  *
  * @return {Object} The HTML attributes.
  */
-export function getAttributes( attributes ) {
-	const { buttonColors, buttonSize, style = {} } = attributes;
+export function getHTMLAttributes( attributes ) {
+	const { borderColor, buttonColors, buttonSize, style = {} } = attributes;
 	const { background } = buttonColors || {};
 	const { border = {} } = style;
-	const { radius, width } = border;
+	const { color, radius, width } = border;
 
-	const sizePx = buttonSize ? `${ buttonSize }px` : undefined;
+	const bColor = borderColor
+		? `var(--wp--preset--color--${ borderColor })`
+		: color;
+
+	const sizePx = buttonSize ? `${ buttonSize }px` : null;
 
 	const styles = Object.fromEntries(
 		Object.entries( {
 			'--button-background': background,
+			'--button-border-color': bColor || '',
 			'--button-border-radius': radius,
 			'--button-border-width': width,
 			'--button-size': sizePx,

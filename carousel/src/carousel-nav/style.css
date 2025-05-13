@@ -1,16 +1,17 @@
 .wp-block-wpcomsp-carousel-nav {
 
 	.wp-block-wpcomsp-carousel-nav--button {
-		background: var(--color-background);
-		border-color: currentcolor;
-		border-radius: var(--border-radius, 0);
-		border-width: var(--border-width, 0);
-		color: var(--color-icon, currentcolor);
+		background: var(--button-background);
+		border-color: var(--button-border-color, none);
+		border-radius: var(--button-border-radius, 100%);
+		border-width: var(--button-border-width, 0);
+		color: var(--button-icon, currentcolor);
 		cursor: pointer;
+		height: var(--button-size, 24px);
+		width: var(--button-size, 24px);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: var(--padding, 0);
 
 		&[aria-disabled="true"] {
 			cursor: not-allowed;
@@ -19,6 +20,14 @@
 
 		svg {
 			fill: currentcolor;
+		}
+	}
+
+	&:where([style*='--button-border-width']) {
+		border-style: none;
+
+		.wp-block-wpcomsp-carousel-nav--button {
+			border-style: solid;
 		}
 	}
 }

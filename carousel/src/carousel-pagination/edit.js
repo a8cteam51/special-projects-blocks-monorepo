@@ -11,7 +11,7 @@ import { useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 // Internal dependencies.
-import { getAttributes, paginationButtons } from './common';
+import { getHTMLAttributes, paginationButtons } from './common';
 import './editor.css';
 
 export default function Edit( props ) {
@@ -22,7 +22,7 @@ export default function Edit( props ) {
 	const itemCountContext = context[ 'wpcomsp/item-count' ];
 
 	const { ...innerBlocksProps } = useInnerBlocksProps(
-		useBlockProps( getAttributes( attributes ) ),
+		useBlockProps( getHTMLAttributes( attributes ) ),
 		{
 			templateInsertUpdatesSelection: true,
 			orientation: layout?.orientation ?? 'horizontal',
@@ -43,7 +43,7 @@ export default function Edit( props ) {
 					panelId={ clientId }
 					settings={ [
 						{
-							label: __( 'Button background', 'carousel' ),
+							label: __( 'Button', 'carousel' ),
 							colorValue: background,
 							onColorChange: ( v ) =>
 								setAttributes( {
