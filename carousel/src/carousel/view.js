@@ -192,12 +192,14 @@ import './view.css';
 
 			if (
 				e.key === 'ArrowLeft' &&
-				prevButton.getAttribute( 'aria-disabled' ) !== 'true'
+				( ! prevButton ||
+					prevButton.getAttribute( 'aria-disabled' ) !== 'true' )
 			) {
 				navigatePrevious( instance );
 			} else if (
 				e.key === 'ArrowRight' &&
-				nextButton.getAttribute( 'aria-disabled' ) !== 'true'
+				( ! nextButton ||
+					nextButton.getAttribute( 'aria-disabled' ) !== 'true' )
 			) {
 				navigateNext( instance );
 			}
@@ -332,7 +334,7 @@ import './view.css';
 	function navigatePrevious( instance ) {
 		const { carousel, slides, prevButton, track, animateEnd } = instance;
 
-		if ( prevButton.getAttribute( 'aria-disabled' ) === 'true' ) {
+		if ( prevButton && prevButton.getAttribute( 'aria-disabled' ) === 'true' ) {
 			return;
 		}
 
@@ -413,7 +415,7 @@ import './view.css';
 	function navigateNext( instance ) {
 		const { carousel, track, slides, nextButton, animateEnd } = instance;
 
-		if ( nextButton.getAttribute( 'aria-disabled' ) === 'true' ) {
+		if ( nextButton && nextButton.getAttribute( 'aria-disabled' ) === 'true' ) {
 			return;
 		}
 
