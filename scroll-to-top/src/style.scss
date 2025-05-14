@@ -1,0 +1,21 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.scroll-to-top-button {
+	padding: 11px 13px 9px 13px;
+	cursor: pointer;
+	z-index: 1000;
+}
+
+.scroll-to-top-container {
+	display: none;
+	z-index: 1000;
+}
+
+.scroll-to-top-container.show {
+	display: block;
+}

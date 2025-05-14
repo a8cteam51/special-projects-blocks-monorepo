@@ -1,0 +1,27 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.scroll-to-top-button {
+	padding: 11px 13px 9px 13px;
+	cursor: pointer;
+}
+
+.components-tools-panel {
+
+	&.no-padding-panel {
+		padding-left: 0;
+		padding-right: 0;
+		padding-top: 0;
+		border-top: 0;
+	}
+
+	&.no-margin-top {
+
+		.components-tools-panel-item {
+			margin-top: 0;
+		}
+	}
+}
