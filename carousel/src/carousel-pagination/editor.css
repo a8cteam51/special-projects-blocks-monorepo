@@ -1,3 +1,7 @@
+.wp-block-wpcomsp-carousel-pagination:not(.alignleft):not(.alignright) {
+	width: 100%;
+}
+
 .wp-block-wpcomsp-carousel-pagination--button {
 	pointer-events: none;
 }

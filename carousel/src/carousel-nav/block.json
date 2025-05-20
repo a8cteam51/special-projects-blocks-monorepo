@@ -24,7 +24,7 @@
 		}
 	},
 	"supports": {
-		"align": [ "wide", "full" ],
+		"align": true,
 		"color": {
 			"background": true,
 			"text": false

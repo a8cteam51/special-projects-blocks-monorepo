@@ -14,8 +14,8 @@
 		justify-content: center;
 
 		&[aria-disabled="true"] {
-			cursor: not-allowed;
 			opacity: 0.5;
+			pointer-events: none;
 		}
 
 		svg {

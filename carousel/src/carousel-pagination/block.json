@@ -10,7 +10,11 @@
 	"example": {},
 	"attributes": {
 		"layout": {
-			"type": "object"
+			"type": "object",
+			"default": {
+				"type": "flex",
+				"justifyContent": "center"
+			}
 		},
 		"buttonColors": {
 			"type": "object",
@@ -28,7 +32,7 @@
 		}
 	},
 	"supports": {
-		"align": [ "wide", "full" ],
+		"align": true,
 		"color": {
 			"background": true,
 			"text": false
