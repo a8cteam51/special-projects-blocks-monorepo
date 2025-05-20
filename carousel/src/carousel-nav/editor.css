@@ -1,7 +1,3 @@
-.wp-block-wpcomsp-carousel-nav:not(.alignleft):not(.alignright) {
-	width: 100%;
-}
-
 .wp-block-wpcomsp-carousel-nav--button {
 	pointer-events: none;
 }

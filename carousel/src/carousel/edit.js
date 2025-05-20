@@ -1,21 +1,27 @@
-/* global ResizeObserver */
-
 // WordPress dependencies.
 import {
 	InspectorControls,
 	useBlockProps,
 	useInnerBlocksProps,
+	useSettings,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
+import {
+	PanelBody,
+	SelectControl,
+	TextControl,
+	__experimentalUseCustomUnits as useCustomUnits, // eslint-disable-line @wordpress/no-unsafe-wp-apis
+	__experimentalUnitControl as UnitControl, // eslint-disable-line @wordpress/no-unsafe-wp-apis
+	__experimentalParseQuantityAndUnitFromRawValue as parseQuantityAndUnitFromRawValue, // eslint-disable-line @wordpress/no-unsafe-wp-apis
+} from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 // Internal dependencies.
 import CarouselPlaceHolder from './placeholder';
-import { getHTMLAttributes, setBaseHeight } from './common';
+import { getHTMLAttributes } from './common';
 import './editor.css';
 
 const CONTENT_BLOCKS = [
@@ -41,9 +47,15 @@ const createBlockWithInnerBlocks = ( block ) => {
 };
 
 export default function Edit( { attributes, clientId, name, setAttributes } ) {
-	const { animate, animateEnd, animationSpeed, overflow, title } = attributes;
-
-	const baseHeightRef = useRef( null );
+	const {
+		animate,
+		animateEnd,
+		animationSpeed,
+		overflow,
+		title,
+		trackHeight,
+		trackHeightUnit,
+	} = attributes;
 
 	const { hasInnerBlocks, innerBlocks, itemCount } = useSelect(
 		( select ) => {
@@ -128,26 +140,6 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 		setAttributes( { itemCount: Number( itemCount ) } );
 	}, [ itemCount, setAttributes ] );
 
-	useEffect( () => {
-		const baseHeightTracker = baseHeightRef.current;
-		if ( ! baseHeightTracker ) {
-			return;
-		}
-
-		const cleanupBaseHeight = setBaseHeight( baseHeightTracker );
-
-		const resizeObserver = new ResizeObserver( () => {
-			setBaseHeight( baseHeightTracker );
-		} );
-
-		resizeObserver.observe( baseHeightTracker );
-
-		return () => {
-			cleanupBaseHeight();
-			resizeObserver.disconnect();
-		};
-	}, [ baseHeightRef ] );
-
 	const { selectBlock, insertBlock } = useDispatch( blockEditorStore );
 
 	const selectVariation = ( nextVariation ) => {
@@ -168,6 +160,60 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 		setAttributes( nextVariation.attributes );
 
 		selectBlock( clientId );
+	};
+
+	const HeightInput = ( {
+		onChange,
+		onUnitChange,
+		unit = 'px',
+		value = '',
+	} ) => {
+		const isPx = unit === 'px';
+
+		const [ availableUnits ] = useSettings( 'spacing.units' );
+		const units = useCustomUnits( {
+			availableUnits: availableUnits || [ 'px', 'em', 'rem', 'vw', 'vh' ],
+			defaultValues: {
+				px: 430,
+				'%': 20,
+				em: 20,
+				rem: 20,
+				vw: 20,
+				vh: 50,
+			},
+		} );
+
+		const handleOnChange = ( unprocessedValue ) => {
+			const inputValue =
+				unprocessedValue !== ''
+					? parseFloat( unprocessedValue )
+					: undefined;
+
+			if ( isNaN( inputValue ) && inputValue !== undefined ) {
+				return;
+			}
+
+			onChange( inputValue );
+		};
+
+		const computedValue = useMemo( () => {
+			const [ parsedQuantity ] =
+				parseQuantityAndUnitFromRawValue( value );
+			return [ parsedQuantity, unit ].join( '' );
+		}, [ unit, value ] );
+
+		return (
+			<UnitControl
+				__next40pxDefaultSize
+				label={ __( 'Track height', 'carousel' ) }
+				isResetValueOnUnitChange
+				min={ isPx ? 430 : 0 }
+				onChange={ handleOnChange }
+				onUnitChange={ onUnitChange }
+				units={ units }
+				value={ computedValue }
+			/>
+		);
 	};
 
 	const defaultInspectorControls = (
@@ -271,6 +317,19 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 		</InspectorControls>
 	);
 
+	const styleInspectorControls = (
+		<InspectorControls group="dimensions">
+			<HeightInput
+				value={ trackHeight }
+				unit={ trackHeightUnit }
+				onChange={ ( v ) => setAttributes( { trackHeight: v } ) }
+				onUnitChange={ ( v ) =>
+					setAttributes( { trackHeightUnit: v } )
+				}
+			/>
+		</InspectorControls>
+	);
+
 	return (
 		<div { ...innerBlockProps }>
 			{ ! hasInnerBlocks ? (
@@ -284,8 +343,8 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 			) : (
 				<>
 					{ defaultInspectorControls }
+					{ styleInspectorControls }
 					{ children }
-					<div ref={ baseHeightRef }></div>
 				</>
 			) }
 		</div>

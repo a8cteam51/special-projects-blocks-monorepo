@@ -1,5 +1,18 @@
 .wp-block-wpcomsp-carousel-pagination {
 
+	&:where([style*="--button-border-width"]) {
+		border-style: none;
+
+		.wp-block-wpcomsp-carousel-pagination--button {
+			border-style: solid;
+		}
+	}
+
+	&:not(.alignleft),
+	&:not(.alignright) {
+		width: 100%;
+	}
+
 	.wp-block-wpcomsp-carousel-pagination--button {
 		background: var(--button-background, currentcolor);
 		border-color: var(--button-border-color, none);
@@ -13,14 +26,6 @@
 		&[aria-disabled="true"] {
 			cursor: not-allowed;
 			opacity: 0.5;
-		}
-	}
-
-	&:where([style*='--button-border-width']) {
-		border-style: none;
-
-		.wp-block-wpcomsp-carousel-pagination--button {
-			border-style: solid;
 		}
 	}
 }

@@ -55,15 +55,7 @@ import './view.css';
 			'.wp-block-wpcomsp-carousel-pagination--button'
 		);
 
-		instance.uncroppedGallery =
-			instance.track.classList.contains( 'wp-block-gallery' ) &&
-			! instance.track.classList.contains( 'is-cropped' );
-
 		instance.animateEnd = instance.carousel.dataset.animateEnd;
-
-		if ( instance.uncroppedGallery ) {
-			setBaseHeight( instance );
-		}
 
 		if ( 'infinite' === instance.animateEnd ) {
 			setupInfiniteCarousel( instance );
@@ -82,13 +74,9 @@ import './view.css';
 	 * @param {Object} instance The carousel instance.
 	 */
 	function setupResizeObserver( instance ) {
-		const { carousel, uncroppedGallery } = instance;
+		const { carousel } = instance;
 
 		const resizeObserver = new ResizeObserver( () => {
-			if ( uncroppedGallery ) {
-				setBaseHeight( instance );
-			}
-
 			recalculateSlidePositions( instance );
 		} );
 
@@ -334,7 +322,10 @@ import './view.css';
 	function navigatePrevious( instance ) {
 		const { carousel, slides, prevButton, track, animateEnd } = instance;
 
-		if ( prevButton && prevButton.getAttribute( 'aria-disabled' ) === 'true' ) {
+		if (
+			prevButton &&
+			prevButton.getAttribute( 'aria-disabled' ) === 'true'
+		) {
 			return;
 		}
 
@@ -415,7 +406,10 @@ import './view.css';
 	function navigateNext( instance ) {
 		const { carousel, track, slides, nextButton, animateEnd } = instance;
 
-		if ( nextButton && nextButton.getAttribute( 'aria-disabled' ) === 'true' ) {
+		if (
+			nextButton &&
+			nextButton.getAttribute( 'aria-disabled' ) === 'true'
+		) {
 			return;
 		}
 
@@ -547,51 +541,6 @@ import './view.css';
 			} else {
 				nextButton.removeAttribute( 'aria-disabled' );
 			}
-		}
-	}
-
-	/**
-	 * Set the base height for uncropped galleries.
-	 *
-	 * @param {Object}  instance          The carousel instance.
-	 * @param {Element} instance.carousel The carousel element.
-	 * @param {Element} instance.track    The track element.
-	 */
-	function setBaseHeight( { carousel, track } ) {
-		const images = track.querySelectorAll( 'img' );
-		const targetWidth = carousel.offsetWidth / 3 - getItemGap( track );
-
-		let widestImage = track.querySelector( '.is-widest' );
-		let maxWidth = 0;
-
-		// Find the proportionally widest image.
-		if ( ! widestImage ) {
-			images.forEach( ( img ) => {
-				const width = Number( img.getAttribute( 'width' ) );
-				const height = Number( img.getAttribute( 'height' ) );
-				const aspectRatio = width / height;
-				const scaledWidth = targetWidth * aspectRatio;
-
-				if ( scaledWidth > maxWidth ) {
-					maxWidth = scaledWidth;
-					widestImage = img;
-				}
-			} );
-		}
-
-		if ( widestImage ) {
-			widestImage.classList.add( 'is-widest' );
-
-			const width = Math.min(
-				targetWidth,
-				Number( widestImage.getAttribute( 'width' ) )
-			);
-			const aspectRatio =
-				Number( widestImage.getAttribute( 'width' ) ) /
-				Number( widestImage.getAttribute( 'height' ) );
-			const baseHeight = Math.round( width / aspectRatio );
-
-			carousel.style.setProperty( '--base-height', `${ baseHeight }px` );
 		}
 	}
 

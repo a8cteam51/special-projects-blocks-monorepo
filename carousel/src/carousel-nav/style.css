@@ -1,5 +1,18 @@
 .wp-block-wpcomsp-carousel-nav {
 
+	&:where([style*="--button-border-width"]) {
+		border-style: none;
+
+		.wp-block-wpcomsp-carousel-nav--button {
+			border-style: solid;
+		}
+	}
+
+	&:not(.alignleft),
+	&:not(.alignright) {
+		width: 100%;
+	}
+
 	.wp-block-wpcomsp-carousel-nav--button {
 		background: var(--button-background);
 		border-color: var(--button-border-color, none);
@@ -20,14 +33,6 @@
 
 		svg {
 			fill: currentcolor;
-		}
-	}
-
-	&:where([style*='--button-border-width']) {
-		border-style: none;
-
-		.wp-block-wpcomsp-carousel-nav--button {
-			border-style: solid;
 		}
 	}
 }

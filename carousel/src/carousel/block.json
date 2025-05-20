@@ -55,6 +55,12 @@
 		"title": {
 			"type": "string"
 		},
+		"trackHeight": {
+			"type": "number"
+		},
+		"trackHeightUnit": {
+			"type": "string"
+		},
 		"type": {
 			"type": "string"
 		}

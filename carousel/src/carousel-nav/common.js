@@ -50,11 +50,9 @@ export function getHTMLAttributes( attributes ) {
 /**
  * Renders navigation buttons for a carousel.
  *
- * @param {Object} attributes The block attributes.
- *
  * @return {Object} The rendered navigation buttons.
  */
-export function navigationButtons( attributes ) {
+export function navigationButtons() {
 	const buttonClass = 'wp-block-wpcomsp-carousel-nav--button';
 
 	const previousButtonClasses = clsx(
