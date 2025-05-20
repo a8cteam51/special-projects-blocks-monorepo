@@ -29,6 +29,7 @@ const CONTENT_BLOCKS = [
 	'core/gallery',
 	'core/group',
 	'woocommerce/product-collection',
+	'core/columns',
 ];
 
 /**
@@ -41,7 +42,10 @@ const CONTENT_BLOCKS = [
 const createBlockWithInnerBlocks = ( block ) => {
 	return createBlock(
 		block.name,
-		block.attributes || {},
+		{
+			...block.attributes,
+			metadata: block.metaData,
+		},
 		block.innerBlocks?.map( createBlockWithInnerBlocks )
 	);
 };
@@ -57,7 +61,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 		trackHeightUnit,
 	} = attributes;
 
-	const { hasInnerBlocks, innerBlocks, itemCount } = useSelect(
+	const { hasInnerBlocks, itemCount } = useSelect(
 		( select ) => {
 			const { getBlock } = select( blockEditorStore );
 			const block = getBlock( clientId );
@@ -92,7 +96,6 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 
 			return {
 				hasInnerBlocks: true,
-				innerBlocks: block.innerBlocks,
 				itemCount: count,
 			};
 		},
@@ -100,40 +103,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 	);
 
 	const { children, ...innerBlockProps } = useInnerBlocksProps(
-		useBlockProps( getHTMLAttributes( attributes ) ),
-		{
-			allowedBlocks: ( () => {
-				// Attempt to limit allowed blocks.
-				// @TODO: Determing why this is not working as expected.
-				if ( ! hasInnerBlocks ) {
-					return [
-						...CONTENT_BLOCKS,
-						'wpcomsp/carousel-nav',
-						'wpcomsp/carousel-pagination',
-					];
-				}
-
-				const hasNav = innerBlocks.some(
-					( innerBlock ) => innerBlock.name === 'wpcomsp/carousel-nav'
-				);
-				const hasPagination = innerBlocks.some(
-					( innerBlock ) =>
-						innerBlock.name === 'wpcomsp/carousel-pagination'
-				);
-
-				const allowed = [];
-
-				if ( ! hasNav ) {
-					allowed.push( 'wpcomsp/carousel-nav' );
-				}
-
-				if ( ! hasPagination ) {
-					allowed.push( 'wpcomsp/carousel-pagination' );
-				}
-
-				return allowed;
-			} )(),
-		}
+		useBlockProps( getHTMLAttributes( attributes ) )
 	);
 
 	useEffect( () => {

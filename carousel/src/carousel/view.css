@@ -2,14 +2,14 @@
 
 	.wp-block-gallery,
 	.wp-block-query,
-	> .wp-block-group,
+	.wp-block-group.wp-block-wpcomsp-carousel-track,
 	.wc-block-product-collection {
 		width: 100%;
 	}
 
 	.wp-block-gallery,
 	.wp-block-post-template,
-	> .wp-block-group,
+	.wp-block-group.wp-block-wpcomsp-carousel-track,
 	.wc-block-product-template {
 		container-name: carousel-track;
 		container-type: inline-size;

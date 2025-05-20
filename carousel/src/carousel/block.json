@@ -69,6 +69,7 @@
 		"core/query",
 		"core/gallery",
 		"core/group",
+		"core/columns",
 		"woocommerce/product-collection",
 		"wpcomsp/carousel-nav",
 		"wpcomsp/carousel-pagination"

@@ -66,13 +66,20 @@ const baseVariations = [
 		innerBlocks: [
 			{
 				name: 'core/group',
+				attributes: {
+					className: 'wp-block-wpcomsp-carousel-track',
+				},
+				metaData: {
+					name: __( 'Carousel Track', 'carousel' ),
+				},
 				innerBlocks: [
 					{
 						name: 'core/group',
 						innerBlocks: [
 							{
-								name: 'core/paragraph',
+								name: 'core/heading',
 								attributes: {
+									level: 3,
 									placeholder: __( 'Card 1', 'carousel' ),
 								},
 							},
@@ -82,8 +89,9 @@ const baseVariations = [
 						name: 'core/group',
 						innerBlocks: [
 							{
-								name: 'core/paragraph',
+								name: 'core/heading',
 								attributes: {
+									level: 3,
 									placeholder: __( 'Card 2', 'carousel' ),
 								},
 							},
@@ -93,8 +101,9 @@ const baseVariations = [
 						name: 'core/group',
 						innerBlocks: [
 							{
-								name: 'core/paragraph',
+								name: 'core/heading',
 								attributes: {
+									level: 3,
 									placeholder: __( 'Card 3', 'carousel' ),
 								},
 							},

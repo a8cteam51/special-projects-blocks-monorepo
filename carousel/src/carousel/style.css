@@ -7,12 +7,12 @@
 
 	.wp-block-gallery,
 	.wp-block-query,
-	> .wp-block-group,
+	.wp-block-group.wp-block-wpcomsp-carousel-track,
 	.wc-block-product-collection {
 		height: var(--track-height);
 	}
 
-	> .wp-block-group {
+	.wp-block-group.wp-block-wpcomsp-carousel-track {
 		gap: var(--wp--style--block-gap);
 	}
 
@@ -20,7 +20,7 @@
 
 		.wp-block-gallery,
 		.wp-block-query,
-		> .wp-block-group,
+		.wp-block-group.wp-block-wpcomsp-carousel-track,
 		.wc-block-product-collection {
 			overflow-x: hidden;
 		}
