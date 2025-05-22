@@ -29,7 +29,6 @@ const CONTENT_BLOCKS = [
 	'core/gallery',
 	'core/group',
 	'woocommerce/product-collection',
-	'core/columns',
 ];
 
 /**

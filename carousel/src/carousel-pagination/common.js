@@ -10,7 +10,7 @@ import { __ } from '@wordpress/i18n';
  */
 export function getHTMLAttributes( attributes ) {
 	const { borderColor, buttonColors, buttonSize, style = {} } = attributes;
-	const { background } = buttonColors || {};
+	const { background, backgroundHover } = buttonColors || {};
 	const { border = {} } = style;
 	const { color, radius, width } = border;
 
@@ -23,6 +23,7 @@ export function getHTMLAttributes( attributes ) {
 	const styles = Object.fromEntries(
 		Object.entries( {
 			'--button-background': background,
+			'--button-background-hover': backgroundHover,
 			'--button-border-color': bColor || '',
 			'--button-border-radius': radius,
 			'--button-border-width': width,

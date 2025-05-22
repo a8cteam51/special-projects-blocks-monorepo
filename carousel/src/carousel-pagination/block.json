@@ -10,16 +10,13 @@
 	"example": {},
 	"attributes": {
 		"layout": {
-			"type": "object",
-			"default": {
-				"type": "flex",
-				"justifyContent": "center"
-			}
+			"type": "object"
 		},
 		"buttonColors": {
 			"type": "object",
 			"default": {
-				"background": ""
+				"background": "",
+				"backgroundHover": ""
 			}
 		},
 		"buttonSize": {
@@ -33,10 +30,6 @@
 	},
 	"supports": {
 		"align": true,
-		"color": {
-			"background": true,
-			"text": false
-		},
 		"layout": {
 			"allowSwitching": false,
 			"allowInheriting": false,

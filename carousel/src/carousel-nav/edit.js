@@ -16,7 +16,7 @@ import './editor.css';
 export default function Edit( props ) {
 	const { attributes, setAttributes, clientId } = props;
 	const { layout, buttonColors, buttonSize } = attributes;
-	const { background, icon } = buttonColors;
+	const { background, backgroundHover, icon, iconHover } = buttonColors;
 
 	const { ...innerBlocksProps } = useInnerBlocksProps(
 		useBlockProps( getHTMLAttributes( attributes ) ),
@@ -34,7 +34,7 @@ export default function Edit( props ) {
 					panelId={ clientId }
 					settings={ [
 						{
-							label: __( 'Button background', 'carousel' ),
+							label: __( 'Button', 'carousel' ),
 							colorValue: background,
 							onColorChange: ( v ) =>
 								setAttributes( {
@@ -45,11 +45,30 @@ export default function Edit( props ) {
 								} ),
 						},
 						{
-							label: __( 'Button icon', 'carousel' ),
+							label: __( 'Button hover', 'carousel' ),
+							colorValue: backgroundHover,
+							onColorChange: ( v ) =>
+								setAttributes( {
+									buttonColors: {
+										...buttonColors,
+										backgroundHover: v,
+									},
+								} ),
+						},
+						{
+							label: __( 'Icon', 'carousel' ),
 							colorValue: icon,
 							onColorChange: ( v ) =>
 								setAttributes( {
 									buttonColors: { ...buttonColors, icon: v },
+								} ),
+						},
+						{
+							label: __( 'Icon hover', 'carousel' ),
+							colorValue: iconHover,
+							onColorChange: ( v ) =>
+								setAttributes( {
+									buttonColors: { ...buttonColors, iconHover: v },
 								} ),
 						},
 					] }

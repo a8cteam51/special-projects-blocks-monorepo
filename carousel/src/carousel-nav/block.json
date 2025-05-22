@@ -15,7 +15,9 @@
 			"type": "object",
 			"default": {
 				"background": "",
-				"icon": ""
+				"backgroundHover": "",
+				"icon": "",
+				"iconHover": ""
 			}
 		},
 		"buttonSize": {
@@ -25,10 +27,6 @@
 	},
 	"supports": {
 		"align": true,
-		"color": {
-			"background": true,
-			"text": false
-		},
 		"layout": {
 			"allowSwitching": false,
 			"allowInheriting": false,

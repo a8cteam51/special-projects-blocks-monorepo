@@ -23,6 +23,10 @@
 		width: var(--button-size, 24px);
 		padding: 0;
 
+		&:hover {
+			background: var(--button-background-hover);
+		}
+
 		&[aria-disabled="true"] {
 			cursor: not-allowed;
 			opacity: 0.5;

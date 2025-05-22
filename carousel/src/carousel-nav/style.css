@@ -26,6 +26,11 @@
 		align-items: center;
 		justify-content: center;
 
+		&:hover {
+			background: var(--button-background-hover);
+			color: var(--button-icon-hover, currentcolor);
+		}
+
 		&[aria-disabled="true"] {
 			opacity: 0.5;
 			pointer-events: none;

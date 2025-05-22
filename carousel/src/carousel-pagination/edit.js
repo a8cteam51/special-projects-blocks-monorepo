@@ -17,7 +17,7 @@ import './editor.css';
 export default function Edit( props ) {
 	const { attributes, setAttributes, clientId, context } = props;
 	const { layout, buttonColors, buttonSize, count } = attributes;
-	const { background } = buttonColors || {};
+	const { background, backgroundHover } = buttonColors || {};
 
 	const itemCountContext = context[ 'wpcomsp/item-count' ];
 
@@ -50,6 +50,17 @@ export default function Edit( props ) {
 									buttonColors: {
 										...buttonColors,
 										background: v,
+									},
+								} ),
+						},
+						{
+							label: __( 'Button hover', 'carousel' ),
+							colorValue: backgroundHover,
+							onColorChange: ( v ) =>
+								setAttributes( {
+									buttonColors: {
+										...buttonColors,
+										backgroundHover: v,
 									},
 								} ),
 						},
