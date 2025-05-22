@@ -361,19 +361,18 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 		</InspectorControls>
 	);
 
-	const styleInspectorControls = (
-		'gallery' === attributes.type && (
-			<InspectorControls group="dimensions">
-				<HeightInput
-					value={ trackHeight }
-					unit={ trackHeightUnit }
-					onChange={ ( v ) => setAttributes( { trackHeight: v } ) }
-					onUnitChange={ ( v ) =>
+	const styleInspectorControls = 'gallery' === attributes.type && (
+		<InspectorControls group="dimensions">
+			<HeightInput
+				value={ trackHeight }
+				unit={ trackHeightUnit }
+				onChange={ ( v ) => setAttributes( { trackHeight: v } ) }
+				onUnitChange={ ( v ) =>
 					setAttributes( { trackHeightUnit: v } )
 				}
 			/>
 		</InspectorControls>
-	) );
+	);
 
 	return (
 		<div { ...innerBlockProps }>
