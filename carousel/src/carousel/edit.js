@@ -97,6 +97,8 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 	const { hasInnerBlocks, itemCount } = useSelect(
 		( select ) => {
 			const { getBlock } = select( blockEditorStore );
+			const { getEntityRecords } = select( 'core' );
+			const { getTaxonomy } = select( 'core' );
 			const block = getBlock( clientId );
 
 			if ( ! block?.innerBlocks?.length ) {
@@ -118,8 +120,49 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					break;
 				case 'core/query':
 				case 'woocommerce/product-collection':
-					// @TODO: Find a better way, this may not be reflective of displayed items.
-					count = contentBlock.attributes.query?.perPage || 0;
+					const query = contentBlock.attributes.query || {};
+					const postType = query?.postType || 'post';
+
+					// Remove falsey values from query parameters.
+					const cleanQuery = Object.fromEntries(
+						Object.entries( {
+							...query,
+							per_page: query.perPage || 10,
+						} ).filter( ( [ _, value ] ) => {
+							if ( Array.isArray( value ) ) {
+								return value.length > 0;
+							}
+							return (
+								value !== '' &&
+								value !== null &&
+								value !== undefined
+							);
+						} )
+					);
+
+					// Handle taxonomy queries.
+					const taxQuery = query.taxQuery
+						? Object.fromEntries(
+								Object.entries( query.taxQuery ).map(
+									( [ taxonomy, terms ] ) => {
+										const taxonomyObj =
+											getTaxonomy( taxonomy );
+										return [
+											taxonomyObj?.rest_base || taxonomy,
+											terms,
+										];
+									}
+								)
+						  )
+						: {};
+
+					const records = getEntityRecords( 'postType', postType, {
+						...cleanQuery,
+						...taxQuery,
+						_fields: [ 'id' ],
+					} );
+
+					count = records?.length || 0;
 					break;
 				default:
 					count = 0;

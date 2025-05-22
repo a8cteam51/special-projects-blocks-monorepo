@@ -156,7 +156,40 @@ import './view.css';
 			}
 		} );
 
-		paginationButtons?.forEach( ( button, index ) => {
+		// Ensure that a pagination button exists for each slide.
+		if ( slides.length > paginationButtons?.length ) {
+			const paginationContainer = paginationButtons[ 0 ]?.parentElement;
+			if ( paginationContainer ) {
+				for (
+					let i = paginationButtons.length;
+					i < slides.length;
+					i++
+				) {
+					const button = document.createElement( 'button' );
+					button.className =
+						'wp-block-wpcomsp-carousel-pagination--button';
+					button.innerHTML = `<span class="screen-reader-text">Slide ${
+						i + 1
+					} of ${ slides.length }</span>`;
+					button.addEventListener( 'click', () => {
+						if ( ! carousel.classList.contains( 'is-animating' ) ) {
+							updateCarousel(
+								instance,
+								slides[ i ].offsetLeft * -1
+							);
+						}
+					} );
+					paginationContainer.appendChild( button );
+				}
+				// Update the `paginationButtons` reference.
+				instance.paginationButtons =
+					paginationContainer.querySelectorAll(
+						'.wp-block-wpcomsp-carousel-pagination--button'
+					);
+			}
+		}
+
+		instance.paginationButtons?.forEach( ( button, index ) => {
 			button.addEventListener( 'click', () => {
 				if ( ! carousel.classList.contains( 'is-animating' ) ) {
 					updateCarousel( instance, slides[ index ].offsetLeft * -1 );
