@@ -70,6 +70,7 @@
 		"core/gallery",
 		"core/group",
 		"core/columns",
+		"core/paragraph",
 		"woocommerce/product-collection",
 		"wpcomsp/carousel-nav",
 		"wpcomsp/carousel-pagination"

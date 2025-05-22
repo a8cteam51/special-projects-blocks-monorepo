@@ -54,4 +54,23 @@
 	.wp-block-wpcomsp-carousel-track.has-child-selected > *:not(.is-selected):not(.has-child-selected) {
 		opacity: 0.5;
 	}
+
+	.wp-block-gallery.has-nested-images[class*="columns-"]:not(.is-selected):not(.has-child-selected) {
+
+		&.is-cropped figure.wp-block-image:not(#individual-image) {
+			height: var(--track-height);
+			width: var(--track-height);
+		}
+
+		&:not(.is-cropped) figure.wp-block-image:not(#individual-image) {
+			height: var(--track-height);
+			width: auto;
+			display: flex;
+
+			img {
+				height: 100%;
+				object-fit: cover;
+			}
+		}
+	}
 }

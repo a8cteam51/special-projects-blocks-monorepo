@@ -8,9 +8,10 @@
 		}
 	}
 
-	&:not(.alignleft),
-	&:not(.alignright) {
-		width: 100%;
+	&.aligncenter,
+	&.alignleft,
+	&.alignright {
+		width: auto;
 	}
 
 	.wp-block-wpcomsp-carousel-pagination--button {
@@ -24,7 +25,7 @@
 		padding: 0;
 
 		&:hover {
-			background: var(--button-background-hover);
+			background: var(--button-background-hover, currentcolor);
 		}
 
 		&[aria-disabled="true"] {

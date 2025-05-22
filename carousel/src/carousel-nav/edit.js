@@ -68,7 +68,10 @@ export default function Edit( props ) {
 							colorValue: iconHover,
 							onColorChange: ( v ) =>
 								setAttributes( {
-									buttonColors: { ...buttonColors, iconHover: v },
+									buttonColors: {
+										...buttonColors,
+										iconHover: v,
+									},
 								} ),
 						},
 					] }

@@ -32,6 +32,40 @@ const CONTENT_BLOCKS = [
 ];
 
 /**
+ * Searches for the slides/content container block.
+ *
+ * @param {Array} blocks Array of blocks to search through.
+ *
+ * @return {Object|null} The found content block, or null.
+ */
+const findContentBlock = ( blocks ) => {
+	if ( ! blocks?.length ) {
+		return null;
+	}
+
+	for ( const block of blocks ) {
+		if ( block.name === 'core/group' ) {
+			if (
+				block.attributes.className?.includes(
+					'wp-block-wpcomsp-carousel-track'
+				)
+			) {
+				return block;
+			}
+		} else if ( CONTENT_BLOCKS.includes( block.name ) ) {
+			return block;
+		}
+
+		const foundInInner = findContentBlock( block.innerBlocks );
+		if ( foundInInner ) {
+			return foundInInner;
+		}
+	}
+
+	return null;
+};
+
+/**
  * Recursively creates a block and its inner blocks.
  *
  * @param {Object} block The block configuration.
@@ -69,9 +103,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 				return { hasInnerBlocks: false, itemCount: 0, innerBlocks: [] };
 			}
 
-			const contentBlock = block.innerBlocks.find( ( innerBlock ) =>
-				CONTENT_BLOCKS.includes( innerBlock.name )
-			);
+			const contentBlock = findContentBlock( block.innerBlocks );
 
 			if ( ! contentBlock ) {
 				return { hasInnerBlocks: false, itemCount: 0, innerBlocks: [] };
@@ -85,7 +117,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					count = contentBlock.innerBlocks?.length || 0;
 					break;
 				case 'core/query':
-				case 'core/product-collection':
+				case 'woocommerce/product-collection':
 					// @TODO: Find a better way, this may not be reflective of displayed items.
 					count = contentBlock.attributes.query?.perPage || 0;
 					break;
@@ -287,17 +319,18 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 	);
 
 	const styleInspectorControls = (
-		<InspectorControls group="dimensions">
-			<HeightInput
-				value={ trackHeight }
-				unit={ trackHeightUnit }
-				onChange={ ( v ) => setAttributes( { trackHeight: v } ) }
-				onUnitChange={ ( v ) =>
+		'gallery' === attributes.type && (
+			<InspectorControls group="dimensions">
+				<HeightInput
+					value={ trackHeight }
+					unit={ trackHeightUnit }
+					onChange={ ( v ) => setAttributes( { trackHeight: v } ) }
+					onUnitChange={ ( v ) =>
 					setAttributes( { trackHeightUnit: v } )
 				}
 			/>
 		</InspectorControls>
-	);
+	) );
 
 	return (
 		<div { ...innerBlockProps }>

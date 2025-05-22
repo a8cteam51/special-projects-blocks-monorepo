@@ -5,11 +5,8 @@
 	position: relative;
 	width: 100%;
 
-	.wp-block-gallery,
-	.wp-block-query,
-	.wp-block-group.wp-block-wpcomsp-carousel-track,
-	.wc-block-product-collection {
-		height: var(--track-height);
+	> * {
+		width: 100%;
 	}
 
 	.wp-block-group.wp-block-wpcomsp-carousel-track {
@@ -44,27 +41,6 @@
 			> .wp-block-group > *,
 			.wc-block-product {
 				transition: transform var(--animation-speed) ease-in-out;
-			}
-		}
-	}
-
-	.wp-block-gallery.has-nested-images[class*="columns-"] {
-
-		/* Cropped images */
-		&.is-cropped figure.wp-block-image:not(#individual-image) {
-			height: var(--track-height);
-			width: var(--track-height);
-		}
-
-		/* Non-cropped images */
-		&:not(.is-cropped) figure.wp-block-image:not(#individual-image) {
-			height: var(--track-height);
-			width: auto;
-			display: flex;
-
-			img {
-				height: 100%;
-				object-fit: cover;
 			}
 		}
 	}

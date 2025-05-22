@@ -54,7 +54,7 @@
 			}
 		}
 	},
-	"parent": [ "wpcomsp/carousel" ],
+	"ancestor": [ "wpcomsp/carousel" ],
 	"textdomain": "carousel",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
