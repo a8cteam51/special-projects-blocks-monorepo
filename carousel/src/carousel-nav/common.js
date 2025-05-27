@@ -52,9 +52,13 @@ export function getHTMLAttributes( attributes ) {
 /**
  * Renders navigation buttons for a carousel.
  *
+ * @param {Object} attributes The block attributes.
+ *
  * @return {Object} The rendered navigation buttons.
  */
-export function navigationButtons() {
+export function navigationButtons( attributes ) {
+	const { iconUpload } = attributes;
+
 	const buttonClass = 'wp-block-wpcomsp-carousel-nav--button';
 
 	const previousButtonClasses = clsx(
@@ -70,34 +74,52 @@ export function navigationButtons() {
 	return (
 		<>
 			<button className={ previousButtonClasses }>
-				<SVG
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 24 24"
-					width="48"
-					height="48"
-					aria-hidden="true"
-					focusable="false"
-				>
-					<Path d="M14.6 7l-1.2-1L8 12l5.4 6 1.2-1-4.6-5z" />
-				</SVG>
-				<span className="screen-reader-text">
-					{ __( 'Previous slide', 'carousel' ) }
-				</span>
+				{ iconUpload ? (
+					<img
+						src={ iconUpload.url }
+						alt={ __( 'Previous slide', 'carousel' ) }
+					/>
+				) : (
+					<>
+						<SVG
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							width="48"
+							height="48"
+							aria-hidden="true"
+							focusable="false"
+						>
+							<Path d="M14.6 7l-1.2-1L8 12l5.4 6 1.2-1-4.6-5z" />
+						</SVG>
+						<span className="screen-reader-text">
+							{ __( 'Previous slide', 'carousel' ) }
+						</span>
+					</>
+				) }
 			</button>
 			<button className={ nextButtonClasses }>
-				<SVG
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 24 24"
-					width="48"
-					height="48"
-					aria-hidden="true"
-					focusable="false"
-				>
-					<Path d="M10.6 6L9.4 7l4.6 5-4.6 5 1.2 1 5.4-6z" />
-				</SVG>
-				<span className="screen-reader-text">
-					{ __( 'Next slide', 'carousel' ) }
-				</span>
+				{ iconUpload ? (
+					<img
+						src={ iconUpload.url }
+						alt={ __( 'Next slide', 'carousel' ) }
+					/>
+				) : (
+					<>
+						<SVG
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							width="48"
+							height="48"
+							aria-hidden="true"
+							focusable="false"
+						>
+							<Path d="M10.6 6L9.4 7l4.6 5-4.6 5 1.2 1 5.4-6z" />
+						</SVG>
+						<span className="screen-reader-text">
+							{ __( 'Next slide', 'carousel' ) }
+						</span>
+					</>
+				) }
 			</button>
 		</>
 	);

@@ -41,4 +41,8 @@
 			fill: currentcolor;
 		}
 	}
+
+	.wp-block-wpcomsp-carousel-nav--button_next img {
+		transform: scaleX(-1);
+	}
 }

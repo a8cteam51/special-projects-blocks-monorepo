@@ -23,6 +23,13 @@
 		"buttonSize": {
 			"type": "number",
 			"default": 48
+		},
+		"customIcon": {
+			"type": "boolean",
+			"default": false
+		},
+		"iconUpload": {
+			"type": "object"
 		}
 	},
 	"supports": {

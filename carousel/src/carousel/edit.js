@@ -97,8 +97,6 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 	const { hasInnerBlocks, itemCount } = useSelect(
 		( select ) => {
 			const { getBlock } = select( blockEditorStore );
-			const { getEntityRecords } = select( 'core' );
-			const { getTaxonomy } = select( 'core' );
 			const block = getBlock( clientId );
 
 			if ( ! block?.innerBlocks?.length ) {
@@ -120,6 +118,9 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					break;
 				case 'core/query':
 				case 'woocommerce/product-collection':
+					const { getTaxonomy } = select( 'core' );
+					const { getEntityRecords } = select( 'core' );
+
 					const query = contentBlock.attributes.query || {};
 					const postType = query?.postType || 'post';
 
@@ -128,6 +129,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 						Object.entries( {
 							...query,
 							per_page: query.perPage || 10,
+							// eslint-disable-next-line no-unused-vars
 						} ).filter( ( [ _, value ] ) => {
 							if ( Array.isArray( value ) ) {
 								return value.length > 0;
