@@ -1,8 +1,9 @@
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
 import { getBlockType } from '@wordpress/blocks';
+import domReady from '@wordpress/dom-ready';
 
-const baseVariations = [
+const variations = [
 	{
 		name: 'wpcomsp/carousel-images',
 		title: __( 'Images Carousel', 'carousel' ),
@@ -130,11 +131,10 @@ const productVariation = {
 	attributes: { type: 'product-collection' },
 };
 
-const variations = [
-	...baseVariations,
-	...( getBlockType( 'woocommerce/product-collection' )
-		? [ productVariation ]
-		: [] ),
-];
+domReady( () => {
+	if ( getBlockType( 'woocommerce/product-collection' ) ) {
+		variations.push( productVariation );
+	}
+} );
 
 export default variations;
