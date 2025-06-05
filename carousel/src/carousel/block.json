@@ -9,11 +9,20 @@
 	"description": "Display a horizontal series of content.",
 	"example": {},
 	"supports": {
+		"align": true,
+		"anchor": true,
 		"color": {
 			"background": true,
 			"text": false
 		},
 		"html": false,
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"default": {
+				"type": "flex"
+			}
+		},
 		"spacing": {
 			"blockGap": true,
 			"margin": true,
@@ -43,19 +52,13 @@
 			"default": "hidden",
 			"enum": [ "hidden", "right", "left", "both" ]
 		},
-		"pagination": {
-			"type": "boolean",
-			"default": false
-		},
-		"prevNext": {
-			"type": "boolean",
-			"default": true
-		},
-		"prevNextPosition": {
-			"type": "string",
-			"default": "sides"
-		},
 		"title": {
+			"type": "string"
+		},
+		"trackHeight": {
+			"type": "number"
+		},
+		"trackHeightUnit": {
 			"type": "string"
 		},
 		"type": {
@@ -66,11 +69,20 @@
 		"core/query",
 		"core/gallery",
 		"core/group",
-		"woocommerce/product-collection"
+		"core/columns",
+		"core/paragraph",
+		"woocommerce/product-collection",
+		"wpcomsp/carousel-nav",
+		"wpcomsp/carousel-pagination"
 	],
+	"providesContext": {
+		"wpcomsp/item-count": "itemCount"
+	},
 	"textdomain": "carousel",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
+	"viewScript": "file:./view.js",
+	"viewStyle": "file:./view.css",
 	"style": "file:./style-index.css",
-	"viewScript": "file:./view.js"
+	"render": "file:./render.php"
 }

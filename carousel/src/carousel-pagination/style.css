@@ -1,0 +1,36 @@
+.wp-block-wpcomsp-carousel-pagination {
+
+	&:where([style*="--button-border-width"]) {
+		border-style: none;
+
+		.wp-block-wpcomsp-carousel-pagination--button {
+			border-style: solid;
+		}
+	}
+
+	&.aligncenter,
+	&.alignleft,
+	&.alignright {
+		width: auto;
+	}
+
+	.wp-block-wpcomsp-carousel-pagination--button {
+		background: var(--button-background, currentcolor);
+		border-color: var(--button-border-color, none);
+		border-radius: var(--button-border-radius, 100%);
+		border-width: var(--button-border-width, 0);
+		cursor: pointer;
+		height: var(--button-size, 24px);
+		width: var(--button-size, 24px);
+		padding: 0;
+
+		&:hover {
+			background: var(--button-background-hover, currentcolor);
+		}
+
+		&[aria-disabled="true"] {
+			cursor: not-allowed;
+			opacity: 0.5;
+		}
+	}
+}

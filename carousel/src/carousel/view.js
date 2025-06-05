@@ -1,4 +1,7 @@
 /* global getComputedStyle, IntersectionObserver, ResizeObserver */
+
+import './view.css';
+
 {
 	document.addEventListener( 'DOMContentLoaded', () => {
 		const carousels = document.querySelectorAll(
@@ -18,7 +21,7 @@
 		const instance = {
 			carousel,
 			track: carousel.querySelector(
-				'.wp-block-gallery, .wp-block-post-template, .wp-block-group, .wc-block-product-template'
+				'.wp-block-gallery, .wp-block-post-template, .wp-block-wpcomsp-carousel-track, .wc-block-product-template'
 			),
 			slides: [],
 			prevButton: null,
@@ -34,7 +37,7 @@
 
 		instance.slides = Array.from(
 			carousel.querySelectorAll(
-				'.wp-block-gallery > .wp-block-image, .wp-block-post-template > .wp-block-post, :scope > .wp-block-group > *, .wc-block-product-template .wc-block-product'
+				'.wp-block-gallery > .wp-block-image, .wp-block-post-template > .wp-block-post, .wp-block-wpcomsp-carousel-track > *, .wc-block-product-template .wc-block-product'
 			)
 		);
 
@@ -43,24 +46,16 @@
 		}
 
 		instance.prevButton = carousel.querySelector(
-			'.wp-block-wpcomsp-carousel__prev-next-button.prev'
+			'.wp-block-wpcomsp-carousel-nav--button_prev'
 		);
 		instance.nextButton = carousel.querySelector(
-			'.wp-block-wpcomsp-carousel__prev-next-button.next'
+			'.wp-block-wpcomsp-carousel-nav--button_next'
 		);
 		instance.paginationButtons = carousel.querySelectorAll(
-			'.wp-block-wpcomsp-carousel__pagination-button'
+			'.wp-block-wpcomsp-carousel-pagination--button'
 		);
 
-		instance.uncroppedGallery =
-			instance.track.classList.contains( 'wp-block-gallery' ) &&
-			! instance.track.classList.contains( 'is-cropped' );
-
 		instance.animateEnd = instance.carousel.dataset.animateEnd;
-
-		if ( instance.uncroppedGallery ) {
-			setBaseHeight( instance );
-		}
 
 		if ( 'infinite' === instance.animateEnd ) {
 			setupInfiniteCarousel( instance );
@@ -79,13 +74,9 @@
 	 * @param {Object} instance The carousel instance.
 	 */
 	function setupResizeObserver( instance ) {
-		const { carousel, uncroppedGallery } = instance;
+		const { carousel } = instance;
 
 		const resizeObserver = new ResizeObserver( () => {
-			if ( uncroppedGallery ) {
-				setBaseHeight( instance );
-			}
-
 			recalculateSlidePositions( instance );
 		} );
 
@@ -165,7 +156,40 @@
 			}
 		} );
 
-		paginationButtons?.forEach( ( button, index ) => {
+		// Ensure that a pagination button exists for each slide.
+		if ( slides.length > paginationButtons?.length ) {
+			const paginationContainer = paginationButtons[ 0 ]?.parentElement;
+			if ( paginationContainer ) {
+				for (
+					let i = paginationButtons.length;
+					i < slides.length;
+					i++
+				) {
+					const button = document.createElement( 'button' );
+					button.className =
+						'wp-block-wpcomsp-carousel-pagination--button';
+					button.innerHTML = `<span class="screen-reader-text">Slide ${
+						i + 1
+					} of ${ slides.length }</span>`;
+					button.addEventListener( 'click', () => {
+						if ( ! carousel.classList.contains( 'is-animating' ) ) {
+							updateCarousel(
+								instance,
+								slides[ i ].offsetLeft * -1
+							);
+						}
+					} );
+					paginationContainer.appendChild( button );
+				}
+				// Update the `paginationButtons` reference.
+				instance.paginationButtons =
+					paginationContainer.querySelectorAll(
+						'.wp-block-wpcomsp-carousel-pagination--button'
+					);
+			}
+		}
+
+		instance.paginationButtons?.forEach( ( button, index ) => {
 			button.addEventListener( 'click', () => {
 				if ( ! carousel.classList.contains( 'is-animating' ) ) {
 					updateCarousel( instance, slides[ index ].offsetLeft * -1 );
@@ -189,12 +213,14 @@
 
 			if (
 				e.key === 'ArrowLeft' &&
-				prevButton.getAttribute( 'aria-disabled' ) !== 'true'
+				( ! prevButton ||
+					prevButton.getAttribute( 'aria-disabled' ) !== 'true' )
 			) {
 				navigatePrevious( instance );
 			} else if (
 				e.key === 'ArrowRight' &&
-				nextButton.getAttribute( 'aria-disabled' ) !== 'true'
+				( ! nextButton ||
+					nextButton.getAttribute( 'aria-disabled' ) !== 'true' )
 			) {
 				navigateNext( instance );
 			}
@@ -329,7 +355,10 @@
 	function navigatePrevious( instance ) {
 		const { carousel, slides, prevButton, track, animateEnd } = instance;
 
-		if ( prevButton.getAttribute( 'aria-disabled' ) === 'true' ) {
+		if (
+			prevButton &&
+			prevButton.getAttribute( 'aria-disabled' ) === 'true'
+		) {
 			return;
 		}
 
@@ -410,7 +439,10 @@
 	function navigateNext( instance ) {
 		const { carousel, track, slides, nextButton, animateEnd } = instance;
 
-		if ( nextButton.getAttribute( 'aria-disabled' ) === 'true' ) {
+		if (
+			nextButton &&
+			nextButton.getAttribute( 'aria-disabled' ) === 'true'
+		) {
 			return;
 		}
 
@@ -490,12 +522,12 @@
 
 			carousel.classList.remove( 'is-animating' );
 
-			// If the flag is set and there is currently no focused element,
+			// If the flag is set and the track no longer contains the focused element,
 			// we can assume the focus was lost during the transition.
 			// In that case, set focus within the first slide.
 			if (
 				updateFocus &&
-				track.ownerDocument.activeElement === track.ownerDocument.body
+				! track.contains( track.ownerDocument.activeElement )
 			) {
 				// Delay slightly to account for DOM updates.
 				setTimeout( () => {
@@ -542,51 +574,6 @@
 			} else {
 				nextButton.removeAttribute( 'aria-disabled' );
 			}
-		}
-	}
-
-	/**
-	 * Set the base height for uncropped galleries.
-	 *
-	 * @param {Object}  instance          The carousel instance.
-	 * @param {Element} instance.carousel The carousel element.
-	 * @param {Element} instance.track    The track element.
-	 */
-	function setBaseHeight( { carousel, track } ) {
-		const images = track.querySelectorAll( 'img' );
-		const targetWidth = carousel.offsetWidth / 3 - getItemGap( track );
-
-		let widestImage = track.querySelector( '.is-widest' );
-		let maxWidth = 0;
-
-		// Find the proportionally widest image.
-		if ( ! widestImage ) {
-			images.forEach( ( img ) => {
-				const width = Number( img.getAttribute( 'width' ) );
-				const height = Number( img.getAttribute( 'height' ) );
-				const aspectRatio = width / height;
-				const scaledWidth = targetWidth * aspectRatio;
-
-				if ( scaledWidth > maxWidth ) {
-					maxWidth = scaledWidth;
-					widestImage = img;
-				}
-			} );
-		}
-
-		if ( widestImage ) {
-			widestImage.classList.add( 'is-widest' );
-
-			const width = Math.min(
-				targetWidth,
-				Number( widestImage.getAttribute( 'width' ) )
-			);
-			const aspectRatio =
-				Number( widestImage.getAttribute( 'width' ) ) /
-				Number( widestImage.getAttribute( 'height' ) );
-			const baseHeight = Math.round( width / aspectRatio );
-
-			carousel.style.setProperty( '--base-height', `${ baseHeight }px` );
 		}
 	}
 

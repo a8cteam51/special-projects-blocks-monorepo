@@ -18,7 +18,10 @@
 		"[^.]*"
 	],
 	"devDependencies": {
-		"@wordpress/scripts": "^30.13.0",
+		"@wordpress/scripts": "^30.15.0",
 		"clsx": "^2.1.1"
+	},
+	"dependencies": {
+		"@wordpress/icons": "^10.22.0"
 	}
 }
