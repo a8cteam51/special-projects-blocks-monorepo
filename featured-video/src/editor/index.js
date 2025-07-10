@@ -74,7 +74,7 @@ const FeaturedVideo = () => {
 											controls
 											src={mediaSourceUrl}
 											poster={mediaSourceUrl}
-											alt={__("Selected Video")}
+											alt={__("Selected Video", "featured-video")}
 										/>
 									)}
 								</Button>

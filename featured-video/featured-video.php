@@ -107,8 +107,9 @@ function wpcomsp_featured_video_render_post_featured_image( $block_content, $blo
 
 	$p->replace_tag(
 		sprintf(
-			'<video class="attachment-post-thumbnail size-post-thumbnail wp-post-image wp-post-video intrinsic-ignore" autoplay muted loop playsinline src="%s" style="width: 100%%;"></video>',
-			esc_url( $featured_video_url )
+			'<video class="attachment-post-thumbnail size-post-thumbnail wp-post-image wp-post-video intrinsic-ignore" autoplay muted loop playsinline src="%s" style="width: 100%%" preload="metadata"><p>%s</p></video>',
+			esc_url( $featured_video_url ),
+			esc_html__( 'Your browser does not support the video tag.', 'featured-video' )
 		)
 	);
 

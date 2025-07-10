@@ -11,7 +11,7 @@
 		"lint:js": "wp-scripts lint-js",
 		"packages-update": "wp-scripts packages-update",
 		"plugin-zip": "wp-scripts plugin-zip",
-		"start": "wp-scripts src/editor --output-path=build/editor"
+		"start": "wp-scripts start src/editor --output-path=build/editor"
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "^30.19.0"
