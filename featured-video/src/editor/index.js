@@ -14,8 +14,6 @@ const FeaturedVideo = () => {
 		[]
 	);
 
-	console.log("Current post type:", postType);
-
 	if (
 		! postType ||
 		["wp_template", "wp_template_part", "wp_navigation"].includes( postType )
