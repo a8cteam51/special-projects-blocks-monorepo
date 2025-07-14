@@ -67,10 +67,11 @@ function wpcomsp_featured_video_register_post_meta() {
 		'post',
 		'_wpcomsp_featured_video_id',
 		array(
-			'show_in_rest'  => true,
-			'type'          => 'number',
-			'single'        => true,
-			'auth_callback' => function () {
+			'sanitize_callback' => 'absint',
+			'show_in_rest'      => true,
+			'type'              => 'number',
+			'single'            => true,
+			'auth_callback'     => function () {
 				return current_user_can( 'edit_posts' );
 			},
 		)
