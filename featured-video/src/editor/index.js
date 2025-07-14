@@ -4,18 +4,42 @@ import { __ } from "@wordpress/i18n";
 import { useSelect } from "@wordpress/data";
 import { useEntityProp } from "@wordpress/core-data";
 import { MediaUpload, MediaUploadCheck } from "@wordpress/block-editor";
-import { Button, Flex, FlexItem, FlexBlock } from "@wordpress/components";
+import { Button, Flex, FlexItem } from "@wordpress/components";
 import { useRef } from "@wordpress/element";
 
-
 const FeaturedVideo = () => {
+
 	const postType = useSelect(
 		(select) => select("core/editor").getCurrentPostType(),
 		[]
 	);
 
+	console.log("Current post type:", postType);
 
-	if ("post" !== postType) {
+	if (
+		! postType ||
+		["wp_template", "wp_template_part", "wp_navigation"].includes( postType )
+	) {
+		return null;
+	}
+
+	const postId = useSelect(
+		(select) => select("core/editor").getCurrentPostId(),
+		[]
+	);
+
+	const canUserEditPost = useSelect(
+		(select) =>
+			select("core").canUser("update", {
+            kind: "postType",
+            name: postType,
+            id: postId
+        }),
+		[postId, postType]
+	);
+
+
+	if ( ! canUserEditPost ) {
 		return null;
 	}
 
@@ -86,7 +110,7 @@ const FeaturedVideo = () => {
 													onClick={open}
 													width="100%"
 												>
-													{__("Replace")}
+													{__("Replace", "featured-video")}
 												</Button>
 											</FlexItem>
 											<FlexItem>
@@ -99,7 +123,7 @@ const FeaturedVideo = () => {
 														toggleRef.current.focus();
 													}}
 												>
-													{__("Remove")}
+													{__("Remove", "featured-video")}
 												</Button>
 											</FlexItem>
 										</Flex>
