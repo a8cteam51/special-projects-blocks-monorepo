@@ -4,11 +4,7 @@ import { __ } from "@wordpress/i18n";
 import { useSelect } from "@wordpress/data";
 import { useEntityProp } from "@wordpress/core-data";
 import { MediaUpload, MediaUploadCheck } from "@wordpress/block-editor";
-import {
-	Button,
-	__experimentalHStack as HStack,
-	__experimentalVStack as VStack,
-} from "@wordpress/components"; // eslint-disable-line @wordpress/no-unsafe-wp-apis
+import { Button, Flex, FlexItem, FlexBlock } from "@wordpress/components";
 import { useRef } from "@wordpress/element";
 
 
@@ -56,51 +52,60 @@ const FeaturedVideo = () => {
 					value={selectedVideoId}
 					render={({ open }) => (
 						<div className="editor-post-featured-image__container">
-							<VStack alignment="center">
-								<Button
-									ref={toggleRef}
-									className={
-										!selectedVideoId
-											? "editor-post-featured-image__toggle"
-											: "editor-post-featured-image__preview"
-									}
-									onClick={open}
-								>
-									{!selectedVideoId ? (
-										__("Set featured video", "featured-video")
-									) : (
-										<video
-											className="editor-post-featured-image__preview-video"
-											controls
-											src={mediaSourceUrl}
-											poster={mediaSourceUrl}
-											alt={__("Selected Video", "featured-video")}
-										/>
-									)}
-								</Button>
-
+							<Flex alignment="center" direction="column">
+								<FlexItem>
+									<Button
+										ref={toggleRef}
+										className={
+											!selectedVideoId
+												? "editor-post-featured-image__toggle"
+												: "editor-post-featured-image__preview"
+										}
+										onClick={open}
+									>
+										{!selectedVideoId ? (
+											__("Set featured video", "featured-video")
+										) : (
+											<video
+												className="editor-post-featured-image__preview-video"
+												controls
+												src={mediaSourceUrl}
+												poster={mediaSourceUrl}
+												alt={__("Selected Video", "featured-video")}
+											/>
+										)}
+									</Button>
+								</FlexItem>
 								{selectedVideoId && (
-									<HStack alignment="center">
-										<Button
-											__next40pxDefaultSize
-											variant="secondary"
-											onClick={open}
-										>
-											{__("Replace")}
-										</Button>
-										<Button
-											__next40pxDefaultSize
-											variant="secondary"
-											onClick={() => {
-												onRemoveVideo();
-												toggleRef.current.focus();
-											}}
-										>
-											{__("Remove")}
-										</Button>
-									</HStack>
+									<FlexItem>
+										<Flex align="center">
+											<FlexItem>
+												<Button
+													__next40pxDefaultSize
+													variant="secondary"
+													onClick={open}
+													width="100%"
+												>
+													{__("Replace")}
+												</Button>
+											</FlexItem>
+											<FlexItem>
+												<Button
+													__next40pxDefaultSize
+													variant="secondary"
+													width="100%"
+													onClick={() => {
+														onRemoveVideo();
+														toggleRef.current.focus();
+													}}
+												>
+													{__("Remove")}
+												</Button>
+											</FlexItem>
+										</Flex>
+									</FlexItem>
 								)}
-							</VStack>
+							</Flex>
 						</div>
 					)}
 				/>
