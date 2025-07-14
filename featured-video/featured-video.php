@@ -90,6 +90,10 @@ add_action( 'init', 'wpcomsp_featured_video_register_post_meta' );
  */
 function wpcomsp_featured_video_render_post_featured_image( $block_content, $block, $wp_block ) {
 
+	if ( empty( $wp_block->context['postId'] ) ) {
+		return $block_content;
+	}
+
 	$featured_video_id = get_post_meta( $wp_block->context['postId'], '_wpcomsp_featured_video_id', true );
 
 	if ( ! $featured_video_id ) {
