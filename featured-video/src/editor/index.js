@@ -6,6 +6,7 @@ import { useEntityProp } from "@wordpress/core-data";
 import { MediaUpload, MediaUploadCheck } from "@wordpress/block-editor";
 import { Button, Flex, FlexItem } from "@wordpress/components";
 import { useRef } from "@wordpress/element";
+import { store as coreStore } from "@wordpress/core-data";
 
 const FeaturedVideo = () => {
 
@@ -14,30 +15,15 @@ const FeaturedVideo = () => {
 		[]
 	);
 
-	if (
-		! postType ||
-		["wp_template", "wp_template_part", "wp_navigation"].includes( postType )
-	) {
-		return null;
-	}
-
-	const postId = useSelect(
-		(select) => select("core/editor").getCurrentPostId(),
-		[]
+	const hasPostThumbnailSupport = useSelect(
+		(select) => {
+			const postTypeObject = select( coreStore ).getPostType( postType );
+			return postTypeObject?.supports?.['thumbnail'] ?? false;
+		},
+		[postType]
 	);
 
-	const canUserEditPost = useSelect(
-		(select) =>
-			select("core").canUser("update", {
-            kind: "postType",
-            name: postType,
-            id: postId
-        }),
-		[postId, postType]
-	);
-
-
-	if ( ! canUserEditPost ) {
+	if ( ! hasPostThumbnailSupport ) {
 		return null;
 	}
 
