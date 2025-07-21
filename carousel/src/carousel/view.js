@@ -389,6 +389,10 @@ import './view.css';
 			previous = lastSlide;
 		}
 
+		if ( 'back' === animateEnd && ! previous ) {
+			previous = slides[ slides.length - 1 ];
+		}
+
 		if ( carousel.classList.contains( 'animate-visible' ) ) {
 			const trackWidth = track.offsetWidth;
 			const gap = parseFloat(
@@ -489,6 +493,10 @@ import './view.css';
 
 			firstSlide.addEventListener( 'transitionend', onInfiniteNext );
 		}
+
+		if ( 'back' === animateEnd && ! next ) {
+			updateCarousel( instance, 0, false, updateFocus );
+		}
 	}
 
 	/**
@@ -556,7 +564,7 @@ import './view.css';
 		nextButton,
 		animateEnd,
 	} ) {
-		if ( 'infinite' === animateEnd ) {
+		if ( [ 'back', 'infinite' ].includes( animateEnd ) ) {
 			return;
 		}
 

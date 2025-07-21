@@ -334,8 +334,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 						},
 						{
 							value: 'back',
-							label: __( 'Go back to first slide', 'carousel' ),
-							disabled: true,
+							label: __( 'Back to beginning/end', 'carousel' ),
 						},
 						{
 							value: 'infinite',
