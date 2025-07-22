@@ -70,6 +70,11 @@ class WPCOMSP_Blocks_Self_Update {
 		$updated_version = wp_remote_retrieve_body( $response );
 		$updated_array   = json_decode( $updated_version, true );
 
+		// Validate JSON and required fields.
+		if ( ! is_array( $updated_array ) || ! isset( $updated_array['slug'], $updated_array['version'], $updated_array['package_url'] ) ) {
+			return $update;
+		}
+
 		return array(
 			'slug'    => $updated_array['slug'],
 			'version' => $updated_array['version'],
