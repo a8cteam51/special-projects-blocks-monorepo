@@ -105,11 +105,12 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 
 			switch ( contentBlock.name ) {
 				case 'core/gallery':
-				case 'core/group':
+				case 'core/group': {
 					count = contentBlock.innerBlocks?.length || 0;
 					break;
+				}
 				case 'core/query':
-				case 'woocommerce/product-collection':
+				case 'woocommerce/product-collection': {
 					const { getTaxonomy } = select( 'core' );
 					const { getEntityRecords } = select( 'core' );
 
@@ -158,6 +159,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 
 					count = records?.length || 0;
 					break;
+				}
 				default:
 					count = 0;
 			}

@@ -84,7 +84,7 @@ import './view.css';
 	}
 
 	/**
-	 * Set up the observer for handling slide accessbility.
+	 * Set up the observer for handling slide accessibility.
 	 *
 	 * @param {Object} instance The carousel instance.
 	 */
@@ -157,7 +157,7 @@ import './view.css';
 		} );
 
 		// Ensure that a pagination button exists for each slide.
-		if ( slides.length > paginationButtons?.length ) {
+		if ( paginationButtons && slides.length > paginationButtons.length ) {
 			const paginationContainer = paginationButtons[ 0 ]?.parentElement;
 			if ( paginationContainer ) {
 				for (
@@ -171,14 +171,7 @@ import './view.css';
 					button.innerHTML = `<span class="screen-reader-text">Slide ${
 						i + 1
 					} of ${ slides.length }</span>`;
-					button.addEventListener( 'click', () => {
-						if ( ! carousel.classList.contains( 'is-animating' ) ) {
-							updateCarousel(
-								instance,
-								slides[ i ].offsetLeft * -1
-							);
-						}
-					} );
+
 					paginationContainer.appendChild( button );
 				}
 				// Update the `paginationButtons` reference.
@@ -333,9 +326,9 @@ import './view.css';
 				return;
 			}
 
-			const gap = parseFloat(
-				getComputedStyle( track ).getPropertyValue( 'gap' )
-			);
+			const gapValue =
+				getComputedStyle( track ).getPropertyValue( 'gap' );
+			const gap = parseFloat( gapValue ) || 0;
 
 			let totalOffset = 0;
 
@@ -456,9 +449,10 @@ import './view.css';
 		const updateFocus = track.contains( track.ownerDocument.activeElement );
 
 		const offsetter = carousel.classList.contains( 'animate-visible' )
-			? slides.findLast(
-					( slide ) => ! slide.getAttribute( 'aria-hidden' )
-			  )
+			? slides
+					.slice()
+					.reverse()
+					.find( ( slide ) => ! slide.getAttribute( 'aria-hidden' ) )
 			: slides.find( ( slide ) => ! slide.getAttribute( 'aria-hidden' ) );
 
 		const next = offsetter?.nextElementSibling;
