@@ -6,10 +6,7 @@ import { getHTMLAttributes } from './common';
 
 export default function save( { attributes } ) {
 	const { children, ...innerBlockProps } = useInnerBlocksProps.save(
-		useBlockProps.save( getHTMLAttributes( attributes ) ),
-		{
-			renderAppender: false,
-		}
+		useBlockProps.save( getHTMLAttributes( attributes ) )
 	);
 
 	return <div { ...innerBlockProps }>{ children }</div>;

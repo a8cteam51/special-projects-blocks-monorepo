@@ -74,3 +74,14 @@
 		}
 	}
 }
+
+.block-editor-block-inspector .wpcomsp-carousel-track-height-input {
+	align-items: flex-end;
+	display: flex;
+	gap: 8px;
+	grid-column: 1 / -1;
+
+	.components-base-control:where(:not(:last-child)) {
+		margin-bottom: 0;
+	}
+}

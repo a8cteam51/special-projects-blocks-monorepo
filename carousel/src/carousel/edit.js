@@ -3,20 +3,12 @@ import {
 	InspectorControls,
 	useBlockProps,
 	useInnerBlocksProps,
-	useSettings,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import {
-	PanelBody,
-	SelectControl,
-	TextControl,
-	__experimentalUseCustomUnits as useCustomUnits, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-	__experimentalUnitControl as UnitControl, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-	__experimentalParseQuantityAndUnitFromRawValue as parseQuantityAndUnitFromRawValue, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-} from '@wordpress/components';
+import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { useEffect, useMemo } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 // Internal dependencies.
@@ -208,60 +200,6 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 		selectBlock( clientId );
 	};
 
-	const HeightInput = ( {
-		onChange,
-		onUnitChange,
-		unit = 'px',
-		value = '',
-	} ) => {
-		const isPx = unit === 'px';
-
-		const [ availableUnits ] = useSettings( 'spacing.units' );
-		const units = useCustomUnits( {
-			availableUnits: availableUnits || [ 'px', 'em', 'rem', 'vw', 'vh' ],
-			defaultValues: {
-				px: 430,
-				'%': 20,
-				em: 20,
-				rem: 20,
-				vw: 20,
-				vh: 50,
-			},
-		} );
-
-		const handleOnChange = ( unprocessedValue ) => {
-			const inputValue =
-				unprocessedValue !== ''
-					? parseFloat( unprocessedValue )
-					: undefined;
-
-			if ( isNaN( inputValue ) && inputValue !== undefined ) {
-				return;
-			}
-
-			onChange( inputValue );
-		};
-
-		const computedValue = useMemo( () => {
-			const [ parsedQuantity ] =
-				parseQuantityAndUnitFromRawValue( value );
-			return [ parsedQuantity, unit ].join( '' );
-		}, [ unit, value ] );
-
-		return (
-			<UnitControl
-				__next40pxDefaultSize
-				label={ __( 'Track height', 'carousel' ) }
-				isResetValueOnUnitChange
-				min={ isPx ? 430 : 0 }
-				onChange={ handleOnChange }
-				onUnitChange={ onUnitChange }
-				units={ units }
-				value={ computedValue }
-			/>
-		);
-	};
-
 	const defaultInspectorControls = (
 		<InspectorControls>
 			<PanelBody title={ __( 'Carousel Settings', 'carousel' ) }>
@@ -364,14 +302,34 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 
 	const styleInspectorControls = 'gallery' === attributes.type && (
 		<InspectorControls group="dimensions">
-			<HeightInput
-				value={ trackHeight }
-				unit={ trackHeightUnit }
-				onChange={ ( v ) => setAttributes( { trackHeight: v } ) }
-				onUnitChange={ ( v ) =>
-					setAttributes( { trackHeightUnit: v } )
-				}
-			/>
+			<div className="wpcomsp-carousel-track-height-input">
+				<TextControl
+					label={ __( 'Track height', 'carousel' ) }
+					onChange={ ( v ) =>
+						setAttributes( { trackHeight: Number( v ) } )
+					}
+					type="number"
+					value={ trackHeight }
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
+				/>
+				<SelectControl
+					label={ __( 'Unit', 'carousel' ) }
+					onChange={ ( v ) =>
+						setAttributes( { trackHeightUnit: v } )
+					}
+					options={ [
+						{ value: 'px', label: 'px' },
+						{ value: 'em', label: 'em' },
+						{ value: 'rem', label: 'rem' },
+						{ value: 'vw', label: 'vw' },
+						{ value: 'vh', label: 'vh' },
+					] }
+					value={ trackHeightUnit }
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
+				/>
+			</div>
 		</InspectorControls>
 	);
 

@@ -59,7 +59,8 @@
 			"type": "number"
 		},
 		"trackHeightUnit": {
-			"type": "string"
+			"type": "string",
+			"default": "px"
 		},
 		"type": {
 			"type": "string"

@@ -22,6 +22,7 @@ export function getHTMLAttributes( attributes ) {
 		title,
 		trackHeight,
 		trackHeightUnit,
+		type,
 	} = attributes;
 
 	const styles = {
@@ -38,7 +39,7 @@ export function getHTMLAttributes( attributes ) {
 			) + ')';
 	}
 
-	if ( trackHeight && trackHeightUnit ) {
+	if ( 'gallery' === type && trackHeight && trackHeightUnit ) {
 		styles[ '--track-height' ] = `${ trackHeight }${ trackHeightUnit }`;
 	}
 
