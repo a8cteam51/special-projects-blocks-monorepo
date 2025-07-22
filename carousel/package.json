@@ -1,7 +1,7 @@
 {
 	"name": "carousel",
 	"version": "0.1.0",
-	"description": "Display a horizontal series of content.",
+	"description": "Create responsive image, post, product, or custom content carousels with optional navigation and pagination controls.",
 	"author": "The WordPress Contributors",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
