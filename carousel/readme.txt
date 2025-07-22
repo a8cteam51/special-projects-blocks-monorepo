@@ -14,6 +14,7 @@ Display a horizontal series of content, including:
 
 - Posts of any type, using the Query block;
 - Images, using a Gallery block;
+- Free-form content "cards";
 - WooCommerce products.
 
 Content is navigable via drag, swipe, or optional arrow and/or pagination controls.
@@ -26,7 +27,6 @@ e.g.
 
 1. Upload the plugin files to the `/wp-content/plugins/carousel` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the 'Plugins' screen in WordPress
-
 
 == Frequently Asked Questions ==
 
