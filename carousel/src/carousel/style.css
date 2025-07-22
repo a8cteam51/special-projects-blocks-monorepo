@@ -23,6 +23,26 @@
 		}
 	}
 
+	&.has-overflow-right {
+
+		.wp-block-gallery,
+		.wp-block-query,
+		.wp-block-group.wp-block-wpcomsp-carousel-track,
+		.wp-block-woocommerce-product-collection {
+			clip-path: inset(-100vw -100vw -100vw 0);
+		}
+	}
+
+	&.has-overflow-left {
+
+		.wp-block-gallery,
+		.wp-block-query,
+		.wp-block-group.wp-block-wpcomsp-carousel-track,
+		.wp-block-woocommerce-product-collection {
+			clip-path: inset(0 0 0 -100vw);
+		}
+	}
+
 	.wp-block-gallery .wp-block-image,
 	.wp-block-post,
 	> .wp-block-group > *,
