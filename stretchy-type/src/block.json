@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpsp/stretchy-type",
+	"version": "0.1.0",
+	"title": "Stretchy Type",
+	"category": "theme",
+	"icon": "text",
+	"description": "Text that expands to fill the width of its container.",
+	"example": {},
+	"textdomain": "stretchy-type",
+	"attributes": {
+		"content": {
+			"type": "rich-text",
+			"source": "rich-text",
+			"selector": "svg > foreignObject > span"
+		},
+		"viewBox": {
+			"type": "string"
+		}
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"editorStyle": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}
