@@ -546,17 +546,19 @@ import './view.css';
 	/**
 	 * Update the button states.
 	 *
-	 * @param {Object}  instance            The carousel instance.
-	 * @param {Element} instance.slides     The slides.
-	 * @param {Element} instance.prevButton The previous button.
-	 * @param {Element} instance.nextButton The next button.
-	 * @param {string}  instance.animateEnd The animation end.
+	 * @param {Object}  instance                   The carousel instance.
+	 * @param {Element} instance.slides            The slides.
+	 * @param {Element} instance.prevButton        The previous button.
+	 * @param {Element} instance.nextButton        The next button.
+	 * @param {string}  instance.animateEnd        The animation end.
+	 * @param {Element} instance.paginationButtons The pagination buttons.
 	 */
 	function updateButtonStates( {
 		slides,
 		prevButton,
 		nextButton,
 		animateEnd,
+		paginationButtons,
 	} ) {
 		if ( [ 'back', 'infinite' ].includes( animateEnd ) ) {
 			return;
@@ -576,6 +578,16 @@ import './view.css';
 			} else {
 				nextButton.removeAttribute( 'aria-disabled' );
 			}
+		}
+
+		if ( paginationButtons ) {
+			paginationButtons.forEach( ( button, index ) => {
+				if ( slides[ index ].getAttribute( 'aria-hidden' ) ) {
+					button.removeAttribute( 'aria-disabled' );
+				} else {
+					button.setAttribute( 'aria-disabled', 'true' );
+				}
+			} );
 		}
 	}
 
