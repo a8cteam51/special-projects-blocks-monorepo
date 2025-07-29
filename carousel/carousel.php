@@ -4,12 +4,13 @@
  * Description:       Display a horizontal series of content.
  * Version:           0.1.1
  * Requires at least: 6.7
- * Requires PHP:      7.4
+ * Requires PHP:      8.0
  * Author:            The WordPress Contributors
+ * Author URI:        https://wpspecialprojects.wordpress.com/
+ * Update URI:        https://opsoasis.wpspecialprojects.com/carousel/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       carousel
- * Update URI:        false
  *
  * @package wpcomsp
  */
