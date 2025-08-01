@@ -1,0 +1,82 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+ .wp-block-a8csp-marquee {
+	border: 1px dashed #ccc;
+	padding: 20px;
+	background: transparent;
+	
+	.marquee-content {
+		width: 100%;
+		overflow-x: auto;
+	}
+
+	.marquee-items {
+		// Force horizontal layout
+		display: flex !important;
+		flex-direction: row !important;
+		flex-wrap: nowrap !important;
+		gap: var(--marquee-gap, 20px) !important;
+		padding: 10px 0;
+
+		// Explicitly disable animation in editor
+		animation: none !important;
+
+		// Override WordPress block layout styles
+		> .wp-block {
+			flex: 0 0 auto !important;
+			width: auto !important;
+			margin: 0 !important;
+		}
+
+		// Override any nested block container styles
+		[data-block] {
+			margin: 0 !important;
+			max-width: none !important;
+		}
+
+		// Style the block inserter
+		> .block-list-appender {
+			position: static;
+			margin: 0 10px;
+			display: flex;
+			align-items: center;
+		}
+	}
+
+	// Enable animation only when preview is toggled
+	&.is-previewing .marquee-items {
+		animation: marquee var(--duration) linear infinite !important;
+	}
+
+	&.is-previewing.direction-right .marquee-items {
+		animation-direction: reverse !important;
+	}
+
+	// Make sure background color fills the entire block
+	&.has-background {
+		padding: 20px;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+}
+
+@keyframes marquee {
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(-50%);
+	}
+}
+
+// Override WordPress block list styles
+.wp-block-a8csp-marquee .block-editor-block-list__layout {
+	display: flex !important;
+	flex-direction: row !important;
+	flex-wrap: nowrap !important;
+	gap: var(--marquee-gap, 20px) !important;
+}

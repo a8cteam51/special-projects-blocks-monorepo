@@ -1,0 +1,52 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/marquee",
+	"version": "0.1.0",
+	"title": "Marquee",
+	"category": "widgets",
+	"icon": "controls-repeat",
+	"description": "Provides a marquee effect for your content.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true
+		},
+		"spacing": {
+			"padding": true
+		},
+		"align": ["wide", "full"]
+	},
+	"attributes": {
+		"direction": {
+			"type": "string",
+			"enum": ["left", "right"],
+			"default": "left"
+		},
+		"speed": {
+			"type": "number",
+			"default": 50
+		},
+		"pauseOnHover": {
+			"type": "boolean",
+			"default": true
+		},
+		"gap": {
+			"type": "number",
+			"default": 20
+		},
+		"fadeEdges": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"textdomain": "marquee",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}
