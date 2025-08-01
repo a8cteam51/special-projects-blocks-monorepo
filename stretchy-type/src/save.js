@@ -19,7 +19,9 @@ import { RichText, useBlockProps } from '@wordpress/block-editor';
  */
 export default function save( { attributes } ) {
 	const { content, viewBox } = attributes;
-	const blockProps = useBlockProps.save( viewBox ? { viewBox } : {} );
+	const blockProps = useBlockProps.save( {
+		viewBox: viewBox ? viewBox : null,
+	} );
 	return (
 		<svg { ...blockProps }>
 			<foreignObject x="0" y="0" width="100%" height="100%">
