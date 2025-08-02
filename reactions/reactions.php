@@ -4,8 +4,10 @@
  * Description:       A block that allows users to react to a post.
  * Requires at least: 6.6
  * Requires PHP:      8.0
- * Version:           0.1.0
- * Author:            WordPress.com Special Projects Team
+ * Version:           0.1.1
+ * Author:            WordPress Special Projects Team
+ * Author URI:        https://wpspecialprojects.wordpress.com/
+ * Update URI:        https://opsoasis.wpspecialprojects.com/reactions/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       reactions
