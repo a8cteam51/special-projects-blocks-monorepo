@@ -13,7 +13,6 @@
  * Tested up to: 6.8.1
  * Requires PHP: 7.4
  * Network: false
- * Update URI: false
  *
  * @package Wpcomsp
  */

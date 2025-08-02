@@ -59,5 +59,8 @@ Yes, the Scroll to Top block is fully responsive and works on all devices.
 
 == Upgrade Notice ==
 
+= 0.1.1 =
+Add Update URI
+
 = 0.1.0 =
 Initial release of the Scroll to Top block.
