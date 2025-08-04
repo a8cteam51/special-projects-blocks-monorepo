@@ -273,8 +273,8 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 							label: __( 'Stop', 'carousel' ),
 						},
 						{
-							value: 'back',
-							label: __( 'Back to beginning/end', 'carousel' ),
+							value: 'jump',
+							label: __( 'Jump to other end', 'carousel' ),
 						},
 						{
 							value: 'infinite',

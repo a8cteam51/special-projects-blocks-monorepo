@@ -24,6 +24,8 @@ import './view.css';
 				'.wp-block-gallery, .wp-block-post-template, .wp-block-wpcomsp-carousel-track, .wc-block-product-template'
 			),
 			slides: [],
+			slideList: null,
+			currentNode: null,
 			prevButton: null,
 			nextButton: null,
 			paginationButtons: null,
@@ -44,6 +46,12 @@ import './view.css';
 		if ( instance.slides.length === 0 ) {
 			return;
 		}
+
+		// Create circular doubly linked list representing slides.
+		instance.slideList = new CircularDoublyLinkedList( instance.slides );
+
+		// Start with the first slide as current start node.
+		instance.currentNode = instance.slideList.head;
 
 		instance.prevButton = carousel.querySelector(
 			'.wp-block-wpcomsp-carousel-nav--button_prev'
@@ -346,86 +354,7 @@ import './view.css';
 	 * @param {Object} instance The carousel instance.
 	 */
 	function navigatePrevious( instance ) {
-		const { carousel, slides, prevButton, track, animateEnd } = instance;
-
-		if (
-			prevButton &&
-			prevButton.getAttribute( 'aria-disabled' ) === 'true'
-		) {
-			return;
-		}
-
-		// Flag the potential need for a focus update.
-		// If the currently focused element is within the track,
-		// we can assume it's within a slide.
-		const updateFocus = track.contains( track.ownerDocument.activeElement );
-
-		const offsetter = slides.find(
-			( slide ) => ! slide.getAttribute( 'aria-hidden' )
-		);
-
-		let previous = offsetter?.previousElementSibling;
-
-		// Move the last slide to the beginning of the carousel if there is no previous slide.
-		// This is very rough and will need to be revisited.
-		if ( 'infinite' === animateEnd && ! previous ) {
-			const lastSlide = slides[ slides.length - 1 ];
-			const offset = lastSlide.offsetWidth + getItemGap( track );
-
-			instance.slides.pop();
-			instance.slides.unshift( lastSlide );
-
-			track.prepend( lastSlide );
-
-			updateCarousel( instance, -offset, true );
-
-			previous = lastSlide;
-		}
-
-		if ( 'back' === animateEnd && ! previous ) {
-			previous = slides[ slides.length - 1 ];
-		}
-
-		if ( carousel.classList.contains( 'animate-visible' ) ) {
-			const trackWidth = track.offsetWidth;
-			const gap = parseFloat(
-				getComputedStyle( track ).getPropertyValue( 'gap' )
-			);
-
-			let currentSlide = previous;
-			let totalWidth = 0;
-			let targetSlide = null;
-
-			while ( currentSlide ) {
-				const slideWidth = currentSlide.offsetWidth;
-
-				if ( totalWidth === 0 ) {
-					totalWidth = slideWidth;
-				} else {
-					totalWidth += slideWidth + gap;
-				}
-
-				if ( totalWidth > trackWidth ) {
-					break;
-				}
-
-				targetSlide = currentSlide;
-				currentSlide = currentSlide.previousElementSibling;
-			}
-
-			if ( targetSlide ) {
-				previous = targetSlide;
-			}
-		}
-
-		if ( previous ) {
-			updateCarousel(
-				instance,
-				previous.offsetLeft * -1,
-				false,
-				updateFocus
-			);
-		}
+		navigate( instance, 'previous' );
 	}
 
 	/**
@@ -434,63 +363,211 @@ import './view.css';
 	 * @param {Object} instance The carousel instance.
 	 */
 	function navigateNext( instance ) {
-		const { carousel, track, slides, nextButton, animateEnd } = instance;
+		navigate( instance, 'next' );
+	}
 
-		if (
-			nextButton &&
-			nextButton.getAttribute( 'aria-disabled' ) === 'true'
-		) {
+	/**
+	 * Navigate the carousel.
+	 *
+	 * @param {Object} instance  The carousel instance.
+	 * @param {string} direction The direction to navigate.
+	 */
+	function navigate( instance, direction ) {
+		const { prevButton, nextButton, animateEnd, slideList, currentNode } =
+			instance;
+
+		const button = direction === 'previous' ? prevButton : nextButton;
+		if ( button?.getAttribute( 'aria-disabled' ) === 'true' ) {
 			return;
 		}
 
-		// Flag the potential need for a focus update.
-		// If the currently focused element is within the track,
-		// we can assume it's within a slide.
+		if ( animateEnd === 'infinite' && slideList && currentNode ) {
+			handleCircularNavigate( instance, direction );
+		} else {
+			handleStandardNavigate( instance, direction );
+		}
+	}
+
+	/**
+	 * Handle infinite mode navigation.
+	 *
+	 * @param {Object} instance  The carousel instance.
+	 * @param {string} direction The direction to navigate.
+	 */
+	function handleCircularNavigate( instance, direction ) {
+		const { slideList, currentNode, carousel, track } = instance;
+		const isBatch = carousel.classList.contains( 'animate-visible' );
+		const step = isBatch ? getVisibleSlidesCount( instance ) : 1;
+		const isNext = direction === 'next';
+
+		// Calculate new current start node based on direction and step count.
+		const newCurrentNode = isNext
+			? slideList.advance( currentNode, step )
+			: slideList.retreat( currentNode, step );
+
+		instance.currentNode = newCurrentNode;
+
+		let offset = -newCurrentNode.slide.offsetLeft;
+
+		if ( ! isNext ) {
+			let node = newCurrentNode;
+			let total = 0;
+
+			while ( node !== currentNode ) {
+				total += node.slide.offsetWidth + getItemGap( track );
+				node = node.next;
+			}
+			offset = total;
+		}
+
+		const updateFocus = track.contains( track.ownerDocument.activeElement );
+		updateCarousel( instance, offset, false );
+
+		const onTransitionEnd = () => {
+			let node = slideList.head;
+			while ( node !== newCurrentNode ) {
+				track.appendChild( node.slide );
+				node = node.next;
+			}
+			slideList.head = newCurrentNode;
+
+			updateCarousel( instance, 0, true, updateFocus );
+
+			carousel.classList.remove( 'is-animating' );
+		};
+
+		carousel.addEventListener( 'transitionend', onTransitionEnd, {
+			once: true,
+		} );
+		carousel.classList.add( 'is-animating' );
+	}
+
+	/**
+	 * Handle standard navigation.
+	 *
+	 * @param {Object} instance  The carousel instance.
+	 * @param {string} direction The direction to navigate.
+	 */
+	function handleStandardNavigate( instance, direction ) {
+		const { carousel, track, slides } = instance;
+		const isPrevious = direction === 'previous';
+		const isBatch = carousel.classList.contains( 'animate-visible' );
+
+		const searchOrder =
+			! isPrevious && isBatch ? [ ...slides ].reverse() : slides;
+
+		// Find the visible slide from which to offset.
+		const visibleSlide = searchOrder.find(
+			( slide ) => ! slide.getAttribute( 'aria-hidden' )
+		);
+
+		const targetSlide = isPrevious
+			? getPreviousSlide( instance, visibleSlide )
+			: getNextSlide( instance, visibleSlide );
+
+		if ( ! targetSlide ) {
+			return;
+		}
+
 		const updateFocus = track.contains( track.ownerDocument.activeElement );
 
-		const offsetter = carousel.classList.contains( 'animate-visible' )
-			? slides
-					.slice()
-					.reverse()
-					.find( ( slide ) => ! slide.getAttribute( 'aria-hidden' ) )
-			: slides.find( ( slide ) => ! slide.getAttribute( 'aria-hidden' ) );
+		updateCarousel(
+			instance,
+			targetSlide.offsetLeft * -1,
+			false,
+			updateFocus
+		);
+	}
 
-		const next = offsetter?.nextElementSibling;
+	/**
+	 * Get the previous slide target.
+	 *
+	 * @param {Object}  instance The carousel instance.
+	 * @param {Element} offset   The offset of the current slide.
+	 */
+	function getPreviousSlide( instance, offset ) {
+		const { carousel, slides, track, animateEnd } = instance;
+		let prev = offset?.previousElementSibling;
 
-		if ( next ) {
-			updateCarousel(
-				instance,
-				next.offsetLeft * -1,
-				false,
-				updateFocus
-			);
+		if ( animateEnd === 'jump' && ! prev ) {
+			prev = slides[ slides.length - 1 ];
 		}
 
-		// Move the first slide to the end of the carousel after animating.
-		// This is also very rough and will need to be revisited.
-		if ( 'infinite' === animateEnd ) {
-			const firstSlide = slides[ 0 ];
+		if ( carousel.classList.contains( 'animate-visible' ) && prev ) {
+			const trackWidth = track.offsetWidth;
+			const gap = getItemGap( track );
+			let currentSlide = prev;
+			let totalWidth = 0;
+			let target = null;
 
-			const onInfiniteNext = () => {
-				firstSlide.removeEventListener(
-					'transitionend',
-					onInfiniteNext
-				);
+			while ( currentSlide ) {
+				const slideWidth = currentSlide.offsetWidth;
+				totalWidth =
+					totalWidth === 0
+						? slideWidth
+						: totalWidth + slideWidth + gap;
+				if ( totalWidth > trackWidth ) {
+					break;
+				}
+				target = currentSlide;
+				currentSlide = currentSlide.previousElementSibling;
+			}
 
-				instance.slides.shift();
-				instance.slides.push( firstSlide );
-
-				track.append( firstSlide );
-
-				updateCarousel( instance, 0, true );
-			};
-
-			firstSlide.addEventListener( 'transitionend', onInfiniteNext );
+			prev = target || prev;
 		}
 
-		if ( 'back' === animateEnd && ! next ) {
-			updateCarousel( instance, 0, false, updateFocus );
+		return prev;
+	}
+
+	/**
+	 * Get the next slide target.
+	 *
+	 * @param {Object}  instance The carousel instance.
+	 * @param {Element} offset   The offset of the current slide.
+	 */
+	function getNextSlide( instance, offset ) {
+		const { slides, animateEnd } = instance;
+		let next = offset?.nextElementSibling;
+
+		if ( animateEnd === 'jump' && ! next ) {
+			next = slides[ 0 ];
 		}
+
+		return next;
+	}
+
+	/**
+	 * Get the number of visible slides.
+	 *
+	 * @param {Object} instance The carousel instance.
+	 *
+	 * @return {number} The number of visible slides.
+	 */
+	function getVisibleSlidesCount( instance ) {
+		const { track, slideList } = instance;
+		const trackWidth = track.offsetWidth;
+		const gap =
+			parseFloat( getComputedStyle( track ).getPropertyValue( 'gap' ) ) ||
+			0;
+
+		let count = 0;
+		let totalWidth = 0;
+		let node = slideList.head;
+
+		do {
+			const slideWidth = node.slide.offsetWidth;
+			totalWidth =
+				count === 0 ? slideWidth : totalWidth + slideWidth + gap;
+
+			if ( totalWidth > trackWidth ) {
+				break;
+			}
+
+			count++;
+			node = node.next;
+		} while ( node !== slideList.head );
+
+		return count;
 	}
 
 	/**
@@ -520,8 +597,6 @@ import './view.css';
 		const firstSlide = slides[ 0 ];
 
 		const onTransitionEnd = () => {
-			firstSlide.removeEventListener( 'transitionend', onTransitionEnd );
-
 			carousel.classList.remove( 'is-animating' );
 
 			// If the flag is set and the track no longer contains the focused element,
@@ -540,31 +615,32 @@ import './view.css';
 			}
 		};
 
-		firstSlide.addEventListener( 'transitionend', onTransitionEnd );
+		firstSlide.addEventListener( 'transitionend', onTransitionEnd, {
+			once: true,
+		} );
 	}
 
 	/**
 	 * Update the button states.
 	 *
-	 * @param {Object}  instance                   The carousel instance.
-	 * @param {Element} instance.slides            The slides.
-	 * @param {Element} instance.prevButton        The previous button.
-	 * @param {Element} instance.nextButton        The next button.
-	 * @param {string}  instance.animateEnd        The animation end.
-	 * @param {Element} instance.paginationButtons The pagination buttons.
+	 * @param {Object} instance The carousel instance.
 	 */
-	function updateButtonStates( {
-		slides,
-		prevButton,
-		nextButton,
-		animateEnd,
-		paginationButtons,
-	} ) {
-		if ( [ 'back', 'infinite' ].includes( animateEnd ) ) {
+	function updateButtonStates( instance ) {
+		const {
+			animateEnd,
+			prevButton,
+			nextButton,
+			paginationButtons,
+			slides,
+		} = instance;
+
+		const noInactiveNav = [ 'jump', 'infinite' ].includes( animateEnd );
+
+		if ( noInactiveNav && ! paginationButtons ) {
 			return;
 		}
 
-		if ( prevButton ) {
+		if ( prevButton && ! noInactiveNav ) {
 			if ( ! slides[ 0 ].getAttribute( 'aria-hidden' ) ) {
 				prevButton.setAttribute( 'aria-disabled', 'true' );
 			} else {
@@ -572,7 +648,7 @@ import './view.css';
 			}
 		}
 
-		if ( nextButton ) {
+		if ( nextButton && ! noInactiveNav ) {
 			if ( ! slides[ slides.length - 1 ].getAttribute( 'aria-hidden' ) ) {
 				nextButton.setAttribute( 'aria-disabled', 'true' );
 			} else {
@@ -621,5 +697,60 @@ import './view.css';
 				getComputedStyle( track ).getPropertyValue( 'column-gap' )
 			) || 0
 		);
+	}
+}
+
+class SlideNode {
+	constructor( slide ) {
+		this.slide = slide;
+		this.next = null;
+		this.prev = null;
+	}
+}
+
+class CircularDoublyLinkedList {
+	constructor( slides ) {
+		this.head = null;
+		this.length = 0;
+		this._buildList( slides );
+	}
+
+	_buildList( slides ) {
+		if ( ! slides.length ) {
+			return;
+		}
+
+		let prevNode = null;
+		slides.forEach( ( slide, i ) => {
+			const node = new SlideNode( slide );
+			if ( i === 0 ) {
+				this.head = node;
+			} else {
+				prevNode.next = node;
+				node.prev = prevNode;
+			}
+			prevNode = node;
+		} );
+
+		prevNode.next = this.head;
+		this.head.prev = prevNode;
+
+		this.length = slides.length;
+	}
+
+	advance( node, steps = 1 ) {
+		let current = node;
+		for ( let i = 0; i < steps; i++ ) {
+			current = current.next;
+		}
+		return current;
+	}
+
+	retreat( node, steps = 1 ) {
+		let current = node;
+		for ( let i = 0; i < steps; i++ ) {
+			current = current.prev;
+		}
+		return current;
 	}
 }
