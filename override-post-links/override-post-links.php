@@ -2,10 +2,12 @@
 /**
  * Plugin Name:       Override Post Links
  * Description:       Add a panel in the WP Admin allowing the user to enter a link which overrides the post links to the new link.
- * Version:           0.1.0
+ * Version:           0.1.1
  * Requires at least: 6.7
  * Requires PHP:      7.4
- * Author:            The WordPress Contributors
+ * Author:            WordPress Special Projects Team
+ * Author URI:        https://wpspecialprojects.wordpress.com/
+ * Update URI:        https://opsoasis.wpspecialprojects.com/override-post-links/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       override-post-links
