@@ -4,7 +4,7 @@
  * Description:       A block that expands to fill the width of its container.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           0.1.1
+ * Version:           0.1.2
  * Author:            Studio 51
  * Author URI:        https://wpspecialprojects.wordpress.com/
  * Update URI:        https://opsoasis.wpspecialprojects.com/stretchy-type/

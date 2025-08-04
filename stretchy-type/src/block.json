@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "wpsp/stretchy-type",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"title": "Stretchy Type",
 	"category": "theme",
 	"icon": "text",
