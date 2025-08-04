@@ -1,6 +1,6 @@
 {
 	"name": "stretchy-type",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "A block that expands to fill the width of its container.",
 	"author": "Studio 51",
 	"license": "GPL-2.0-or-later",
