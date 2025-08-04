@@ -23,6 +23,7 @@ import './editor.scss';
 
 import { PanelBody, RangeControl, ToggleControl, SelectControl, Button } from '@wordpress/components';
 import { useState } from '@wordpress/element';
+import { useRef, useEffect } from '@wordpress/element';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -35,12 +36,23 @@ import { useState } from '@wordpress/element';
 export default function Edit({ attributes, setAttributes }) {
 	const { direction, speed, pauseOnHover, gap, fadeEdges } = attributes;
 	const [isPreviewingAnimation, setIsPreviewingAnimation] = useState(false);
+	const [duration, setDuration] = useState(12);
+	const blockRef = useRef();
 
 	// Calculate duration for preview
-	const itemsContainer = document.querySelector('.wp-block-a8csp-marquee .marquee-items');
-	const duration = itemsContainer ? (itemsContainer.scrollWidth / speed) * 0.5 : 12;
+	//const itemsContainer = document.querySelector('.wp-block-a8csp-marquee .marquee-items');
+	//const duration = itemsContainer ? (itemsContainer.scrollWidth / speed) * 0.5 : 12;
+	useEffect(() => {
+			if (blockRef.current) {
+				const itemsContainer = blockRef.current.querySelector('.marquee-items');
+				if (itemsContainer && itemsContainer.scrollWidth > 0) {
+					setDuration((itemsContainer.scrollWidth / speed) * 0.5);
+				}
+			}
+		}, [speed, isPreviewingAnimation]);
 
 	const blockProps = useBlockProps({
+		ref: blockRef,
 		className: `wp-block-a8csp-marquee direction-${direction}${isPreviewingAnimation ? ' is-previewing' : ''}`,
 		style: {
 			'--marquee-gap': `${gap}px`,

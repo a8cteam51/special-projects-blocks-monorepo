@@ -37,21 +37,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		//speed will be set by a class like speed-50, means 50 is the value of the speed
 		let speed = 50;
-		marquee.classList.forEach(marqueeClass => {
-			if (marqueeClass.startsWith('speed-')) {
-				const speedClass = marqueeClass.replace('speed-', '');
-				speed = parseInt(speedClass, 10) || 50;
-				return;
-			}
-		});
+		const speedClass = Array.from(marquee.classList).find(cls => cls.startsWith('speed-'));
+		if (speedClass) {
+			speed = parseInt(speedClass.replace('speed-', ''), 10) || 50;
+		}
 		//check for class name pause-on-hover
 		const pauseOnHover = marquee.classList.contains('has-pause-on-hover') ?? false;
 
 		// Wait for all images to load before calculating widths
-		Promise.all(Array.from(itemsContainer.querySelectorAll('img')).map(img => {
+		const imageLoadPromises = Array.from(itemsContainer.querySelectorAll('img')).map(img => {
 			if (img.complete) return Promise.resolve();
-			return new Promise(resolve => img.addEventListener('load', resolve));
-		})).then(() => {
+			return new Promise((resolve, reject) => {
+				const onLoad = () => {
+					img.removeEventListener('load', onLoad);
+					img.removeEventListener('error', onError);
+					resolve();
+				};
+				const onError = () => {
+					img.removeEventListener('load', onLoad);
+					img.removeEventListener('error', onError);
+					resolve(); // Resolve anyway to not block the animation
+				};
+				img.addEventListener('load', onLoad);
+				img.addEventListener('error', onError);
+			});
+		});
+		Promise.all(imageLoadPromises).then(() => {
 			// Get all items
 			const items = Array.from(itemsContainer.children);
 

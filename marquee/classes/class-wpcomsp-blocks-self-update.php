@@ -62,6 +62,11 @@ class WPCOMSP_Blocks_Self_Update {
 			)
 		);
 
+		// Handle request errors.
+		if ( is_wp_error( $response ) ) {
+			return $update;
+		}
+
 		// Bail if this plugin wasn't found on opsoasis.mystagingwebsite.com.
 		if ( 404 === wp_remote_retrieve_response_code( $response ) || 202 === wp_remote_retrieve_response_code( $response ) ) {
 			return $update;
@@ -69,6 +74,16 @@ class WPCOMSP_Blocks_Self_Update {
 
 		$updated_version = wp_remote_retrieve_body( $response );
 		$updated_array   = json_decode( $updated_version, true );
+
+		// Validate JSON decode and required fields.
+		if ( json_last_error() !== JSON_ERROR_NONE || ! is_array( $updated_array ) ) {
+			return $update;
+		}
+
+		// Bail if this plugin wasn't found on opsoasis.mystagingwebsite.com.
+		if ( ! isset( $updated_array['slug'], $updated_array['version'], $updated_array['package_url'] ) ) {
+			return $update;
+		}
 
 		return array(
 			'slug'    => $updated_array['slug'],
