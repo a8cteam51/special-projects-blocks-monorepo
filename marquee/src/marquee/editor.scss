@@ -4,11 +4,11 @@
  * Replace them with your own styles or remove the file completely.
  */
 
- .wp-block-a8csp-marquee {
+.wp-block-a8csp-marquee {
 	border: 1px dashed #ccc;
 	padding: 20px;
 	background: transparent;
-	
+
 	.marquee-content {
 		width: 100%;
 		overflow-x: auto;
@@ -65,9 +65,11 @@
 }
 
 @keyframes marquee {
+
 	0% {
 		transform: translateX(0);
 	}
+
 	100% {
 		transform: translateX(-50%);
 	}

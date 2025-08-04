@@ -5,7 +5,7 @@
  * Replace them with your own styles or remove the file completely.
  */
 
- .wp-block-a8csp-marquee {
+.wp-block-a8csp-marquee {
 	overflow: hidden;
 	position: relative;
 	width: 100%;
@@ -48,10 +48,10 @@
 
 	&.has-fade {
 		position: relative;
-		
+
 		&::before,
 		&::after {
-			content: '';
+			content: "";
 			position: absolute;
 			top: 0;
 			bottom: 0;
@@ -59,17 +59,17 @@
 			z-index: 1;
 			pointer-events: none;
 		}
-		
+
 		&::before {
 			left: 0;
-			background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
+			background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
 		}
-		
+
 		&::after {
 			right: 0;
-			background: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
+			background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
 		}
-		
+
 		.marquee-content {
 			position: relative;
 			z-index: 0;
@@ -78,9 +78,11 @@
 }
 
 @keyframes marquee {
+
 	0% {
 		transform: translateX(0);
 	}
+
 	100% {
 		transform: translateX(calc(-1 * var(--marquee-translate, 0px)));
 	}
