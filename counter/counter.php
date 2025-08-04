@@ -2,10 +2,12 @@
 /**
  * Plugin Name:       Counter
  * Description:       Allows adding an animated counter to your content. Just pick a start and end
- * Version:           0.1.0
+ * Version:           0.1.1
  * Requires at least: 6.7
  * Requires PHP:      7.4
- * Author:            The WordPress Contributors
+ * Author:            WordPress Special Projects Team
+ * Author URI:        https://wpspecialprojects.wordpress.com/
+ * Update URI:        https://opsoasis.wpspecialprojects.com/counter/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       counter

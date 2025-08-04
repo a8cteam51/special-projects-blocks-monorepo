@@ -1,8 +1,8 @@
 {
 	"name": "scroll-to-top",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "A block to add a scroll to top button to the page.",
-	"author": "The WordPress Contributors",
+	"author": "WordPress Special Projects Team",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {

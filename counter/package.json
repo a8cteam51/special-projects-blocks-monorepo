@@ -1,8 +1,8 @@
 {
 	"name": "counter",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Allows adding an animated counter to your content. Just pick a start and end",
-	"author": "The WordPress Contributors",
+	"author": "WordPress Special Projects Team",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {

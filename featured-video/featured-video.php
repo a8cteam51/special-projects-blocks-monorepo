@@ -2,8 +2,10 @@
 /**
  * Plugin Name: Featured Video
  * Description: Add the ability to use Featured Video inplace of Featured Image.
- * Version: 0.1.0
- * Author: The WordPress Contributors
+ * Version: 0.1.1
+ * Author: WordPress Special Projects Team
+ * Author URI: https://wpspecialprojects.wordpress.com/
+ * Update URI: https://opsoasis.wpspecialprojects.com/featured-video/
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: featured-video
@@ -11,7 +13,6 @@
  * Tested up to: 6.8.1
  * Requires PHP: 7.4
  * Network: false
- * Update URI: false
  *
  * @package Wpcomsp
  */

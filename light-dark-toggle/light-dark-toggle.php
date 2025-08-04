@@ -2,10 +2,12 @@
 /**
  * Plugin Name:       Light Dark Toggle
  * Description:       Allows a site to have a light and dark mode toggle.
- * Version:           0.2.0
+ * Version:           0.2.1
  * Requires at least: 6.7
  * Requires PHP:      7.4
- * Author:            The WordPress Contributors
+ * Author:            WordPress Special Projects Team
+ * Author URI:        https://wpspecialprojects.wordpress.com/
+ * Update URI:        https://opsoasis.wpspecialprojects.com/light-dark-toggle/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       light-dark-toggle

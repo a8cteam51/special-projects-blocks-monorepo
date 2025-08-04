@@ -4,8 +4,10 @@
  * Description:       A button to scroll to the top of the page.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           0.1.0
- * Author:            WordPress.com Special Projects Team
+ * Version:           0.1.1
+ * Author:            WordPress Special Projects Team
+ * Author URI:        https://wpspecialprojects.wordpress.com/
+ * Update URI:        https://opsoasis.wpspecialprojects.com/scroll-to-top/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       scroll-to-top
@@ -35,7 +37,7 @@ if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
  */
 add_filter(
 	'wpcomsp_installed_blocks',
-	function( $blocks ) {
+	function ( $blocks ) {
 		$blocks[] = 'scroll-to-top';
 
 		return $blocks;
