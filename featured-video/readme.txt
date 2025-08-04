@@ -1,5 +1,5 @@
 === Featured Video ===
-Contributors:      The WordPress Contributors
+Contributors:      wpspecialprojects
 Tags:              block, video, featured-image, media, post-thumbnail
 Tested up to:      6.8.2
 Stable tag:        0.1.2
@@ -63,7 +63,7 @@ The plugin includes fallback text that will display if the browser doesn't suppo
 
 = This plugin doesn't do something it says it should in this readme.txt file?
 
-Let's blame that on AI for now, wink wink, and report it as an issue and we'll take a look.
+If something described here is not working as expected, please open an issue in the repository and we will investigate.
 
 
 == Developers ==
