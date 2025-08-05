@@ -11,21 +11,26 @@ import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
  * be combined into the final markup, which is then serialized by the block
  * editor into `post_content`.
  *
+ * @param {Object} props            - The block props.
+ * @param {Object} props.attributes - The block attributes.
+ *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#save
  *
  * @return {Element} Element to render.
  */
-export default function save({ attributes }) {
+export default function save( { attributes } ) {
 	const { direction, speed, pauseOnHover, gap, fadeEdges } = attributes;
-	const blockProps = useBlockProps.save({
-		className: `wp-block-a8csp-marquee direction-${direction}${fadeEdges ? ' has-fade' : ''} speed-${speed} ${pauseOnHover ? ' has-pause-on-hover' : ''}`,
+	const blockProps = useBlockProps.save( {
+		className: `wp-block-a8csp-marquee direction-${ direction }${
+			fadeEdges ? ' has-fade' : ''
+		} speed-${ speed } ${ pauseOnHover ? ' has-pause-on-hover' : '' }`,
 		style: {
-			'--marquee-gap': `${gap}px`
-		}
-	});
+			'--marquee-gap': `${ gap }px`,
+		},
+	} );
 
 	return (
-		<div {...blockProps}>
+		<div { ...blockProps }>
 			<div className="marquee-content">
 				<div className="marquee-items">
 					<InnerBlocks.Content />
