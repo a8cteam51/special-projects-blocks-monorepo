@@ -10,8 +10,9 @@
 	"example": {},
 	"allowedBlocks": [ "wpcomsp/tab" ],
 	"attributes": {
-		"tabsCount": {
-			"type": "number"
+		"tabs": {
+			"type": "array",
+			"default": []
 		},
 		"activeTab": {
 			"type": "number",

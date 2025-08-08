@@ -22,15 +22,13 @@ function TabButton( { isSelected, tabNumber, title } ) {
 	);
 }
 
-export default function save( { attributes: { activeTab, tabsCount }, innerBlocks } ) {
-	const blockProps = useBlockProps.save();
-
-	const tabs = [];
-	for ( let index = 0; index < tabsCount; index++ ) {
+export default function save( { attributes: { activeTab, tabs } } ) {
+	const tabButtons = [];
+	for ( let index = 0; index < tabs?.length; index++ ) {
 		const tabNumber = index + 1;
-		const tabBlock = innerBlocks[ index ];
-		const title = tabBlock?.attributes?.title || '';
-		tabs.push(
+		const tabBlock = tabs[ index ];
+		const title = tabBlock?.title || '';
+		tabButtons.push(
 			<TabButton
 				key={ index }
 				tabNumber={ tabNumber }
@@ -40,9 +38,11 @@ export default function save( { attributes: { activeTab, tabsCount }, innerBlock
 		);
 	}
 
+	const blockProps = useBlockProps.save();
+
 	return (
 		<div { ...blockProps }>
-			<div role="tablist">{ tabs }</div>
+			<div role="tablist">{ tabButtons }</div>
 			<InnerBlocks.Content />
 		</div>
 	);

@@ -143,7 +143,7 @@ function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 }
 
 function TabsEdit( {
-	attributes: { activeTab, tabsCount, templateLock },
+	attributes: { activeTab, tabs, templateLock },
 	clientId,
 	setAttributes,
 } ) {
@@ -167,15 +167,24 @@ function TabsEdit( {
 			__unstableMarkNextChangeAsNotPersistent();
 			setAttributes( { activeTab: 1 } );
 		}
-		if ( tabBlocks.length !== tabsCount ) {
+		if (
+			tabBlocks.length !== tabs.length ||
+			tabBlocks.some(
+				( block, index ) =>
+					JSON.stringify( block.attributes ) !==
+					JSON.stringify( tabs[ index ] )
+			)
+		) {
 			__unstableMarkNextChangeAsNotPersistent();
-			setAttributes( { tabsCount: tabBlocks.length } );
+			setAttributes( {
+				tabs: tabBlocks.map( ( block ) => block.attributes ),
+			} );
 		}
 	}, [
 		activeTab,
 		setAttributes,
 		tabBlocks,
-		tabsCount,
+		tabs,
 		__unstableMarkNextChangeAsNotPersistent,
 	] );
 
