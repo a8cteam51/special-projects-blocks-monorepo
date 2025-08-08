@@ -39,7 +39,8 @@
 		border-bottom: 1px solid hsl(219deg 1% 72%);
 	}
 
-	[role="tab"] span {
+	[role="tab"] span,
+	[role="tab"] .tab-button-text {
 		display: inline-block;
 		margin: 2px;
 		padding: 4px 6px;
@@ -47,7 +48,10 @@
 
 	[role="tab"]:hover span,
 	[role="tab"]:focus span,
-	[role="tab"]:active span {
+	[role="tab"]:active span,
+	[role="tab"]:hover .tab-button-text,
+	[role="tab"]:focus .tab-button-text,
+	[role="tab"]:active .tab-button-text {
 		padding: 2px 4px;
 		border: 2px solid rgb(36 116 214);
 		border-radius: 3px;

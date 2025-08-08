@@ -10,6 +10,10 @@
 	"example": {},
 	"parent": [ "wpcomsp/tabs" ],
 	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
 		"tabNumber": {
 			"type": "number",
 			"default": 1

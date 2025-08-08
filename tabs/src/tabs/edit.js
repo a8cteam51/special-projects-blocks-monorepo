@@ -5,6 +5,7 @@ import {
 	BlockIcon,
 	InnerBlocks,
 	InspectorControls,
+	RichText,
 	store as blockEditorStore,
 	useBlockDisplayInformation,
 	useBlockProps,
@@ -112,6 +113,12 @@ function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 		[ clientId ]
 	);
 
+	const { updateBlockAttributes } = useDispatch( blockEditorStore );
+
+	const handleTitleChange = ( newTitle ) => {
+		updateBlockAttributes( clientId, { title: newTitle } );
+	};
+
 	return (
 		<button
 			id={ `tab-${ tabNumber }` }
@@ -122,7 +129,14 @@ function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 			tabIndex={ isTabBlockSelected || isActiveTab ? undefined : '-1' }
 			onClick={ setActiveTab }
 		>
-			<span>{ title || `Tab ${ tabNumber }` }</span>
+			<RichText
+				tagName="span"
+				value={ title }
+				onChange={ handleTitleChange }
+				placeholder="Add text"
+				allowedFormats={ [ 'core/bold', 'core/italic', 'core/link' ] }
+				className="tab-button-text"
+			/>
 		</button>
 	);
 }

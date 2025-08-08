@@ -5,4 +5,13 @@
 			bottom: auto;
 		}
 	}
+
+	.tab-button-text {
+		display: inline-block;
+		min-width: 60px;
+
+		&:focus {
+			outline: none;
+		}
+	}
 }
