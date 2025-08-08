@@ -72,6 +72,7 @@ function TabsInspectorControls( { clientId, setAttributes } ) {
 			<PanelBody title={ __( 'Tabs', 'tabs' ) }>
 				{ tabs.map( ( tab, index ) => {
 					const tabNumber = index + 1;
+					const title = tab.attributes.title || `Tab ${ tabNumber }`;
 					return (
 						<PanelRow key={ tab.clientId }>
 							<Button
@@ -80,7 +81,7 @@ function TabsInspectorControls( { clientId, setAttributes } ) {
 									activeTab: tabNumber,
 								} ) }
 							>
-								{ `Tab ${ tabNumber }` }
+								{ title }
 							</Button>
 						</PanelRow>
 					);
