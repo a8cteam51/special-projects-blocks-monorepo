@@ -133,9 +133,15 @@ function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 				tagName="span"
 				value={ title }
 				onChange={ handleTitleChange }
-				placeholder="Add text"
-				allowedFormats={ [ 'core/bold', 'core/italic', 'core/link' ] }
+				placeholder={ __( 'Add text…', 'tabs' ) }
+				allowedFormats={ [
+					'core/bold',
+					'core/italic',
+					'core/link',
+					'core/image',
+				] }
 				className="tab-button-text"
+				disableLineBreaks
 			/>
 		</button>
 	);

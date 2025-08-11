@@ -5,7 +5,6 @@
 	"version": "0.1.0",
 	"title": "Tabs",
 	"category": "widgets",
-	"icon": "welcome-widgets-menus",
 	"description": "Organize content using tabs.",
 	"example": {},
 	"allowedBlocks": [ "wpcomsp/tab" ],
