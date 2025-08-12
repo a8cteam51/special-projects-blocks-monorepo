@@ -27,7 +27,7 @@ export default function save( { attributes: { activeTab, tabs } } ) {
 	for ( let index = 0; index < tabs?.length; index++ ) {
 		const tabNumber = index + 1;
 		const tabBlock = tabs[ index ];
-		const title = tabBlock?.title || '';
+		const title = tabBlock?.title || `Tab ${ tabNumber }`;
 		tabButtons.push(
 			<TabButton
 				key={ index }
