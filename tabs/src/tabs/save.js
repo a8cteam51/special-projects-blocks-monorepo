@@ -9,6 +9,7 @@ function TabButton( { isSelected, tabNumber, title } ) {
 			id={ `tab-${ tabNumber }` }
 			type="button"
 			role="tab"
+			className='tab'
 			aria-selected={ isSelected }
 			aria-controls={ `tabpanel-${ tabNumber }` }
 			tabIndex={ isSelected ? undefined : '-1' }
