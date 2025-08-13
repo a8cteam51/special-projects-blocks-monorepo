@@ -9,6 +9,7 @@ import {
 } from '@wordpress/block-editor';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -58,6 +59,12 @@ export default function Edit( {
 	const innerBlocksProps = useInnerBlocksProps( blockProps, {
 		templateLock,
 		allowedBlocks,
+		template: [
+			[
+				'core/paragraph',
+				{ placeholder: __( 'Add your content here…', 'tab' ) },
+			],
+		],
 		renderAppender: hasChildBlocks
 			? undefined
 			: InnerBlocks.ButtonBlockAppender,

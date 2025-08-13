@@ -1,65 +1,82 @@
+/**
+ * WordPress dependencies
+ */
+@import "@wordpress/base-styles/breakpoints";
+@import "@wordpress/base-styles/mixins";
+
+
 .wp-block-wpcomsp-tabs {
 	[role="tablist"] {
 		min-width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
 	}
 
-	[role="tab"],
-	[role="tab"]:focus,
-	[role="tab"]:hover {
+	[role="tab"] {
 		display: inline-block;
 		position: relative;
 		z-index: 2;
-		top: 2px;
 		margin: 0;
-		margin-top: 4px;
 		padding: 3px 3px 4px;
-		border: 1px solid hsl(219deg 1% 72%);
-		border-bottom: 2px solid hsl(219deg 1% 72%);
-		border-radius: 5px 5px 0 0;
-		background: hsl(220deg 20% 94%);
 		outline: none;
 		font-weight: bold;
-		max-width: 22%;
 		overflow: hidden;
-		text-align: left;
+		text-align: center;
 		cursor: pointer;
+		background: none;
+		border: none;
+		box-sizing: border-box;
+		flex: 1;
+		min-width: 0;
+		width: 100%;
 	}
 
 	[role="tab"][aria-selected="true"] {
-		padding: 2px 2px 4px;
-		margin-top: 0;
-		border-width: 2px;
-		border-top-width: 6px;
-		border-top-color: rgb(36 116 214);
-		border-bottom-color: hsl(220deg 43% 99%);
-		background: hsl(220deg 43% 99%);
+		border-bottom: 2px solid black;
 	}
 
-	[role="tab"][aria-selected="false"] {
-		border-bottom: 1px solid hsl(219deg 1% 72%);
-	}
-
-	[role="tab"] span {
-		display: inline-block;
+	[role="tab"] .tab-button-text {
+		display: inline-flex;
+		align-items: center;
 		margin: 2px;
 		padding: 4px 6px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		box-sizing: border-box;
+		min-height: 44px;
 	}
 
-	[role="tab"]:hover span,
-	[role="tab"]:focus span,
-	[role="tab"]:active span {
+	[role="tab"]:hover .tab-button-text,
+	[role="tab"]:focus .tab-button-text,
+	[role="tab"]:active .tab-button-text {
 		padding: 2px 4px;
 		border: 2px solid rgb(36 116 214);
 		border-radius: 3px;
 	}
 
 	[role="tabpanel"] {
+		box-sizing: border-box;
 		padding: 5px;
-		border: 2px solid hsl(219deg 1% 72%);
-		border-radius: 0 5px 5px;
-		background: hsl(220deg 43% 99%);
+		border-top: 2px solid hsl(219deg 1% 72%);
 		min-height: 10em;
 		width: 100%;
 		overflow: auto;
+	}
+
+	@include break-mobile {
+		[role="tablist"] {
+			flex-direction: row;
+		}
+
+		[role="tab"] {
+			max-width: 22%;
+			text-align: left;
+		}
+
+		[role="tab"] .tab-button-text {
+			min-height: 20px;
+		}
 	}
 }

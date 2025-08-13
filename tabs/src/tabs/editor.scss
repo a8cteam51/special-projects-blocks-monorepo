@@ -1,2 +1,24 @@
+/**
+ * WordPress dependencies
+ */
+@import "@wordpress/base-styles/breakpoints";
+
 .wp-block-wpcomsp-tabs {
+	&.is-selected {
+		.block-list-appender {
+			top: -40px;
+			right: 10px;
+			bottom: auto;
+		}
+	}
+
+	.tab-button-text {
+		display: inline-block;
+		min-width: 60px;
+
+		&:focus-visible {
+			outline: 2px solid var(--wp-admin-theme-color, #3858e9);
+			outline-offset: 2px;
+		}
+	}
 }

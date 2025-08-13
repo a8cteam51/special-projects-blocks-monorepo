@@ -5,11 +5,14 @@
 	"version": "0.1.0",
 	"title": "Tab",
 	"category": "widgets",
-	"icon": "text-page",
 	"description": "Customize content inside a tab.",
 	"example": {},
 	"parent": [ "wpcomsp/tabs" ],
 	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
 		"tabNumber": {
 			"type": "number",
 			"default": 1

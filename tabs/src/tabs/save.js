@@ -1,9 +1,9 @@
 /**
  * WordPress dependencies
  */
-import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+import { InnerBlocks, RichText, useBlockProps } from '@wordpress/block-editor';
 
-function TabButton( { isSelected, tabNumber } ) {
+function TabButton( { isSelected, tabNumber, title } ) {
 	return (
 		<button
 			id={ `tab-${ tabNumber }` }
@@ -13,29 +13,36 @@ function TabButton( { isSelected, tabNumber } ) {
 			aria-controls={ `tabpanel-${ tabNumber }` }
 			tabIndex={ isSelected ? undefined : '-1' }
 		>
-			<span>{ `Tab ${ tabNumber }` }</span>
+			<RichText.Content
+				tagName="span"
+				value={ title }
+				className="tab-button-text"
+			/>
 		</button>
 	);
 }
 
-export default function save( { attributes: { activeTab, tabsCount } } ) {
-	const blockProps = useBlockProps.save();
-
-	const tabs = [];
-	for ( let index = 0; index < tabsCount; index++ ) {
+export default function save( { attributes: { activeTab, tabs } } ) {
+	const tabButtons = [];
+	for ( let index = 0; index < tabs?.length; index++ ) {
 		const tabNumber = index + 1;
-		tabs.push(
+		const tabBlock = tabs[ index ];
+		const title = tabBlock?.title || `Tab ${ tabNumber }`;
+		tabButtons.push(
 			<TabButton
 				key={ index }
 				tabNumber={ tabNumber }
 				isSelected={ tabNumber === activeTab }
+				title={ title }
 			/>
 		);
 	}
 
+	const blockProps = useBlockProps.save();
+
 	return (
 		<div { ...blockProps }>
-			<div role="tablist">{ tabs }</div>
+			<div role="tablist">{ tabButtons }</div>
 			<InnerBlocks.Content />
 		</div>
 	);
