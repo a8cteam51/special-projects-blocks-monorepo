@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/modal",
+	"version": "0.1.1",
+	"title": "Modal",
+	"category": "widgets",
+	"icon": "media-interactive",
+	"description": "A modal block that can be toggled open and closed",
+	"example": {},
+	"attributes": {
+		"modalSlug": {
+			"type": "string",
+			"default": ""
+		},
+		"label": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"interactivity": true
+	},
+	"textdomain": "modal",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"viewScriptModule": "file:./view.js"
+}

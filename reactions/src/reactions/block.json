@@ -1,0 +1,70 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/reactions",
+	"version": "0.1.1",
+	"title": "Reactions",
+	"category": "widgets",
+	"description": "A block to display reactions",
+	"allowedBlocks": [ "wpcomsp/reaction" ],
+	"supports": {
+		"interactivity": true,
+		"anchor": true,
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"allowVerticalAlignment": false,
+			"default": {
+				"type": "flex"
+			}
+		},
+		"color": {
+			"background": false,
+			"text": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		},
+		"spacing": {
+			"blockGap": [ "horizontal", "vertical" ],
+			"margin": true,
+			"padding": true,
+			"units": [ "px", "em", "rem", "vh", "vw" ]
+		}
+	},
+	"attributes": {
+		"mode": {
+			"type": "string",
+			"default": "default"
+		},
+		"iconset": {
+			"type": "string",
+			"default": "default"
+		},
+		"showLabels": {
+			"type": "boolean",
+			"default": false
+		},
+		"showCounts": {
+			"type": "boolean",
+			"default": true
+		},
+		"popoverButtonText": {
+			"type": "string",
+			"default": "React"
+		}
+	},
+	"usesContext": [ "postId" ],
+	"providesContext": {
+		"mode": "mode",
+		"iconset": "iconset",
+		"showCounts": "showCounts",
+		"showLabels": "showLabels"
+	},
+	"textdomain": "reactions",
+	"viewScriptModule": "file:./view.js",
+	"style": "file:./style-index.css",
+	"editorStyle": "file:./index.css",
+	"editorScript": "file:./index.js"
+}

@@ -1,0 +1,6 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"name": "wpcomsp/reactions-dataviews",
+	"title": "Placeholder block.json for build system. Not loaded as block.",
+	"editorScript": "file:./index.js"
+}

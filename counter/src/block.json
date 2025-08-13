@@ -1,0 +1,57 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/counter",
+	"version": "0.1.1",
+	"title": "Counter",
+	"category": "widgets",
+	"icon": "sort",
+	"description": "Allows adding an animated counter to your content. Just pick a start and end",
+	"example": {},
+	"supports": {
+		"html": true,
+		"color": {
+			"background": true,
+			"text": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		},
+		"spacing": {
+			"blockGap": [ "horizontal", "vertical" ],
+			"margin": true,
+			"padding": true,
+			"units": [ "px", "em", "rem", "vh", "vw" ]
+		},
+		"align": [ "left", "center", "right" ],
+		"inserter": true
+	},
+	"attributes": {
+		"pre": {
+			"type": "string",
+			"default": ""
+		},
+		"post": {
+			"type": "string",
+			"default": ""
+		},
+		"start": {
+			"type": "number",
+			"default": 0
+		},
+		"end": {
+			"type": "number",
+			"default": 100
+		},
+		"duration": {
+			"type": "number",
+			"default": 1
+		}
+	},
+	"textdomain": "counter",
+	"editorScript": "file:./index.js",
+	"style": "file:./index.css",
+	"viewScript": "file:./view.js",
+	"editorStyle": "file:./index.css"
+}

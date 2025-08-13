@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "wpcomsp/override-post-links",
+    "version": "0.1.1",
+    "title": "Override Post Links",
+    "category": "widgets",
+    "icon": "admin-links",
+    "description": "Adds News Link options to the editor.",
+    "supports": {
+        "html": false
+    },
+    "textdomain": "override-post-links",
+    "editorScript": "file:./index.js"
+}

@@ -1,0 +1,54 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-wpcomsp-light-dark-toggle {
+    cursor: pointer;
+    background-color: var(--wp--preset--color--contrast, var(--wp--preset--color--primary, #000));
+    border: 0.1875rem solid var(--wp--preset--color--contrast, var(--wp--preset--color--primary, #000));
+    border-radius: 2.5rem;
+    box-sizing: border-box;
+    height: 1.5rem;
+    position: relative;
+    width: 2.75rem;
+    &:before {
+        background-color: var(--wp--preset--color--base);
+        background-image: linear-gradient( to right, var(--wp--preset--color--contrast, var(--wp--preset--color--primary, #000)) 50%, var(--wp--preset--color--base) 50%);
+        border-radius: 50%;
+        box-sizing: border-box;
+        content: '';
+        position: absolute;
+        border: 0.125rem solid var(--wp--preset--color--base);
+        height: 1.125rem;
+        width: 1.125rem;
+        top: 0;
+        transition: all 0.35s ease;
+    }
+    /* Default behavior without wpcomsp-light-dark-active */
+    &.mode-light {
+        &:before {
+            left: calc(100% - 1.125rem);
+        }
+    }
+    &.mode-dark {
+        &:before {
+            left: 0;
+        }
+    }
+    /* Behavior when wpcomsp-light-dark-active is present on <html> */
+    html.wpcomsp-light-dark-active & {
+        &.mode-light {
+            &:before {
+                left: 0;
+            }
+        }
+        &.mode-dark {
+            &:before {
+                left: calc(100% - 1.125rem);
+            }
+        }
+    }
+}

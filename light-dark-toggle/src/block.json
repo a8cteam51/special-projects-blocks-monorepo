@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/light-dark-toggle",
+	"version": "0.2.1",
+	"title": "Light Dark Toggle",
+	"category": "widgets",
+	"icon": "smiley",
+	"description": "Allows a site to have a light and dark mode toggle.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"defaultMode": {
+			"type": "string",
+			"default": "light"
+		}
+	},
+	"textdomain": "light-dark-toggle",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}

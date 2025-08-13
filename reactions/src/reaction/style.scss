@@ -1,0 +1,31 @@
+.wp-block-wpcomsp-reaction {
+	display: inline-flex;
+	font-size: inherit;
+
+	button {
+		:where(&) {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5em;
+			color: inherit;
+			font-size: inherit;
+		}
+	}
+
+	&__icon {
+		:where(&) {
+			display: inline-flex;
+			width: 1.25em;
+			height: 1.25em;
+		}
+	}
+
+	&--active {
+		button {
+			:where(&) {
+				color: var(--wp--preset--color--base);
+				background-color: var(--wp--preset--color--contrast);
+			}
+		}
+	}
+}

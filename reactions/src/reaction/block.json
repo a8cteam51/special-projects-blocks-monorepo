@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/reaction",
+	"version": "0.1.1",
+	"title": "Reaction",
+	"category": "widgets",
+	"description": "A block to display a reaction.",
+	"parent": [ "wpcomsp/reactions" ],
+	"example": {},
+	"supports": {
+		"interactivity": true
+	},
+	"attributes": {
+		"name": {
+			"type": "string"
+		},
+		"label": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"usesContext": [ "mode", "iconset", "showLabels", "showCounts" ],
+	"textdomain": "reactions",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

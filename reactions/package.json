@@ -1,0 +1,22 @@
+{
+	"name": "reactions",
+	"version": "0.1.1",
+	"description": "A plugin to add reactions to your posts.",
+	"author": "WordPress Special Projects Team",
+	"license": "GPL-2.0-or-later",
+	"scripts": {
+		"build": "wp-scripts build --webpack-copy-php --experimental-modules",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start --webpack-copy-php --experimental-modules"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^30.3.0"
+	},
+	"dependencies": {
+		"@wordpress/dataviews": "^4.8.0"
+	}
+}

@@ -1,8 +1,8 @@
 {
 	"name": "sibling-pages-list",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Displays a list of the current page's sibling pages",
-	"author": "The WordPress Contributors",
+	"author": "WordPress Special Projects Team",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
