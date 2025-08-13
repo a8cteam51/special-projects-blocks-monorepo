@@ -29,7 +29,7 @@
 		.wp-block-query,
 		.wp-block-group.wp-block-wpcomsp-carousel-track,
 		.wp-block-woocommerce-product-collection {
-			clip-path: inset(-100vw -100vw -100vw 0);
+			clip-path: inset(0 -100vw 0 0);
 		}
 	}
 
