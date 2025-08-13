@@ -2,29 +2,17 @@
  * WordPress dependencies
  */
 import {
-	BlockIcon,
 	InnerBlocks,
-	InspectorControls,
 	RichText,
 	store as blockEditorStore,
-	useBlockDisplayInformation,
 	useBlockProps,
+	BlockControls,
 } from '@wordpress/block-editor';
-import {
-	createBlock,
-	createBlocksFromInnerBlocksTemplate,
-} from '@wordpress/blocks';
-import {
-	Button,
-	PanelBody,
-	PanelRow,
-	Placeholder,
-	TextControl,
-} from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { create } from '@wordpress/icons';
+import { ToolbarButton } from '@wordpress/components';
+import { chevronLeft, chevronRight } from '@wordpress/icons';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -38,64 +26,6 @@ const TAB_BLOCK_NAME = 'wpcomsp/tab';
 const TAB_BLOCK = {
 	name: TAB_BLOCK_NAME,
 };
-
-function createInnerTabsTemplate( count ) {
-	const template = [];
-	for ( let i = 0; i < count; i++ ) {
-		template.push( [ TAB_BLOCK_NAME ] );
-	}
-
-	return template;
-}
-
-function TabsInspectorControls( { clientId, setAttributes } ) {
-	const tabs = useSelect(
-		( select ) => {
-			return select( blockEditorStore ).getBlocks( clientId );
-		},
-		[ clientId ]
-	);
-	const { icon } = useBlockDisplayInformation( tabs[ 0 ].clientId );
-	const { insertBlock } = useDispatch( blockEditorStore );
-
-	function addNewTab() {
-		insertBlock(
-			createBlock( TAB_BLOCK_NAME ),
-			tabs.length,
-			clientId,
-			false
-		);
-	}
-
-	return (
-		<InspectorControls>
-			<PanelBody title={ __( 'Tabs', 'tabs' ) }>
-				{ tabs.map( ( tab, index ) => {
-					const tabNumber = index + 1;
-					return (
-						<PanelRow key={ tab.clientId }>
-							<Button
-								icon={ <BlockIcon icon={ icon } showColors /> }
-								onClick={ setAttributes.bind( null, {
-									activeTab: tabNumber,
-								} ) }
-							>
-								{ `Tab ${ tabNumber }` }
-							</Button>
-						</PanelRow>
-					);
-				} ) }
-				<PanelRow>
-					<Button
-						icon={ create }
-						label={ __( 'Add a new tab', 'tabs' ) }
-						onClick={ addNewTab }
-					/>
-				</PanelRow>
-			</PanelBody>
-		</InspectorControls>
-	);
-}
 
 function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 	const { isTabBlockSelected, title } = useSelect(
@@ -164,7 +94,7 @@ function TabsEdit( {
 		},
 		[ clientId ]
 	);
-	const { __unstableMarkNextChangeAsNotPersistent } =
+	const { __unstableMarkNextChangeAsNotPersistent, replaceInnerBlocks } =
 		useDispatch( blockEditorStore );
 
 	useEffect( () => {
@@ -193,12 +123,64 @@ function TabsEdit( {
 		__unstableMarkNextChangeAsNotPersistent,
 	] );
 
+	const moveTabLeft = () => {
+		if ( activeTab > 1 ) {
+			const newActiveTab = activeTab - 1;
+			
+			// Create a new array with the reordered blocks
+			const newBlockOrder = [ ...tabBlocks ];
+			const currentBlock = newBlockOrder[ activeTab - 1 ];
+			const previousBlock = newBlockOrder[ activeTab - 2 ];
+			
+			// Swap the blocks
+			newBlockOrder[ activeTab - 2 ] = currentBlock;
+			newBlockOrder[ activeTab - 1 ] = previousBlock;
+			
+			// Replace the inner blocks with the reordered version
+			replaceInnerBlocks( clientId, newBlockOrder, false );
+			
+			// Update the active tab
+			setAttributes( { activeTab: newActiveTab } );
+		}
+	};
+
+	const moveTabRight = () => {
+		if ( activeTab < tabBlocks.length ) {
+			const newActiveTab = activeTab + 1;
+			
+			// Create a new array with the reordered blocks
+			const newBlockOrder = [ ...tabBlocks ];
+			const currentBlock = newBlockOrder[ activeTab - 1 ];
+			const nextBlock = newBlockOrder[ activeTab ];
+			
+			// Swap the blocks
+			newBlockOrder[ activeTab ] = currentBlock;
+			newBlockOrder[ activeTab - 1 ] = nextBlock;
+			
+			// Replace the inner blocks with the reordered version
+			replaceInnerBlocks( clientId, newBlockOrder, false );
+			
+			// Update the active tab
+			setAttributes( { activeTab: newActiveTab } );
+		}
+	};
+
 	return (
 		<>
-			<TabsInspectorControls
-				clientId={ clientId }
-				setAttributes={ setAttributes }
-			/>
+			<BlockControls>
+				<ToolbarButton
+					icon={ chevronLeft }
+					label={ __( 'Move tab left', 'tabs' ) }
+					onClick={ moveTabLeft }
+					disabled={ activeTab <= 1 }
+				/>
+				<ToolbarButton
+					icon={ chevronRight }
+					label={ __( 'Move tab right', 'tabs' ) }
+					onClick={ moveTabRight }
+					disabled={ activeTab >= tabBlocks.length }
+				/>
+			</BlockControls>
 			<div { ...blockProps }>
 				<div role="tablist">
 					{ tabBlocks.map( ( tabBlock, index ) => {
@@ -230,63 +212,6 @@ function TabsEdit( {
 	);
 }
 
-function TabsPlaceholder( { clientId } ) {
-	const blockProps = useBlockProps();
-	const [ initialTabsCount, setInitialColumnCount ] = useState( 2 );
-	const { title, icon } = useBlockDisplayInformation( clientId );
-	const { replaceInnerBlocks } = useDispatch( blockEditorStore );
-
-	function onCreateTabs( event ) {
-		event.preventDefault();
-
-		replaceInnerBlocks(
-			clientId,
-			createBlocksFromInnerBlocksTemplate(
-				createInnerTabsTemplate( initialTabsCount )
-			),
-			true
-		);
-	}
-
-	return (
-		<div { ...blockProps }>
-			<Placeholder
-				label={ title }
-				icon={ <BlockIcon icon={ icon } showColors /> }
-				instructions={ __(
-					'Insert tabs to organize content.',
-					'tabs'
-				) }
-			>
-				<form onSubmit={ onCreateTabs }>
-					<TextControl
-						__next40pxDefaultSize
-						type="number"
-						label={ __( 'Tabs count', 'tabs' ) }
-						min="1"
-						value={ initialTabsCount }
-						onChange={ setInitialColumnCount }
-					/>
-					<Button
-						__next40pxDefaultSize
-						variant="primary"
-						type="submit"
-					>
-						{ __( 'Create Tabs', 'tabs' ) }
-					</Button>
-				</form>
-			</Placeholder>
-		</div>
-	);
-}
-
 export default function Edit( props ) {
-	const hasInnerBlocks = useSelect(
-		( select ) =>
-			select( blockEditorStore ).getBlocks( props.clientId ).length > 0,
-		[ props.clientId ]
-	);
-	const Component = hasInnerBlocks ? TabsEdit : TabsPlaceholder;
-
-	return <Component { ...props } />;
+	return <TabsEdit { ...props } />;
 }

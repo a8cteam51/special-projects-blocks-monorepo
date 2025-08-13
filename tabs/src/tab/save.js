@@ -13,7 +13,7 @@ export default function save( { attributes: { isActive, tabNumber } } ) {
 			id={ `tabpanel-${ tabNumber }` }
 			role="tabpanel"
 			aria-labelledby={ `tab-${ tabNumber }` }
-			hidden={ ! isActive }
+			hidden={ tabNumber !== 1 }
 		/>
 	);
 }

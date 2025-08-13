@@ -1,12 +1,12 @@
 /**
  * WordPress dependencies
  */
-@import "@wordpress/base-styles/breakpoints";
+@use "@wordpress/base-styles/breakpoints" as *;
 
 .wp-block-wpcomsp-tabs {
 	&.is-selected {
 		.block-list-appender {
-			top: -40px;
+			top: -30px;
 			right: 10px;
 			bottom: auto;
 		}

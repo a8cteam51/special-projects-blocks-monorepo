@@ -22,7 +22,7 @@ function TabButton( { isSelected, tabNumber, title } ) {
 	);
 }
 
-export default function save( { attributes: { activeTab, tabs } } ) {
+export default function save( { attributes: { tabs } } ) {
 	const tabButtons = [];
 	for ( let index = 0; index < tabs?.length; index++ ) {
 		const tabNumber = index + 1;
@@ -32,7 +32,7 @@ export default function save( { attributes: { activeTab, tabs } } ) {
 			<TabButton
 				key={ index }
 				tabNumber={ tabNumber }
-				isSelected={ tabNumber === activeTab }
+				isSelected={ tabNumber === 1 }
 				title={ title }
 			/>
 		);

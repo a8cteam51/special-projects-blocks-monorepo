@@ -29,7 +29,8 @@
 		"anchor": true,
 		"align": [ "wide", "full" ],
 		"html": false,
-		"interactivity": true
+		"interactivity": true,
+		"multiple": false
 	},
 	"variations": [
 		{
