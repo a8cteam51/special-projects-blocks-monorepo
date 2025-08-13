@@ -2,6 +2,8 @@
  * WordPress dependencies
  */
 @import "@wordpress/base-styles/breakpoints";
+@import "@wordpress/base-styles/mixins";
+
 
 .wp-block-wpcomsp-tabs {
 	[role="tablist"] {
@@ -15,20 +17,19 @@
 		display: inline-block;
 		position: relative;
 		z-index: 2;
-		margin: 0 0 1px 0;
+		margin: 0;
 		padding: 3px 3px 4px;
 		outline: none;
 		font-weight: bold;
 		overflow: hidden;
-		text-align: left;
+		text-align: center;
 		cursor: pointer;
-		background-color: transparent;
+		background: none;
 		border: none;
 		box-sizing: border-box;
 		flex: 1;
-		min-width: 0; // Allow flex items to shrink below content size
+		min-width: 0;
 		width: 100%;
-		top: 0;
 	}
 
 	[role="tab"][aria-selected="true"] {
@@ -38,7 +39,6 @@
 	[role="tab"] .tab-button-text {
 		display: inline-flex;
 		align-items: center;
-		justify-content: center;
 		margin: 2px;
 		padding: 4px 6px;
 		white-space: nowrap;
@@ -68,17 +68,15 @@
 	@include break-mobile {
 		[role="tablist"] {
 			flex-direction: row;
-			gap: 2px;
 		}
 
 		[role="tab"] {
 			max-width: 22%;
-			top: 2px;
-			margin-bottom: 0;
+			text-align: left;
 		}
 
 		[role="tab"] .tab-button-text {
-			justify-content: flex-start;
+			min-height: 20px;
 		}
 	}
 }
