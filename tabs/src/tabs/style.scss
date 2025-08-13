@@ -1,6 +1,8 @@
 .wp-block-wpcomsp-tabs {
 	[role="tablist"] {
 		min-width: 100%;
+		display: flex;
+		gap: 2px;
 	}
 
 	[role="tab"] {
@@ -12,13 +14,60 @@
 		padding: 3px 3px 4px;
 		outline: none;
 		font-weight: bold;
-		max-width: 22%;
 		overflow: hidden;
 		text-align: left;
 		cursor: pointer;
 		background-color: transparent;
 		border: none;
 		box-sizing: border-box;
+		flex: 1;
+		min-width: 0; // Allow flex items to shrink below content size
+	}
+
+	// Mobile-first approach - tabs stack vertically on very small screens
+	@media (max-width: 480px) {
+		[role="tablist"] {
+			flex-direction: column;
+			gap: 1px;
+		}
+
+		[role="tab"] {
+			width: 100%;
+			max-width: none;
+			top: 0;
+			margin-bottom: 1px;
+		}
+
+		[role="tab"] .tab-button-text {
+			width: 100%;
+			justify-content: flex-start;
+			padding: 8px 12px;
+			min-height: 44px;
+		}
+	}
+
+	// Small tablets and larger phones
+	@media (min-width: 481px) and (max-width: 768px) {
+		[role="tab"] {
+			max-width: 50%; // 2 tabs per row on small tablets
+			flex: 1 1 calc(50% - 1px);
+		}
+	}
+
+	// Larger tablets and small desktops
+	@media (min-width: 769px) and (max-width: 1024px) {
+		[role="tab"] {
+			max-width: 33.333%; // 3 tabs per row on tablets
+			flex: 1 1 calc(33.333% - 2px);
+		}
+	}
+
+	// Desktop and larger screens
+	@media (min-width: 1025px) {
+		[role="tab"] {
+			max-width: 22%; // Original desktop behavior
+			flex: 1 1 calc(22% - 2px);
+		}
 	}
 
 	[role="tab"][aria-selected="true"] {
@@ -32,6 +81,10 @@
 		margin: 2px;
 		padding: 4px 6px;
 		min-height: 20px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		box-sizing: border-box;
 	}
 
 	[role="tab"]:hover .tab-button-text,
@@ -49,5 +102,13 @@
 		min-height: 10em;
 		width: 100%;
 		overflow: auto;
+	}
+
+	// Ensure tabpanels are properly responsive
+	@media (max-width: 480px) {
+		[role="tabpanel"] {
+			padding: 10px;
+			min-height: 8em;
+		}
 	}
 }

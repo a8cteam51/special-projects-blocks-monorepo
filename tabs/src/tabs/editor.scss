@@ -16,4 +16,12 @@
 			outline-offset: 2px;
 		}
 	}
+
+	// Ensure responsive behavior in editor matches frontend
+	@media (max-width: 480px) {
+		.tab-button-text {
+			min-width: auto;
+			width: 100%;
+		}
+	}
 }
