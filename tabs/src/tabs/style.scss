@@ -1,16 +1,21 @@
+/**
+ * WordPress dependencies
+ */
+@import "@wordpress/base-styles/breakpoints";
+
 .wp-block-wpcomsp-tabs {
 	[role="tablist"] {
 		min-width: 100%;
 		display: flex;
-		gap: 2px;
+		flex-direction: column;
+		gap: 1px;
 	}
 
 	[role="tab"] {
 		display: inline-block;
 		position: relative;
 		z-index: 2;
-		top: 2px;
-		margin: 0;
+		margin: 0 0 1px 0;
 		padding: 3px 3px 4px;
 		outline: none;
 		font-weight: bold;
@@ -22,52 +27,8 @@
 		box-sizing: border-box;
 		flex: 1;
 		min-width: 0; // Allow flex items to shrink below content size
-	}
-
-	// Mobile-first approach - tabs stack vertically on very small screens
-	@media (max-width: 480px) {
-		[role="tablist"] {
-			flex-direction: column;
-			gap: 1px;
-		}
-
-		[role="tab"] {
-			width: 100%;
-			max-width: none;
-			top: 0;
-			margin-bottom: 1px;
-		}
-
-		[role="tab"] .tab-button-text {
-			width: 100%;
-			justify-content: flex-start;
-			padding: 8px 12px;
-			min-height: 44px;
-		}
-	}
-
-	// Small tablets and larger phones
-	@media (min-width: 481px) and (max-width: 768px) {
-		[role="tab"] {
-			max-width: 50%; // 2 tabs per row on small tablets
-			flex: 1 1 calc(50% - 1px);
-		}
-	}
-
-	// Larger tablets and small desktops
-	@media (min-width: 769px) and (max-width: 1024px) {
-		[role="tab"] {
-			max-width: 33.333%; // 3 tabs per row on tablets
-			flex: 1 1 calc(33.333% - 2px);
-		}
-	}
-
-	// Desktop and larger screens
-	@media (min-width: 1025px) {
-		[role="tab"] {
-			max-width: 22%; // Original desktop behavior
-			flex: 1 1 calc(22% - 2px);
-		}
+		width: 100%;
+		top: 0;
 	}
 
 	[role="tab"][aria-selected="true"] {
@@ -80,11 +41,11 @@
 		justify-content: center;
 		margin: 2px;
 		padding: 4px 6px;
-		min-height: 20px;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		box-sizing: border-box;
+		min-height: 44px;
 	}
 
 	[role="tab"]:hover .tab-button-text,
@@ -104,11 +65,20 @@
 		overflow: auto;
 	}
 
-	// Ensure tabpanels are properly responsive
-	@media (max-width: 480px) {
-		[role="tabpanel"] {
-			padding: 10px;
-			min-height: 8em;
+	@include break-mobile {
+		[role="tablist"] {
+			flex-direction: row;
+			gap: 2px;
+		}
+
+		[role="tab"] {
+			max-width: 22%;
+			top: 2px;
+			margin-bottom: 0;
+		}
+
+		[role="tab"] .tab-button-text {
+			justify-content: flex-start;
 		}
 	}
 }
