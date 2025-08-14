@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-@import "@wordpress/base-styles/breakpoints";
-@import "@wordpress/base-styles/mixins";
+@use "@wordpress/base-styles/breakpoints" as *;
+@use "@wordpress/base-styles/mixins" as *;
 
 .wp-block-wpcomsp-tabs {
 	[role="tablist"] {

@@ -13,6 +13,7 @@ import { useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { ToolbarButton } from '@wordpress/components';
 import { chevronLeft, chevronRight } from '@wordpress/icons';
+import isEqual from 'fast-deep-equal';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -101,15 +102,11 @@ function TabsEdit( {
 	useEffect( () => {
 		if ( tabBlocks.length < activeTab ) {
 			__unstableMarkNextChangeAsNotPersistent();
-			setAttributes( { activeTab: 1 } );
+			setAttributes( { activeTab: tabBlocks.length > 0 ? 1 : 0 } );
 		}
 		if (
 			tabBlocks.length !== tabs.length ||
-			tabBlocks.some(
-				( block, index ) =>
-					JSON.stringify( block.attributes ) !==
-					JSON.stringify( tabs[ index ] )
-			)
+			tabBlocks.some( ( block, index ) => ! isEqual( block.attributes, tabs[ index ] ) )
 		) {
 			__unstableMarkNextChangeAsNotPersistent();
 			setAttributes( {
