@@ -1,11 +1,11 @@
 {
 	"name": "tabs",
-	"version": "0.1.0",
+	"private": true,
+	"version": "0.1.1",
 	"description": "A block that allows users to organize content into tabs.",
 	"author": "WordPress Special Projects Team",
 	"license": "GPL-2.0-or-later",
 	"homepage": "https://wpspecialprojects.wordpress.com/",
-	"main": "build/tabs/index.js",
 	"scripts": {
 		"build": "wp-scripts build",
 		"format": "wp-scripts format",

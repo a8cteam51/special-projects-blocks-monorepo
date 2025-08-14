@@ -13,6 +13,7 @@ import { useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { ToolbarButton } from '@wordpress/components';
 import { chevronLeft, chevronRight } from '@wordpress/icons';
+import isEqual from 'fast-deep-equal';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -54,6 +55,7 @@ function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 			id={ `tab-${ tabNumber }` }
 			type="button"
 			role="tab"
+			className='tab'
 			aria-selected={ isTabBlockSelected || isActiveTab }
 			aria-controls={ `tabpanel-${ tabNumber }` }
 			tabIndex={ isTabBlockSelected || isActiveTab ? undefined : '-1' }
@@ -100,15 +102,11 @@ function TabsEdit( {
 	useEffect( () => {
 		if ( tabBlocks.length < activeTab ) {
 			__unstableMarkNextChangeAsNotPersistent();
-			setAttributes( { activeTab: 1 } );
+			setAttributes( { activeTab: tabBlocks.length > 0 ? 1 : 0 } );
 		}
 		if (
 			tabBlocks.length !== tabs.length ||
-			tabBlocks.some(
-				( block, index ) =>
-					JSON.stringify( block.attributes ) !==
-					JSON.stringify( tabs[ index ] )
-			)
+			tabBlocks.some( ( block, index ) => ! isEqual( block.attributes, tabs[ index ] ) )
 		) {
 			__unstableMarkNextChangeAsNotPersistent();
 			setAttributes( {
@@ -126,19 +124,19 @@ function TabsEdit( {
 	const moveTabLeft = () => {
 		if ( activeTab > 1 ) {
 			const newActiveTab = activeTab - 1;
-			
+
 			// Create a new array with the reordered blocks
 			const newBlockOrder = [ ...tabBlocks ];
 			const currentBlock = newBlockOrder[ activeTab - 1 ];
 			const previousBlock = newBlockOrder[ activeTab - 2 ];
-			
+
 			// Swap the blocks
 			newBlockOrder[ activeTab - 2 ] = currentBlock;
 			newBlockOrder[ activeTab - 1 ] = previousBlock;
-			
+
 			// Replace the inner blocks with the reordered version
 			replaceInnerBlocks( clientId, newBlockOrder, false );
-			
+
 			// Update the active tab
 			setAttributes( { activeTab: newActiveTab } );
 		}
@@ -147,19 +145,19 @@ function TabsEdit( {
 	const moveTabRight = () => {
 		if ( activeTab < tabBlocks.length ) {
 			const newActiveTab = activeTab + 1;
-			
+
 			// Create a new array with the reordered blocks
 			const newBlockOrder = [ ...tabBlocks ];
 			const currentBlock = newBlockOrder[ activeTab - 1 ];
 			const nextBlock = newBlockOrder[ activeTab ];
-			
+
 			// Swap the blocks
 			newBlockOrder[ activeTab ] = currentBlock;
 			newBlockOrder[ activeTab - 1 ] = nextBlock;
-			
+
 			// Replace the inner blocks with the reordered version
 			replaceInnerBlocks( clientId, newBlockOrder, false );
-			
+
 			// Update the active tab
 			setAttributes( { activeTab: newActiveTab } );
 		}

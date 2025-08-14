@@ -19,7 +19,7 @@ class TabsAutomatic {
 		this.lastTab = null;
 
 		this.tabs = Array.from(
-			this.tablistNode.querySelectorAll( '[role=tab]' )
+			this.tablistNode.querySelectorAll( '.tab' )
 		);
 		this.tabpanels = [];
 

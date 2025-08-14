@@ -12,7 +12,7 @@
 		gap: 1px;
 	}
 
-	[role="tab"] {
+	.tab {
 		display: inline-block;
 		position: relative;
 		z-index: 2;
@@ -69,12 +69,12 @@
 			flex-direction: row;
 		}
 
-		[role="tab"] {
+		.tab {
 			max-width: 22%;
 			text-align: left;
 		}
 
-		[role="tab"] .tab-button-text {
+		.tab .tab-button-text {
 			min-height: 20px;
 		}
 	}
