@@ -51,7 +51,7 @@ function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 	};
 
 	return (
-		<button
+		<div
 			id={ `tab-${ tabNumber }` }
 			type="button"
 			role="tab"
@@ -75,7 +75,7 @@ function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 				className="tab-button-text"
 				disableLineBreaks
 			/>
-		</button>
+		</div>
 	);
 }
 

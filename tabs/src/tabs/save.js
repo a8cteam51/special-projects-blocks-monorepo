@@ -5,7 +5,7 @@ import { InnerBlocks, RichText, useBlockProps } from '@wordpress/block-editor';
 
 function TabButton( { isSelected, tabNumber, title } ) {
 	return (
-		<button
+		<div
 			id={ `tab-${ tabNumber }` }
 			type="button"
 			role="tab"
@@ -19,7 +19,7 @@ function TabButton( { isSelected, tabNumber, title } ) {
 				value={ title }
 				className="tab-button-text"
 			/>
-		</button>
+		</div>
 	);
 }
 
