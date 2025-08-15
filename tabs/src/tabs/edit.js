@@ -28,6 +28,20 @@ const TAB_BLOCK = {
 	name: TAB_BLOCK_NAME,
 };
 
+/**
+ * Renders a single tab control for the Tabs block and syncs its editable title with the tab block's attributes.
+ *
+ * The component queries block editor state to determine whether the tab block or any of its inner blocks is selected,
+ * displays an inline editable title (RichText) that updates the block's `title` attribute, and calls `setActiveTab`
+ * when the tab is clicked. ARIA attributes are applied to behave as a keyboard-accessible tab (role="tab", aria-selected,
+ * aria-controls, and tabIndex).
+ *
+ * @param {Object} props
+ * @param {string} props.clientId - Block client ID for the tab block (used to read and update block attributes).
+ * @param {boolean} props.isActiveTab - True when this tab should be treated as the active tab (affects aria-selected/tabIndex).
+ * @param {number} props.tabNumber - 1-based index of this tab (used in ids/aria-controls).
+ * @param {Function} props.setActiveTab - Click handler that activates this tab (typically sets the container's activeTab attribute).
+ */
 function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 	const { isTabBlockSelected, title } = useSelect(
 		( select ) => {
