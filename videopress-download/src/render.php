@@ -17,7 +17,7 @@ $extra_attributes = apply_filters( 'wpcomsp_video_container_attributes', array()
 	<?php echo wp_kses_data( get_block_wrapper_attributes( $extra_attributes ) ); ?>
 	data-wp-interactive="wpcomsp/video-download-link"
 	<?php if ( $wpcomsp_blocks_is_private ) { ?>
-		data-wp-init="callbacks.asycGetVideoLink"
+		data-wp-init="callbacks.asyncGetVideoLink"
 	<?php } else { ?>
 		data-wp-init="callbacks.getVideoLink"
 	<?php } ?>

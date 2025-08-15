@@ -48,27 +48,19 @@ export default function Edit( { attributes, setAttributes } ) {
 
 				const mediaObject = getMedia( block.attributes?.id );
 
-				if ( ! block.attributes?.title ) {
-					block = {
-						...block,
-						attributes: {
-							...block.attributes,
-							title: mediaObject?.generated_slug,
-						},
-					};
+				// Handle case where media object is not loaded yet
+				if ( ! mediaObject ) {
+					return block;
 				}
 
-				if ( ! block.attributes?.src ) {
-					block = {
-						...block,
-						attributes: {
-							...block.attributes,
-							src: mediaObject?.source_url,
-						},
-					};
-				}
-
-				return block;
+				return {
+					...block,
+					attributes: {
+						...block.attributes,
+						...( ! block.attributes?.title && { title: mediaObject.generated_slug } ),
+						...( ! block.attributes?.src && { src: mediaObject.source_url } ),
+					},
+				};
 			} );
 
 			const blockAttributes = updatedBlocks ? updatedBlocks[ index ]?.attributes : null;

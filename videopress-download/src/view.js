@@ -1,22 +1,30 @@
 import { store, getContext, getElement } from '@wordpress/interactivity';
 
-function waitVideoData( post_id, guid ) {
+function waitForVideoData( post_id, guid, maxRounds = 15, intervalMs = 250 ) {
     return new Promise( ( resolve ) => {
 		let rounds = 0;
 
 		const intervalId = setInterval( () => {
-			const localStorageData = localStorage.getItem(`vpc-playback-${post_id}-${guid}`);
+			let localStorageData;
+			
+			try {
+				localStorageData = localStorage.getItem(`vpc-playback-${post_id}-${guid}`);
+			} catch ( error ) {
+				clearInterval( intervalId );
+				resolve( false );
+				return;
+			}
 
 			if ( localStorageData ) {
 				clearInterval( intervalId );
 				resolve( localStorageData );
 			}
 
-			if ( ++rounds === 15 ) {
+			if ( rounds === maxRounds ) {
 				clearInterval( intervalId );
 				resolve(false);
 			}
-		}, 250 );
+		}, intervalMs );
     } );
 }
 
@@ -25,6 +33,14 @@ const { callbacks } = store( 'wpcomsp/video-download-link', {
 		setVideoLink( href ) {
 			const { ref } = getElement();
 			const context = getContext();
+
+						// Validate URL format
+			try {
+				new URL( href );
+			} catch ( error ) {
+				callbacks.setVideoError();
+				return;
+			}
 
 			context.isReady = true;
 
@@ -50,18 +66,26 @@ const { callbacks } = store( 'wpcomsp/video-download-link', {
 				callbacks.setVideoError();
 			}
 		},
-		asycGetVideoLink: function* () {
+		asyncGetVideoLink: function* () {
 			const context = getContext();
 			const { post_id, guid, src } = context;
 
 			let videoData;
 
-			yield waitVideoData( post_id, guid ).then( ( result ) => {
+			yield waitForVideoData( post_id, guid ).then( ( result ) => {
 				videoData = result;
 			} );
-			
-			const token = JSON.parse(videoData)?.data?.token;
 
+			// check if valid json.
+			let token;
+			try {
+				const parsedData = JSON.parse( videoData );
+				token = parsedData?.data?.token;
+			} catch ( error ) {
+				callbacks.setVideoError();
+				return;
+			}
+			
 			if ( ! token || ! src ) {
 				callbacks.setVideoError();
 				return;

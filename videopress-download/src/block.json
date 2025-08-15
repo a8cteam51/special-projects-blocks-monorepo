@@ -24,7 +24,8 @@
 			"default": true
 		},
 		"isPrivate": {
-			"type": "boolean"
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"description": "Adds a Download button a VideoPress video in this post.",

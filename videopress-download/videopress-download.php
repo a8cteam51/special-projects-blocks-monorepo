@@ -37,7 +37,7 @@ add_filter(
 	'wpcomsp_installed_blocks',
 	function ( $blocks ) {
 		// Add the plugin slug here to enable autoupdates.
-		$blocks[] = 'download-videopress';
+		$blocks[] = 'videopress-download';
 
 		return $blocks;
 	}

@@ -23,11 +23,9 @@
 	}
 
 	&.is-error {
+		cursor: not-allowed;
 		pointer-events: none;
-
-		svg {
-			display: none;
-		}
+		opacity: 0.6;
 	}
 
 	&.has-text-align-right {
