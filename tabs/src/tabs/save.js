@@ -5,7 +5,7 @@ import { InnerBlocks, RichText, useBlockProps } from '@wordpress/block-editor';
 
 function TabButton( { isSelected, tabNumber, title } ) {
 	return (
-		<a
+		<div
 			id={ `tab-${ tabNumber }` }
 			type="button"
 			role="tab"
@@ -13,13 +13,14 @@ function TabButton( { isSelected, tabNumber, title } ) {
 			aria-selected={ isSelected }
 			aria-controls={ `tabpanel-${ tabNumber }` }
 			tabIndex={ isSelected ? undefined : '-1' }
+			href="#"
 		>
 			<RichText.Content
 				tagName="span"
 				value={ title }
 				className="tab-button-text"
 			/>
-		</a>
+		</div>
 	);
 }
 
