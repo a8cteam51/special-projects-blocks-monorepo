@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "wpcomsp/videopress-download",
 	"version": "0.1.0",
-	"title": "Videopress Download",
+	"title": "VideoPress Download",
 	"category": "widgets",
 	"icon": "download",
 	"attributes": {
@@ -31,7 +31,7 @@
 	"description": "Adds a Download button a VideoPress video in this post.",
 	"supports": {
 		"align": true,
-		"__experimentalBorder": {
+		"border": {
 			"color": true,
 			"radius": true,
 			"style": true,
