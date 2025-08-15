@@ -13,7 +13,6 @@ function TabButton( { isSelected, tabNumber, title } ) {
 			aria-selected={ isSelected }
 			aria-controls={ `tabpanel-${ tabNumber }` }
 			tabIndex={ isSelected ? undefined : '-1' }
-			href="#"
 		>
 			<RichText.Content
 				tagName="span"
