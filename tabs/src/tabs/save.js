@@ -7,7 +7,6 @@ function TabButton( { isSelected, tabNumber, title } ) {
 	return (
 		<div
 			id={ `tab-${ tabNumber }` }
-			type="button"
 			role="tab"
 			className='tab'
 			aria-selected={ isSelected }

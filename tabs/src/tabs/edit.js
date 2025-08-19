@@ -53,7 +53,6 @@ function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 	return (
 		<div
 			id={ `tab-${ tabNumber }` }
-			type="button"
 			role="tab"
 			className='tab'
 			aria-selected={ isTabBlockSelected || isActiveTab }
