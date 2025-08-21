@@ -40,7 +40,7 @@ const FeaturedVideo = () => {
 	);
 
 	const onRemoveVideo = () => {
-		setMeta({ [META_KEY]: "" });
+		setMeta({ [META_KEY]: null });
 	};
 
 	const setVideoSelection = (media) => {
