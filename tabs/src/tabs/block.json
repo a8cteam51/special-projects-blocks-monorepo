@@ -1,0 +1,49 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/tabs",
+	"version": "0.1.0",
+	"title": "Tabs",
+	"category": "widgets",
+	"description": "Organize content using tabs.",
+	"example": {},
+	"allowedBlocks": [ "wpcomsp/tab" ],
+	"attributes": {
+		"tabs": {
+			"type": "array",
+			"default": []
+		},
+		"activeTab": {
+			"type": "number",
+			"default": 1
+		},
+		"templateLock": {
+			"type": [ "string", "boolean" ],
+			"enum": [ "all", "insert", "contentOnly", false ]
+		}
+	},
+	"providesContext": {
+		"tabs/activeTab": "activeTab"
+	},
+	"supports": {
+		"anchor": true,
+		"align": [ "wide", "full" ],
+		"html": false,
+		"interactivity": true,
+		"multiple": false
+	},
+	"variations": [
+		{
+			"name": "two-tabs",
+			"title": "Tabs",
+			"isDefault": true,
+			"scope": [ "inserter" ],
+			"innerBlocks": [ [ "wpcomsp/tab" ], [ "wpcomsp/tab" ] ]
+		}
+	],
+	"textdomain": "tabs",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}

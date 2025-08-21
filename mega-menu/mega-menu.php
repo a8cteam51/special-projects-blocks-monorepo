@@ -2,10 +2,12 @@
 /**
  * Plugin Name:       Mega Menu
  * Description:       Add a menu item that opens a template part area to display as a mega menu.
- * Version:           0.2.1
+ * Version:           0.2.2
  * Requires at least: 6.6
  * Requires PHP:      7.2
- * Author:            The WordPress Contributors
+ * Author:            WordPress Special Projects Team
+ * Author URI:        https://wpspecialprojects.wordpress.com/
+ * Update URI:        https://opsoasis.wpspecialprojects.com/mega-menu/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       mega-menu
