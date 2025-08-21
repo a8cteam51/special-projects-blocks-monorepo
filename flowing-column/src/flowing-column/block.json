@@ -1,0 +1,84 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/flowing-column",
+	"version": "0.1.0",
+	"title": "Flowing Column",
+	"category": "widgets",
+	"icon": "columns",
+	"description": "A block that allows you to create a flowing column layout, like a newspaper.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [ "wide", "full" ],
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"allowVerticalAlignment": false,
+			"default": {
+				"type": "default"
+			}
+		},
+		"spacing": {
+			"blockGap": [ "horizontal", "vertical" ],
+			"margin": true,
+			"padding": true,
+			"units": [ "px", "em", "rem", "vh", "vw", "%" ]
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"textAlign": true,
+			"fontFamily": true,
+			"fontStyle": true,
+			"fontWeight": true,
+			"letterSpacing": true,
+			"textDecoration": true,
+			"textTransform": true
+		},
+		"border": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true
+		},
+		"dimensions": {
+			"minHeight": true
+		}
+	},
+	"attributes": {
+		"columnCount": {
+			"type": "number",
+			"default": 2
+		},
+		"columnGap": {
+			"type": "number",
+			"default": 2
+		},
+		"columnRuleStyle": {
+			"type": "string",
+			"default": "solid"
+		},
+		"columnRuleWidth": {
+			"type": "number",
+			"default": 1
+		},
+		"columnRuleColor": {
+			"type": "string",
+			"default": "#000"
+		},
+		"stackOnMobile": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"textdomain": "flowing-column",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css"
+}
