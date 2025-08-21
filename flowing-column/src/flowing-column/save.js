@@ -20,11 +20,11 @@ import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 export default function save( { attributes } ) {
 	const {
 		columnCount,
+		columnMinWidth,
 		columnGap,
 		columnRuleStyle,
 		columnRuleWidth,
 		columnRuleColor,
-		stackOnMobile,
 	} = attributes;
 
 	console.log( columnCount );
@@ -32,12 +32,12 @@ export default function save( { attributes } ) {
 	const blockProps = useBlockProps.save( {
 		style: {
 			'--a8csp-flowing-column-column-count': columnCount + '',
+			'--a8csp-flowing-column-column-min-width': columnMinWidth + 'px',
 			'--a8csp-flowing-column-column-gap': columnGap + 'rem',
 			'--a8csp-flowing-column-column-rule-style': columnRuleStyle,
 			'--a8csp-flowing-column-column-rule-width': columnRuleWidth + 'px',
 			'--a8csp-flowing-column-column-rule-color': columnRuleColor,
-		},
-		className: stackOnMobile ? 'stack-on-mobile' : '',
+		},	
 	} );
 
 	return (

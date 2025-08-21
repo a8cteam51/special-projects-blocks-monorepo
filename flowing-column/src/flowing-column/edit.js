@@ -26,7 +26,6 @@ import {
 	PanelBody,
 	RangeControl,
 	SelectControl,
-	ToggleControl,
 	ColorPicker,
 } from '@wordpress/components';
 
@@ -44,22 +43,22 @@ import {
 export default function Edit( { attributes, setAttributes } ) {
 	const {
 		columnCount,
+		columnMinWidth,
 		columnGap,
 		columnRuleStyle,
 		columnRuleWidth,
 		columnRuleColor,
-		stackOnMobile,
 	} = attributes;
 
 	const blockProps = useBlockProps( {
 		style: {
 			'--a8csp-flowing-column-column-count': columnCount,
+			'--a8csp-flowing-column-column-min-width': columnMinWidth + 'px',
 			'--a8csp-flowing-column-column-gap': columnGap + 'rem',
 			'--a8csp-flowing-column-column-rule-style': columnRuleStyle,
 			'--a8csp-flowing-column-column-rule-width': columnRuleWidth + 'px',
 			'--a8csp-flowing-column-column-rule-color': columnRuleColor,
 		},
-		className: stackOnMobile ? 'stack-on-mobile' : '',
 	} );
 
 	return (
@@ -77,6 +76,19 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 						min={ 1 }
 						max={ 6 }
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+
+					<RangeControl
+						label={ __( 'Column Minimum Width (px)', 'flowing-column' ) }
+						value={ columnMinWidth }
+						onChange={ ( value ) =>
+							setAttributes( { columnMinWidth: value } )
+						}
+						min={ 100 }
+						max={ 800 }
+						step={ 10 }
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
@@ -166,23 +178,6 @@ export default function Edit( { attributes, setAttributes } ) {
 							setAttributes( { columnRuleColor: color.hex } )
 						}
 						enableAlpha={ false }
-					/>
-				</PanelBody>
-
-				<PanelBody
-					title={ __( 'Responsive Settings', 'flowing-column' ) }
-					initialOpen={ false }
-				>
-					<ToggleControl
-						label={ __( 'Stack on Mobile', 'flowing-column' ) }
-						checked={ stackOnMobile }
-						onChange={ ( value ) =>
-							setAttributes( { stackOnMobile: value } )
-						}
-						help={ __(
-							'Stack columns vertically on mobile devices',
-							'flowing-column'
-						) }
 					/>
 				</PanelBody>
 			</InspectorControls>

@@ -1,7 +1,7 @@
 @import '../../node_modules/@wordpress/base-styles/breakpoints';
 
 .wp-block-a8csp-flowing-column {
-	columns: var(--a8csp-flowing-column-column-count);
+	columns: var(--a8csp-flowing-column-column-count) var(--a8csp-flowing-column-column-min-width);
 	column-gap: var(--a8csp-flowing-column-column-gap);
 	column-rule-style: var(--a8csp-flowing-column-column-rule-style);
 	column-rule-width: var(--a8csp-flowing-column-column-rule-width);
