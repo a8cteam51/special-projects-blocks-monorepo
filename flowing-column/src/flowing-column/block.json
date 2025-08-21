@@ -12,14 +12,6 @@
 		"html": false,
 		"anchor": true,
 		"align": [ "wide", "full" ],
-		"layout": {
-			"allowSwitching": false,
-			"allowInheriting": false,
-			"allowVerticalAlignment": false,
-			"default": {
-				"type": "default"
-			}
-		},
 		"spacing": {
 			"blockGap": [ "horizontal", "vertical" ],
 			"margin": true,
