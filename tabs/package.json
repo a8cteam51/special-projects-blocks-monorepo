@@ -1,7 +1,7 @@
 {
 	"name": "tabs",
 	"private": true,
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "A block that allows users to organize content into tabs.",
 	"author": "WordPress Special Projects Team",
 	"license": "GPL-2.0-or-later",

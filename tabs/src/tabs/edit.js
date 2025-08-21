@@ -53,12 +53,10 @@ function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 	return (
 		<div
 			id={ `tab-${ tabNumber }` }
-			type="button"
 			role="tab"
 			className='tab'
 			aria-selected={ isTabBlockSelected || isActiveTab }
 			aria-controls={ `tabpanel-${ tabNumber }` }
-			tabIndex={ isTabBlockSelected || isActiveTab ? undefined : '-1' }
 			onClick={ setActiveTab }
 		>
 			<RichText
