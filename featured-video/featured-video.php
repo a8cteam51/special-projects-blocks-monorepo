@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Featured Video
  * Description: Add the ability to use Featured Video inplace of Featured Image.
- * Version: 0.1.2
+ * Version: 0.1.3
  * Author: WordPress Special Projects Team
  * Author URI: https://wpspecialprojects.wordpress.com/
  * Update URI: https://opsoasis.wpspecialprojects.com/featured-video/
