@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Featured Video
- * Description: Add the ability to use Featured Video inplace of Featured Image.
+ * Description: Add the ability to use Featured Video inplace of Featured Image. <strong>Supported Block:</strong> core/post-featured-image</strong>
  * Version: 0.1.3
  * Author: WordPress Special Projects Team
  * Author URI: https://wpspecialprojects.wordpress.com/
@@ -68,11 +68,19 @@ function wpcomsp_featured_video_register_post_meta() {
 		'post',
 		'_wpcomsp_featured_video_id',
 		array(
-			'sanitize_callback' => 'absint',
+			'sanitize_callback' => static function ( $value ): string {
+				if ( '' === $value || null === $value ) {
+					return '';
+				}
+				if ( is_numeric( $value ) ) {
+					return (string) (int) $value;
+				}
+				return sanitize_text_field( $value );
+			},
 			'show_in_rest'      => true,
-			'type'              => 'number',
+			'type'              => 'string',
 			'single'            => true,
-			'auth_callback'     => function () {
+			'auth_callback'     => static function () {
 				return current_user_can( 'edit_posts' );
 			},
 		)
@@ -101,9 +109,36 @@ function wpcomsp_featured_video_render_post_featured_image( $block_content, $blo
 		return $block_content;
 	}
 
-	$featured_video_url = wp_get_attachment_url( $featured_video_id );
-	if ( ! $featured_video_url ) {
-		return $block_content;
+	$video_markup = '';
+
+	if ( is_numeric( $featured_video_id ) ) {
+		$featured_video_url = wp_get_attachment_url( $featured_video_id );
+
+		if ( ! $featured_video_url ) {
+			return $block_content;
+		}
+
+		$featured_video_url = esc_url_raw( $featured_video_url );
+
+		$video_markup = <<<HTML
+		<video class="attachment-post-thumbnail size-post-thumbnail wp-post-image wp-post-video intrinsic-ignore" controls autoplay muted loop playsinline src="$featured_video_url" style="width: 100%" preload="metadata"><p>Your browser does not support the video tag.</p></video>
+		HTML;
+	} else {
+		$featured_video_url = esc_url_raw( $featured_video_id );
+
+		if ( ! $featured_video_url ) {
+			return $block_content;
+		}
+
+		$video_markup = wp_oembed_get( $featured_video_url );
+
+		if ( ! $video_markup ) {
+			return $block_content;
+		}
+	}
+
+	if ( empty( $block_content ) ) {
+		return $video_markup;
 	}
 
 	$p = new WPCOMSP_HTML_Tag_Processor( $block_content );
@@ -111,13 +146,7 @@ function wpcomsp_featured_video_render_post_featured_image( $block_content, $blo
 		return $block_content;
 	}
 
-	$p->replace_tag(
-		sprintf(
-			'<video class="attachment-post-thumbnail size-post-thumbnail wp-post-image wp-post-video intrinsic-ignore" autoplay muted loop playsinline src="%s" style="width: 100%%" preload="metadata"><p>%s</p></video>',
-			esc_url( $featured_video_url ),
-			esc_html__( 'Your browser does not support the video tag.', 'featured-video' )
-		)
-	);
+	$p->replace_tag( $video_markup );
 
 	return $p->get_updated_html();
 }
