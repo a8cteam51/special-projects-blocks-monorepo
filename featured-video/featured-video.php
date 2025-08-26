@@ -80,7 +80,7 @@ function wpcomsp_featured_video_register_post_meta() {
 			'show_in_rest'      => true,
 			'type'              => 'string',
 			'single'            => true,
-			'auth_callback'     => static function () {
+			'auth_callback'     => static function (): bool {
 				return current_user_can( 'edit_posts' );
 			},
 		)
@@ -137,6 +137,7 @@ function wpcomsp_featured_video_render_post_featured_image( $block_content, $blo
 		}
 	}
 
+	// Return the video markup even if no featured-image is set.
 	if ( empty( $block_content ) ) {
 		return $video_markup;
 	}
