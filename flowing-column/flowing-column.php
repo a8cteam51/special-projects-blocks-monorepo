@@ -37,8 +37,6 @@ if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
 add_filter(
 	'wpcomsp_installed_blocks',
 	function ( $blocks ) {
-		$plugin_data = get_plugin_data( __FILE__ );
-
 		// Add the plugin slug here to enable autoupdates.
 		$blocks[] = 'flowing-column';
 

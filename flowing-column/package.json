@@ -1,8 +1,8 @@
 {
 	"name": "flowing-column",
 	"version": "0.1.0",
-	"description": "Example block scaffolded with Create Block tool.",
-	"author": "The WordPress Contributors",
+	"description": "A block that allows you to create a flowing column layout, like a newspaper.",
+	"author": "Automattic Special Projects",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {

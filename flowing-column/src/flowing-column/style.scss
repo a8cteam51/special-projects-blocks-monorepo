@@ -13,7 +13,7 @@
 
 	&.stack-on-mobile {
 		@media (max-width: $break-medium) {
-			columns: 1;
+			columns: var(--a8csp-flowing-column-min-columns, 1);
 		}
 	}
 }

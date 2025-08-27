@@ -44,20 +44,32 @@ export default function Edit( { attributes, setAttributes } ) {
 	const {
 		columnCount,
 		columnMinWidth,
+		columnMinWidthUnit,
 		columnGap,
+		columnGapUnit,
 		columnRuleStyle,
 		columnRuleWidth,
+		columnRuleWidthUnit,
 		columnRuleColor,
+		minColumns,
 	} = attributes;
 
 	const blockProps = useBlockProps( {
 		style: {
-			'--a8csp-flowing-column-column-count': columnCount,
-			'--a8csp-flowing-column-column-min-width': columnMinWidth + 'px',
-			'--a8csp-flowing-column-column-gap': columnGap + 'rem',
-			'--a8csp-flowing-column-column-rule-style': columnRuleStyle,
-			'--a8csp-flowing-column-column-rule-width': columnRuleWidth + 'px',
-			'--a8csp-flowing-column-column-rule-color': columnRuleColor,
+			'--a8csp-flowing-column-column-count': String( columnCount ),
+			'--a8csp-flowing-column-column-min-width':
+				columnMinWidth === 0 || columnMinWidth === null
+					? 'auto'
+					: `${ columnMinWidth }${ columnMinWidthUnit }`,
+			'--a8csp-flowing-column-column-gap': `${ columnGap }${ columnGapUnit }`,
+			'--a8csp-flowing-column-column-rule-style': String(
+				columnRuleStyle || 'none'
+			),
+			'--a8csp-flowing-column-column-rule-width': `${ columnRuleWidth }${ columnRuleWidthUnit }`,
+			'--a8csp-flowing-column-column-rule-color': String(
+				columnRuleColor || '#000000'
+			),
+			'--a8csp-flowing-column-min-columns': String( minColumns ),
 		},
 	} );
 
@@ -81,7 +93,22 @@ export default function Edit( { attributes, setAttributes } ) {
 					/>
 
 					<RangeControl
-						label={ __( 'Column Minimum Width (px)', 'flowing-column' ) }
+						label={ __(
+							'Minimum Number of Columns',
+							'flowing-column'
+						) }
+						value={ minColumns }
+						onChange={ ( value ) =>
+							setAttributes( { minColumns: value } )
+						}
+						min={ 1 }
+						max={ columnCount }
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+
+					<RangeControl
+						label={ __( 'Column Minimum Width', 'flowing-column' ) }
 						value={ columnMinWidth }
 						onChange={ ( value ) =>
 							setAttributes( { columnMinWidth: value } )
@@ -93,8 +120,33 @@ export default function Edit( { attributes, setAttributes } ) {
 						__nextHasNoMarginBottom
 					/>
 
+					<SelectControl
+						label={ __(
+							'Column Minimum Width Unit',
+							'flowing-column'
+						) }
+						value={ columnMinWidthUnit }
+						onChange={ ( value ) =>
+							setAttributes( { columnMinWidthUnit: value } )
+						}
+						options={ [
+							{
+								label: __( 'Pixels (px)', 'flowing-column' ),
+								value: 'px',
+							},
+							{
+								label: __( 'Ems (em)', 'flowing-column' ),
+								value: 'em',
+							},
+							{
+								label: __( 'Rems (rem)', 'flowing-column' ),
+								value: 'rem',
+							},
+						] }
+					/>
+
 					<RangeControl
-						label={ __( 'Column Gap (rem)', 'flowing-column' ) }
+						label={ __( 'Column Gap', 'flowing-column' ) }
 						value={ columnGap }
 						onChange={ ( value ) =>
 							setAttributes( { columnGap: value } )
@@ -106,6 +158,27 @@ export default function Edit( { attributes, setAttributes } ) {
 						__nextHasNoMarginBottom
 					/>
 
+					<SelectControl
+						label={ __( 'Column Gap Unit', 'flowing-column' ) }
+						value={ columnGapUnit }
+						onChange={ ( value ) =>
+							setAttributes( { columnGapUnit: value } )
+						}
+						options={ [
+							{
+								label: __( 'Pixels (px)', 'flowing-column' ),
+								value: 'px',
+							},
+							{
+								label: __( 'Ems (em)', 'flowing-column' ),
+								value: 'em',
+							},
+							{
+								label: __( 'Rems (rem)', 'flowing-column' ),
+								value: 'rem',
+							},
+						] }
+					/>
 				</PanelBody>
 
 				<PanelBody
@@ -159,7 +232,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					/>
 
 					<RangeControl
-						label={ __( 'Rule Width (px)', 'flowing-column' ) }
+						label={ __( 'Rule Width', 'flowing-column' ) }
 						value={ columnRuleWidth }
 						onChange={ ( value ) =>
 							setAttributes( { columnRuleWidth: value } )
@@ -169,6 +242,28 @@ export default function Edit( { attributes, setAttributes } ) {
 						step={ 1 }
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
+					/>
+
+					<SelectControl
+						label={ __( 'Rule Width Unit', 'flowing-column' ) }
+						value={ columnRuleWidthUnit }
+						onChange={ ( value ) =>
+							setAttributes( { columnRuleWidthUnit: value } )
+						}
+						options={ [
+							{
+								label: __( 'Pixels (px)', 'flowing-column' ),
+								value: 'px',
+							},
+							{
+								label: __( 'Ems (em)', 'flowing-column' ),
+								value: 'em',
+							},
+							{
+								label: __( 'Rems (rem)', 'flowing-column' ),
+								value: 'rem',
+							},
+						] }
 					/>
 
 					<ColorPicker
