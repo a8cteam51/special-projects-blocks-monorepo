@@ -113,9 +113,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						onChange={ ( value ) =>
 							setAttributes( { columnMinWidth: value } )
 						}
-						min={ 100 }
+						min={ 0 }
 						max={ 800 }
 						step={ 10 }
+						help={ __(
+							'Set to 0 to use auto width.',
+							'flowing-column'
+						) }
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>

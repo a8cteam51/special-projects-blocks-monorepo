@@ -33,15 +33,20 @@ export default function save( { attributes } ) {
 
 	const blockProps = useBlockProps.save( {
 		style: {
-			'--a8csp-flowing-column-column-count': columnCount + '',
+			'--a8csp-flowing-column-column-count': String( columnCount ),
 			'--a8csp-flowing-column-column-min-width':
-				columnMinWidth + columnMinWidthUnit,
-			'--a8csp-flowing-column-column-gap': columnGap + columnGapUnit,
-			'--a8csp-flowing-column-column-rule-style': columnRuleStyle,
-			'--a8csp-flowing-column-column-rule-width':
-				columnRuleWidth + columnRuleWidthUnit,
-			'--a8csp-flowing-column-column-rule-color': columnRuleColor,
-			'--a8csp-flowing-column-min-columns': minColumns + '',
+				columnMinWidth === 0 || columnMinWidth === null
+					? 'auto'
+					: `${ columnMinWidth }${ columnMinWidthUnit }`,
+			'--a8csp-flowing-column-column-gap': `${ columnGap }${ columnGapUnit }`,
+			'--a8csp-flowing-column-column-rule-style': String(
+				columnRuleStyle || 'none'
+			),
+			'--a8csp-flowing-column-column-rule-width': `${ columnRuleWidth }${ columnRuleWidthUnit }`,
+			'--a8csp-flowing-column-column-rule-color': String(
+				columnRuleColor || '#000000'
+			),
+			'--a8csp-flowing-column-min-columns': String( minColumns ),
 		},
 	} );
 

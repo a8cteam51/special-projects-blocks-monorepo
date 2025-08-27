@@ -67,10 +67,10 @@ The Flowing Column block includes the following configurable attributes:
 - `columnGapUnit` - Unit for column gap (px, em, rem, default: em)
 
 **Column Rules (Dividers):**
-- `columnRuleStyle` - Style of column dividers (none, solid, dashed, dotted, double, groove, ridge, inset, outset, default: solid)
+- `columnRuleStyle` - Style of column dividers (none, solid, dashed, dotted, double, groove, ridge, inset, outset, default: none)
 - `columnRuleWidth` - Width of column dividers (0-10, default: 1)
 - `columnRuleWidthUnit` - Unit for rule width (px, em, rem, default: px)
-- `columnRuleColor` - Color of column dividers (hex color, default: #000)
+- `columnRuleColor` - Color of column dividers (hex color, default: #000000)
 
 == Frequently Asked Questions ==
 
