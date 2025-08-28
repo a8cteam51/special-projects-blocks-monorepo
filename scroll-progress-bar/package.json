@@ -1,8 +1,8 @@
 {
 	"name": "scroll-progress-bar",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Progress bar that updates as you scroll down the page.",
-	"author": "The WordPress Contributors",
+	"author": "Automattic Special Projects",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {

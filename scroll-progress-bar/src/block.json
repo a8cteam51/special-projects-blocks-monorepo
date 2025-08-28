@@ -1,4 +1,4 @@
- {
+{
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "a8csp/scroll-progress-bar",
@@ -7,12 +7,24 @@
 	"category": "widgets",
 	"description": "Progress bar that reflects the user's scroll position within the document.",
 	"example": {},
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "none"
+		}
+	},
 	"supports": {
-		"html": false
+		"html": false,
+		"align": [
+			"wide",
+			"full"
+		],
+		"spacing": {
+			"margin": true
+		}
 	},
 	"textdomain": "scroll-progress-bar",
 	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
 	"viewScript": "file:./view.js"
 }

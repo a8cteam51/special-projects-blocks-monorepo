@@ -7,13 +7,23 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		return;
 	}
 
+	let ticking = false;
+
 	function updateProgressBar() {
 		const scrollTop = window.scrollY;
 		const scrollHeight =
 			document.documentElement.scrollHeight - window.innerHeight;
 		progressBar.value = scrollTop / scrollHeight;
+		ticking = false;
 	}
 
-	window.addEventListener( 'scroll', updateProgressBar );
+	function requestTick() {
+		if ( ! ticking ) {
+			requestAnimationFrame( updateProgressBar );
+			ticking = true;
+		}
+	}
+
+	window.addEventListener( 'scroll', requestTick );
 	updateProgressBar(); // Initialize on load
 } );
