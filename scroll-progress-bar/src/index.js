@@ -27,18 +27,19 @@ import metadata from './block.json';
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 registerBlockType( metadata.name, {
-	attributes: {
-		align: {
-			type: 'string',
-			default: 'none',
-		},
-	},
-	supports: {
-		align: [ 'wide', 'full' ],
-		spacing: {
-			margin: true,
-		},
-	},
+	icon: (
+		<svg
+			fill="#000000"
+			width="800px"
+			height="800px"
+			viewBox="0 0 32 32"
+			id="icon"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path d="M28,21H4a2.0021,2.0021,0,0,1-2-2V13a2.0021,2.0021,0,0,1,2-2H28a2.0021,2.0021,0,0,1,2,2v6A2.0021,2.0021,0,0,1,28,21ZM4,13v6H28V13Z" />
+			<rect x="6" y="15" width="14" height="2" />
+		</svg>
+	),
 	/**
 	 * @see ./edit.js
 	 */
