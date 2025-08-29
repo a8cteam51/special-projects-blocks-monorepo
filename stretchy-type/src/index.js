@@ -19,6 +19,7 @@ const unsubscribe = subscribe( () => {
 			save,
 			supports: {
 				...paragraphBlockType.supports,
+				className: true,
 				typography: {
 					...paragraphBlockType.supports.typography,
 					fontSize: false,
