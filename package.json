@@ -1,0 +1,18 @@
+{
+  "name": "special-projects-blocks-monorepo",
+  "version": "1.0.0",
+  "description": "Build all blocks in the monorepo, for CI only. For local development, use scripts inside the individual blocks.",
+  "private": true,
+  "scripts": {
+    "build": "node .scripts/build-all.js && rm -rf node_modules"
+  },
+  "devDependencies": {
+	"glob": "^11.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "author": "WordPress Special Projects Team",
+  "license": "GPL-2.0-or-later"
+}
