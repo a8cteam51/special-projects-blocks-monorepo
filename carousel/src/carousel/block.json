@@ -37,7 +37,7 @@
 		"animateEnd": {
 			"type": "string",
 			"default": "stop",
-			"enum": [ "stop", "back", "infinite" ]
+			"enum": [ "stop", "jump", "infinite" ]
 		},
 		"animationSpeed": {
 			"type": "number",

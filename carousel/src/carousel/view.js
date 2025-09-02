@@ -1,220 +1,567 @@
-/* global getComputedStyle, IntersectionObserver, ResizeObserver */
+/* global getComputedStyle, IntersectionObserver, requestAnimationFrame, ResizeObserver */
 
 import './view.css';
 
 {
-	document.addEventListener( 'DOMContentLoaded', () => {
-		const carousels = document.querySelectorAll(
-			'.wp-block-wpcomsp-carousel'
-		);
-		carousels?.forEach( ( carousel ) => {
-			initCarousel( carousel );
-		} );
-	} );
+	const SELECTORS = {
+		CAROUSEL: '.wp-block-wpcomsp-carousel',
+		TRACK: '.wp-block-gallery, .wp-block-post-template, .wp-block-wpcomsp-carousel-track, .wc-block-product-template',
+		SLIDES: '.wp-block-gallery > .wp-block-image, .wp-block-post-template > .wp-block-post, .wp-block-wpcomsp-carousel-track > *, .wc-block-product-template .wc-block-product',
+		PREV_BUTTON: '.wp-block-wpcomsp-carousel-nav--button_prev',
+		NEXT_BUTTON: '.wp-block-wpcomsp-carousel-nav--button_next',
+		PAGINATION_BUTTONS: '.wp-block-wpcomsp-carousel-pagination--button',
+		FOCUSABLE: 'a, button, input, select, textarea',
+	};
+
+	const CLASSES = {
+		ANIMATING: 'is-animating',
+		ANIMATE_VISIBLE: 'animate-visible',
+	};
+
+	// Animation modes control how the carousel behaves at boundaries.
+	const ANIMATE_MODES = {
+		INFINITE: 'infinite', // Continuous looping.
+		JUMP: 'jump', // Jump to opposite end of the track.
+	};
+
+	const DEFAULTS = {
+		MIN_DRAG_DISTANCE: 5, // Minimum distance required for drag navigation (in px).
+		INTERSECTION_THRESHOLD: 0.95, // Threshold for intersection observer (0-1).
+		INTERSECTION_MARGIN: '5px', // Margin for intersection observer.
+		DRAG_ANGLE_THRESHOLD: Math.PI / 6, // ~30 degrees.
+	};
+
+	/**
+	 * @typedef {Object} SlideNode
+	 *
+	 * @property {HTMLElement}    slide The DOM slide element.
+	 * @property {SlideNode|null} next  Reference to the next slide in the list.
+	 * @property {SlideNode|null} prev  Reference to the previous slide in the list.
+	 */
+	class SlideNode {
+		constructor( slide ) {
+			this.slide = slide;
+			this.next = null;
+			this.prev = null;
+		}
+	}
+
+	/**
+	 * @typedef {Object} CircularDoublyLinkedList
+	 *
+	 * @property {SlideNode|null} head    The first node in the list.
+	 * @property {number}         length  The number of nodes in the list.
+	 * @property {Function}       advance Advance the list by a given number of steps.
+	 * @property {Function}       retreat Retreat the list by a given number of steps.
+	 */
+	class CircularDoublyLinkedList {
+		constructor( slides ) {
+			this.head = null;
+			this.length = 0;
+			this._buildList( slides );
+		}
+
+		_buildList( slides ) {
+			if ( ! slides.length ) {
+				return;
+			}
+
+			let prevNode = null;
+
+			slides.forEach( ( slide, i ) => {
+				const node = new SlideNode( slide );
+
+				if ( i === 0 ) {
+					this.head = node;
+				} else {
+					prevNode.next = node;
+					node.prev = prevNode;
+				}
+
+				prevNode = node;
+			} );
+
+			prevNode.next = this.head;
+			this.head.prev = prevNode;
+
+			this.length = slides.length;
+		}
+
+		advance( node, steps = 1 ) {
+			let current = node;
+			for ( let i = 0; i < steps; i++ ) {
+				current = current.next;
+			}
+			return current;
+		}
+
+		retreat( node, steps = 1 ) {
+			let current = node;
+			for ( let i = 0; i < steps; i++ ) {
+				current = current.prev;
+			}
+			return current;
+		}
+	}
+
+	class DragController {
+		constructor( { minDragDistance, dragAngleThreshold, onNavigate } ) {
+			this.minDragDistance = minDragDistance;
+			this.dragAngleThreshold = dragAngleThreshold;
+			this.onNavigate = onNavigate;
+
+			this.resetState();
+		}
+
+		resetState() {
+			this.startX = 0;
+			this.startY = 0;
+			this.isHorizontal = false;
+			this.dragging = false;
+		}
+
+		onStart( x, y ) {
+			this.startX = x;
+			this.startY = y;
+			this.isHorizontal = false;
+			this.dragging = true;
+		}
+
+		onMove( x, y, event ) {
+			if ( ! this.dragging ) {
+				return;
+			}
+
+			const xDiff = x - this.startX;
+			const yDiff = y - this.startY;
+
+			if ( Math.abs( xDiff ) < this.minDragDistance ) {
+				return;
+			}
+
+			if ( ! this.isHorizontal ) {
+				const angle = Math.atan2(
+					Math.abs( yDiff ),
+					Math.abs( xDiff )
+				);
+				this.isHorizontal = angle < this.dragAngleThreshold;
+			}
+
+			if ( this.isHorizontal ) {
+				event.preventDefault();
+
+				if ( xDiff > 0 ) {
+					this.onNavigate( 'previous' );
+				} else {
+					this.onNavigate( 'next' );
+				}
+
+				this.dragging = false;
+			}
+		}
+
+		onEnd() {
+			this.dragging = false;
+		}
+	}
+
+	/**
+	 * @typedef {Object} CarouselInstance
+	 *
+	 * @property {HTMLElement}               carousel          The main carousel container element.
+	 * @property {HTMLElement}               track             The track element that contains slides.
+	 * @property {NodeList}                  slides            Array of all slide DOM elements.
+	 * @property {CircularDoublyLinkedList}  slideList         Circular linked list for slide management.
+	 * @property {SlideNode}                 currentNode       Current position in the slide list.
+	 * @property {HTMLElement|null}          prevButton        Previous navigation button element.
+	 * @property {HTMLElement|null}          nextButton        Next navigation button element.
+	 * @property {NodeList|null}             paginationButtons Array of pagination button elements.
+	 * @property {string|null}               animateEnd        Animation mode setting from data attribute.
+	 * @property {ResizeObserver|null}       resizeObserver    ResizeObserver for handling viewport changes.
+	 * @property {IntersectionObserver|null} slideObserver     IntersectionObserver for tracking visible slides.
+	 */
+	class CarouselInstance {
+		constructor( carousel ) {
+			this.carousel = carousel;
+			this.track = carousel.querySelector( SELECTORS.TRACK );
+			this.slides = [];
+			this.slideList = null;
+			this.currentNode = null;
+			this.prevButton = null;
+			this.nextButton = null;
+			this.paginationButtons = null;
+			this.animateEnd = null;
+
+			this.resizeObserver = null;
+			this.slideObserver = null;
+
+			this.dragState = {
+				startX: 0,
+				startY: 0,
+				isHorizontal: false,
+				dragging: false,
+			};
+		}
+
+		hasTrackAndSlides() {
+			return this.track && this.slides.length > 0;
+		}
+
+		isAnimating() {
+			return this.carousel.classList.contains( CLASSES.ANIMATING );
+		}
+
+		isInfinite() {
+			return this.animateEnd === ANIMATE_MODES.INFINITE;
+		}
+
+		isBatchMode() {
+			return this.carousel.classList.contains( CLASSES.ANIMATE_VISIBLE );
+		}
+
+		getTrackGap() {
+			return (
+				parseFloat(
+					getComputedStyle( this.track ).getPropertyValue(
+						'column-gap'
+					)
+				) || 0
+			);
+		}
+	}
+
+	if ( document.readyState === 'loading' ) {
+		document.addEventListener( 'DOMContentLoaded', initializeCarousels );
+	} else {
+		initializeCarousels();
+	}
+
+	/**
+	 * Initialize all carousels.
+	 */
+	function initializeCarousels() {
+		const carousels = document.querySelectorAll( SELECTORS.CAROUSEL );
+		carousels.forEach( initCarousel );
+	}
 
 	/**
 	 * Initialize the carousel.
 	 *
-	 * @param {Element} carousel The carousel element.
+	 * @param {HTMLElement} carousel The carousel element.
 	 */
 	function initCarousel( carousel ) {
-		const instance = {
-			carousel,
-			track: carousel.querySelector(
-				'.wp-block-gallery, .wp-block-post-template, .wp-block-wpcomsp-carousel-track, .wc-block-product-template'
-			),
-			slides: [],
-			prevButton: null,
-			nextButton: null,
-			paginationButtons: null,
-			uncroppedGallery: false,
-			animateEnd: null,
-		};
+		const instance = new CarouselInstance( carousel );
 
 		if ( ! instance.track ) {
 			return;
 		}
 
-		instance.slides = Array.from(
-			carousel.querySelectorAll(
-				'.wp-block-gallery > .wp-block-image, .wp-block-post-template > .wp-block-post, .wp-block-wpcomsp-carousel-track > *, .wc-block-product-template .wc-block-product'
-			)
-		);
+		instance.slides = carousel.querySelectorAll( SELECTORS.SLIDES );
 
-		if ( instance.slides.length === 0 ) {
+		if ( ! instance.hasTrackAndSlides() ) {
 			return;
 		}
 
-		instance.prevButton = carousel.querySelector(
-			'.wp-block-wpcomsp-carousel-nav--button_prev'
-		);
-		instance.nextButton = carousel.querySelector(
-			'.wp-block-wpcomsp-carousel-nav--button_next'
-		);
-		instance.paginationButtons = carousel.querySelectorAll(
-			'.wp-block-wpcomsp-carousel-pagination--button'
-		);
+		// Initialize components.
+		setupSlideList( instance );
+		setupControlButtons( instance );
+		setupAnimationMode( instance );
 
-		instance.animateEnd = instance.carousel.dataset.animateEnd;
-
-		if ( 'infinite' === instance.animateEnd ) {
-			setupInfiniteCarousel( instance );
-		}
-
+		// Setup observers and interactions.
 		setupResizeObserver( instance );
-		setupSlideObserver( instance );
-		setupNavigation( instance );
+		setupVisibilityObserver( instance );
+		setupControlNavigationHandlers( instance );
 		setupKeyboardNavigation( instance );
 		setupDragNavigation( instance );
 	}
 
 	/**
-	 * Set up the observer for handling carousel resizing.
+	 * Set up the slide list for the carousel.
 	 *
-	 * @param {Object} instance The carousel instance.
+	 * @param {CarouselInstance} instance The carousel instance.
 	 */
-	function setupResizeObserver( instance ) {
+	function setupSlideList( instance ) {
+		instance.slideList = new CircularDoublyLinkedList( instance.slides );
+		instance.currentNode = instance.slideList.head;
+	}
+
+	/**
+	 * Set up the navigation buttons for the carousel.
+	 *
+	 * @param {CarouselInstance} instance The carousel instance.
+	 */
+	function setupControlButtons( instance ) {
 		const { carousel } = instance;
 
-		const resizeObserver = new ResizeObserver( () => {
-			recalculateSlidePositions( instance );
+		instance.prevButton = carousel.querySelector( SELECTORS.PREV_BUTTON );
+		instance.nextButton = carousel.querySelector( SELECTORS.NEXT_BUTTON );
+		instance.paginationButtons = carousel.querySelectorAll(
+			SELECTORS.PAGINATION_BUTTONS
+		);
+	}
+
+	/**
+	 * Set up the animation mode for the carousel.
+	 *
+	 * @param {CarouselInstance} instance The carousel instance.
+	 */
+	function setupAnimationMode( instance ) {
+		instance.animateEnd = instance.carousel.dataset.animateEnd;
+	}
+
+	/**
+	 * Set up the observer for handling carousel resizing.
+	 *
+	 * @param {CarouselInstance} instance The carousel instance.
+	 */
+	function setupResizeObserver( instance ) {
+		instance.resizeObserver = new ResizeObserver( () => {
+			realignToFirstVisibleSlide( instance );
 		} );
 
-		resizeObserver.observe( carousel );
+		instance.resizeObserver.observe( instance.carousel );
 	}
 
 	/**
 	 * Set up the observer for handling slide accessibility.
 	 *
-	 * @param {Object} instance The carousel instance.
+	 * @param {CarouselInstance} instance The carousel instance.
 	 */
-	function setupSlideObserver( instance ) {
+	function setupVisibilityObserver( instance ) {
 		const { slides, track } = instance;
 
-		const focusable = 'a, button, input, select, textarea';
-
-		const slideObserver = new IntersectionObserver(
+		instance.slideObserver = new IntersectionObserver(
 			( entries ) => {
 				entries.forEach( ( entry ) => {
 					const slide = entry.target;
-
-					if ( entry.isIntersecting ) {
-						slide.removeAttribute( 'inert' );
-
-						// Inert should be good enough, but just in case.
-						slide.removeAttribute( 'aria-hidden' );
-						slide
-							.querySelectorAll( focusable )
-							.forEach( ( child ) => {
-								child.removeAttribute( 'tabindex' );
-							} );
-					} else {
-						slide.setAttribute( 'inert', '' );
-
-						// Inert should be good enough, but just in case.
-						slide.setAttribute( 'aria-hidden', 'true' );
-						slide
-							.querySelectorAll( focusable )
-							.forEach( ( child ) => {
-								child.setAttribute( 'tabindex', '-1' );
-							} );
-					}
-
-					updateButtonStates( instance );
+					setSlideAccessibility( slide, entry.isIntersecting );
 				} );
+				updateControlButtonStates( instance );
 			},
 			{
 				root: track,
-				threshold: 0.95, // Give slides some grace during resizing.
-				margin: '5px', // Give slides some grace during resizing.
+				threshold: DEFAULTS.INTERSECTION_THRESHOLD,
+				rootMargin: DEFAULTS.INTERSECTION_MARGIN,
 			}
 		);
 
 		slides.forEach( ( slide ) => {
-			slideObserver.observe( slide );
+			instance.slideObserver.observe( slide );
 		} );
 	}
 
 	/**
-	 * Set up the navigation for the carousel.
+	 * Manages accessibility attributes for slides based on visibility.
 	 *
-	 * @param {Object} instance The carousel instance.
+	 * Slides outside of the track boundary are marked as `inert` and `aria-hidden`,
+	 * preventing screen reader access and keyboard navigation.
+	 * The attributes are removed from slides when they enter the track boundary.
+	 *
+	 * @param {Element} slide     The slide element to toggle accessibility for.
+	 * @param {boolean} isVisible Whether the slide is in the track boundary.
 	 */
-	function setupNavigation( instance ) {
-		const { carousel, paginationButtons, prevButton, nextButton, slides } =
-			instance;
+	function setSlideAccessibility( slide, isVisible ) {
+		if ( isVisible ) {
+			slide.removeAttribute( 'inert' );
+			slide.removeAttribute( 'aria-hidden' );
+		} else {
+			slide.setAttribute( 'inert', '' );
+			slide.setAttribute( 'aria-hidden', 'true' );
+		}
+
+		slide.querySelectorAll( SELECTORS.FOCUSABLE ).forEach( ( el ) => {
+			if ( isVisible ) {
+				el.removeAttribute( 'tabindex' );
+			} else {
+				el.setAttribute( 'tabindex', '-1' );
+			}
+		} );
+	}
+
+	/**
+	 * Manages updates to the navigation and pagination button states.
+	 *
+	 * @param {CarouselInstance} instance The carousel instance.
+	 */
+	function updateControlButtonStates( instance ) {
+		const {
+			animateEnd,
+			prevButton,
+			nextButton,
+			paginationButtons,
+			slides,
+		} = instance;
+
+		const noInactiveNav = [
+			ANIMATE_MODES.JUMP,
+			ANIMATE_MODES.INFINITE,
+		].includes( animateEnd );
+
+		if ( noInactiveNav && ! paginationButtons ) {
+			return;
+		}
+
+		const setButtonState = ( button, disabled ) => {
+			if ( disabled ) {
+				button.setAttribute( 'aria-disabled', 'true' );
+			} else {
+				button.removeAttribute( 'aria-disabled' );
+			}
+		};
+
+		if ( ! noInactiveNav ) {
+			if ( prevButton ) {
+				const firstSlideVisible =
+					! slides[ 0 ].getAttribute( 'aria-hidden' );
+				setButtonState( prevButton, firstSlideVisible );
+			}
+
+			if ( nextButton ) {
+				const lastSlideVisible =
+					! slides[ slides.length - 1 ].getAttribute( 'aria-hidden' );
+				setButtonState( nextButton, lastSlideVisible );
+			}
+		}
+
+		if ( paginationButtons ) {
+			paginationButtons.forEach( ( button, index ) => {
+				const isActive =
+					! slides[ index ].getAttribute( 'aria-hidden' );
+				setButtonState( button, isActive );
+			} );
+		}
+	}
+
+	/**
+	 * Set up the navigation and pagination for the carousel.
+	 *
+	 * @param {CarouselInstance} instance The carousel instance.
+	 */
+	function setupControlNavigationHandlers( instance ) {
+		const { prevButton, nextButton } = instance;
 
 		prevButton?.addEventListener( 'click', () => {
-			if ( ! carousel.classList.contains( 'is-animating' ) ) {
+			if ( ! instance.isAnimating() ) {
 				navigatePrevious( instance );
 			}
 		} );
 
 		nextButton?.addEventListener( 'click', () => {
-			if ( ! carousel.classList.contains( 'is-animating' ) ) {
+			if ( ! instance.isAnimating() ) {
 				navigateNext( instance );
 			}
 		} );
 
-		// Ensure that a pagination button exists for each slide.
-		if ( paginationButtons && slides.length > paginationButtons.length ) {
-			const paginationContainer = paginationButtons[ 0 ]?.parentElement;
-			if ( paginationContainer ) {
-				for (
-					let i = paginationButtons.length;
-					i < slides.length;
-					i++
-				) {
-					const button = document.createElement( 'button' );
-					button.className =
-						'wp-block-wpcomsp-carousel-pagination--button';
-					button.innerHTML = `<span class="screen-reader-text">Slide ${
-						i + 1
-					} of ${ slides.length }</span>`;
-
-					paginationContainer.appendChild( button );
-				}
-				// Update the `paginationButtons` reference.
-				instance.paginationButtons =
-					paginationContainer.querySelectorAll(
-						'.wp-block-wpcomsp-carousel-pagination--button'
-					);
-			}
-		}
+		ensurePaginationButtons( instance );
 
 		instance.paginationButtons?.forEach( ( button, index ) => {
 			button.addEventListener( 'click', () => {
-				if ( ! carousel.classList.contains( 'is-animating' ) ) {
-					updateCarousel( instance, slides[ index ].offsetLeft * -1 );
-				}
+				handlePagination( instance, button, index );
 			} );
 		} );
 	}
 
 	/**
+	 * Ensures the number of pagination buttons matches the number of slides.
+	 *
+	 * @param {CarouselInstance} instance The carousel instance.
+	 */
+	function ensurePaginationButtons( instance ) {
+		const { paginationButtons, slides } = instance;
+
+		if (
+			! paginationButtons ||
+			slides.length <= paginationButtons.length
+		) {
+			return;
+		}
+
+		const paginationContainer = paginationButtons[ 0 ]?.parentElement;
+		if ( ! paginationContainer ) {
+			return;
+		}
+
+		// Create missing pagination buttons.
+		for ( let i = paginationButtons.length; i < slides.length; i++ ) {
+			const button = document.createElement( 'button' );
+			button.className = 'wp-block-wpcomsp-carousel-pagination--button';
+			button.innerHTML = `<span class="screen-reader-text">Slide ${
+				i + 1
+			} of ${ slides.length }</span>`;
+			paginationContainer.appendChild( button );
+		}
+
+		// Update the reference.
+		instance.paginationButtons = paginationContainer.querySelectorAll(
+			SELECTORS.PAGINATION_BUTTONS
+		);
+	}
+
+	/**
+	 * Handles pagination navigation.
+	 *
+	 * @param {CarouselInstance} instance    The carousel instance.
+	 * @param {HTMLElement}      button      The pagination button.
+	 * @param {number}           buttonIndex The index of the slide to navigate to.
+	 */
+	function handlePagination( instance, button, buttonIndex ) {
+		const { slides } = instance;
+
+		if ( instance.isAnimating() ) {
+			return;
+		}
+
+		const targetSlide = slides[ buttonIndex ];
+		const targetNode = getNodeForSlide( instance, targetSlide );
+		if ( ! targetNode ) {
+			return;
+		}
+
+		if (
+			button.getAttribute( 'aria-disabled' ) === 'true' ||
+			targetNode === instance.currentNode
+		) {
+			return;
+		}
+
+		// Animate to the target slide's current offset.
+		if ( instance.isInfinite() ) {
+			const onComplete = () =>
+				commitInfiniteRotation( instance, targetNode, false );
+
+			updateCarousel( instance, targetSlide.offsetLeft * -1, {
+				onComplete,
+			} );
+		} else {
+			updateCarousel( instance, targetSlide.offsetLeft * -1 );
+
+			instance.currentNode = targetNode;
+		}
+	}
+
+	/**
 	 * Set up the keyboard navigation for the carousel.
 	 *
-	 * @param {Object} instance The carousel instance.
+	 * @param {CarouselInstance} instance The carousel instance.
 	 */
 	function setupKeyboardNavigation( instance ) {
 		const { carousel, prevButton, nextButton } = instance;
 
 		carousel.addEventListener( 'keydown', ( e ) => {
-			if ( carousel.classList.contains( 'is-animating' ) ) {
+			if ( instance.isAnimating() ) {
 				return;
 			}
 
-			if (
-				e.key === 'ArrowLeft' &&
-				( ! prevButton ||
-					prevButton.getAttribute( 'aria-disabled' ) !== 'true' )
-			) {
+			const canNavigatePrev =
+				! prevButton ||
+				prevButton.getAttribute( 'aria-disabled' ) !== 'true';
+			const canNavigateNext =
+				! nextButton ||
+				nextButton.getAttribute( 'aria-disabled' ) !== 'true';
+
+			if ( e.key === 'ArrowLeft' && canNavigatePrev ) {
 				navigatePrevious( instance );
-			} else if (
-				e.key === 'ArrowRight' &&
-				( ! nextButton ||
-					nextButton.getAttribute( 'aria-disabled' ) !== 'true' )
-			) {
+			} else if ( e.key === 'ArrowRight' && canNavigateNext ) {
 				navigateNext( instance );
 			}
 		} );
@@ -223,403 +570,441 @@ import './view.css';
 	/**
 	 * Set up the drag/swipe navigation for the carousel.
 	 *
-	 * @param {Object} instance The carousel instance.
+	 * @param {CarouselInstance} instance The carousel instance.
 	 */
 	function setupDragNavigation( instance ) {
 		const { carousel } = instance;
-		const minDistance = 5;
 
-		let startX;
-		let startY;
-		let isHorizontal;
-		let dragging = false;
-
-		function onStart( x, y ) {
-			startX = x;
-			startY = y;
-			isHorizontal = false;
-			dragging = true;
-		}
-
-		function onMove( x, y, event ) {
-			if ( ! dragging ) {
-				return;
-			}
-
-			const xDiff = x - startX;
-			const yDiff = y - startY;
-
-			if ( Math.abs( xDiff ) < minDistance ) {
-				return;
-			}
-
-			// Determine if direction is generally horizontal.
-			// Not as applicable for mouse events,
-			// but the math is lightweight enough.
-			if ( ! isHorizontal ) {
-				const angle = Math.atan2(
-					Math.abs( yDiff ),
-					Math.abs( xDiff )
-				);
-
-				// ~30 degree threshold.
-				isHorizontal = angle < Math.PI / 6;
-			}
-
-			if ( isHorizontal ) {
-				event.preventDefault();
-
-				if ( xDiff > 0 ) {
-					navigatePrevious( instance );
-				} else {
-					navigateNext( instance );
+		// Create DragController instance with navigation callback.
+		const dragController = new DragController( {
+			minDragDistance: DEFAULTS.MIN_DRAG_DISTANCE,
+			dragAngleThreshold: DEFAULTS.DRAG_ANGLE_THRESHOLD,
+			onNavigate: ( direction ) => {
+				if ( ! instance.isAnimating() ) {
+					if ( direction === 'next' ) {
+						navigateNext( instance );
+					} else {
+						navigatePrevious( instance );
+					}
 				}
-
-				dragging = false;
-			}
-		}
-
-		function onEnd() {
-			dragging = false;
-		}
+			},
+		} );
 
 		carousel.addEventListener( 'mousedown', ( e ) => {
-			// Prevent text selection.
-			e.preventDefault();
-
-			onStart( e.clientX, e.clientY );
+			e.preventDefault(); // Prevent text selection.
+			dragController.onStart( e.clientX, e.clientY );
 		} );
 
 		carousel.addEventListener( 'mousemove', ( e ) => {
-			onMove( e.clientX, e.clientY, e );
+			dragController.onMove( e.clientX, e.clientY, e );
 		} );
 
 		carousel.addEventListener( 'touchstart', ( e ) => {
-			onStart( e.touches[ 0 ].clientX, e.touches[ 0 ].clientY );
+			dragController.onStart(
+				e.touches[ 0 ].clientX,
+				e.touches[ 0 ].clientY
+			);
 		} );
 
 		carousel.addEventListener( 'touchmove', ( e ) => {
-			onMove( e.touches[ 0 ].clientX, e.touches[ 0 ].clientY, e );
+			dragController.onMove(
+				e.touches[ 0 ].clientX,
+				e.touches[ 0 ].clientY,
+				e
+			);
 		} );
 
 		[ 'touchend', 'mouseup', 'mouseleave' ].forEach( ( eventType ) => {
-			carousel.addEventListener( eventType, onEnd );
+			carousel.addEventListener( eventType, () =>
+				dragController.onEnd()
+			);
 		} );
 	}
 
 	/**
 	 * Recalculate the slide positions during resize.
 	 *
-	 * @param {Object} instance The carousel instance.
+	 * @param {CarouselInstance} instance The carousel instance.
 	 */
-	function recalculateSlidePositions( instance ) {
-		const { slides, track } = instance;
+	function realignToFirstVisibleSlide( instance ) {
+		const { currentNode } = instance;
 
-		const firstVisible = slides.find(
-			( slide ) => ! slide.getAttribute( 'aria-hidden' )
-		);
-
-		if ( firstVisible ) {
-			const firstVisibleIndex = slides.indexOf( firstVisible );
-
-			if ( firstVisibleIndex === 0 ) {
-				return;
-			}
-
-			const gapValue =
-				getComputedStyle( track ).getPropertyValue( 'gap' );
-			const gap = parseFloat( gapValue ) || 0;
-
-			let totalOffset = 0;
-
-			for ( let i = 0; i < firstVisibleIndex; i++ ) {
-				totalOffset += slides[ i ].offsetWidth + gap;
-			}
-
-			updateCarousel( instance, Math.round( totalOffset * -1 ), true );
+		if ( ! currentNode?.slide ) {
+			return;
 		}
+
+		// Use the current logical leftmost slide's offset after resize.
+		const newOffset = Math.round( currentNode.slide.offsetLeft * -1 );
+		if ( newOffset === 0 ) {
+			// Already aligned (e.g., infinite mode where head === currentNode).
+			return;
+		}
+
+		updateCarousel( instance, newOffset, { animate: false } );
 	}
 
 	/**
-	 * Navigate to the previous slide(s).
+	 * Navigates to the previous slide.
 	 *
-	 * @param {Object} instance The carousel instance.
+	 * @param {CarouselInstance} instance The carousel instance.
 	 */
 	function navigatePrevious( instance ) {
-		const { carousel, slides, prevButton, track, animateEnd } = instance;
-
-		if (
-			prevButton &&
-			prevButton.getAttribute( 'aria-disabled' ) === 'true'
-		) {
-			return;
-		}
-
-		// Flag the potential need for a focus update.
-		// If the currently focused element is within the track,
-		// we can assume it's within a slide.
-		const updateFocus = track.contains( track.ownerDocument.activeElement );
-
-		const offsetter = slides.find(
-			( slide ) => ! slide.getAttribute( 'aria-hidden' )
-		);
-
-		let previous = offsetter?.previousElementSibling;
-
-		// Move the last slide to the beginning of the carousel if there is no previous slide.
-		// This is very rough and will need to be revisited.
-		if ( 'infinite' === animateEnd && ! previous ) {
-			const lastSlide = slides[ slides.length - 1 ];
-			const offset = lastSlide.offsetWidth + getItemGap( track );
-
-			instance.slides.pop();
-			instance.slides.unshift( lastSlide );
-
-			track.prepend( lastSlide );
-
-			updateCarousel( instance, -offset, true );
-
-			previous = lastSlide;
-		}
-
-		if ( 'back' === animateEnd && ! previous ) {
-			previous = slides[ slides.length - 1 ];
-		}
-
-		if ( carousel.classList.contains( 'animate-visible' ) ) {
-			const trackWidth = track.offsetWidth;
-			const gap = parseFloat(
-				getComputedStyle( track ).getPropertyValue( 'gap' )
-			);
-
-			let currentSlide = previous;
-			let totalWidth = 0;
-			let targetSlide = null;
-
-			while ( currentSlide ) {
-				const slideWidth = currentSlide.offsetWidth;
-
-				if ( totalWidth === 0 ) {
-					totalWidth = slideWidth;
-				} else {
-					totalWidth += slideWidth + gap;
-				}
-
-				if ( totalWidth > trackWidth ) {
-					break;
-				}
-
-				targetSlide = currentSlide;
-				currentSlide = currentSlide.previousElementSibling;
-			}
-
-			if ( targetSlide ) {
-				previous = targetSlide;
-			}
-		}
-
-		if ( previous ) {
-			updateCarousel(
-				instance,
-				previous.offsetLeft * -1,
-				false,
-				updateFocus
-			);
-		}
+		navigate( instance, 'previous' );
 	}
 
 	/**
-	 * Navigate to the next slide(s).
+	 * Navigates to the next slide.
 	 *
-	 * @param {Object} instance The carousel instance.
+	 * @param {CarouselInstance} instance The carousel instance.
 	 */
 	function navigateNext( instance ) {
-		const { carousel, track, slides, nextButton, animateEnd } = instance;
+		navigate( instance, 'next' );
+	}
 
-		if (
-			nextButton &&
-			nextButton.getAttribute( 'aria-disabled' ) === 'true'
-		) {
+	/**
+	 * Handles navigation.
+	 *
+	 * Aborts early if the directional navigation button is disabled,
+	 * otherwise delegates to the appropriate navigation handler.
+	 *
+	 * @param {CarouselInstance} instance  The carousel instance.
+	 * @param {string}           direction The direction to navigate.
+	 */
+	function navigate( instance, direction ) {
+		const { nextButton, prevButton } = instance;
+
+		const button = direction === 'next' ? nextButton : prevButton;
+		if ( button?.getAttribute( 'aria-disabled' ) === 'true' ) {
 			return;
 		}
 
-		// Flag the potential need for a focus update.
-		// If the currently focused element is within the track,
-		// we can assume it's within a slide.
-		const updateFocus = track.contains( track.ownerDocument.activeElement );
-
-		const offsetter = carousel.classList.contains( 'animate-visible' )
-			? slides
-					.slice()
-					.reverse()
-					.find( ( slide ) => ! slide.getAttribute( 'aria-hidden' ) )
-			: slides.find( ( slide ) => ! slide.getAttribute( 'aria-hidden' ) );
-
-		const next = offsetter?.nextElementSibling;
-
-		if ( next ) {
-			updateCarousel(
-				instance,
-				next.offsetLeft * -1,
-				false,
-				updateFocus
-			);
-		}
-
-		// Move the first slide to the end of the carousel after animating.
-		// This is also very rough and will need to be revisited.
-		if ( 'infinite' === animateEnd ) {
-			const firstSlide = slides[ 0 ];
-
-			const onInfiniteNext = () => {
-				firstSlide.removeEventListener(
-					'transitionend',
-					onInfiniteNext
-				);
-
-				instance.slides.shift();
-				instance.slides.push( firstSlide );
-
-				track.append( firstSlide );
-
-				updateCarousel( instance, 0, true );
-			};
-
-			firstSlide.addEventListener( 'transitionend', onInfiniteNext );
-		}
-
-		if ( 'back' === animateEnd && ! next ) {
-			updateCarousel( instance, 0, false, updateFocus );
+		if ( instance.isInfinite() ) {
+			navigateInfinite( instance, direction );
+		} else {
+			navigateWithinBounds( instance, direction );
 		}
 	}
 
 	/**
-	 * Update the carousel.
+	 * Handles standard navigation.
 	 *
-	 * @param {Object}  instance    The carousel instance.
-	 * @param {number}  offset      The offset to move the carousel to.
-	 * @param {boolean} resizing    Whether the carousel is being resized.
-	 * @param {boolean} updateFocus Whether to update the focus.
+	 * @param {CarouselInstance} instance  The carousel instance.
+	 * @param {string}           direction The direction to navigate.
+	 */
+	function navigateWithinBounds( instance, direction ) {
+		const { track } = instance;
+
+		const newCurrentNode = getTargetNode( instance, direction );
+		if ( ! newCurrentNode ) {
+			return;
+		}
+
+		const updateFocus = track.contains( track.ownerDocument.activeElement );
+
+		updateCarousel( instance, newCurrentNode.slide.offsetLeft * -1, {
+			updateFocus,
+		} );
+
+		instance.currentNode = newCurrentNode;
+	}
+
+	/**
+	 * Handles infinite navigation.
+	 *
+	 * Animates slides out of the track,
+	 * moves them to the opposite end after transition,
+	 * and resets the current node to maintain visual continuity.
+	 *
+	 * @param {CarouselInstance} instance  The carousel instance.
+	 * @param {string}           direction The direction to navigate.
+	 */
+	function navigateInfinite( instance, direction ) {
+		const { currentNode, slideList, track } = instance;
+		const { count, totalWidth } = getAnimationSpan( instance, direction );
+
+		const isNext = direction === 'next';
+		const offset = isNext ? -totalWidth : totalWidth;
+
+		const newCurrentNode = isNext
+			? slideList.advance( currentNode, count )
+			: slideList.retreat( currentNode, count );
+
+		// Update focus after transition if it is currently within the track.
+		const updateFocus = track.contains( track.ownerDocument.activeElement );
+
+		// Handle DOM manipulation to maintain visual continuity.
+		const onComplete = () =>
+			commitInfiniteRotation( instance, newCurrentNode, updateFocus );
+
+		updateCarousel( instance, offset, { onComplete } );
+	}
+
+	/**
+	 * Determines the slide to navigate to.
+	 *
+	 * @param {CarouselInstance} instance  The carousel instance.
+	 * @param {string}           direction The direction to navigate.
+	 */
+	function getTargetNode( instance, direction ) {
+		const { animateEnd, currentNode, slideList } = instance;
+		const isNext = direction === 'next';
+		const head = slideList.head;
+		const firstVisible = ! head.slide.getAttribute( 'aria-hidden' );
+		const lastVisible = ! head.prev.slide.getAttribute( 'aria-hidden' );
+
+		// Wrap at boundaries for jump mode.
+		if ( animateEnd === ANIMATE_MODES.JUMP ) {
+			// Jump to end.
+			if ( ! isNext && firstVisible ) {
+				return head.prev;
+			}
+
+			// Jump to start.
+			if ( isNext && lastVisible ) {
+				return head;
+			}
+		}
+
+		// Step one slide.
+		let targetNode = isNext
+			? slideList.advance( currentNode, 1 )
+			: slideList.retreat( currentNode, 1 );
+
+		// Attempt to fill track for batch mode.
+		if ( instance.isBatchMode() ) {
+			targetNode = getBatchTargetNode( instance, targetNode, direction );
+		}
+
+		// Return calculated target for jump mode within boundaries.
+		if ( animateEnd === ANIMATE_MODES.JUMP ) {
+			return targetNode;
+		}
+
+		// Prevent crossing ends.
+		if ( ! isNext && targetNode === head.prev ) {
+			return currentNode === head ? null : head;
+		}
+
+		if ( isNext && targetNode === head ) {
+			return currentNode === head.prev ? null : head.prev;
+		}
+
+		return targetNode;
+	}
+
+	/**
+	 * Determines the slide to navigate to for standard batch navigation.
+	 *
+	 * Iterates through slides in the given direction
+	 * until enough are found to fill the track width.
+	 *
+	 * @param {CarouselInstance} instance  The carousel instance.
+	 * @param {SlideNode}        startNode The starting node.
+	 * @param {string}           direction The direction to navigate.
+	 *
+	 * @return {SlideNode} The node to navigate to.
+	 */
+	function getBatchTargetNode( instance, startNode, direction ) {
+		const { track, slideList } = instance;
+		const trackWidth = track.offsetWidth;
+		const gap = instance.getTrackGap();
+
+		let currentNode = startNode;
+		let totalWidth = 0;
+		let optimalNode = startNode;
+
+		do {
+			const slideWidth = currentNode.slide.offsetWidth;
+			const testWidth =
+				totalWidth === 0 ? slideWidth : totalWidth + slideWidth + gap;
+
+			if ( testWidth > trackWidth ) {
+				break;
+			}
+
+			totalWidth = testWidth;
+			optimalNode = currentNode;
+
+			// Prevent wrapping across boundaries for non-infinite navigation.
+			if (
+				( direction === 'next' &&
+					currentNode === slideList.head.prev ) ||
+				( direction !== 'next' && currentNode === slideList.head )
+			) {
+				break;
+			}
+
+			currentNode =
+				direction === 'next'
+					? slideList.advance( currentNode, 1 )
+					: slideList.retreat( currentNode, 1 );
+		} while ( currentNode !== startNode );
+
+		return optimalNode;
+	}
+
+	/**
+	 * Finds the SlideNode corresponding to a given slide element.
+	 *
+	 * @param {CarouselInstance} instance The carousel instance.
+	 * @param {HTMLElement}      slide    The slide element to match.
+	 *
+	 * @return {SlideNode|null} The matching node, or null if not found.
+	 */
+	function getNodeForSlide( instance, slide ) {
+		const { slideList } = instance;
+		if ( ! slideList?.head ) {
+			return null;
+		}
+
+		let node = slideList.head;
+		do {
+			if ( node.slide === slide ) {
+				return node;
+			}
+			node = node.next;
+		} while ( node !== slideList.head );
+
+		return null;
+	}
+
+	/**
+	 * Returns the total number of slides and width to animate.
+	 *
+	 * @param {CarouselInstance} instance  The carousel instance.
+	 * @param {string}           direction The direction to navigate.
+	 *
+	 * @return {Object} The number of slides and width to animate.
+	 */
+	function getAnimationSpan( instance, direction = 'next' ) {
+		const { slideList, currentNode, track } = instance;
+
+		if ( ! slideList || ! currentNode || ! track ) {
+			return { count: 0, totalWidth: 0 };
+		}
+
+		const isBatch = instance.isBatchMode();
+		const gap = instance.getTrackGap();
+		const trackWidth = isBatch ? track.offsetWidth : null;
+
+		let count = 0;
+		let node = currentNode;
+		let totalWidth = 0;
+
+		do {
+			const slideWidth = node.slide.offsetWidth;
+
+			if ( count > 0 ) {
+				totalWidth += gap;
+			}
+
+			if ( ! isBatch && count >= 1 ) {
+				break;
+			}
+
+			if (
+				trackWidth !== null &&
+				totalWidth + slideWidth > trackWidth &&
+				count > 0
+			) {
+				break;
+			}
+
+			totalWidth += slideWidth;
+			count++;
+
+			node = direction === 'next' ? node.next : node.prev;
+		} while ( node !== currentNode );
+
+		return { count, totalWidth };
+	}
+
+	/**
+	 * Moves the carousel by the given offset via CSS transform,
+	 * optionally animating, restoring focus, or executing
+	 * a callback after the transition completes.
+	 *
+	 * @param {CarouselInstance} instance            The carousel instance.
+	 * @param {number}           offset              The distance to move the carousel.
+	 * @param {Object}           options             Behavior flags.
+	 * @param {boolean}          options.animate     Animate the transition (default: true).
+	 * @param {boolean}          options.updateFocus After movement, move focus into the current slide (default: false).
+	 * @param {Function|null}    options.onComplete  Callback to execute after transition completes (default: null).
 	 */
 	function updateCarousel(
 		instance,
 		offset,
-		resizing = false,
-		updateFocus = false
+		{ animate = true, updateFocus = false, onComplete = null } = {}
 	) {
-		const { carousel, track, slides } = instance;
+		const { carousel, slides } = instance;
 
-		if ( ! resizing ) {
-			carousel.classList.add( 'is-animating' );
+		if ( animate ) {
+			carousel.classList.add( CLASSES.ANIMATING );
 		}
 
 		slides.forEach( ( slide ) => {
 			slide.style.transform = `translate3d(${ offset }px, 0, 0)`;
 		} );
 
-		const firstSlide = slides[ 0 ];
+		const handleCompletion = () => {
+			if ( onComplete ) {
+				onComplete();
+			}
 
-		const onTransitionEnd = () => {
-			firstSlide.removeEventListener( 'transitionend', onTransitionEnd );
+			if ( updateFocus ) {
+				// Ensure the target slide can receive focus even if its visibility
+				// is not yet updated by the IntersectionObserver.
+				setSlideAccessibility( instance.currentNode.slide, true );
 
-			carousel.classList.remove( 'is-animating' );
-
-			// If the flag is set and the track no longer contains the focused element,
-			// we can assume the focus was lost during the transition.
-			// In that case, set focus within the first slide.
-			if (
-				updateFocus &&
-				! track.contains( track.ownerDocument.activeElement )
-			) {
-				// Delay slightly to account for DOM updates.
-				setTimeout( () => {
-					slides[ 0 ]
-						.querySelector( 'a, button, input, select, textarea' )
+				// Defer focus reset by one frame for good measure.
+				requestAnimationFrame( () => {
+					instance.currentNode.slide
+						.querySelector( SELECTORS.FOCUSABLE )
 						?.focus();
-				}, 50 );
+				} );
 			}
 		};
 
-		firstSlide.addEventListener( 'transitionend', onTransitionEnd );
-	}
+		const onTransitionEnd = () => {
+			carousel.classList.remove( CLASSES.ANIMATING );
+			handleCompletion();
+		};
 
-	/**
-	 * Update the button states.
-	 *
-	 * @param {Object}  instance                   The carousel instance.
-	 * @param {Element} instance.slides            The slides.
-	 * @param {Element} instance.prevButton        The previous button.
-	 * @param {Element} instance.nextButton        The next button.
-	 * @param {string}  instance.animateEnd        The animation end.
-	 * @param {Element} instance.paginationButtons The pagination buttons.
-	 */
-	function updateButtonStates( {
-		slides,
-		prevButton,
-		nextButton,
-		animateEnd,
-		paginationButtons,
-	} ) {
-		if ( [ 'back', 'infinite' ].includes( animateEnd ) ) {
-			return;
-		}
-
-		if ( prevButton ) {
-			if ( ! slides[ 0 ].getAttribute( 'aria-hidden' ) ) {
-				prevButton.setAttribute( 'aria-disabled', 'true' );
-			} else {
-				prevButton.removeAttribute( 'aria-disabled' );
-			}
-		}
-
-		if ( nextButton ) {
-			if ( ! slides[ slides.length - 1 ].getAttribute( 'aria-hidden' ) ) {
-				nextButton.setAttribute( 'aria-disabled', 'true' );
-			} else {
-				nextButton.removeAttribute( 'aria-disabled' );
-			}
-		}
-
-		if ( paginationButtons ) {
-			paginationButtons.forEach( ( button, index ) => {
-				if ( slides[ index ].getAttribute( 'aria-hidden' ) ) {
-					button.removeAttribute( 'aria-disabled' );
-				} else {
-					button.setAttribute( 'aria-disabled', 'true' );
-				}
+		if ( animate ) {
+			slides[ 0 ].addEventListener( 'transitionend', onTransitionEnd, {
+				once: true,
 			} );
+		} else {
+			handleCompletion();
 		}
 	}
 
 	/**
-	 * Set up the infinite carousel.
+	 * Reorders DOM and updates list pointers after an infinite-mode animation
+	 * so that `targetNode` becomes the new head/current node, then resets
+	 * transforms to zero. Optionally restores focus into the track.
 	 *
-	 * @param {Object} instance The carousel instance.
+	 * @param {CarouselInstance} instance    The carousel instance.
+	 * @param {SlideNode}        targetNode  The node that should become head/current.
+	 * @param {boolean}          updateFocus Whether to refocus inside the track.
 	 */
-	function setupInfiniteCarousel( instance ) {
-		const { carousel } = instance;
+	function commitInfiniteRotation(
+		instance,
+		targetNode,
+		updateFocus = false
+	) {
+		const { slideList, track } = instance;
 
-		if ( ! carousel.classList.contains( 'has-overflow-hidden' ) ) {
-			// Placeholder for future infinite carousel setup.
+		let node = slideList.head;
+		while ( node !== targetNode ) {
+			track.appendChild( node.slide );
+			node = node.next;
 		}
-	}
 
-	/**
-	 * Get the item gap.
-	 *
-	 * It might make sense to make this a property of the instance.
-	 * In that case, it would need to be recalculated on resize to
-	 * accommodate themes that change gap via clamp or breakpoints.
-	 *
-	 * @param {Element} track The track element.
-	 *
-	 * @return {number} The item gap.
-	 */
-	function getItemGap( track ) {
-		return (
-			parseFloat(
-				getComputedStyle( track ).getPropertyValue( 'column-gap' )
-			) || 0
-		);
+		slideList.head = targetNode;
+		instance.currentNode = targetNode;
+
+		// Reset position to zero without animation; optionally restore focus.
+		updateCarousel( instance, 0, { animate: false, updateFocus } );
 	}
 }
