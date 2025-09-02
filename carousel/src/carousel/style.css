@@ -47,7 +47,7 @@
 	.wp-block-post,
 	> .wp-block-group > *,
 	.wc-block-product {
-		flex: 0 0 auto;
+		flex: 1 0 auto;
 		margin: 0;
 		max-width: 100%;
 	}
