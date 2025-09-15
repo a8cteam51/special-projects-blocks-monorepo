@@ -13,40 +13,19 @@
 		gap: var(--wp--style--block-gap);
 	}
 
-	&.has-overflow-hidden {
-
-		.wp-block-gallery,
-		.wp-block-query,
-		.wp-block-group.wp-block-wpcomsp-carousel-track,
-		.wp-block-woocommerce-product-collection {
-			overflow-x: hidden;
-		}
+	&.has-overflow-hidden .wp-block-wpcomsp-carousel-track {
+		overflow-x: hidden;
 	}
 
-	&.has-overflow-right {
-
-		.wp-block-gallery,
-		.wp-block-query,
-		.wp-block-group.wp-block-wpcomsp-carousel-track,
-		.wp-block-woocommerce-product-collection {
-			clip-path: inset(0 -100vw 0 0);
-		}
+	&.has-overflow-right .wp-block-wpcomsp-carousel-track {
+		clip-path: inset(0 -100vw 0 0);
 	}
 
-	&.has-overflow-left {
-
-		.wp-block-gallery,
-		.wp-block-query,
-		.wp-block-group.wp-block-wpcomsp-carousel-track,
-		.wp-block-woocommerce-product-collection {
-			clip-path: inset(0 0 0 -100vw);
-		}
+	&.has-overflow-left .wp-block-wpcomsp-carousel-track {
+		clip-path: inset(0 0 0 -100vw);
 	}
 
-	.wp-block-gallery .wp-block-image,
-	.wp-block-post,
-	> .wp-block-group > *,
-	.wc-block-product {
+	.wp-block-wpcomsp-carousel-track > * {
 		flex: 1 0 auto;
 		margin: 0;
 		max-width: 100%;
@@ -54,14 +33,8 @@
 
 	@media (prefers-reduced-motion: no-preference) {
 
-		&.is-animating {
-
-			.wp-block-gallery .wp-block-image,
-			.wp-block-post,
-			> .wp-block-group > *,
-			.wc-block-product {
-				transition: transform var(--animation-speed) ease-in-out;
-			}
+		&.is-animating .wp-block-wpcomsp-carousel-track > * {
+			transition: transform var(--animation-speed) ease-in-out;
 		}
 	}
 }

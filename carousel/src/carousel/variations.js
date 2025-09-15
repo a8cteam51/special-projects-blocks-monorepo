@@ -16,6 +16,7 @@ const variations = [
 			{
 				name: 'core/gallery',
 				attributes: {
+					className: 'wp-block-wpcomsp-carousel-track',
 					columns: 1,
 					imageCrop: false,
 				},
@@ -38,6 +39,9 @@ const variations = [
 				innerBlocks: [
 					{
 						name: 'core/post-template',
+						attributes: {
+							className: 'wp-block-wpcomsp-carousel-track',
+						},
 						innerBlocks: [
 							{
 								name: 'core/post-featured-image',
@@ -126,7 +130,55 @@ const productVariation = {
 		'carousel'
 	),
 	scope: [ 'block' ],
-	innerBlocks: [ { name: 'woocommerce/product-collection' } ],
+	innerBlocks: [
+		{
+			name: 'woocommerce/product-collection',
+			innerBlocks: [
+				{
+					name: 'woocommerce/product-template',
+					attributes: {
+						className: 'wp-block-wpcomsp-carousel-track',
+					},
+					innerBlocks: [
+						{
+							name: 'woocommerce/product-image',
+							attributes: {
+								showSaleBadge: false,
+								imageSizing: 'thumbnail',
+								isDescendentOfQueryLoop: true,
+							},
+							innerBlocks: [
+								{
+									name: 'woocommerce/product-sale-badge',
+									attributes: {
+										align: 'right',
+									},
+								},
+							],
+						},
+						{
+							name: 'core/post-title',
+							attributes: {
+								isLink: true,
+							},
+						},
+						{
+							name: 'woocommerce/product-price',
+							attributes: {
+								isDescendentOfQueryLoop: true,
+							},
+						},
+						{
+							name: 'woocommerce/product-button',
+							attributes: {
+								isDescendentOfQueryLoop: true,
+							},
+						},
+					],
+				},
+			],
+		},
+	],
 	isActive: [ 'type' ],
 	attributes: { type: 'product-collection' },
 };
