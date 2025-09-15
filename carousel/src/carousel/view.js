@@ -5,8 +5,8 @@ import './view.css';
 {
 	const SELECTORS = {
 		CAROUSEL: '.wp-block-wpcomsp-carousel',
-		TRACK: '.wp-block-gallery, .wp-block-post-template, .wp-block-wpcomsp-carousel-track, .wc-block-product-template',
-		SLIDES: '.wp-block-gallery > .wp-block-image, .wp-block-post-template > .wp-block-post, .wp-block-wpcomsp-carousel-track > *, .wc-block-product-template .wc-block-product',
+		TRACK: '.wp-block-wpcomsp-carousel-track',
+		SLIDES: '.wp-block-wpcomsp-carousel-track > *',
 		PREV_BUTTON: '.wp-block-wpcomsp-carousel-nav--button_prev',
 		NEXT_BUTTON: '.wp-block-wpcomsp-carousel-nav--button_next',
 		PAGINATION_BUTTONS: '.wp-block-wpcomsp-carousel-pagination--button',
