@@ -1,8 +1,8 @@
 {
 	"name": "stretchy-type",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"description": "A block that expands to fill the width of its container.",
-	"author": "Studio 51",
+	"author": "Automattic Special Projects",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {

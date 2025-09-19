@@ -24,7 +24,7 @@ wp_enqueue_script(
 
 <div <?php echo wp_kses_post( get_block_wrapper_attributes() ); ?>>
 	<?php
-	$block_title = isset( $attributes['title'] ) ?? '';
+	$block_title = $attributes['title'] ?? '';
 	$block_title = apply_filters( 'wpcomsp_dynamic_table_of_contents_block_title', $block_title, $attributes );
 
 	if ( ! empty( $block_title ) ) {

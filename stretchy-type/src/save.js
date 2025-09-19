@@ -21,7 +21,6 @@ export default function save( { attributes } ) {
 	const { content, viewBox } = attributes;
 	const blockProps = useBlockProps.save( {
 		viewBox: viewBox ? viewBox : null,
-		className: 'wp-block-wpsp-stretchy-type',
 	} );
 
 	return (

@@ -1,0 +1,132 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/flowing-column",
+	"version": "0.1.0",
+	"title": "Flowing Column",
+	"category": "design",
+	"icon": "columns",
+	"description": "A block that allows you to create a flowing column layout, like a newspaper.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [
+			"wide",
+			"full"
+		],
+		"spacing": {
+			"blockGap": [
+				"horizontal",
+				"vertical"
+			],
+			"margin": true,
+			"padding": true,
+			"units": [
+				"px",
+				"em",
+				"rem",
+				"vh",
+				"vw",
+				"%"
+			]
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"textAlign": true,
+			"fontFamily": true,
+			"fontStyle": true,
+			"fontWeight": true,
+			"letterSpacing": true,
+			"textDecoration": true,
+			"textTransform": true
+		},
+		"border": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true
+		},
+		"dimensions": {
+			"minHeight": true
+		}
+	},
+	"attributes": {
+		"columnCount": {
+			"type": "number",
+			"minimum": 1,
+			"default": 2
+		},
+		"columnMinWidth": {
+			"type": "number",
+			"minimum": 1,
+			"default": 200
+		},
+		"columnMinWidthUnit": {
+			"type": "string",
+			"enum": [
+				"px",
+				"em",
+				"rem"
+			],
+			"default": "px"
+		},
+		"columnGap": {
+			"type": "number",
+			"minimum": 0,
+			"default": 2
+		},
+		"columnGapUnit": {
+			"type": "string",
+			"enum": [
+				"px",
+				"em",
+				"rem"
+			],
+			"default": "em"
+		},
+		"columnRuleStyle": {
+			"type": "string",
+			"enum": [
+				"none",
+				"solid",
+				"dashed",
+				"dotted",
+				"double"
+			],
+			"default": "solid"
+		},
+		"columnRuleWidth": {
+			"type": "number",
+			"minimum": 0,
+			"default": 1
+		},
+		"columnRuleWidthUnit": {
+			"type": "string",
+			"enum": [
+				"px",
+				"em",
+				"rem"
+			],
+			"default": "px"
+		},
+		"columnRuleColor": {
+			"type": "string",
+			"default": "#000"
+		},
+		"minColumns": {
+			"type": "number",
+			"minimum": 1,
+			"default": 1
+		}
+	},
+	"textdomain": "flowing-column",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css"
+}
