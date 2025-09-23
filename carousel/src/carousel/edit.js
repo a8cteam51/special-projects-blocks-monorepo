@@ -116,6 +116,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 
 					const query = contentBlock.attributes.query || {};
 					const postType = query?.postType || 'post';
+					const sticky = query?.sticky || '';
 
 					// Remove falsey values from query parameters.
 					const cleanQuery = Object.fromEntries(
@@ -134,6 +135,19 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 							);
 						} )
 					);
+
+					// Handle cases where sticky is set to `exclude` or `only`.
+					// Which works as a `post__in/post__not_in` query for sticky posts.
+					if ( [ 'exclude', 'only' ].includes( sticky ) ) {
+						cleanQuery.sticky = sticky === 'only';
+					}
+
+					// Empty string represents the default behavior of including sticky posts.
+					if ( [ '', 'ignore' ].includes( sticky ) ) {
+						// Remove any leftover sticky query parameter.
+						delete cleanQuery.sticky;
+						cleanQuery.ignore_sticky = sticky === 'ignore';
+					}
 
 					// Handle taxonomy queries.
 					const taxQuery = query.taxQuery
