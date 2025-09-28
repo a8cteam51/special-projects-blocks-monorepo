@@ -181,7 +181,7 @@ function TabsEdit( {
 				<div className="tabs-container">
 					<div
 						className="scroll-arrow scroll-arrow-left"
-						aria-label="Scroll tabs left"
+						aria-label={ __( 'Scroll tabs left', 'tabs' ) }
 						role="button"
 						tabIndex="0"
 					></div>
@@ -205,7 +205,7 @@ function TabsEdit( {
 					</div>
 					<div
 						className="scroll-arrow scroll-arrow-right"
-						aria-label="Scroll tabs right"
+						aria-label={ __( 'Scroll tabs right', 'tabs' ) }
 						role="button"
 						tabIndex="0"
 					></div>

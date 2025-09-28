@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { InnerBlocks, RichText, useBlockProps } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
 
 function TabButton( { isSelected, tabNumber, title } ) {
 	return (
@@ -46,7 +47,7 @@ export default function save( { attributes: { tabs } } ) {
 					className="scroll-arrow scroll-arrow-left"
 					role="button"
 					tabIndex="0"
-					aria-label="Scroll tabs left"
+					aria-label={ __( 'Scroll tabs left', 'tabs' ) }
 				></div>
 				<div role="tablist" className="tablist-wrapper">
 					{ tabButtons }
@@ -55,7 +56,7 @@ export default function save( { attributes: { tabs } } ) {
 					className="scroll-arrow scroll-arrow-right"
 					role="button"
 					tabIndex="0"
-					aria-label="Scroll tabs right"
+					aria-label={ __( 'Scroll tabs right', 'tabs' ) }
 				></div>
 			</div>
 			<InnerBlocks.Content />
