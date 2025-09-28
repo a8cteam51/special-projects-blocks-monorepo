@@ -149,27 +149,27 @@ class TabsScrollHandler {
 	bindEvents() {
 		// Scroll arrow click events
 		this.leftArrow.addEventListener( 'click', () => {
-			if ( this.leftArrow.style.display !== 'none' ) {
+			if ( ! this.leftArrow.classList.contains( 'hidden' ) ) {
 				this.scrollLeft();
 			}
 		} );
 
 		this.rightArrow.addEventListener( 'click', () => {
-			if ( this.rightArrow.style.display !== 'none' ) {
+			if ( ! this.rightArrow.classList.contains( 'hidden' ) ) {
 				this.scrollRight();
 			}
 		} );
 
 		// Keyboard support for scroll arrows
 		this.leftArrow.addEventListener( 'keydown', ( event ) => {
-			if ( ( event.key === 'Enter' || event.key === ' ' ) && this.leftArrow.style.display !== 'none' ) {
+			if ( ( event.key === 'Enter' || event.key === ' ' ) && ! this.leftArrow.classList.contains( 'hidden' ) ) {
 				event.preventDefault();
 				this.scrollLeft();
 			}
 		} );
 
 		this.rightArrow.addEventListener( 'keydown', ( event ) => {
-			if ( ( event.key === 'Enter' || event.key === ' ' ) && this.rightArrow.style.display !== 'none' ) {
+			if ( ( event.key === 'Enter' || event.key === ' ' ) && ! this.rightArrow.classList.contains( 'hidden' ) ) {
 				event.preventDefault();
 				this.scrollRight();
 			}
@@ -208,30 +208,24 @@ class TabsScrollHandler {
 
 		// Show/hide arrows based on scrollability
 		if ( ! isScrollable ) {
-			this.leftArrow.style.display = 'none';
-			this.rightArrow.style.display = 'none';
+			this.leftArrow.classList.add( 'hidden' );
+			this.rightArrow.classList.add( 'hidden' );
 			return;
 		}
 
 		// Show/hide arrows based on scroll position
 		// Left arrow: hide when at the beginning, show when there's content to scroll left
 		if ( scrollLeft <= 0 ) {
-			this.leftArrow.style.display = 'none';
+			this.leftArrow.classList.add( 'hidden' );
 		} else {
-			this.leftArrow.style.display = 'block';
-			this.leftArrow.removeAttribute( 'disabled' );
-			this.leftArrow.style.opacity = '1';
-			this.leftArrow.style.cursor = 'pointer';
+			this.leftArrow.classList.remove( 'hidden' );
 		}
 
 		// Right arrow: hide when at the end, show when there's content to scroll right
 		if ( scrollLeft >= scrollWidth - clientWidth - 1 ) {
-			this.rightArrow.style.display = 'none';
+			this.rightArrow.classList.add( 'hidden' );
 		} else {
-			this.rightArrow.style.display = 'block';
-			this.rightArrow.removeAttribute( 'disabled' );
-			this.rightArrow.style.opacity = '1';
-			this.rightArrow.style.cursor = 'pointer';
+			this.rightArrow.classList.remove( 'hidden' );
 		}
 	}
 
