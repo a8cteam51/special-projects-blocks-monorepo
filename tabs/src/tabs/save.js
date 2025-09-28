@@ -41,7 +41,23 @@ export default function save( { attributes: { tabs } } ) {
 
 	return (
 		<div { ...blockProps }>
-			<div role="tablist">{ tabButtons }</div>
+			<div className="tabs-container">
+				<div
+					className="scroll-arrow scroll-arrow-left"
+					role="button"
+					tabIndex="0"
+					aria-label="Scroll tabs left"
+				></div>
+				<div role="tablist" className="tablist-wrapper">
+					{ tabButtons }
+				</div>
+				<div
+					className="scroll-arrow scroll-arrow-right"
+					role="button"
+					tabIndex="0"
+					aria-label="Scroll tabs right"
+				></div>
+			</div>
 			<InnerBlocks.Content />
 		</div>
 	);

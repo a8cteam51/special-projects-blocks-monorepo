@@ -178,23 +178,37 @@ function TabsEdit( {
 				/>
 			</BlockControls>
 			<div { ...blockProps }>
-				<div role="tablist">
-					{ tabBlocks.map( ( tabBlock, index ) => {
-						const tabNumber = index + 1;
-						return (
-							<TabButton
-								key={ tabBlock.clientId }
-								clientId={ tabBlock.clientId }
-								isActiveTab={
-									! hasTabSelected && activeTab === tabNumber
-								}
-								tabNumber={ tabNumber }
-								setActiveTab={ setAttributes.bind( null, {
-									activeTab: tabNumber,
-								} ) }
-							/>
-						);
-					} ) }
+				<div className="tabs-container">
+					<div
+						className="scroll-arrow scroll-arrow-left"
+						aria-label="Scroll tabs left"
+						role="button"
+						tabIndex="0"
+					></div>
+					<div role="tablist" className="tablist-wrapper">
+						{ tabBlocks.map( ( tabBlock, index ) => {
+							const tabNumber = index + 1;
+							return (
+								<TabButton
+									key={ tabBlock.clientId }
+									clientId={ tabBlock.clientId }
+									isActiveTab={
+										! hasTabSelected && activeTab === tabNumber
+									}
+									tabNumber={ tabNumber }
+									setActiveTab={ setAttributes.bind( null, {
+										activeTab: tabNumber,
+									} ) }
+								/>
+							);
+						} ) }
+					</div>
+					<div
+						className="scroll-arrow scroll-arrow-right"
+						aria-label="Scroll tabs right"
+						role="button"
+						tabIndex="0"
+					></div>
 				</div>
 				<InnerBlocks
 					__experimentalCaptureToolbars
