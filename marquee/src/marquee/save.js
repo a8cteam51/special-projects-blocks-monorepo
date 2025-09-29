@@ -19,11 +19,13 @@ import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
  * @return {Element} Element to render.
  */
 export default function save( { attributes } ) {
-	const { direction, speed, pauseOnHover, gap, fadeEdges } = attributes;
+	const { direction, speed, pauseOnHover, gap, fadeEdges, verticalAlignment } = attributes;
 	const blockProps = useBlockProps.save( {
 		className: `wp-block-a8csp-marquee direction-${ direction }${
 			fadeEdges ? ' has-fade' : ''
-		} speed-${ speed } ${ pauseOnHover ? ' has-pause-on-hover' : '' }`,
+		} speed-${ speed } ${ pauseOnHover ? ' has-pause-on-hover' : '' }${
+			verticalAlignment ? ` align-${ verticalAlignment }` : ''
+		}`,
 		style: {
 			'--marquee-gap': `${ gap }px`,
 		},
