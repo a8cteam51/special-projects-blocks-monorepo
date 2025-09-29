@@ -32,6 +32,12 @@
 			margin: 0 !important;
 		}
 
+		// Reset vertical margins on all direct children
+		> * {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
 		// Override any nested block container styles
 		[data-block] {
 			margin: 0 !important;
@@ -54,6 +60,19 @@
 
 	&.is-previewing.direction-right .marquee-items {
 		animation-direction: reverse !important;
+	}
+
+	// Vertical alignment classes - need higher specificity for editor
+	&.align-top.wp-block-a8csp-marquee .marquee-items {
+		align-items: flex-start;
+	}
+
+	&.align-center.wp-block-a8csp-marquee .marquee-items {
+		align-items: center;
+	}
+
+	&.align-bottom.wp-block-a8csp-marquee .marquee-items {
+		align-items: flex-end;
 	}
 
 	// Make sure background color fills the entire block
@@ -81,4 +100,23 @@
 	flex-direction: row !important;
 	flex-wrap: nowrap !important;
 	gap: var(--marquee-gap, 20px) !important;
+	align-items: flex-start;
+
+	> * {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+}
+
+// Apply alignment to block list layout
+.wp-block-a8csp-marquee.align-top .block-editor-block-list__layout {
+	align-items: flex-start;
+}
+
+.wp-block-a8csp-marquee.align-center .block-editor-block-list__layout {
+	align-items: center;
+}
+
+.wp-block-a8csp-marquee.align-bottom .block-editor-block-list__layout {
+	align-items: flex-end;
 }

@@ -15,6 +15,7 @@ import {
 	useBlockProps,
 	InnerBlocks,
 	InspectorControls,
+	BlockVerticalAlignmentControl,
 } from '@wordpress/block-editor';
 
 /**
@@ -48,7 +49,7 @@ import { useState, useRef, useEffect } from '@wordpress/element';
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
-	const { direction, speed, pauseOnHover, gap, fadeEdges } = attributes;
+	const { direction, speed, pauseOnHover, gap, fadeEdges, verticalAlignment } = attributes;
 	const [ isPreviewingAnimation, setIsPreviewingAnimation ] =
 		useState( false );
 	const [ duration, setDuration ] = useState( 12 );
@@ -71,6 +72,8 @@ export default function Edit( { attributes, setAttributes } ) {
 		ref: blockRef,
 		className: `wp-block-a8csp-marquee direction-${ direction }${
 			isPreviewingAnimation ? ' is-previewing' : ''
+		}${
+			verticalAlignment ? ` align-${ verticalAlignment }` : ''
 		}`,
 		style: {
 			'--marquee-gap': `${ gap }px`,
@@ -149,6 +152,17 @@ export default function Edit( { attributes, setAttributes } ) {
 							setAttributes( { fadeEdges: value } )
 						}
 					/>
+					<div style={ { marginTop: '16px' } }>
+						<label style={ { display: 'block', marginBottom: '8px' } }>
+							{ __( 'Vertical Alignment', 'marquee' ) }
+						</label>
+						<BlockVerticalAlignmentControl
+							value={ verticalAlignment }
+							onChange={ ( value ) =>
+								setAttributes( { verticalAlignment: value || undefined } )
+							}
+						/>
+					</div>
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps }>

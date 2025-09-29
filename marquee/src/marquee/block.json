@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "a8csp/marquee",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"title": "Marquee",
 	"category": "widgets",
 	"icon": "controls-repeat",
@@ -42,6 +42,10 @@
 		"fadeEdges": {
 			"type": "boolean",
 			"default": false
+		},
+		"verticalAlignment": {
+			"type": "string",
+			"enum": ["top", "center", "bottom"]
 		}
 	},
 	"textdomain": "marquee",
