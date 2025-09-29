@@ -263,6 +263,7 @@ import './view.css';
 		}
 
 		// Initialize components.
+		ensureItemCount( instance );
 		setupSlideList( instance );
 		setupControlButtons( instance );
 		setupAnimationMode( instance );
@@ -273,6 +274,23 @@ import './view.css';
 		setupControlNavigationHandlers( instance );
 		setupKeyboardNavigation( instance );
 		setupDragNavigation( instance );
+	}
+
+	/**
+	 * Ensure accuracy of the `--item-count` CSS variable.
+	 *
+	 * @param {CarouselInstance} instance The carousel instance.
+	 */
+	function ensureItemCount( instance ) {
+		const property = '--item-count';
+		const actual = String( instance.slides.length );
+		const current = instance.carousel.style
+			.getPropertyValue( property )
+			.trim();
+
+		if ( actual !== current ) {
+			instance.carousel.style.setProperty( property, actual );
+		}
 	}
 
 	/**

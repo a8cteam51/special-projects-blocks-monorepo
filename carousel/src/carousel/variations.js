@@ -20,6 +20,9 @@ const variations = [
 					columns: 1,
 					imageCrop: false,
 				},
+				metaData: {
+					name: __( 'Carousel Track', 'carousel' ),
+				},
 			},
 		],
 		isActive: [ 'type' ],
@@ -41,6 +44,9 @@ const variations = [
 						name: 'core/post-template',
 						attributes: {
 							className: 'wp-block-wpcomsp-carousel-track',
+						},
+						metaData: {
+							name: __( 'Carousel Track', 'carousel' ),
 						},
 						innerBlocks: [
 							{
@@ -175,6 +181,9 @@ const productVariation = {
 							},
 						},
 					],
+					metaData: {
+						name: __( 'Carousel Track', 'carousel' ),
+					},
 				},
 			],
 		},
