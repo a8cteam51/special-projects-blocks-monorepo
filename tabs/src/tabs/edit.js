@@ -183,7 +183,6 @@ function TabsEdit( {
 						className="scroll-arrow scroll-arrow-left"
 						aria-label={ __( 'Scroll tabs left', 'tabs' ) }
 						role="button"
-						tabIndex="0"
 					></div>
 					<div role="tablist" className="tablist-wrapper">
 						{ tabBlocks.map( ( tabBlock, index ) => {
@@ -207,7 +206,6 @@ function TabsEdit( {
 						className="scroll-arrow scroll-arrow-right"
 						aria-label={ __( 'Scroll tabs right', 'tabs' ) }
 						role="button"
-						tabIndex="0"
 					></div>
 				</div>
 				<InnerBlocks
