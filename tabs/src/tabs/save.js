@@ -46,7 +46,6 @@ export default function save( { attributes: { tabs } } ) {
 				<div
 					className="scroll-arrow scroll-arrow-left"
 					role="button"
-					tabIndex="0"
 					aria-label={ __( 'Scroll tabs left', 'tabs' ) }
 				></div>
 				<div role="tablist" className="tablist-wrapper">
@@ -55,7 +54,6 @@ export default function save( { attributes: { tabs } } ) {
 				<div
 					className="scroll-arrow scroll-arrow-right"
 					role="button"
-					tabIndex="0"
 					aria-label={ __( 'Scroll tabs right', 'tabs' ) }
 				></div>
 			</div>
