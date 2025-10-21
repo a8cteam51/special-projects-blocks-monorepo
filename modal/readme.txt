@@ -14,7 +14,7 @@ This modal block adds the ability to create a modal to any post / page or naviga
 
 Features:
 
-- A modal section under Patterns > Modal where the site user can create as many modals as they like and add any custom block into the modal. 
+- A modal section under Patterns > Modal where the site user can create as many modals as they like and add any custom block into the modal.
 - To create a new modal, go to Patterns > Add New Pattern > Add new Template Part then choose the `Modal` category.
 - Every modal window has a label and description setting that is updated via the options API so they are consistent accross all instances of the modal.
 - The modal should close when: The escape key is pressed, the close button is pressed or when clicking outside the modal
@@ -49,6 +49,9 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 2. This is the second screen shot
 
 == Changelog ==
+
+= 0.1.2 =
+* Fix: Prevent modal from being displayed on password protected posts.
 
 = 0.1.0 =
 * Release
