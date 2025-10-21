@@ -178,6 +178,10 @@ function a8csp_modal_insert_modal_templates() {
 		return;
 	}
 
+	if ( post_password_required() ) {
+		return;
+	}
+
 	$modal_templates = a8csp_modal_get_modal_templates();
 
 	ob_start();
