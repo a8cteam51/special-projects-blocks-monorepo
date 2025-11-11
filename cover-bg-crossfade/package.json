@@ -1,5 +1,5 @@
 {
-	"name": "cover-bg-vrossfade",
+	"name": "cover-bg-crossfade",
 	"version": "0.1.0",
 	"description": "Adds ability to crossfade between fixed cover backgrounds of multiple cover blocks on a single page based on their scroll position.",
 	"author": "WordPress Special Projects Team",
