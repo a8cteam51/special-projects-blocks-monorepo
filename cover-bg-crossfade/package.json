@@ -1,0 +1,21 @@
+{
+	"name": "cover-bg-vrossfade",
+	"version": "0.1.0",
+	"description": "Adds ability to crossfade between fixed cover backgrounds of multiple cover blocks on a single page based on their scroll position.",
+	"author": "WordPress Special Projects Team",
+	"license": "GPL-2.0-or-later",
+	"scripts": {
+		"build": "wp-scripts build src/view --output-path=build/view",
+		"format:js": "wp-scripts format",
+		"format:styles": "wp-scripts lint-style --fix",
+		"lint:styles": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start src/view --output-path=build/view"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^30.22.0",
+		"@wordpress/browserslist-config": "^6.29.0"
+	}
+}
