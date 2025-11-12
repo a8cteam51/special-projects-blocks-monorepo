@@ -12,7 +12,7 @@ Display Jetpack's related posts in a query block that can be customized in the e
 
 == Description ==
 
-The **Jetpack Related Posts Query Loop** plugin adds a query block variation named `Related Posts Query` that displays the related posts from Jetpack in a query block that can be customized like a regular query block in the editor. This allows for more customization options than the default Jetpack Related Postd block.
+The **Jetpack Related Posts Query Loop** plugin adds a query block variation named `Related Posts Query` that displays the related posts from Jetpack in a query block that can be customized like a regular query block in the editor. This allows for more customization options than the default Jetpack Related Posts block.
 
 == Installation ==
 
