@@ -1,4 +1,4 @@
-=== Cover Background Crossfade ===
+=== Jetpack Related Posts Query Loop ===
 Contributors:      wpspecialprojects
 Tags:              query, related posts, jetpack
 Tested up to:      6.8.3
