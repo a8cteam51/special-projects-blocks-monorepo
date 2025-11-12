@@ -25,7 +25,7 @@ The **Jetpack Related Posts Query Loop** plugin adds a query block variation nam
 1. Edit any post and add the **Related Posts Query** block variation.
  1.1. The block can be added by either typing `/related` in a paragraph and picking the **Related Posts Query** block
  1.2. Or by clicking the **Block Inserter** button (Plus button in the top toolbar) in the editor and selecting **Related Posts Query** from the list of blocks in the Theme section.
-2. Customize the query block lika any regular query block.
+2. Customize the query block like any regular query block.
 
 **Notes:**
 
