@@ -64,9 +64,9 @@ function a8csp_jrpql_register_related_query_block_variation( $variations, $block
 			'title'           => esc_html__( 'Related Posts Query', 'a8csp-jprpql' ),
 			'description'     => esc_html__( 'Related posts query block.', 'a8csp-jprpql' ),
 			'keywords'        => array(
-				// translators: search keyword for block variation
+				/* translators: search keyword for block variation */
 				esc_html__( 'query', 'a8csp-jprpql' ),
-				// translators: search keyword for block variation
+				/* translators: search keyword for block variation */
 				esc_html__( 'related', 'a8csp-jprpql' ),
 			),
 			'attributes'      => array(
@@ -139,7 +139,7 @@ function a8csp_jrpql_get_related_posts_args( array $query_args ): array {
 
 	$post_id = get_the_ID();
 
-	if ( false === $post_id ) {
+	if ( ! empty( $post_id ) ) {
 		return $query_args;
 	}
 
