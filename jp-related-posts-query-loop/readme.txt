@@ -30,7 +30,7 @@ The **Jetpack Related Posts Query Loop** plugin adds a query block variation nam
 **Notes:**
 
 - This block variation uses Jetpack's Related Posts feature. If Jetpack is not activated or it returns no results, the block will display random posts from the site.
-- In the editor, the block will display random posts.
+- In the editor, the block will display the latest posts.
 
 == Changelog ==
 
