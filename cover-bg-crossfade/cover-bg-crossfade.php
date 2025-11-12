@@ -12,7 +12,6 @@
  * Requires at least: 6.6
  * Tested up to:      6.8.3
  * Requires PHP:      7.4
- * Network:           false
  *
  * @package           a8csp
  */
