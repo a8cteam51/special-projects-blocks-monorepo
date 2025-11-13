@@ -80,7 +80,7 @@ class WPCOMSP_Blocks_Self_Update {
 
 		// Validate the response structure
 		if ( ! is_array( $updated_array ) || ! isset( $updated_array['slug'], $updated_array['version'], $updated_array['package_url'] ) ) {
-			return $update;
+				return $update;
 		}
 
 		return array(

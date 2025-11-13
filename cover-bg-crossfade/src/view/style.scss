@@ -1,0 +1,39 @@
+body:has(.wp-block-cover.is-style-a8csp-cover-bg-crossfade) {
+	overscroll-behavior: none;
+}
+
+.wp-block-cover {
+
+	&.is-style-a8csp-cover-bg-crossfade {
+		//editor and frontend
+		+ * {
+			margin-top: 0;
+		}
+
+		//only frontend
+		:where(body:not(.wp-admin)) & {
+
+			:is(.wp-block-cover__video-background, .wp-block-cover__image-background, .wp-block-cover__background) {
+				inset: 0;
+				position: fixed;
+				transition: opacity 0.5s ease-out;
+				z-index: -1;
+			}
+
+			&:not(.show-video) {
+
+				:is(.wp-block-cover__video-background, .wp-block-cover__image-background, .wp-block-cover__background) {
+					opacity: 0;
+				}
+			}
+
+			//show first background by default until js finds the closest
+			&:nth-child(1 of .is-style-a8csp-cover-bg-crossfade) {
+
+				:is(.wp-block-cover__video-background, .wp-block-cover__image-background) {
+					opacity: 1;
+				}
+			}
+		}
+	}
+}
