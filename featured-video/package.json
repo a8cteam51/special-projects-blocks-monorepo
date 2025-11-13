@@ -14,7 +14,7 @@
 		"start": "wp-scripts start src/editor --output-path=build/editor"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^30.22.0",
-		"@wordpress/browserslist-config": "^6.29.0"
+		"@wordpress/scripts": "^31.0.0",
+		"@wordpress/browserslist-config": "^6.35.0"
 	}
 }
