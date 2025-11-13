@@ -1,0 +1,85 @@
+.watco {
+	position: relative;
+}
+
+.watco-overlay {
+	background-color: var(--wp--preset--color--base);
+	bottom: 0;
+	box-sizing: border-box;
+	overflow: hidden;
+	height: 0;
+	left: 0;
+	position: absolute;
+	transition: height 0.3s ease-in-out;
+	width: 100%;
+	z-index: 10;
+
+	&.show-form {
+		height: auto;
+		height: calc-size(auto, size);
+		max-height: 100dvh;
+		overscroll-behavior: contain;
+
+		@media ( max-width: 783px ) {
+			position: fixed;
+			z-index: 99999;
+		}
+	}
+
+	&.watco-overlay--style-modal {
+		transition: none;
+
+		.watco-overlay__content {
+			background-color: var(--wp--preset--color--base);
+			padding: 2rem;
+		}
+
+		&.show-form {
+			background-color: rgba(0, 0, 0, 0.25);
+			position: fixed;
+			z-index: 99999;
+			height: 100dvh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: height 0.3s ease-in-out;
+		}
+	}
+}
+
+.watco-overlay__content {
+	padding: var(--wp--preset--spacing--20, 1rem);
+	padding-block-end: 0;
+}
+
+.watco__product-link {
+	&:focus:not(:focus-visible) {
+		outline: none;
+	}
+}
+
+.watco__close {
+	background-color: transparent !important;
+	border: 0 none;
+	border-radius: 50%;
+	cursor: pointer;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	font-size: 1em;
+	font-weight: 300;
+	height: 1em;
+	line-height: 1;
+	padding: 0;
+	position: absolute;
+	top: var(--wp--preset--spacing--20, 1rem);
+	right: var(--wp--preset--spacing--20, 1rem);
+	width: 1em;
+	z-index: 1;
+
+	&::after {
+		content: "\2715";
+		display: inline-block;
+		font-size: inherit;
+	}
+}
