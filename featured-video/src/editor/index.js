@@ -4,11 +4,12 @@ import { __ } from "@wordpress/i18n";
 import { useSelect } from "@wordpress/data";
 import { useEntityProp } from "@wordpress/core-data";
 import { store as coreStore } from "@wordpress/core-data";
-import { Button, SelectControl, Flex, FlexItem } from "@wordpress/components";
+import { SelectControl, Flex, FlexItem } from "@wordpress/components";
 import { useState } from "@wordpress/element";
 
 import LocalControl from "./local-control";
 import ExternalControl from "./external-control";
+import VideoControls from "./video-controls";
 
 const FeaturedVideo = () => {
 	const postType = useSelect(
@@ -61,57 +62,60 @@ const FeaturedVideo = () => {
 			title={__("Featured Video", "featured-video")}
 			className="video-metabox"
 		>
-			<Flex alignment="center" direction="column">
-				<FlexItem>
-					<SelectControl
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-						label={__("Video Source", "featured-video")}
-						options={[
-							{
-								label: __("Media Library", "featured-video"),
-								value: "upload",
-							},
-							{
-								label: __("External Video", "featured-video"),
-								value: "external",
-							},
-						]}
-						value={videoSource}
-						onChange={onChangeVideoSource}
-					/>
-				</FlexItem>
-				{videoSource === "upload" && (
+			<Flex alignment="center" direction="column" gap={4}>
+				<Flex alignment="center" direction="column">
 					<FlexItem>
-						<LocalControl
-							selectedVideoId={selectedVideoId}
-							setVideoId={setVideoId}
-							removeVideo={removeVideo}
+						<SelectControl
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
+							label={__("Video Source", "featured-video")}
+							options={[
+								{
+									label: __("Media Library", "featured-video"),
+									value: "upload",
+								},
+								{
+									label: __("External Video", "featured-video"),
+									value: "external",
+								},
+							]}
+							value={videoSource}
+							onChange={onChangeVideoSource}
 						/>
 					</FlexItem>
-				)}
-				{videoSource === "external" && (
-					<FlexItem>
-						<ExternalControl
-							selectedVideoId={selectedVideoId}
-							setVideoId={setVideoId}
-							removeVideo={removeVideo}
-						/>
-					</FlexItem>
-				)}
+					{videoSource === "upload" && (
+						<FlexItem>
+							<LocalControl
+								selectedVideoId={selectedVideoId}
+								setVideoId={setVideoId}
+								removeVideo={removeVideo}
+							/>
+						</FlexItem>
+					)}
+					{videoSource === "external" && (
+						<FlexItem>
+							<ExternalControl
+								selectedVideoId={selectedVideoId}
+								setVideoId={setVideoId}
+								removeVideo={removeVideo}
+							/>
+						</FlexItem>
+					)}
 
-				{!selectedVideoId && (
-					<FlexItem>
-						<p className="featured-video-source-description">
-							{videoSource === "upload"
-								? __("Choose a video from media library", "featured-video")
-								: __(
-										"Paste a video URL. Supported Providers: As supported by WordPress Embeds",
-										"featured-video"
-								  )}
-						</p>
-					</FlexItem>
-				)}
+					{!selectedVideoId && (
+						<FlexItem>
+							<p className="featured-video-source-description">
+								{videoSource === "upload"
+									? __("Choose a video from media library", "featured-video")
+									: __(
+											"Paste a video URL. Supported Providers: As supported by WordPress Embeds",
+											"featured-video"
+									  )}
+							</p>
+						</FlexItem>
+					)}
+				</Flex>
+				<VideoControls />
 			</Flex>
 		</PluginDocumentSettingPanel>
 	);

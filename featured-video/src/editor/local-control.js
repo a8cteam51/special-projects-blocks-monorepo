@@ -43,7 +43,6 @@ const LocalControl = (props) => {
 											className="editor-post-featured-image__preview-video"
 											controls
 											src={mediaSourceUrl}
-											poster={mediaSourceUrl}
 											alt={__("Selected Video", "featured-video")}
 										/>
 									)}
