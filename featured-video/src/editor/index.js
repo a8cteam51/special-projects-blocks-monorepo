@@ -49,7 +49,7 @@ const FeaturedVideo = () => {
 
 	const setVideoId = (media) => {
 		if ("object" === typeof media) {
-			setMeta({ [META_KEY]: media.id });
+			setMeta({ [META_KEY]: media.id.toString() });
 		} else if ("string" === typeof media) {
 			setMeta({ [META_KEY]: media });
 		}
