@@ -35,14 +35,22 @@ const FeaturedVideo = () => {
 	const selectedVideoId = meta?.[META_KEY] || "";
 
 	const removeVideo = () => {
-		setMeta({ [META_KEY]: null });
+		setMeta({ [META_KEY]: "" });
 	};
 
-	const [videoSource, setVideoSource] = useState("upload");
+	const removeVideoOptions = () => {
+		const META_OPTIONS_KEY = "_wpcomsp_featured_video_options";
+		setMeta({ [META_OPTIONS_KEY]: {} });
+	};
+
+	const [videoSource, setVideoSource] = useState(() => {
+		return Number.isInteger(Number(selectedVideoId)) ? "local" : "external";
+	});
 
 	const onChangeVideoSource = (newSource) => {
 		if (videoSource !== newSource) {
 			removeVideo();
+			removeVideoOptions();
 		}
 
 		setVideoSource(newSource);
@@ -72,7 +80,7 @@ const FeaturedVideo = () => {
 							options={[
 								{
 									label: __("Media Library", "featured-video"),
-									value: "upload",
+									value: "local",
 								},
 								{
 									label: __("External Video", "featured-video"),
@@ -83,7 +91,7 @@ const FeaturedVideo = () => {
 							onChange={onChangeVideoSource}
 						/>
 					</FlexItem>
-					{videoSource === "upload" && (
+					{videoSource === "local" && (
 						<FlexItem>
 							<LocalControl
 								selectedVideoId={selectedVideoId}
@@ -105,7 +113,7 @@ const FeaturedVideo = () => {
 					{!selectedVideoId && (
 						<FlexItem>
 							<p className="featured-video-source-description">
-								{videoSource === "upload"
+								{videoSource === "local"
 									? __("Choose a video from media library", "featured-video")
 									: __(
 											"Paste a video URL. Supported Providers: As supported by WordPress Embeds",
@@ -115,7 +123,7 @@ const FeaturedVideo = () => {
 						</FlexItem>
 					)}
 				</Flex>
-				<VideoControls />
+				<VideoControls videoSource={videoSource} />
 			</Flex>
 		</PluginDocumentSettingPanel>
 	);

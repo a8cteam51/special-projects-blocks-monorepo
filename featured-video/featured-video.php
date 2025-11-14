@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Featured Video
  * Description: Add the ability to use Featured Video inplace of Featured Image. <strong>Supported Block:</strong> core/post-featured-image</strong>
- * Version: 0.2.0
+ * Version: 0.2.1
  * Author: WordPress Special Projects Team
  * Author URI: https://wpspecialprojects.wordpress.com/
  * Update URI: https://opsoasis.wpspecialprojects.com/featured-video/
@@ -29,7 +29,7 @@ if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
 }
 
 // If no other WPCOMSP_HTML_Tag_Processor class exists, add it.
-if ( ! class_exists( 'WPCOMSP_HTML_Tag_Processor' ) ) {
+if ( ! class_exists( WPCOMSP_HTML_Tag_Processor::class ) ) {
 	require __DIR__ . '/classes/class-wpcomsp-html-tag-processor.php';
 }
 
@@ -85,6 +85,51 @@ function wpcomsp_featured_video_register_post_meta() {
 			},
 		)
 	);
+
+	register_post_meta(
+		'post',
+		'_wpcomsp_featured_video_options',
+		array(
+			'sanitize_callback' => static function ( array $value ): array {
+
+				$allowed_options = array(
+					'autoplay' => true,
+					'loop'     => true,
+					'muted'    => true,
+					'playsinline' => true,
+				);
+
+				return $value;
+			},
+			'show_in_rest'      => array(
+				'schema' => array(
+					'type' => 'object',
+					'properties' => array(
+						'autoplay' => array(
+							'type' => 'boolean',
+						),
+						'loop'     => array(
+							'type' => 'boolean',
+						),
+						'muted'    => array(
+							'type' => 'boolean',
+						),
+						'playsinline' => array(
+							'type' => 'boolean',
+						),
+						'controls' => array(
+							'type' => 'boolean',
+						),
+					),
+				),
+			),
+			'type'              => 'object',
+			'single'            => true,
+			'auth_callback'     => static function (): bool {
+				return current_user_can( 'edit_posts' );
+			},
+		)
+	);
 }
 add_action( 'init', 'wpcomsp_featured_video_register_post_meta' );
 
@@ -112,24 +157,35 @@ function wpcomsp_featured_video_render_post_featured_image( $block_content, $blo
 	$video_markup = '';
 
 	if ( is_numeric( $featured_video_id ) ) {
-		$featured_video_url = wp_get_attachment_url( $featured_video_id );
 
-		if ( ! $featured_video_url ) {
-			return $block_content;
+		$featured_video_url = wp_get_attachment_url( $featured_video_id );
+		$default_attributes = array(
+			'autoplay'     => false,
+			'loop'         => false,
+			'muted'        => false,
+			'playsinline'  => true,
+			'controls'     => true,
+		);
+
+		$video_options = get_post_meta( $wp_block->context['postId'], '_wpcomsp_featured_video_options', true );
+		if ( is_array( $video_options ) ) {
+			$attributes = wp_parse_args( $video_options, $default_attributes );
+		} else {
+			$attributes = $default_attributes;
 		}
+
+		$attributes_string = implode( ' ', array_map( 'esc_attr', array_keys( array_filter( $attributes ) ) ) );
 
 		$featured_video_url = esc_url_raw( $featured_video_url );
 
 		$video_markup = <<<HTML
-		<video class="attachment-post-thumbnail size-post-thumbnail wp-post-image wp-post-video intrinsic-ignore" controls autoplay muted loop playsinline src="$featured_video_url" style="width: 100%" preload="metadata"><p>Your browser does not support the video tag.</p></video>
+		<figure class="wp-block-video">
+			<video class="wp-block-video" src="$featured_video_url" preload="metadata" $attributes_string><p>Your browser does not support the video tag.</p></video>
+		</figure>
 		HTML;
 	} else {
+
 		$featured_video_url = esc_url_raw( $featured_video_id );
-
-		if ( ! $featured_video_url ) {
-			return $block_content;
-		}
-
 		$video_markup = wp_oembed_get( $featured_video_url );
 
 		if ( ! $video_markup ) {
