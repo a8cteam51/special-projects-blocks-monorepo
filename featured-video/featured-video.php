@@ -120,6 +120,9 @@ function wpcomsp_featured_video_register_post_meta() {
 						'controls' => array(
 							'type' => 'boolean',
 						),
+						'posterId' => array(
+							'type' => 'integer',
+						),
 					),
 				),
 			),

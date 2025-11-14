@@ -1,22 +1,16 @@
-import { ToggleControl, Flex } from "@wordpress/components";
-import { useEntityProp } from "@wordpress/core-data";
+import { ToggleControl, Flex, Button, FlexBlock } from "@wordpress/components";
+import { MediaUpload, MediaUploadCheck } from "@wordpress/block-editor";
 import { __ } from "@wordpress/i18n";
 
 const VideoControls = (props) => {
-	const { videoSource } = props;
+	const { videoSource, videoOptions, setPoster, setOption, selectedVideoId } =
+		props;
 
-	if ("local" !== videoSource) {
+	if ("local" !== videoSource || !selectedVideoId) {
 		return null;
 	}
 
-	const META_KEY = "_wpcomsp_featured_video_options";
-	const [meta, setMeta] = useEntityProp("postType", "post", "meta");
-
-	const videoOptions = meta?.[META_KEY] || {};
-	const setOption = (key, value) => {
-		const updatedOptions = { ...videoOptions, [key]: value };
-		setMeta({ [META_KEY]: updatedOptions });
-	};
+	const { posterId } = videoOptions;
 
 	return (
 		<Flex alignment="center" direction="column" gap={4}>
@@ -66,6 +60,45 @@ const VideoControls = (props) => {
 						: true
 				}
 			/>
+			<MediaUploadCheck>
+				<MediaUpload
+					onSelect={setPoster}
+					allowedTypes={["image"]}
+					value={null}
+					render={({ open }) => (
+						<div className="editor-post-featured-image__container">
+							<Flex alignment="center" direction="column">
+								{!posterId && (
+									<FlexBlock>
+										<Button
+											__next40pxDefaultSize
+											variant="primary"
+											onClick={open}
+											style={{ width: "100%", justifyContent: "center" }}
+										>
+											{__("Add Poster", "featured-video")}
+										</Button>
+									</FlexBlock>
+								)}
+								{posterId && (
+									<FlexBlock>
+										<Button
+											__next40pxDefaultSize
+											variant="secondary"
+											style={{ width: "100%", justifyContent: "center" }}
+											onClick={() => {
+												setOption("posterId", "");
+											}}
+										>
+											{__("Remove Poster", "featured-video")}
+										</Button>
+									</FlexBlock>
+								)}
+							</Flex>
+						</div>
+					)}
+				/>
+			</MediaUploadCheck>
 		</Flex>
 	);
 };

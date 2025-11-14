@@ -5,14 +5,14 @@ import { useRef } from "@wordpress/element";
 import { __ } from "@wordpress/i18n";
 
 const LocalControl = (props) => {
-	const { selectedVideoId, setVideoId, removeVideo } = props;
+	const { selectedVideoId, setVideoId, removeVideo, posterSourceUrl } = props;
 
 	const mediaSourceUrl = useSelect(
 		(select) =>
 			selectedVideoId
 				? select("core").getMedia(selectedVideoId)?.source_url
 				: null,
-		[selectedVideoId]
+		[selectedVideoId],
 	);
 
 	const toggleRef = useRef();
@@ -44,6 +44,7 @@ const LocalControl = (props) => {
 											controls
 											src={mediaSourceUrl}
 											alt={__("Selected Video", "featured-video")}
+											poster={posterSourceUrl}
 										/>
 									)}
 								</Button>
@@ -56,7 +57,6 @@ const LocalControl = (props) => {
 												__next40pxDefaultSize
 												variant="secondary"
 												onClick={open}
-												width="100%"
 											>
 												{__("Replace", "featured-video")}
 											</Button>
@@ -65,7 +65,6 @@ const LocalControl = (props) => {
 											<Button
 												__next40pxDefaultSize
 												variant="secondary"
-												width="100%"
 												onClick={() => {
 													removeVideo();
 													toggleRef.current.focus();

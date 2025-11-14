@@ -14,7 +14,7 @@ import VideoControls from "./video-controls";
 const FeaturedVideo = () => {
 	const postType = useSelect(
 		(select) => select("core/editor").getCurrentPostType(),
-		[]
+		[],
 	);
 
 	const hasPostThumbnailSupport = useSelect(
@@ -22,7 +22,7 @@ const FeaturedVideo = () => {
 			const postTypeObject = select(coreStore).getPostType(postType);
 			return postTypeObject?.supports?.["thumbnail"] ?? false;
 		},
-		[postType]
+		[postType],
 	);
 
 	if (!hasPostThumbnailSupport) {
@@ -30,16 +30,42 @@ const FeaturedVideo = () => {
 	}
 
 	const META_KEY = "_wpcomsp_featured_video_id";
+	const META_OPTIONS_KEY = "_wpcomsp_featured_video_options";
 	const [meta, setMeta] = useEntityProp("postType", postType, "meta");
 
 	const selectedVideoId = meta?.[META_KEY] || "";
+	const videoOptions = meta?.[META_OPTIONS_KEY] || {};
+
+	const posterId = videoOptions.posterId || "";
+
+	const posterSourceUrl = useSelect(
+		(select) =>
+			posterId ? select("core").getMedia(posterId)?.source_url : null,
+		[posterId],
+	);
+
+	console.log(posterId);
+
+	const setOption = (key, value) => {
+		const updatedOptions = { ...videoOptions, [key]: value };
+		setMeta({ [META_KEY]: updatedOptions });
+	};
+
+	const setPoster = (media) => {
+		if ("object" === typeof media) {
+			setOption("posterId", media.id);
+		}
+	};
+
+	const removePoster = () => {
+		setOption("posterId", null);
+	};
 
 	const removeVideo = () => {
 		setMeta({ [META_KEY]: "" });
 	};
 
 	const removeVideoOptions = () => {
-		const META_OPTIONS_KEY = "_wpcomsp_featured_video_options";
 		setMeta({ [META_OPTIONS_KEY]: {} });
 	};
 
@@ -51,6 +77,7 @@ const FeaturedVideo = () => {
 		if (videoSource !== newSource) {
 			removeVideo();
 			removeVideoOptions();
+			removePoster();
 		}
 
 		setVideoSource(newSource);
@@ -97,6 +124,7 @@ const FeaturedVideo = () => {
 								selectedVideoId={selectedVideoId}
 								setVideoId={setVideoId}
 								removeVideo={removeVideo}
+								posterSourceUrl={posterSourceUrl}
 							/>
 						</FlexItem>
 					)}
@@ -117,13 +145,19 @@ const FeaturedVideo = () => {
 									? __("Choose a video from media library", "featured-video")
 									: __(
 											"Paste a video URL. Supported Providers: As supported by WordPress Embeds",
-											"featured-video"
+											"featured-video",
 									  )}
 							</p>
 						</FlexItem>
 					)}
 				</Flex>
-				<VideoControls videoSource={videoSource} />
+				<VideoControls
+					selectedVideoId={selectedVideoId}
+					videoSource={videoSource}
+					videoOptions={videoOptions}
+					setPoster={setPoster}
+					setOption={setOption}
+				/>
 			</Flex>
 		</PluginDocumentSettingPanel>
 	);
