@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Featured Video
- * Description: Add the ability to use Featured Video inplace of Featured Image. <strong>Supported Block:</strong> core/post-featured-image</strong>
+ * Description: Add the ability to use Featured Video inplace of Featured Image. <strong>Supported Block:</strong> core/post-featured-image
  * Version: 0.2.1
  * Author: WordPress Special Projects Team
  * Author URI: https://wpspecialprojects.wordpress.com/
