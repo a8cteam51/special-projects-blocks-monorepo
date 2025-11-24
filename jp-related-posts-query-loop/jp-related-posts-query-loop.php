@@ -79,7 +79,7 @@ function a8csp_jrpql_register_related_query_block_variation( $variations, $block
 				),
 				'namespace' => 'a8csp-jrpql/related-posts',
 			),
-			'allowedControls' => array( 'postCount' ),
+			'allowedControls' => array( 'postCount', 'postType' ),
 			'isActive'        => array( 'namespace' ),
 			'isDefault'       => false,
 		);
@@ -143,8 +143,9 @@ function a8csp_jrpql_get_related_posts_args( array $query_args ): array {
 		return $query_args;
 	}
 
-	$ppp      = $query_args['posts_per_page'] ?? 4;
-	$post_ids = array();
+	$posts_per_page = $query_args['posts_per_page'] ?? 4;
+	$posts_type     = $query_args['posts_type'] ?? 'post';
+	$post_ids       = array();
 
 	if ( class_exists( 'Jetpack_RelatedPosts' ) && class_exists( 'Jetpack_RelatedPosts_Raw' ) ) {
 		/**
@@ -153,7 +154,7 @@ function a8csp_jrpql_get_related_posts_args( array $query_args ): array {
 		 * @var Jetpack_RelatedPosts_Raw $posts
 		 */
 		$posts = Jetpack_RelatedPosts::init_raw();
-		$posts = $posts->set_query_name( 'a8csp_jrpql_related_posts' )->get_for_post_id( $post_id, array( 'size' => $ppp ) );
+		$posts = $posts->set_query_name( 'a8csp_jrpql_related_posts' )->get_for_post_id( $post_id, array( 'size' => $posts_per_page, 'post_type' => $posts_type ) );
 
 		$post_ids = wp_list_pluck( $posts, 'id' );
 		$post_ids = array_filter(
@@ -168,9 +169,9 @@ function a8csp_jrpql_get_related_posts_args( array $query_args ): array {
 	if ( count( $post_ids ) === 0 ) {
 		$posts = new WP_Query(
 			array(
-				'posts_per_page' => $ppp * 3,
+				'posts_per_page' => $posts_per_page * 3,
 				'fields'         => 'ids',
-				'post_type'      => 'post',
+				'post_type'      => $posts_type,
 				'post__not_in'   => array( $post_id ),
 			)
 		);
@@ -180,7 +181,7 @@ function a8csp_jrpql_get_related_posts_args( array $query_args ): array {
 	}
 
 	// Only query for the posts we need.
-	$post_ids = array_slice( $post_ids, 0, $ppp );
+	$post_ids = array_slice( $post_ids, 0, $posts_per_page );
 
 	$query_args['offset']   = 0;
 	$query_args['post__in'] = $post_ids;
