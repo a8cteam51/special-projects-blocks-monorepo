@@ -5,7 +5,7 @@
 	"author": "WordPress Special Projects Team",
 	"license": "GPL-2.0-or-later",
 	"scripts": {
-		"build": "wp-scripts build src --output-path=build",
+		"build": "echo 'No js build step necessary.'",
 		"format:js": "wp-scripts format",
 		"format:styles": "wp-scripts lint-style --fix",
 		"lint:styles": "wp-scripts lint-style",
