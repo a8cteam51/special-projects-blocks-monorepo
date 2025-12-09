@@ -154,7 +154,13 @@ function a8csp_jrpql_get_related_posts_args( array $query_args ): array {
 		 * @var Jetpack_RelatedPosts_Raw $posts
 		 */
 		$posts = Jetpack_RelatedPosts::init_raw();
-		$posts = $posts->set_query_name( 'a8csp_jrpql_related_posts' )->get_for_post_id( $post_id, array( 'size' => $posts_per_page, 'post_type' => $posts_type ) );
+		$posts = $posts->set_query_name( 'a8csp_jrpql_related_posts' )->get_for_post_id(
+			$post_id,
+			array(
+				'size'      => $posts_per_page,
+				'post_type' => $posts_type,
+			)
+		);
 
 		$post_ids = wp_list_pluck( $posts, 'id' );
 		$post_ids = array_filter(
