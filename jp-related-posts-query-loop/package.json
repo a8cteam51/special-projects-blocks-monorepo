@@ -1,0 +1,21 @@
+{
+	"name": "jp-related-posts-query-loop",
+	"version": "0.1.0",
+	"description": "Adds a query loop variation to display related posts from Jetpack.",
+	"author": "WordPress Special Projects Team",
+	"license": "GPL-2.0-or-later",
+	"scripts": {
+		"build": "wp-scripts build src --output-path=build",
+		"format:js": "wp-scripts format",
+		"format:styles": "wp-scripts lint-style --fix",
+		"lint:styles": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start src --output-path=build"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^30.22.0",
+		"@wordpress/browserslist-config": "^6.29.0"
+	}
+}
