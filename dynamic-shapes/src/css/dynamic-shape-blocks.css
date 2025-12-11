@@ -1,4 +1,4 @@
-.dynamic-shape-container > .wp-block-group {
+.dynamic-shape-container:not(.is-image) > * {
 	background: none !important;
 	margin-bottom: 0;
 	padding-top: calc(var(--pad-t-o) + var(--pad-t-a)) !important;
@@ -7,7 +7,7 @@
 	padding-left: calc(var(--pad-l-o) + var(--pad-l-a)) !important;
 }
 
-.dynamic-shape-container > .wp-block-group::before {
+.dynamic-shape-container:not(.is-image) > *::before {
 	background: var(--background);
 	background-repeat: no-repeat;
 	clip-path: var(--clip-path);
@@ -19,7 +19,16 @@
 	height: 100%;
 }
 
-.dynamic-shape-container.dynamic-shape-has-border > .wp-block-group {
+.dynamic-shape-container > .wp-block-cover {
+
+	.wp-block-cover__image-background,
+	.wp-block-cover__background {
+		clip-path: var(--clip-path);
+		z-index: -1;
+	}
+}
+
+.dynamic-shape-container.dynamic-shape-has-border:not(.is-image) > * {
 	border: none !important;
 	padding-top: calc(var(--pad-t-o) + var(--pad-t-a) + var(--stroke-width)) !important;
 	padding-right: calc(var(--pad-r-o) + var(--pad-r-a) + var(--stroke-width)) !important;
@@ -27,16 +36,15 @@
 	padding-left: calc(var(--pad-l-o) + var(--pad-l-a) + var(--stroke-width)) !important;
 }
 
-.dynamic-shape-container[style*="--filter"] > .wp-block-image:not(.is-selected),
-.dynamic-shape-container[style*="--filter"] > .wp-block-image.is-selected .components-resizable-box__container {
+.dynamic-shape-container.is-image[style*="--filter"] > *:not(.is-selected),
+.dynamic-shape-container.is-image[style*="--filter"] > .is-selected .components-resizable-box__container {
 
 	/* Unfortunately, this also adds a drop shadow to the resizing handles.
 	But it's better than no representation at all. */
 	filter: var(--filter);
 }
 
-.dynamic-shape-container > .wp-block-image img,
-.dynamic-shape-container > .wp-block-post-featured-image img,
-.dynamic-shape-container > .wp-block-post-featured-image .wp-block-post-featured-image__overlay {
+.dynamic-shape-container.is-image > * img,
+.dynamic-shape-container.is-image > * .wp-block-post-featured-image__overlay {
 	clip-path: var(--clip-path);
 }

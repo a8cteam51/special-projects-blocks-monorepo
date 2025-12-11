@@ -71,7 +71,6 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 		const { attributes, setAttributes, name } = props;
 		const { dynamicShape, style } = attributes;
 
-		const isGroup = 'core/group' === name;
 		const isImage = [ 'core/image', 'core/post-featured-image' ].includes(
 			name
 		);
@@ -147,6 +146,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				resizeObserver.observe( wrapperRef.current );
 			}
 
+			// For cached images that are already loaded, ensure dimensions are captured.
+			if ( img?.complete ) {
+				updateDimensions();
+			}
 			img?.addEventListener( 'load', updateDimensions );
 
 			return () => {
@@ -167,10 +170,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 					dynamicShape,
 					style?.border?.radius,
 					wrapperRef.current,
-					isGroup
+					! isImage
 				)
 			);
-		}, [ dimensions, dynamicShape, style?.border?.radius, isGroup ] );
+		}, [ dimensions, dynamicShape, style?.border?.radius, isImage ] );
 
 		// Update the padding variables when the padding style changes.
 		useEffect( () => {
@@ -302,9 +305,9 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 								hasAxisValues( dynamicShape, verticalKeys )
 							}
 							label={
-								isGroup
-									? __( 'Vertical offsets', 'dynamic-shapes' )
-									: __( 'Vertical insets', 'dynamic-shapes' )
+								isImage
+									? __( 'Vertical insets', 'dynamic-shapes' )
+									: __( 'Vertical offsets', 'dynamic-shapes' )
 							}
 							onChange={ ( newValues ) =>
 								setAttributes( {
@@ -342,6 +345,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 		const className = clsx(
 			'dynamic-shape-container',
+			isImage && 'is-image',
 			style?.border?.width && 'dynamic-shape-has-border'
 		);
 

@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_block_editor_assets' );
 add_action( 'enqueue_block_assets', __NAMESPACE__ . '\enqueue_block_assets' );
-add_action( 'init', __NAMESPACE__ . '\add_block_filters' );
+add_filter( 'render_block', __NAMESPACE__ . '\filter_dynamic_shape_block', 10, 2 );
 
 /**
  * Returns the blocks that support the dynamic shape feature.
@@ -21,6 +21,13 @@ add_action( 'init', __NAMESPACE__ . '\add_block_filters' );
  * @return array<string> The blocks that support the dynamic shape feature.
  */
 function get_dynamic_shapes_blocks(): array {
+	$default_supported_blocks = array(
+		'core/cover',
+		'core/group',
+		'core/image',
+		'core/post-featured-image',
+	);
+
 	/**
 	 * Filters the blocks that support the dynamic shape feature.
 	 *
@@ -28,7 +35,7 @@ function get_dynamic_shapes_blocks(): array {
 	 *
 	 * @return array<string> The blocks that support the dynamic shape feature.
 	 */
-	return apply_filters( 'wpcomsp_dynamic_shapes_blocks', array( 'core/group', 'core/image', 'core/post-featured-image' ) );
+	return apply_filters( 'wpcomsp_dynamic_shapes_blocks', $default_supported_blocks );
 }
 
 /**
@@ -183,31 +190,26 @@ function get_computed_pixel_value( string $value ): int {
  * Gets a theme palette color.
  *
  * Browsers don't recognize CSS variables when applied inline on an SVG
- * set as an inline `background` property, so this unfortunately
- * necessitates parsing the hex value from the theme.json file.
+ * set as an inline `background` property, so the hex value needs to be
+ * parsed from the theme settings.
  *
  * @param string $slug Slug.
  *
  * @return string Color.
  */
 function get_theme_palette_color( string $slug ): string {
-	$theme_json_path = get_stylesheet_directory() . '/theme.json';
-	$result          = '#000000';
+	$theme_settings = wp_get_global_settings();
+	$palette        = $theme_settings['color']['palette']['theme']
+					?? $theme_settings['color']['palette']['default']
+					?? array();
 
-	if ( file_exists( $theme_json_path ) ) {
-		$file_contents = file_get_contents( $theme_json_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$theme_json    = false !== $file_contents ? json_decode( $file_contents, true ) : array();
-
-		if ( isset( $theme_json['settings']['color']['palette'] ) ) {
-			foreach ( $theme_json['settings']['color']['palette'] as $color ) {
-				if ( isset( $color['slug'] ) && $color['slug'] === $slug ) {
-					$result = $color['color'];
-				}
-			}
+	foreach ( $palette as $color ) {
+		if ( isset( $color['slug'] ) && $color['slug'] === $slug ) {
+			return rawurlencode( $color['color'] );
 		}
 	}
 
-	return rawurlencode( $result );
+	return rawurlencode( '#000000' );
 }
 
 /**
@@ -281,12 +283,13 @@ function apply_border_color_attributes( \WP_HTML_Tag_Processor $html, string $bo
 /**
  * Updates block border output.
  *
- * @param string               $block_content Block content.
- * @param array<string, mixed> $attrs         Block attributes.
+ * @param string               $block_content  Block content.
+ * @param array<string, mixed> $attrs          Block attributes.
+ * @param boolean              $is_image_block Whether the block is an image or featured image block.
  *
  * @return string Modified block content.
  */
-function update_block_border( string $block_content, array $attrs ): string {
+function update_block_border( string $block_content, array $attrs, bool $is_image_block ): string {
 	$style_attributes = $attrs['style'] ?? array();
 	$border_data      = $style_attributes['border'] ?? array();
 
@@ -346,11 +349,8 @@ function update_block_border( string $block_content, array $attrs ): string {
 	$current_style = $html->get_attribute( 'style' );
 
 	// Apply styles to the main block or image tag.
-	if ( is_string( $current_style ) && '' !== $current_style && str_contains( $current_style, $border_styles ) ) {
-		// Group block: styles go on the main element.
-		$html->set_attribute( 'style', $other_styles );
-	} else {
-		// Image block: styles go on the img tag.
+	if ( $is_image_block ) {
+		// Image blocks: styles go on the img tag.
 		$html->set_bookmark( 'block_container' );
 
 		if ( $html->next_tag( array( 'tag_name' => 'img' ) ) ) {
@@ -358,6 +358,9 @@ function update_block_border( string $block_content, array $attrs ): string {
 			apply_border_color_attributes( $html, $border_color, $custom_border_color );
 			$html->seek( 'block_container' );
 		}
+	} else {
+		// Other blocks: styles go on the main element.
+		$html->set_attribute( 'style', $other_styles );
 	}
 
 	return $html->get_updated_html();
@@ -394,7 +397,7 @@ function get_dynamic_shape_padding_value( string $value ): ?string {
  *
  * @return string Modified block content.
  */
-function update_group_block_padding( string $block_content, array $attrs ): string {
+function update_block_padding( string $block_content, array $attrs ): string {
 	$html = new \WP_HTML_Tag_Processor( $block_content );
 	$html->next_tag();
 
@@ -486,17 +489,6 @@ function enqueue_block_assets(): void {
 }
 
 /**
- * Adds block content filters for dynamic shape blocks.
- *
- * @return void
- */
-function add_block_filters(): void {
-	foreach ( get_dynamic_shapes_blocks() as $block_name ) {
-		add_filter( "render_block_{$block_name}", __NAMESPACE__ . '\filter_dynamic_shape_block', 10, 2 );
-	}
-}
-
-/**
  * Filters dynamic shape style block HTML.
  *
  * @param string               $block_content Block content.
@@ -505,8 +497,16 @@ function add_block_filters(): void {
  * @return string Modified block content.
  */
 function filter_dynamic_shape_block( string $block_content, array $block ): string {
+	$block_name = $block['blockName'];
+
+	if ( ! in_array( $block_name, get_dynamic_shapes_blocks(), true ) ) {
+		return $block_content;
+	}
+
 	$dynamic_shape = $block['attrs']['dynamicShape'] ?? null;
 	if ( null !== $dynamic_shape && array() !== $dynamic_shape ) {
+		$is_image_block = in_array( $block_name, array( 'core/image', 'core/post-featured-image' ), true );
+
 		$html = new \WP_HTML_Tag_Processor( $block_content );
 
 		$html->next_tag();
@@ -523,11 +523,11 @@ function filter_dynamic_shape_block( string $block_content, array $block ): stri
 
 		$border_data = $block['attrs']['style']['border'] ?? array();
 		if ( array() !== $border_data ) {
-			$block_content = update_block_border( $block_content, $block['attrs'] );
+			$block_content = update_block_border( $block_content, $block['attrs'], $is_image_block );
 		}
 
-		if ( 'core/group' === $block['blockName'] ) {
-			$block_content = update_group_block_padding( $block_content, $block['attrs'] );
+		if ( ! $is_image_block ) {
+			$block_content = update_block_padding( $block_content, $block['attrs'] );
 		}
 
 		// Enqueue view script once per page load.

@@ -29,7 +29,12 @@ function get_metadata( ?string $property = null ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$plugin_data = get_plugin_data( __DIR__ . '/dynamic-shapes.php', true, false );
+		$dir_path = constant( 'WPCOMSP_DYNAMIC_SHAPES_DIR' );
+		if ( null === $dir_path ) {
+			return null;
+		}
+
+		$plugin_data = get_plugin_data( $dir_path . 'dynamic-shapes.php', true, false );
 	}
 
 	$metadata = $plugin_data;

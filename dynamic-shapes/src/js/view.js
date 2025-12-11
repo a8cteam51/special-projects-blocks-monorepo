@@ -5,13 +5,114 @@ import { getPath } from './imports/get-path';
 import { getPixelValue } from './imports/utils';
 
 {
+	// Selectors.
 	const DYNAMIC_SHAPE_SELECTOR = '[data-dynamic-shape]';
+	const SITE_BLOCKS_SELECTOR = '.wp-site-blocks';
+	const IMG_OVERLAY_SELECTOR = '.wp-block-post-featured-image__overlay';
+	const IMAGE_BLOCK_CLASSES = [
+		'wp-block-image',
+		'wp-block-post-featured-image',
+	];
+
+	// Timing constants.
+	const MAX_RETRY_COUNT = 5;
+	const RETRY_DELAY_MS = 50;
+	const MUTATION_DEBOUNCE_MS = 100;
+
+	// State.
 	const imageLoadListeners = new Map();
 	const dynamicShapeBlocksData = new Map();
+	const updateQueue = new Set();
 
+	let isInitializing = false;
+	let updateScheduled = false;
 	let dynamicShapeBlocks = [];
 	let resizeObserver = null;
+	let mutationObserver = null;
 	let mutationTimeout = null;
+
+	/**
+	 * Encode an SVG string for use in a data URI.
+	 * Escapes characters that would break the URI or cause parsing issues.
+	 *
+	 * @param {string} svg The SVG string to encode.
+	 *
+	 * @return {string} The encoded SVG string.
+	 */
+	function encodeSvgForDataUri( svg ) {
+		return svg
+			.replace( /%/g, '%25' )
+			.replace( /"/g, "'" )
+			.replace( /#/g, '%23' )
+			.replace( /\{/g, '%7B' )
+			.replace( /\}/g, '%7D' )
+			.replace( /</g, '%3C' )
+			.replace( />/g, '%3E' );
+	}
+
+	/**
+	 * Validate that parsed shape data has the required structure.
+	 *
+	 * @param {*} data The parsed data to validate.
+	 *
+	 * @return {boolean} Whether the data is valid.
+	 */
+	function isValidShapeData( data ) {
+		return data !== null && typeof data === 'object';
+	}
+
+	/**
+	 * Log the given warning message.
+	 *
+	 * @param {string} message The warning message.
+	 * @param {...*}   args    Additional arguments to log.
+	 */
+	function logWarning( message, ...args ) {
+		// eslint-disable-next-line no-console
+		console.warn( message, ...args );
+	}
+
+	/**
+	 * Get the target element for clip-path operations.
+	 * For image blocks, this is the img element; for others, it's the block itself.
+	 *
+	 * @param {Object}  cachedData The cached data for the block.
+	 * @param {Element} block      The block element.
+	 *
+	 * @return {Element} The target element.
+	 */
+	function getTargetElement( cachedData, block ) {
+		return cachedData.imgElement || block;
+	}
+
+	/**
+	 * Schedule a block for clip-path update in the next animation frame.
+	 * Multiple calls for the same block are deduplicated via Set.
+	 *
+	 * @param {Element} block The block to update.
+	 */
+	function scheduleUpdate( block ) {
+		updateQueue.add( block );
+		if ( ! updateScheduled ) {
+			updateScheduled = true;
+			requestAnimationFrame( processUpdateQueue );
+		}
+	}
+
+	/**
+	 * Process all queued clip-path updates in a single animation frame.
+	 */
+	function processUpdateQueue() {
+		updateQueue.forEach( ( block ) => {
+			const cachedData = dynamicShapeBlocksData.get( block );
+			if ( cachedData ) {
+				calculateBorderData( block, cachedData );
+			}
+			updateClipPath( block, 0, true );
+		} );
+		updateQueue.clear();
+		updateScheduled = false;
+	}
 
 	/**
 	 * Initialize and cache static data for a dynamic shape block.
@@ -22,41 +123,41 @@ import { getPixelValue } from './imports/utils';
 	 */
 	function initializeDynamicShapeBlock( block ) {
 		try {
-			const isGroupBlock = block.classList.contains( 'wp-block-group' );
-			const isImageBlock =
-				block.classList.contains( 'wp-block-image' ) ||
-				block.classList.contains( 'wp-block-post-featured-image' );
+			const isImage = IMAGE_BLOCK_CLASSES.some( ( cls ) =>
+				block.classList.contains( cls )
+			);
 
-			// Get the appropriate style element.
-			const styleElement = isGroupBlock
-				? block
-				: block.querySelector( 'img' );
-
-			if ( ! styleElement ) {
-				return null;
-			}
+			// Cache the img element for image blocks to avoid repeated queries.
+			const imgElement = isImage ? block.querySelector( 'img' ) : null;
 
 			const dynamicShapeData = JSON.parse( block.dataset.dynamicShape );
 
-			const style = getComputedStyle( styleElement );
+			if ( ! isValidShapeData( dynamicShapeData ) ) {
+				logWarning( 'Invalid dynamic shape data:', block );
+				return null;
+			}
+
+			const style = getComputedStyle( imgElement || block );
 			const background = style.background;
 
 			const cachedData = {
-				isGroupBlock,
-				isImageBlock,
+				imgElement,
 				dynamicShapeData,
 				background,
-				borderRadius: null, // Will be set by calculateBorderData
-				borderData: null, // Will be set by calculateBorderData
-				styleElement,
+				borderRadius: null, // Will be set by `calculateBorderData`.
+				borderData: null, // Will be set by `calculateBorderData`.
 			};
 
-			// Calculate border radius and border data using the helper
 			calculateBorderData( block, cachedData );
 
 			dynamicShapeBlocksData.set( block, cachedData );
 			return cachedData;
 		} catch ( error ) {
+			logWarning(
+				'Dynamic shape initialization failed:',
+				error.message,
+				block
+			);
 			return null;
 		}
 	}
@@ -69,14 +170,18 @@ import { getPixelValue } from './imports/utils';
 	 */
 	function calculateBorderData( block, cachedData ) {
 		// Recalculate border radius with new computed values.
-		const style = getComputedStyle( cachedData.styleElement );
+		const style = getComputedStyle( getTargetElement( cachedData, block ) );
 		cachedData.borderRadius = getBorderRadius( style );
 
 		// Recalculate border data if present.
 		if ( block.dataset.borderWidth ) {
 			cachedData.borderData = {
+				// Border implemented by SVG stroke; centered on edge,
+				// so we double as half of it will be clipped.
 				width: getPixelValue( block.dataset.borderWidth, block ) * 2,
-				color: block.dataset.borderColor,
+				// Decode the color since the data attribute is URL-encoded.
+				// It will be re-encoded by encodeSvgForDataUri().
+				color: decodeURIComponent( block.dataset.borderColor ),
 			};
 		}
 	}
@@ -90,34 +195,26 @@ import { getPixelValue } from './imports/utils';
 	 */
 	function getBorderRadius( style ) {
 		const values = style.borderRadius.split( ' ' ).map( ( v ) => v.trim() );
-		const corners = [ 'topLeft', 'topRight', 'bottomRight', 'bottomLeft' ];
-		const borderRadiusObj = {};
+		const [ v0, v1, v2, v3 ] = values;
 
-		corners.forEach( ( corner, index ) => {
-			let value;
-			if ( values.length === 1 ) {
-				value = values[ 0 ];
-			} else if ( values.length === 2 ) {
-				value = values[ index % 2 ];
-			} else if ( values.length === 3 ) {
-				value =
-					index === 1 || index === 3
-						? values[ 1 ]
-						: values[ index === 0 ? 0 : 2 ];
-			} else {
-				value = values[ index ];
-			}
-			borderRadiusObj[ corner ] = value;
-		} );
-
-		return borderRadiusObj;
+		// CSS border-radius shorthand follows the pattern:
+		// 1 value:  all corners
+		// 2 values: top-left/bottom-right, top-right/bottom-left
+		// 3 values: top-left, top-right/bottom-left, bottom-right
+		// 4 values: top-left, top-right, bottom-right, bottom-left
+		return {
+			topLeft: v0,
+			topRight: v1 ?? v0,
+			bottomRight: v2 ?? v0,
+			bottomLeft: v3 ?? v1 ?? v0,
+		};
 	}
 
 	/**
-	 * Update the clip path for a dynamic shape style block.
+	 * Update the clip path for the given block.
 	 *
-	 * @param {Element} block       The block for which to update the clip path.
-	 * @param {number}  retryCount  The number of retry attempts made so far.
+	 * @param {Element} block       Block for which to update the clip path.
+	 * @param {number}  retryCount  Number of retry attempts made so far.
 	 * @param {boolean} forceUpdate Whether to force update even if clip path exists.
 	 */
 	function updateClipPath( block, retryCount = 0, forceUpdate = false ) {
@@ -136,17 +233,18 @@ import { getPixelValue } from './imports/utils';
 			}
 		}
 
-		const el = cachedData.isGroupBlock
-			? block
-			: block.querySelector( 'img' );
+		const el = getTargetElement( cachedData, block );
 
-		// Get dimensions first - if not available, retry (up to 5 times).
+		// Get dimensions first - if not available, retry up to MAX_RETRY_COUNT times.
 		const width = el.offsetWidth;
 		const height = el.offsetHeight;
 
 		if ( ! width || ! height ) {
-			if ( retryCount < 5 ) {
-				setTimeout( () => updateClipPath( block, retryCount + 1 ), 50 );
+			if ( retryCount < MAX_RETRY_COUNT ) {
+				setTimeout(
+					() => updateClipPath( block, retryCount + 1 ),
+					RETRY_DELAY_MS
+				);
 			}
 			return;
 		}
@@ -158,30 +256,69 @@ import { getPixelValue } from './imports/utils';
 			el,
 		];
 
-		// Apply clip path.
-		const path = getPath( ...args, cachedData.isGroupBlock );
-		if ( cachedData.isGroupBlock ) {
-			block.style.clipPath = `path('${ path }')`;
+		let path;
+		try {
+			path = getPath( ...args, ! cachedData.imgElement );
+		} catch ( error ) {
+			logWarning( 'Failed to generate clip path:', error.message, block );
+			return;
+		}
 
-			// Handle border if present.
-			if ( cachedData.borderData ) {
-				const { width: borderWidth, color: borderColor } =
-					cachedData.borderData;
-				const svg = `<svg width="${ width }" height="${ height }" viewBox="0 0 ${ width } ${ height }" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="${ path }" stroke="${ borderColor }" stroke-width="${ borderWidth }"/></svg>`;
-				block.style.background = `url('data:image/svg+xml, ${ svg }')`;
-				if ( cachedData.background ) {
-					block.style.background += `, ${ cachedData.background }`;
-				}
-			}
-		} else if ( cachedData.isImageBlock ) {
-			el.style.clipPath = `path('${ path }')`;
+		if ( cachedData.imgElement ) {
+			applyImageClipPath( block, el, path );
+		} else {
+			applyBlockClipPath( block, path, width, height, cachedData );
+		}
+	}
 
-			const overlay = block.querySelector(
-				'.wp-block-post-featured-image__overlay'
-			);
-			if ( overlay ) {
-				overlay.style.clipPath = `path('${ path }')`;
-			}
+	/**
+	 * Apply clip path to an image block and its overlay.
+	 *
+	 * This allows us to support most shadow styling
+	 * via `filter: drop-shadow` on the block wrapper.
+	 *
+	 * @param {Element} block The block element.
+	 * @param {Element} el    The image element.
+	 * @param {string}  path  The SVG path string.
+	 */
+	function applyImageClipPath( block, el, path ) {
+		const clipPath = `path('${ path }')`;
+		el.style.clipPath = clipPath;
+
+		const overlay = block.querySelector( IMG_OVERLAY_SELECTOR );
+		if ( overlay ) {
+			overlay.style.clipPath = clipPath;
+		}
+	}
+
+	/**
+	 * Apply clip path and optional border SVG to a non-image block.
+	 *
+	 * @param {Element} block      The block element.
+	 * @param {string}  path       The SVG path string.
+	 * @param {number}  width      The block width.
+	 * @param {number}  height     The block height.
+	 * @param {Object}  cachedData The cached data for the block.
+	 */
+	function applyBlockClipPath( block, path, width, height, cachedData ) {
+		block.style.clipPath = `path('${ path }')`;
+
+		if ( ! cachedData.borderData ) {
+			return;
+		}
+
+		const { width: borderWidth, color: borderColor } =
+			cachedData.borderData;
+		const svg = `<svg width="${ width }" height="${ height }" viewBox="0 0 ${ width } ${ height }" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="${ path }" stroke="${ borderColor }" stroke-width="${ borderWidth }"/></svg>`;
+
+		// Set the SVG as a background image, preserving existing backgrounds.
+		// Applied as the first image in a multi-background setup.
+		block.style.background = `url("data:image/svg+xml,${ encodeSvgForDataUri(
+			svg
+		) }")`;
+
+		if ( cachedData.background ) {
+			block.style.background += `, ${ cachedData.background }`;
 		}
 	}
 
@@ -195,17 +332,39 @@ import { getPixelValue } from './imports/utils';
 
 		resizeObserver = new ResizeObserver( ( entries ) => {
 			entries.forEach( ( entry ) => {
-				const block = entry.target;
-				const cachedData = dynamicShapeBlocksData.get( block );
-				if ( cachedData ) {
-					calculateBorderData( block, cachedData );
-				}
-				updateClipPath( block, 0, true );
+				scheduleUpdate( entry.target );
 			} );
 		} );
 
 		dynamicShapeBlocks.forEach( ( block ) => {
 			resizeObserver.observe( block );
+		} );
+	}
+
+	/**
+	 * Set up MutationObserver for handling asynchronously loaded blocks.
+	 */
+	function setupMutationObserver() {
+		if ( mutationObserver ) {
+			return;
+		}
+
+		const main =
+			document.querySelector( SITE_BLOCKS_SELECTOR ) || document.body;
+		if ( ! main ) {
+			return;
+		}
+
+		mutationObserver = new MutationObserver( () => {
+			clearTimeout( mutationTimeout );
+			mutationTimeout = setTimeout(
+				initDynamicShapes,
+				MUTATION_DEBOUNCE_MS
+			);
+		} );
+		mutationObserver.observe( main, {
+			childList: true,
+			subtree: true,
 		} );
 	}
 
@@ -227,22 +386,35 @@ import { getPixelValue } from './imports/utils';
 		cleanupImageLoadListeners();
 
 		dynamicShapeBlocks.forEach( ( block ) => {
-			if (
-				block.classList.contains( 'wp-block-image' ) ||
-				block.classList.contains( 'wp-block-post-featured-image' )
-			) {
-				const img = block.querySelector( 'img' );
-				if ( img ) {
-					const listener = () => updateClipPath( block );
-					img.addEventListener( 'load', listener );
-					imageLoadListeners.set( img, listener );
-				}
+			const cachedData = dynamicShapeBlocksData.get( block );
+			if ( cachedData?.imgElement ) {
+				const img = cachedData.imgElement;
+				const listener = () => {
+					imageLoadListeners.delete( img );
+					scheduleUpdate( block );
+				};
+				img.addEventListener( 'load', listener, { once: true } );
+				imageLoadListeners.set( img, listener );
 			}
 		} );
 	}
 
 	/**
-	 * Clean up all observers and listeners.
+	 * Prune cache entries for blocks that are no longer in the DOM.
+	 */
+	function pruneStaleCache() {
+		dynamicShapeBlocksData.forEach( ( _, block ) => {
+			if ( ! document.body.contains( block ) ) {
+				if ( resizeObserver ) {
+					resizeObserver.unobserve( block );
+				}
+				dynamicShapeBlocksData.delete( block );
+			}
+		} );
+	}
+
+	/**
+	 * Clean up observers and listeners.
 	 */
 	function cleanup() {
 		if ( resizeObserver ) {
@@ -251,11 +423,9 @@ import { getPixelValue } from './imports/utils';
 		}
 
 		cleanupImageLoadListeners();
-
-		dynamicShapeBlocksData.clear();
+		pruneStaleCache();
 
 		clearTimeout( mutationTimeout );
-
 		mutationTimeout = null;
 	}
 
@@ -263,6 +433,12 @@ import { getPixelValue } from './imports/utils';
 	 * Initialize dynamic shapes functionality.
 	 */
 	function initDynamicShapes() {
+		// Prevent concurrent initializations from rapid mutation events.
+		if ( isInitializing ) {
+			return;
+		}
+		isInitializing = true;
+
 		cleanup();
 
 		dynamicShapeBlocks = [
@@ -270,11 +446,15 @@ import { getPixelValue } from './imports/utils';
 		];
 
 		if ( dynamicShapeBlocks.length === 0 ) {
+			isInitializing = false;
 			return;
 		}
 
+		// Only initialize blocks that aren't already cached.
 		dynamicShapeBlocks.forEach( ( block ) => {
-			initializeDynamicShapeBlock( block );
+			if ( ! dynamicShapeBlocksData.has( block ) ) {
+				initializeDynamicShapeBlock( block );
+			}
 		} );
 
 		setupResizeObserver();
@@ -283,25 +463,18 @@ import { getPixelValue } from './imports/utils';
 		// Batch clip path updates using requestAnimationFrame to avoid layout thrashing.
 		requestAnimationFrame( () => {
 			dynamicShapeBlocks.forEach( updateClipPath );
+			isInitializing = false;
 		} );
 	}
 
 	// Initialize on DOM ready.
 	if ( document.readyState === 'loading' ) {
-		document.addEventListener( 'DOMContentLoaded', initDynamicShapes );
+		document.addEventListener( 'DOMContentLoaded', () => {
+			initDynamicShapes();
+			setupMutationObserver();
+		} );
 	} else {
 		initDynamicShapes();
-	}
-
-	// Set up a mutation observer to handle asynchronously loaded dynamic shape blocks.
-	const siteMain = document.querySelector( '.site-main' );
-	if ( siteMain ) {
-		new MutationObserver( () => {
-			clearTimeout( mutationTimeout );
-			mutationTimeout = setTimeout( initDynamicShapes, 100 );
-		} ).observe( siteMain, {
-			childList: true,
-			subtree: true,
-		} );
+		setupMutationObserver();
 	}
 }
