@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Jetpack Related Posts Query Loop
  * Description:       Adds a query loop variation to display related posts from Jetpack.
- * Version:           0.1.0
+ * Version:           0.2.0
  * Author:            WordPress Special Projects Team
  * Author URI:        https://wpspecialprojects.wordpress.com/
  * Update URI:        https://opsoasis.wpspecialprojects.com/jp-related-posts-query-loop/

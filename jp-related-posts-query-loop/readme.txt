@@ -34,5 +34,8 @@ The **Jetpack Related Posts Query Loop** plugin adds a query block variation nam
 
 == Changelog ==
 
+= 0.2.0 =
+* Fixed incorrect post ID check and incorrect post_type attribute
+
 = 0.1.0 =
 * Initial release
