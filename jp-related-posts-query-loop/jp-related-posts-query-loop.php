@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Jetpack Related Posts Query Loop
  * Description:       Adds a query loop variation to display related posts from Jetpack.
- * Version:           0.1.0
+ * Version:           0.2.0
  * Author:            WordPress Special Projects Team
  * Author URI:        https://wpspecialprojects.wordpress.com/
  * Update URI:        https://opsoasis.wpspecialprojects.com/jp-related-posts-query-loop/
@@ -139,12 +139,12 @@ function a8csp_jrpql_get_related_posts_args( array $query_args ): array {
 
 	$post_id = get_the_ID();
 
-	if ( ! empty( $post_id ) ) {
+	if ( false === $post_id ) {
 		return $query_args;
 	}
 
 	$posts_per_page = $query_args['posts_per_page'] ?? 4;
-	$posts_type     = $query_args['posts_type'] ?? 'post';
+	$posts_type     = $query_args['post_type'] ?? 'post';
 	$post_ids       = array();
 
 	if ( class_exists( 'Jetpack_RelatedPosts' ) && class_exists( 'Jetpack_RelatedPosts_Raw' ) ) {
