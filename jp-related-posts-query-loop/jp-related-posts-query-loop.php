@@ -139,12 +139,12 @@ function a8csp_jrpql_get_related_posts_args( array $query_args ): array {
 
 	$post_id = get_the_ID();
 
-	if ( ! empty( $post_id ) ) {
+	if ( false === $post_id ) {
 		return $query_args;
 	}
 
 	$posts_per_page = $query_args['posts_per_page'] ?? 4;
-	$posts_type     = $query_args['posts_type'] ?? 'post';
+	$posts_type     = $query_args['post_type'] ?? 'post';
 	$post_ids       = array();
 
 	if ( class_exists( 'Jetpack_RelatedPosts' ) && class_exists( 'Jetpack_RelatedPosts_Raw' ) ) {
