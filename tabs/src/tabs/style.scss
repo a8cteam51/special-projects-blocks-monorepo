@@ -5,11 +5,91 @@
 @use "@wordpress/base-styles/mixins" as *;
 
 .wp-block-wpcomsp-tabs {
+	.tabs-container {
+		display: flex;
+		align-items: center;
+		position: relative;
+		width: 100%;
+	}
+
+	.scroll-arrow {
+		display: none;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		z-index: 10;
+		background: rgba(255, 255, 255, 0.9);
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		padding: 8px 12px;
+		cursor: pointer;
+		font-size: 16px;
+		font-weight: bold;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		transition: all 0.2s ease;
+
+		&.hidden {
+			display: none !important;
+		}
+
+		&::before {
+			content: '';
+			display: inline-block;
+			width: 0;
+			height: 0;
+			border-style: solid;
+		}
+
+		&:hover {
+			background: rgba(255, 255, 255, 1);
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+		}
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+
+		&.scroll-arrow-left {
+			left: 0;
+
+			&::before {
+				border-width: 6px 8px 6px 0;
+				border-color: transparent #333 transparent transparent;
+			}
+		}
+
+		&.scroll-arrow-right {
+			right: 0;
+
+			&::before {
+				border-width: 6px 0 6px 8px;
+				border-color: transparent transparent transparent #333;
+			}
+		}
+	}
+
+	.tablist-wrapper {
+		flex: 1;
+		overflow: hidden;
+		position: relative;
+	}
+
 	[role="tablist"] {
 		min-width: 100%;
 		display: flex;
 		flex-direction: column;
 		gap: 1px;
+		overflow-x: auto;
+		overflow-y: hidden;
+		scroll-behavior: smooth;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
 	}
 
 	.tab {
@@ -65,13 +145,29 @@
 	}
 
 	@include break-mobile {
+		.scroll-arrow {
+			display: block;
+		}
+
 		[role="tablist"] {
 			flex-direction: row;
+			overflow-x: auto;
+			overflow-y: hidden;
+			scroll-behavior: smooth;
+			-webkit-overflow-scrolling: touch;
+			scrollbar-width: none;
+			-ms-overflow-style: none;
+
+			&::-webkit-scrollbar {
+				display: none;
+			}
 		}
 
 		.tab {
 			max-width: 22%;
 			text-align: left;
+			flex-shrink: 0;
+			min-width: fit-content;
 		}
 
 		.tab .tab-button-text {
