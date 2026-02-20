@@ -274,13 +274,9 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 				/>
 				<SelectControl
 					label={ __( 'At end', 'carousel' ) }
-					onChange={ ( v ) => {
-						setAttributes( { animateEnd: v } );
-
-						if ( 'infinite' === v ) {
-							setAttributes( { pagination: false } );
-						}
-					} }
+					onChange={ ( v ) =>
+						setAttributes( { animateEnd: v } )
+					}
 					options={ [
 						{
 							value: 'stop',
