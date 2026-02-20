@@ -1,5 +1,6 @@
 /* global getComputedStyle, IntersectionObserver, requestAnimationFrame, ResizeObserver */
 
+import { __, sprintf } from '@wordpress/i18n';
 import './view.css';
 
 {
@@ -105,7 +106,8 @@ import './view.css';
 	}
 
 	class DragController {
-		constructor( { minDragDistance, dragAngleThreshold, onNavigate } ) {
+		constructor( { el, minDragDistance, dragAngleThreshold, onNavigate } ) {
+			this.el = el;
 			this.minDragDistance = minDragDistance;
 			this.dragAngleThreshold = dragAngleThreshold;
 			this.onNavigate = onNavigate;
@@ -149,6 +151,7 @@ import './view.css';
 
 			if ( this.isHorizontal ) {
 				event.preventDefault();
+				this.el.style.userSelect = 'none';
 
 				if ( xDiff > 0 ) {
 					this.onNavigate( 'previous' );
@@ -162,6 +165,7 @@ import './view.css';
 
 		onEnd() {
 			this.dragging = false;
+			this.el.style.userSelect = '';
 		}
 	}
 
@@ -194,13 +198,6 @@ import './view.css';
 
 			this.resizeObserver = null;
 			this.slideObserver = null;
-
-			this.dragState = {
-				startX: 0,
-				startY: 0,
-				isHorizontal: false,
-				dragging: false,
-			};
 		}
 
 		hasTrackAndSlides() {
@@ -415,7 +412,7 @@ import './view.css';
 			ANIMATE_MODES.INFINITE,
 		].includes( animateEnd );
 
-		if ( noInactiveNav && ! paginationButtons ) {
+		if ( noInactiveNav && ! paginationButtons?.length ) {
 			return;
 		}
 
@@ -441,7 +438,7 @@ import './view.css';
 			}
 		}
 
-		if ( paginationButtons ) {
+		if ( paginationButtons?.length ) {
 			paginationButtons.forEach( ( button, index ) => {
 				const isActive =
 					! slides[ index ].getAttribute( 'aria-hidden' );
@@ -488,7 +485,7 @@ import './view.css';
 		const { paginationButtons, slides } = instance;
 
 		if (
-			! paginationButtons ||
+			! paginationButtons?.length ||
 			slides.length <= paginationButtons.length
 		) {
 			return;
@@ -503,9 +500,12 @@ import './view.css';
 		for ( let i = paginationButtons.length; i < slides.length; i++ ) {
 			const button = document.createElement( 'button' );
 			button.className = 'wp-block-wpcomsp-carousel-pagination--button';
-			button.innerHTML = `<span class="screen-reader-text">Slide ${
-				i + 1
-			} of ${ slides.length }</span>`;
+			button.innerHTML = `<span class="screen-reader-text">${ sprintf(
+				/* translators: 1: current slide number, 2: total slides */
+				__( 'Slide %1$d of %2$d', 'carousel' ),
+				i + 1,
+				slides.length
+			) }</span>`;
 			paginationContainer.appendChild( button );
 		}
 
@@ -581,6 +581,10 @@ import './view.css';
 				navigatePrevious( instance );
 			} else if ( e.key === 'ArrowRight' && canNavigateNext ) {
 				navigateNext( instance );
+			} else if ( e.key === 'Home' ) {
+				navigateToEdge( instance, 'first' );
+			} else if ( e.key === 'End' ) {
+				navigateToEdge( instance, 'last' );
 			}
 		} );
 	}
@@ -595,6 +599,7 @@ import './view.css';
 
 		// Create DragController instance with navigation callback.
 		const dragController = new DragController( {
+			el: carousel,
 			minDragDistance: DEFAULTS.MIN_DRAG_DISTANCE,
 			dragAngleThreshold: DEFAULTS.DRAG_ANGLE_THRESHOLD,
 			onNavigate: ( direction ) => {
@@ -609,7 +614,6 @@ import './view.css';
 		} );
 
 		carousel.addEventListener( 'mousedown', ( e ) => {
-			e.preventDefault(); // Prevent text selection.
 			dragController.onStart( e.clientX, e.clientY );
 		} );
 
@@ -677,6 +681,44 @@ import './view.css';
 	 */
 	function navigateNext( instance ) {
 		navigate( instance, 'next' );
+	}
+
+	/**
+	 * Navigates to the first or last slide.
+	 *
+	 * @param {CarouselInstance} instance The carousel instance.
+	 * @param {string}           edge     'first' or 'last'.
+	 */
+	function navigateToEdge( instance, edge ) {
+		const { slideList, track } = instance;
+
+		if ( ! slideList?.head ) {
+			return;
+		}
+
+		const targetNode =
+			edge === 'first' ? slideList.head : slideList.head.prev;
+
+		if ( targetNode === instance.currentNode ) {
+			return;
+		}
+
+		const updateFocus = track.contains( track.ownerDocument.activeElement );
+
+		if ( instance.isInfinite() ) {
+			const onComplete = () =>
+				commitInfiniteRotation( instance, targetNode, updateFocus );
+
+			updateCarousel( instance, targetNode.slide.offsetLeft * -1, {
+				onComplete,
+			} );
+		} else {
+			updateCarousel( instance, targetNode.slide.offsetLeft * -1, {
+				updateFocus,
+			} );
+
+			instance.currentNode = targetNode;
+		}
 	}
 
 	/**
