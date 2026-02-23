@@ -48,6 +48,44 @@ createBlock( 'my-plugin/my-block', {
 
 Or apply the class manually through the block's **Advanced > Additional CSS class(es)** panel in the editor.
 
+### Optional: Registering a Block Variation
+
+To add your block to the Carousel's placeholder UI (the variation picker shown when a new Carousel is inserted), register a block variation. Use `domReady` with a `getBlockType` guard so the variation only appears when the block is available:
+
+```js
+import { __ } from '@wordpress/i18n';
+import { getBlockType, registerBlockVariation } from '@wordpress/blocks';
+import domReady from '@wordpress/dom-ready';
+
+const myVariation = {
+	name: 'wpcomsp/carousel-my-block',
+	title: __( 'My Block Carousel', 'my-plugin' ),
+	description: __(
+		'Display my block in a horizontal series.',
+		'my-plugin'
+	),
+	scope: [ 'block' ],
+	innerBlocks: [
+		{
+			name: 'my-plugin/my-block',
+			attributes: {
+				className: 'wp-block-wpcomsp-carousel-track',
+			},
+		},
+	],
+	isActive: [ 'type' ],
+	attributes: { type: 'my-block' },
+};
+
+domReady( () => {
+	if ( getBlockType( 'my-plugin/my-block' ) ) {
+		registerBlockVariation( 'wpcomsp/carousel', myVariation );
+	}
+} );
+```
+
+This is the same pattern used internally for the WooCommerce Products variation.
+
 ## How Item Counting Works
 
 ### Editor

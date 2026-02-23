@@ -1,6 +1,6 @@
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
-import { getBlockType } from '@wordpress/blocks';
+import { getBlockType, registerBlockVariation } from '@wordpress/blocks';
 import domReady from '@wordpress/dom-ready';
 
 const variations = [
@@ -194,7 +194,7 @@ const productVariation = {
 
 domReady( () => {
 	if ( getBlockType( 'woocommerce/product-collection' ) ) {
-		variations.push( productVariation );
+		registerBlockVariation( 'wpcomsp/carousel', productVariation );
 	}
 } );
 

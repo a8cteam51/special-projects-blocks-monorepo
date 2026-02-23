@@ -3,7 +3,7 @@
 
 	.wp-block-group-placeholder__variations.wp-block-carousel-placeholder__variations {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(10%, 1fr));
 		gap: 8px;
 	}
 
