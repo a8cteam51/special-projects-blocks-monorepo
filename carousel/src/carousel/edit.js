@@ -274,9 +274,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 				/>
 				<SelectControl
 					label={ __( 'At end', 'carousel' ) }
-					onChange={ ( v ) =>
-						setAttributes( { animateEnd: v } )
-					}
+					onChange={ ( v ) => setAttributes( { animateEnd: v } ) }
 					options={ [
 						{
 							value: 'stop',
