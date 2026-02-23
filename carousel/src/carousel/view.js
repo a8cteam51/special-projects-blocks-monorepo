@@ -10,6 +10,7 @@ import './view.css';
 		SLIDES: '.wp-block-wpcomsp-carousel-track > *',
 		PREV_BUTTON: '.wp-block-wpcomsp-carousel-nav--button_prev',
 		NEXT_BUTTON: '.wp-block-wpcomsp-carousel-nav--button_next',
+		PAGINATION: '.wp-block-wpcomsp-carousel-pagination',
 		PAGINATION_BUTTONS: '.wp-block-wpcomsp-carousel-pagination--button',
 		FOCUSABLE: 'a, button, input, select, textarea',
 	};
@@ -482,22 +483,22 @@ import './view.css';
 	 * @param {CarouselInstance} instance The carousel instance.
 	 */
 	function ensurePaginationButtons( instance ) {
-		const { paginationButtons, slides } = instance;
+		const { carousel, paginationButtons, slides } = instance;
 
-		if (
-			! paginationButtons?.length ||
-			slides.length <= paginationButtons.length
-		) {
-			return;
-		}
-
-		const paginationContainer = paginationButtons[ 0 ]?.parentElement;
+		const paginationContainer = carousel.querySelector(
+			SELECTORS.PAGINATION
+		);
 		if ( ! paginationContainer ) {
 			return;
 		}
 
+		const currentCount = paginationButtons?.length || 0;
+		if ( slides.length <= currentCount ) {
+			return;
+		}
+
 		// Create missing pagination buttons.
-		for ( let i = paginationButtons.length; i < slides.length; i++ ) {
+		for ( let i = currentCount; i < slides.length; i++ ) {
 			const button = document.createElement( 'button' );
 			button.className = 'wp-block-wpcomsp-carousel-pagination--button';
 			button.innerHTML = `<span class="screen-reader-text">${ sprintf(

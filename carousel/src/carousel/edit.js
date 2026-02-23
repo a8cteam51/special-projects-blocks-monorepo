@@ -16,15 +16,16 @@ import CarouselPlaceHolder from './placeholder';
 import { getHTMLAttributes } from './common';
 import './editor.css';
 
-const CONTENT_BLOCKS = [
-	'core/query',
-	'core/gallery',
-	'core/group',
-	'woocommerce/product-collection',
-];
+const TRACK_CLASS = 'wp-block-wpcomsp-carousel-track';
+
+// Wrapper blocks whose child template block carries the track class.
+const CONTENT_BLOCKS = [ 'core/query', 'woocommerce/product-collection' ];
 
 /**
  * Searches for the slides/content container block.
+ *
+ * Matches any block with the track className first, then falls back
+ * to known wrapper block types whose descendants carry the track class.
  *
  * @param {Array} blocks Array of blocks to search through.
  *
@@ -36,15 +37,11 @@ const findContentBlock = ( blocks ) => {
 	}
 
 	for ( const block of blocks ) {
-		if ( block.name === 'core/group' ) {
-			if (
-				block.attributes.className?.includes(
-					'wp-block-wpcomsp-carousel-track'
-				)
-			) {
-				return block;
-			}
-		} else if ( CONTENT_BLOCKS.includes( block.name ) ) {
+		if ( block.attributes.className?.includes( TRACK_CLASS ) ) {
+			return block;
+		}
+
+		if ( CONTENT_BLOCKS.includes( block.name ) ) {
 			return block;
 		}
 
@@ -175,7 +172,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					break;
 				}
 				default:
-					count = 0;
+					count = contentBlock.innerBlocks?.length || 0;
 			}
 
 			return {
