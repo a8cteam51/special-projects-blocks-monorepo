@@ -95,12 +95,33 @@ The editor uses `findContentBlock()` to locate the track block inside the Carous
 1. **Class name** (primary) — any block whose `className` attribute includes `wp-block-wpcomsp-carousel-track`.
 2. **Block type** (fallback) — wrapper blocks like `core/query` and `woocommerce/product-collection` whose child template block carries the track class.
 
-Once found, the item count is determined by:
+Once found, the item count is resolved by checking the `wpcomsp.carousel.itemCountResolvers` filter. The default resolvers are:
 
-- **`core/query` / `woocommerce/product-collection`** — queries the REST API to count matching posts/products.
-- **All other blocks** — counts `innerBlocks.length`.
+```js
+{
+	'core/query': ( attrs ) => Number( attrs.query?.perPage || 0 ),
+	'woocommerce/product-collection': ( attrs ) => Number( attrs.query?.perPage || 0 ),
+}
+```
 
-If your block renders its children server-side (so `innerBlocks` is empty in the editor), the count will be `0` in the editor. The front-end corrects this automatically (see below).
+If no resolver matches the block name, `innerBlocks.length` is used as a fallback.
+
+For server-rendered blocks (where `innerBlocks` is empty in the editor), register a resolver that reads the attribute controlling the item count. For example, a block with a top-level `count` attribute:
+
+```js
+import { addFilter } from '@wordpress/hooks';
+
+addFilter(
+	'wpcomsp.carousel.itemCountResolvers',
+	'my-plugin/carousel-item-count',
+	( resolvers ) => ( {
+		...resolvers,
+		'my-plugin/my-block': ( attrs ) => Number( attrs.count || 0 ),
+	} )
+);
+```
+
+The resolved count may not exactly match the rendered output (e.g. fewer results than requested). The front-end corrects this automatically (see below).
 
 ### Front-end
 
