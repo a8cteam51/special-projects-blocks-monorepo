@@ -1,8 +1,8 @@
 // WordPress dependencies.
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 /**
- * Returns HTML attributes for the carousel nav buttons container.
+ * Returns HTML attributes for the carousel pagination buttons container.
  *
  * @param {Object} attributes The block attributes.
  *
@@ -59,7 +59,12 @@ export function paginationButtons( count ) {
 					key={ index }
 				>
 					<span className="screen-reader-text">
-						{ `Slide ${ index + 1 } of ${ count }` }
+						{ sprintf(
+							/* translators: 1: current slide number, 2: total slides */
+							__( 'Slide %1$d of %2$d', 'carousel' ),
+							index + 1,
+							count
+						) }
 					</span>
 				</button>
 			) ) }

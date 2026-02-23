@@ -85,6 +85,5 @@
 	"editorStyle": "file:./index.css",
 	"viewScript": "file:./view.js",
 	"viewStyle": "file:./view.css",
-	"style": "file:./style-index.css",
-	"render": "file:./render.php"
+	"style": "file:./style-index.css"
 }

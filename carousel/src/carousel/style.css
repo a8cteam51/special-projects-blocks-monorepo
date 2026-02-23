@@ -25,6 +25,10 @@
 		clip-path: inset(0 0 0 -100vw);
 	}
 
+	&.has-overflow-both .wp-block-wpcomsp-carousel-track {
+		clip-path: inset(0 -100vw 0 -100vw);
+	}
+
 	.wp-block-wpcomsp-carousel-track > * {
 		flex: 1 0 auto;
 		margin: 0;

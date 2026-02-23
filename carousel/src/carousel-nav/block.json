@@ -5,6 +5,7 @@
 	"version": "0.1.0",
 	"title": "Carousel Navigation",
 	"category": "widgets",
+	"icon": "controls-back",
 	"description": "Display previous and next navigation buttons for a carousel.",
 	"example": {},
 	"attributes": {

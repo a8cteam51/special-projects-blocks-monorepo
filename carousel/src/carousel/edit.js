@@ -9,6 +9,7 @@ import { createBlock } from '@wordpress/blocks';
 import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
 // Internal dependencies.
@@ -16,15 +17,29 @@ import CarouselPlaceHolder from './placeholder';
 import { getHTMLAttributes } from './common';
 import './editor.css';
 
-const CONTENT_BLOCKS = [
-	'core/query',
-	'core/gallery',
-	'core/group',
-	'woocommerce/product-collection',
-];
+const TRACK_CLASS = 'wp-block-wpcomsp-carousel-track';
+
+// Wrapper blocks whose child template block carries the track class.
+const CONTENT_BLOCKS = [ 'core/query', 'woocommerce/product-collection' ];
+
+/**
+ * Default item count resolvers keyed by block name.
+ *
+ * Each resolver receives the block's `attributes` object and returns a number.
+ * Developers can add entries for third-party blocks via the
+ * `wpcomsp.carousel.itemCountResolvers` filter.
+ */
+const DEFAULT_ITEM_COUNT_RESOLVERS = {
+	'core/query': ( attrs ) => Number( attrs.query?.perPage || 0 ),
+	'woocommerce/product-collection': ( attrs ) =>
+		Number( attrs.query?.perPage || 0 ),
+};
 
 /**
  * Searches for the slides/content container block.
+ *
+ * Matches any block with the track className first, then falls back
+ * to known wrapper block types whose descendants carry the track class.
  *
  * @param {Array} blocks Array of blocks to search through.
  *
@@ -36,15 +51,11 @@ const findContentBlock = ( blocks ) => {
 	}
 
 	for ( const block of blocks ) {
-		if ( block.name === 'core/group' ) {
-			if (
-				block.attributes.className?.includes(
-					'wp-block-wpcomsp-carousel-track'
-				)
-			) {
-				return block;
-			}
-		} else if ( CONTENT_BLOCKS.includes( block.name ) ) {
+		if ( block.attributes.className?.includes( TRACK_CLASS ) ) {
+			return block;
+		}
+
+		if ( CONTENT_BLOCKS.includes( block.name ) ) {
 			return block;
 		}
 
@@ -101,82 +112,15 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 				return { hasInnerBlocks: false, itemCount: 0, innerBlocks: [] };
 			}
 
-			let count = 0;
+			const resolvers = applyFilters(
+				'wpcomsp.carousel.itemCountResolvers',
+				DEFAULT_ITEM_COUNT_RESOLVERS
+			);
 
-			switch ( contentBlock.name ) {
-				case 'core/gallery':
-				case 'core/group': {
-					count = contentBlock.innerBlocks?.length || 0;
-					break;
-				}
-				case 'core/query':
-				case 'woocommerce/product-collection': {
-					const { getTaxonomy } = select( 'core' );
-					const { getEntityRecords } = select( 'core' );
-
-					const query = contentBlock.attributes.query || {};
-					const postType = query?.postType || 'post';
-					const sticky = query?.sticky || '';
-
-					// Remove falsey values from query parameters.
-					const cleanQuery = Object.fromEntries(
-						Object.entries( {
-							...query,
-							per_page: query.perPage || 10,
-							// eslint-disable-next-line no-unused-vars
-						} ).filter( ( [ _, value ] ) => {
-							if ( Array.isArray( value ) ) {
-								return value.length > 0;
-							}
-							return (
-								value !== '' &&
-								value !== null &&
-								value !== undefined
-							);
-						} )
-					);
-
-					// Handle cases where sticky is set to `exclude` or `only`.
-					// Which works as a `post__in/post__not_in` query for sticky posts.
-					if ( [ 'exclude', 'only' ].includes( sticky ) ) {
-						cleanQuery.sticky = sticky === 'only';
-					}
-
-					// Empty string represents the default behavior of including sticky posts.
-					if ( [ '', 'ignore' ].includes( sticky ) ) {
-						// Remove any leftover sticky query parameter.
-						delete cleanQuery.sticky;
-						cleanQuery.ignore_sticky = sticky === 'ignore';
-					}
-
-					// Handle taxonomy queries.
-					const taxQuery = query.taxQuery
-						? Object.fromEntries(
-								Object.entries( query.taxQuery ).map(
-									( [ taxonomy, terms ] ) => {
-										const taxonomyObj =
-											getTaxonomy( taxonomy );
-										return [
-											taxonomyObj?.rest_base || taxonomy,
-											terms,
-										];
-									}
-								)
-						  )
-						: {};
-
-					const records = getEntityRecords( 'postType', postType, {
-						...cleanQuery,
-						...taxQuery,
-						_fields: [ 'id' ],
-					} );
-
-					count = records?.length || 0;
-					break;
-				}
-				default:
-					count = 0;
-			}
+			const resolver = resolvers[ contentBlock.name ];
+			const count = resolver
+				? resolver( contentBlock.attributes )
+				: contentBlock.innerBlocks?.length || 0;
 
 			return {
 				hasInnerBlocks: true,
@@ -274,13 +218,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 				/>
 				<SelectControl
 					label={ __( 'At end', 'carousel' ) }
-					onChange={ ( v ) => {
-						setAttributes( { animateEnd: v } );
-
-						if ( 'infinite' === v ) {
-							setAttributes( { pagination: false } );
-						}
-					} }
+					onChange={ ( v ) => setAttributes( { animateEnd: v } ) }
 					options={ [
 						{
 							value: 'stop',

@@ -32,11 +32,12 @@ export function getHTMLAttributes( attributes ) {
 
 	const itemGap = style?.spacing?.blockGap;
 	if ( itemGap ) {
-		styles[ '--item-gap' ] =
-			itemGap.replace(
-				'var:preset|spacing|',
-				'var(--wp--preset--spacing--'
-			) + ')';
+		styles[ '--item-gap' ] = itemGap.includes( 'var:preset|spacing|' )
+			? itemGap.replace(
+					'var:preset|spacing|',
+					'var(--wp--preset--spacing--'
+			  ) + ')'
+			: itemGap;
 	}
 
 	if ( 'gallery' === type && trackHeight && trackHeightUnit ) {
