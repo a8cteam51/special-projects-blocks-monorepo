@@ -14,6 +14,13 @@
 		"plugin-zip": "wp-scripts plugin-zip",
 		"start": "wp-scripts start"
 	},
+	"files": [
+		"build/",
+		"classes/",
+		"src/",
+		"marquee.php",
+		"readme.txt"
+	],
 	"devDependencies": {
 		"@wordpress/scripts": "^31.3.0"
 	}
