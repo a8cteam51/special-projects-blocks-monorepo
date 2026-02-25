@@ -32,7 +32,7 @@ export function getHTMLAttributes( attributes ) {
 	);
 
 	const htmlAttributes = {
-		'aria-label': __( 'Slide controls', 'carousel' ),
+		'aria-label': __( 'Slide controls', 'a8csp-carousel' ),
 		role: 'group',
 	};
 
@@ -55,13 +55,13 @@ export function paginationButtons( count ) {
 		<>
 			{ Array.from( { length: count }, ( _, index ) => (
 				<button
-					className="wp-block-wpcomsp-carousel-pagination--button"
+					className="wp-block-a8csp-carousel-pagination--button"
 					key={ index }
 				>
 					<span className="screen-reader-text">
 						{ sprintf(
 							/* translators: 1: current slide number, 2: total slides */
-							__( 'Slide %1$d of %2$d', 'carousel' ),
+							__( 'Slide %1$d of %2$d', 'a8csp-carousel' ),
 							index + 1,
 							count
 						) }

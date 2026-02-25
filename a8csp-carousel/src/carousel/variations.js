@@ -5,23 +5,23 @@ import domReady from '@wordpress/dom-ready';
 
 const variations = [
 	{
-		name: 'wpcomsp/carousel-images',
-		title: __( 'Images Carousel', 'carousel' ),
+		name: 'a8csp/carousel-images',
+		title: __( 'Images Carousel', 'a8csp-carousel' ),
 		description: __(
 			'Display a gallery in a horizontal series.',
-			'carousel'
+			'a8csp-carousel'
 		),
 		scope: [ 'block' ],
 		innerBlocks: [
 			{
 				name: 'core/gallery',
 				attributes: {
-					className: 'wp-block-wpcomsp-carousel-track',
+					className: 'wp-block-a8csp-carousel-track',
 					columns: 1,
 					imageCrop: false,
 				},
 				metaData: {
-					name: __( 'Carousel Track', 'carousel' ),
+					name: __( 'Carousel Track', 'a8csp-carousel' ),
 				},
 			},
 		],
@@ -29,11 +29,11 @@ const variations = [
 		attributes: { type: 'gallery' },
 	},
 	{
-		name: 'wpcomsp/carousel-posts',
-		title: __( 'Posts Carousel', 'carousel' ),
+		name: 'a8csp/carousel-posts',
+		title: __( 'Posts Carousel', 'a8csp-carousel' ),
 		description: __(
 			'Display a query loop in a horizontal series.',
-			'carousel'
+			'a8csp-carousel'
 		),
 		scope: [ 'block' ],
 		innerBlocks: [
@@ -43,10 +43,10 @@ const variations = [
 					{
 						name: 'core/post-template',
 						attributes: {
-							className: 'wp-block-wpcomsp-carousel-track',
+							className: 'wp-block-a8csp-carousel-track',
 						},
 						metaData: {
-							name: __( 'Carousel Track', 'carousel' ),
+							name: __( 'Carousel Track', 'a8csp-carousel' ),
 						},
 						innerBlocks: [
 							{
@@ -70,18 +70,21 @@ const variations = [
 		attributes: { type: 'query' },
 	},
 	{
-		name: 'wpcomsp/carousel-cards',
-		title: __( 'Cards Carousel', 'carousel' ),
-		description: __( 'Display cards in a horizontal series.', 'carousel' ),
+		name: 'a8csp/carousel-cards',
+		title: __( 'Cards Carousel', 'a8csp-carousel' ),
+		description: __(
+			'Display cards in a horizontal series.',
+			'a8csp-carousel'
+		),
 		scope: [ 'block' ],
 		innerBlocks: [
 			{
 				name: 'core/group',
 				attributes: {
-					className: 'wp-block-wpcomsp-carousel-track',
+					className: 'wp-block-a8csp-carousel-track',
 				},
 				metaData: {
-					name: __( 'Carousel Track', 'carousel' ),
+					name: __( 'Carousel Track', 'a8csp-carousel' ),
 				},
 				innerBlocks: [
 					{
@@ -91,7 +94,10 @@ const variations = [
 								name: 'core/heading',
 								attributes: {
 									level: 3,
-									placeholder: __( 'Card 1', 'carousel' ),
+									placeholder: __(
+										'Card 1',
+										'a8csp-carousel'
+									),
 								},
 							},
 						],
@@ -103,7 +109,10 @@ const variations = [
 								name: 'core/heading',
 								attributes: {
 									level: 3,
-									placeholder: __( 'Card 2', 'carousel' ),
+									placeholder: __(
+										'Card 2',
+										'a8csp-carousel'
+									),
 								},
 							},
 						],
@@ -115,7 +124,10 @@ const variations = [
 								name: 'core/heading',
 								attributes: {
 									level: 3,
-									placeholder: __( 'Card 3', 'carousel' ),
+									placeholder: __(
+										'Card 3',
+										'a8csp-carousel'
+									),
 								},
 							},
 						],
@@ -129,11 +141,11 @@ const variations = [
 ];
 
 const productVariation = {
-	name: 'wpcomsp/carousel-products',
-	title: __( 'Products Carousel', 'carousel' ),
+	name: 'a8csp/carousel-products',
+	title: __( 'Products Carousel', 'a8csp-carousel' ),
 	description: __(
 		'Display a WooCommerce product collection in a horizontal series.',
-		'carousel'
+		'a8csp-carousel'
 	),
 	scope: [ 'block' ],
 	innerBlocks: [
@@ -143,7 +155,7 @@ const productVariation = {
 				{
 					name: 'woocommerce/product-template',
 					attributes: {
-						className: 'wp-block-wpcomsp-carousel-track',
+						className: 'wp-block-a8csp-carousel-track',
 					},
 					innerBlocks: [
 						{
@@ -182,7 +194,7 @@ const productVariation = {
 						},
 					],
 					metaData: {
-						name: __( 'Carousel Track', 'carousel' ),
+						name: __( 'Carousel Track', 'a8csp-carousel' ),
 					},
 				},
 			],
@@ -194,7 +206,7 @@ const productVariation = {
 
 domReady( () => {
 	if ( getBlockType( 'woocommerce/product-collection' ) ) {
-		registerBlockVariation( 'wpcomsp/carousel', productVariation );
+		registerBlockVariation( 'a8csp/carousel', productVariation );
 	}
 } );
 

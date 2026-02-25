@@ -43,7 +43,7 @@ export default function Edit( props ) {
 					panelId={ clientId }
 					settings={ [
 						{
-							label: __( 'Button', 'carousel' ),
+							label: __( 'Button', 'a8csp-carousel' ),
 							colorValue: background,
 							onColorChange: ( v ) =>
 								setAttributes( {
@@ -54,7 +54,7 @@ export default function Edit( props ) {
 								} ),
 						},
 						{
-							label: __( 'Button hover', 'carousel' ),
+							label: __( 'Button hover', 'a8csp-carousel' ),
 							colorValue: backgroundHover,
 							onColorChange: ( v ) =>
 								setAttributes( {
@@ -65,7 +65,7 @@ export default function Edit( props ) {
 								} ),
 						},
 						{
-							label: __( 'Icon', 'carousel' ),
+							label: __( 'Icon', 'a8csp-carousel' ),
 							colorValue: icon,
 							onColorChange: ( v ) =>
 								setAttributes( {
@@ -73,7 +73,7 @@ export default function Edit( props ) {
 								} ),
 						},
 						{
-							label: __( 'Icon hover', 'carousel' ),
+							label: __( 'Icon hover', 'a8csp-carousel' ),
 							colorValue: iconHover,
 							onColorChange: ( v ) =>
 								setAttributes( {
@@ -88,9 +88,9 @@ export default function Edit( props ) {
 				/>
 			</InspectorControls>
 			<InspectorControls>
-				<PanelBody title={ __( 'Button size', 'carousel' ) }>
+				<PanelBody title={ __( 'Button size', 'a8csp-carousel' ) }>
 					<RangeControl
-						label={ __( 'Button size', 'carousel' ) }
+						label={ __( 'Button size', 'a8csp-carousel' ) }
 						value={ buttonSize }
 						onChange={ ( v ) => setAttributes( { buttonSize: v } ) }
 						min={ 0 }
@@ -99,9 +99,9 @@ export default function Edit( props ) {
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
-				<PanelBody title={ __( 'Button icon', 'carousel' ) }>
+				<PanelBody title={ __( 'Button icon', 'a8csp-carousel' ) }>
 					<ToggleControl
-						label={ __( 'Custom icon', 'carousel' ) }
+						label={ __( 'Custom icon', 'a8csp-carousel' ) }
 						checked={ customIcon }
 						onChange={ ( v ) => setAttributes( { customIcon: v } ) }
 					/>
@@ -110,7 +110,7 @@ export default function Edit( props ) {
 							<p>
 								{ __(
 									'Upload an icon for the left button. It will be flipped for the right button',
-									'carousel'
+									'a8csp-carousel'
 								) }
 							</p>
 							<MediaUploadCheck>
@@ -127,7 +127,7 @@ export default function Edit( props ) {
 													<Button
 														label={ __(
 															'Reset icon',
-															'carousel'
+															'a8csp-carousel'
 														) }
 														onClick={ open }
 													>
@@ -156,7 +156,7 @@ export default function Edit( props ) {
 													>
 														{ __(
 															'Remove',
-															'carousel'
+															'a8csp-carousel'
 														) }
 													</Button>
 												</HStack>
@@ -164,7 +164,7 @@ export default function Edit( props ) {
 												<Button onClick={ open }>
 													{ __(
 														'Set icon',
-														'carousel'
+														'a8csp-carousel'
 													) }
 												</Button>
 											) }

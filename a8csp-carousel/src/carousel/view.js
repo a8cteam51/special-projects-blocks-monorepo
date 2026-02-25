@@ -5,13 +5,13 @@ import './view.css';
 
 {
 	const SELECTORS = {
-		CAROUSEL: '.wp-block-wpcomsp-carousel',
-		TRACK: '.wp-block-wpcomsp-carousel-track',
-		SLIDES: '.wp-block-wpcomsp-carousel-track > *',
-		PREV_BUTTON: '.wp-block-wpcomsp-carousel-nav--button_prev',
-		NEXT_BUTTON: '.wp-block-wpcomsp-carousel-nav--button_next',
-		PAGINATION: '.wp-block-wpcomsp-carousel-pagination',
-		PAGINATION_BUTTONS: '.wp-block-wpcomsp-carousel-pagination--button',
+		CAROUSEL: '.wp-block-a8csp-carousel',
+		TRACK: '.wp-block-a8csp-carousel-track',
+		SLIDES: '.wp-block-a8csp-carousel-track > *',
+		PREV_BUTTON: '.wp-block-a8csp-carousel-nav--button_prev',
+		NEXT_BUTTON: '.wp-block-a8csp-carousel-nav--button_next',
+		PAGINATION: '.wp-block-a8csp-carousel-pagination',
+		PAGINATION_BUTTONS: '.wp-block-a8csp-carousel-pagination--button',
 		FOCUSABLE: 'a, button, input, select, textarea',
 	};
 
@@ -500,10 +500,10 @@ import './view.css';
 		// Create missing pagination buttons.
 		for ( let i = currentCount; i < slides.length; i++ ) {
 			const button = document.createElement( 'button' );
-			button.className = 'wp-block-wpcomsp-carousel-pagination--button';
+			button.className = 'wp-block-a8csp-carousel-pagination--button';
 			button.innerHTML = `<span class="screen-reader-text">${ sprintf(
 				/* translators: 1: current slide number, 2: total slides */
-				__( 'Slide %1$d of %2$d', 'carousel' ),
+				__( 'Slide %1$d of %2$d', 'a8csp-carousel' ),
 				i + 1,
 				slides.length
 			) }</span>`;

@@ -6,9 +6,9 @@ The Carousel block supports adding third-party or custom blocks as carousel trac
 
 1. **Add your block to `allowedBlocks`.** Use the `blocks.registerBlockType` filter to append your block's name to the Carousel's `allowedBlocks` list.
 
-2. **Apply the track class name.** The block that acts as the carousel track **must** have the CSS class `wp-block-wpcomsp-carousel-track`. This is how both the editor and the front-end identify which element contains the slides.
+2. **Apply the track class name.** The block that acts as the carousel track **must** have the CSS class `wp-block-a8csp-carousel-track`. This is how both the editor and the front-end identify which element contains the slides.
 
-3. **Each direct child = one slide.** The carousel counts slides by looking at the direct children of the track element (`wp-block-wpcomsp-carousel-track > *`). Structure your block so that each slide is a direct child of the track.
+3. **Each direct child = one slide.** The carousel counts slides by looking at the direct children of the track element (`wp-block-a8csp-carousel-track > *`). Structure your block so that each slide is a direct child of the track.
 
 ## Example: Adding a Custom Block as a Track
 
@@ -22,7 +22,7 @@ addFilter(
 	'blocks.registerBlockType',
 	'my-plugin/carousel-allowed-blocks',
 	( settings, name ) => {
-		if ( name !== 'wpcomsp/carousel' ) {
+		if ( name !== 'a8csp/carousel' ) {
 			return settings;
 		}
 
@@ -42,7 +42,7 @@ When inserting the block into a Carousel in the editor, ensure it carries the re
 ```js
 // When creating the block programmatically:
 createBlock( 'my-plugin/my-block', {
-	className: 'wp-block-wpcomsp-carousel-track',
+	className: 'wp-block-a8csp-carousel-track',
 } );
 ```
 
@@ -58,7 +58,7 @@ import { getBlockType, registerBlockVariation } from '@wordpress/blocks';
 import domReady from '@wordpress/dom-ready';
 
 const myVariation = {
-	name: 'wpcomsp/carousel-my-block',
+	name: 'a8csp/carousel-my-block',
 	title: __( 'My Block Carousel', 'my-plugin' ),
 	description: __(
 		'Display my block in a horizontal series.',
@@ -69,7 +69,7 @@ const myVariation = {
 		{
 			name: 'my-plugin/my-block',
 			attributes: {
-				className: 'wp-block-wpcomsp-carousel-track',
+				className: 'wp-block-a8csp-carousel-track',
 			},
 		},
 	],
@@ -79,7 +79,7 @@ const myVariation = {
 
 domReady( () => {
 	if ( getBlockType( 'my-plugin/my-block' ) ) {
-		registerBlockVariation( 'wpcomsp/carousel', myVariation );
+		registerBlockVariation( 'a8csp/carousel', myVariation );
 	}
 } );
 ```
@@ -92,10 +92,10 @@ This is the same pattern used internally for the WooCommerce Products variation.
 
 The editor uses `findContentBlock()` to locate the track block inside the Carousel's inner blocks tree. It matches by:
 
-1. **Class name** (primary) — any block whose `className` attribute includes `wp-block-wpcomsp-carousel-track`.
+1. **Class name** (primary) — any block whose `className` attribute includes `wp-block-a8csp-carousel-track`.
 2. **Block type** (fallback) — wrapper blocks like `core/query` and `woocommerce/product-collection` whose child template block carries the track class.
 
-Once found, the item count is resolved by checking the `wpcomsp.carousel.itemCountResolvers` filter. The default resolvers are:
+Once found, the item count is resolved by checking the `a8csp.carousel.itemCountResolvers` filter. The default resolvers are:
 
 ```js
 {
@@ -112,7 +112,7 @@ For server-rendered blocks (where `innerBlocks` is empty in the editor), registe
 import { addFilter } from '@wordpress/hooks';
 
 addFilter(
-	'wpcomsp.carousel.itemCountResolvers',
+	'a8csp.carousel.itemCountResolvers',
 	'my-plugin/carousel-item-count',
 	( resolvers ) => ( {
 		...resolvers,
@@ -131,7 +131,7 @@ If a pagination block is present, `ensurePaginationButtons()` creates any missin
 
 ## CSS Custom Properties
 
-These custom properties are set on the `.wp-block-wpcomsp-carousel` element and can be used for theming:
+These custom properties are set on the `.wp-block-a8csp-carousel` element and can be used for theming:
 
 | Property             | Description                                 | Default                          |
 |----------------------|---------------------------------------------|----------------------------------|

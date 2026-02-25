@@ -19,7 +19,7 @@ export default function Edit( props ) {
 	const { layout, buttonColors, buttonSize, count } = attributes;
 	const { background, backgroundHover } = buttonColors || {};
 
-	const itemCountContext = context[ 'wpcomsp/item-count' ];
+	const itemCountContext = context[ 'a8csp/item-count' ];
 
 	const { ...innerBlocksProps } = useInnerBlocksProps(
 		useBlockProps( getHTMLAttributes( attributes ) ),
@@ -43,7 +43,7 @@ export default function Edit( props ) {
 					panelId={ clientId }
 					settings={ [
 						{
-							label: __( 'Button', 'carousel' ),
+							label: __( 'Button', 'a8csp-carousel' ),
 							colorValue: background,
 							onColorChange: ( v ) =>
 								setAttributes( {
@@ -54,7 +54,7 @@ export default function Edit( props ) {
 								} ),
 						},
 						{
-							label: __( 'Button hover', 'carousel' ),
+							label: __( 'Button hover', 'a8csp-carousel' ),
 							colorValue: backgroundHover,
 							onColorChange: ( v ) =>
 								setAttributes( {
@@ -69,9 +69,9 @@ export default function Edit( props ) {
 				/>
 			</InspectorControls>
 			<InspectorControls>
-				<PanelBody title={ __( 'Button size', 'carousel' ) }>
+				<PanelBody title={ __( 'Button size', 'a8csp-carousel' ) }>
 					<RangeControl
-						label={ __( 'Button size', 'carousel' ) }
+						label={ __( 'Button size', 'a8csp-carousel' ) }
 						value={ buttonSize }
 						onChange={ ( v ) => setAttributes( { buttonSize: v } ) }
 						min={ 0 }

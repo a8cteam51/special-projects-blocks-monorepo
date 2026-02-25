@@ -45,7 +45,7 @@ export function getHTMLAttributes( attributes ) {
 	}
 
 	const htmlAttributes = {
-		'aria-label': title || __( 'Carousel', 'carousel' ),
+		'aria-label': title || __( 'Carousel', 'a8csp-carousel' ),
 		'data-animate-end': animateEnd,
 		role: 'region',
 		className: clsx(

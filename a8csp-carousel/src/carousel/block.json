@@ -1,7 +1,7 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "wpcomsp/carousel",
+	"name": "a8csp/carousel",
 	"version": "0.1.0",
 	"title": "Carousel",
 	"category": "widgets",
@@ -74,13 +74,13 @@
 		"core/paragraph",
 		"core/heading",
 		"woocommerce/product-collection",
-		"wpcomsp/carousel-nav",
-		"wpcomsp/carousel-pagination"
+		"a8csp/carousel-nav",
+		"a8csp/carousel-pagination"
 	],
 	"providesContext": {
-		"wpcomsp/item-count": "itemCount"
+		"a8csp/item-count": "itemCount"
 	},
-	"textdomain": "carousel",
+	"textdomain": "a8csp-carousel",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"viewScript": "file:./view.js",

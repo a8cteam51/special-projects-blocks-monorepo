@@ -1,5 +1,5 @@
 
-.wp-block-wpcomsp-carousel {
+.wp-block-a8csp-carousel {
 
 	.wp-block-group-placeholder__variations.wp-block-carousel-placeholder__variations {
 		display: grid;
@@ -24,15 +24,15 @@
 		}
 	}
 
-	.wp-block-gallery.wp-block-wpcomsp-carousel-track.has-nested-images figure.wp-block-image {
+	.wp-block-gallery.wp-block-a8csp-carousel-track.has-nested-images figure.wp-block-image {
 		flex-direction: unset;
 	}
 
-	.wp-block-wpcomsp-carousel-track:not(.has-child-selected):not(.is-selected) {
+	.wp-block-a8csp-carousel-track:not(.has-child-selected):not(.is-selected) {
 		width: 100%;
 	}
 
-	.wp-block-wpcomsp-carousel-track:not(.has-child-selected):not(.is-child-selected) {
+	.wp-block-a8csp-carousel-track:not(.has-child-selected):not(.is-child-selected) {
 		container-name: carousel-track;
 		container-type: inline-size;
 		display: flex;
@@ -42,11 +42,11 @@
 		--wp--style--block-gap: var(--item-gap);
 	}
 
-	.wp-block-wpcomsp-carousel-track.has-child-selected > *:not(.is-selected):not(.has-child-selected) {
+	.wp-block-a8csp-carousel-track.has-child-selected > *:not(.is-selected):not(.has-child-selected) {
 		opacity: 0.5;
 	}
 
-	.wp-block-gallery.wp-block-wpcomsp-carousel-track.has-nested-images[class*="columns-"]:not(.is-selected):not(.has-child-selected) {
+	.wp-block-gallery.wp-block-a8csp-carousel-track.has-nested-images[class*="columns-"]:not(.is-selected):not(.has-child-selected) {
 
 		&.is-cropped figure.wp-block-image:not(#individual-image) {
 			height: var(--track-height);
@@ -66,7 +66,7 @@
 	}
 }
 
-.block-editor-block-inspector .wpcomsp-carousel-track-height-input {
+.block-editor-block-inspector .a8csp-carousel-track-height-input {
 	align-items: flex-end;
 	display: flex;
 	gap: 8px;

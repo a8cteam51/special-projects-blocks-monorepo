@@ -1,7 +1,7 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "wpcomsp/carousel-pagination",
+	"name": "a8csp/carousel-pagination",
 	"version": "0.1.0",
 	"title": "Carousel Pagination",
 	"category": "widgets",
@@ -57,9 +57,9 @@
 			}
 		}
 	},
-	"usesContext": [ "wpcomsp/item-count" ],
-	"ancestor": [ "wpcomsp/carousel" ],
-	"textdomain": "carousel",
+	"usesContext": [ "a8csp/item-count" ],
+	"ancestor": [ "a8csp/carousel" ],
+	"textdomain": "a8csp-carousel",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"
