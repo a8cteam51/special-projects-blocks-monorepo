@@ -39,6 +39,16 @@ const variations = [
 		innerBlocks: [
 			{
 				name: 'core/query',
+				attributes: {
+					className: 'wp-block-a8csp-carousel-track',
+					query: {
+						perPage: 10,
+						postType: 'post',
+						order: 'desc',
+						orderBy: 'date',
+						inherit: false,
+					},
+				},
 				innerBlocks: [
 					{
 						name: 'core/post-template',
