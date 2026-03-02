@@ -25,9 +25,28 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @see https://make.wordpress.org/core/2024/10/17/new-block-type-registration-apis-to-improve-performance-in-wordpress-6-7/
  */
 function a8csp_bp_groups_block_init() {
-dump('sdsds');
-	if ( bp_is_active( 'groups' ) ) {
+	if ( class_exists( 'BuddyPress' ) && bp_is_active( 'groups' ) ) {
 		wp_register_block_types_from_metadata_collection( __DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php' );
 	}
 }
-add_action( 'bp_loaded', 'a8csp_bp_groups_block_init' );
+add_action( 'init', 'a8csp_bp_groups_block_init' );
+
+
+/**
+ * Inserts the campaign content into the group home page.
+ *
+ * @return void
+ */
+function insert_campaign_content() {
+	$group            = groups_get_current_group();
+	$bp_is_group_home = bp_is_group_home();
+
+	if ( $bp_is_group_home && bp_current_user_can( 'groups_access_group' ) ) {
+		$campaign_content = groups_get_groupmeta( $group->id, 'content', true );
+		if ( $campaign_content ) {
+			echo '<div class="campaign-content">' . wp_kses_post( wpautop( $campaign_content ) ) . '</div>';
+		}
+	}
+}
+
+add_action( 'bp_before_group_body', 'insert_campaign_content' );
