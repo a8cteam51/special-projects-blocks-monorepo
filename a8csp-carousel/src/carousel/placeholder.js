@@ -35,7 +35,10 @@ function CarouselPlaceHolder( { name, onSelect } ) {
 	return (
 		<div { ...blockProps }>
 			<Placeholder
-				instructions={ __( 'Create a carousel for:', 'carousel' ) }
+				instructions={ __(
+					'Create a carousel for:',
+					'a8csp-carousel'
+				) }
 			>
 				{ /*
 				 * Taken from BlockVariationPicker component.

@@ -1,9 +1,9 @@
-.wp-block-wpcomsp-carousel-nav {
+.wp-block-a8csp-carousel-nav {
 
 	&:where([style*="--button-border-width"]) {
 		border-style: none;
 
-		.wp-block-wpcomsp-carousel-nav--button {
+		.wp-block-a8csp-carousel-nav--button {
 			border-style: solid;
 		}
 	}
@@ -14,7 +14,7 @@
 		width: auto;
 	}
 
-	.wp-block-wpcomsp-carousel-nav--button {
+	.wp-block-a8csp-carousel-nav--button {
 		background: var(--button-background);
 		border-color: var(--button-border-color, none);
 		border-radius: var(--button-border-radius, 100%);
@@ -42,7 +42,7 @@
 		}
 	}
 
-	.wp-block-wpcomsp-carousel-nav--button_next img {
+	.wp-block-a8csp-carousel-nav--button_next img {
 		transform: scaleX(-1);
 	}
 }

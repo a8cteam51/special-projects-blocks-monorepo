@@ -38,7 +38,7 @@ export function getHTMLAttributes( attributes ) {
 	);
 
 	const htmlAttributes = {
-		'aria-label': __( 'Previous/next slide controls', 'carousel' ),
+		'aria-label': __( 'Previous/next slide controls', 'a8csp-carousel' ),
 		role: 'group',
 	};
 
@@ -59,16 +59,16 @@ export function getHTMLAttributes( attributes ) {
 export function navigationButtons( attributes ) {
 	const { iconUpload } = attributes;
 
-	const buttonClass = 'wp-block-wpcomsp-carousel-nav--button';
+	const buttonClass = 'wp-block-a8csp-carousel-nav--button';
 
 	const previousButtonClasses = clsx(
 		buttonClass,
-		'wp-block-wpcomsp-carousel-nav--button_prev'
+		'wp-block-a8csp-carousel-nav--button_prev'
 	);
 
 	const nextButtonClasses = clsx(
 		buttonClass,
-		'wp-block-wpcomsp-carousel-nav--button_next'
+		'wp-block-a8csp-carousel-nav--button_next'
 	);
 
 	return (
@@ -77,7 +77,7 @@ export function navigationButtons( attributes ) {
 				{ iconUpload ? (
 					<img
 						src={ iconUpload.url }
-						alt={ __( 'Previous slide', 'carousel' ) }
+						alt={ __( 'Previous slide', 'a8csp-carousel' ) }
 					/>
 				) : (
 					<>
@@ -92,7 +92,7 @@ export function navigationButtons( attributes ) {
 							<Path d="M14.6 7l-1.2-1L8 12l5.4 6 1.2-1-4.6-5z" />
 						</SVG>
 						<span className="screen-reader-text">
-							{ __( 'Previous slide', 'carousel' ) }
+							{ __( 'Previous slide', 'a8csp-carousel' ) }
 						</span>
 					</>
 				) }
@@ -101,7 +101,7 @@ export function navigationButtons( attributes ) {
 				{ iconUpload ? (
 					<img
 						src={ iconUpload.url }
-						alt={ __( 'Next slide', 'carousel' ) }
+						alt={ __( 'Next slide', 'a8csp-carousel' ) }
 					/>
 				) : (
 					<>
@@ -116,7 +116,7 @@ export function navigationButtons( attributes ) {
 							<Path d="M10.6 6L9.4 7l4.6 5-4.6 5 1.2 1 5.4-6z" />
 						</SVG>
 						<span className="screen-reader-text">
-							{ __( 'Next slide', 'carousel' ) }
+							{ __( 'Next slide', 'a8csp-carousel' ) }
 						</span>
 					</>
 				) }

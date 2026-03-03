@@ -17,7 +17,7 @@ import CarouselPlaceHolder from './placeholder';
 import { getHTMLAttributes } from './common';
 import './editor.css';
 
-const TRACK_CLASS = 'wp-block-wpcomsp-carousel-track';
+const TRACK_CLASS = 'wp-block-a8csp-carousel-track';
 
 // Wrapper blocks whose child template block carries the track class.
 const CONTENT_BLOCKS = [ 'core/query', 'woocommerce/product-collection' ];
@@ -27,7 +27,7 @@ const CONTENT_BLOCKS = [ 'core/query', 'woocommerce/product-collection' ];
  *
  * Each resolver receives the block's `attributes` object and returns a number.
  * Developers can add entries for third-party blocks via the
- * `wpcomsp.carousel.itemCountResolvers` filter.
+ * `a8csp.carousel.itemCountResolvers` filter.
  */
 const DEFAULT_ITEM_COUNT_RESOLVERS = {
 	'core/query': ( attrs ) => Number( attrs.query?.perPage || 0 ),
@@ -113,7 +113,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 			}
 
 			const resolvers = applyFilters(
-				'wpcomsp.carousel.itemCountResolvers',
+				'a8csp.carousel.itemCountResolvers',
 				DEFAULT_ITEM_COUNT_RESOLVERS
 			);
 
@@ -142,7 +142,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 
 	const selectVariation = ( nextVariation ) => {
 		insertBlock(
-			createBlock( 'wpcomsp/carousel-nav', {}, [] ),
+			createBlock( 'a8csp/carousel-nav', {}, [] ),
 			undefined,
 			clientId
 		);
@@ -162,37 +162,37 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 
 	const defaultInspectorControls = (
 		<InspectorControls>
-			<PanelBody title={ __( 'Carousel Settings', 'carousel' ) }>
+			<PanelBody title={ __( 'Carousel Settings', 'a8csp-carousel' ) }>
 				<TextControl
 					help={ __(
 						'Briefly describe the carousel for screen reader users.',
-						'carousel'
+						'a8csp-carousel'
 					) }
-					label={ __( 'Title', 'carousel' ) }
+					label={ __( 'Title', 'a8csp-carousel' ) }
 					onChange={ ( v ) => setAttributes( { title: v } ) }
 					value={ title }
 					__next40pxDefaultSize
 					__nextHasNoMarginBottom
 				/>
 				<SelectControl
-					label={ __( 'Overflow', 'carousel' ) }
+					label={ __( 'Overflow', 'a8csp-carousel' ) }
 					onChange={ ( v ) => setAttributes( { overflow: v } ) }
 					options={ [
 						{
 							value: 'hidden',
-							label: __( 'Hidden', 'carousel' ),
+							label: __( 'Hidden', 'a8csp-carousel' ),
 						},
 						{
 							value: 'right',
-							label: __( 'Right', 'carousel' ),
+							label: __( 'Right', 'a8csp-carousel' ),
 						},
 						{
 							value: 'left',
-							label: __( 'Left', 'carousel' ),
+							label: __( 'Left', 'a8csp-carousel' ),
 						},
 						{
 							value: 'both',
-							label: __( 'Left and right', 'carousel' ),
+							label: __( 'Left and right', 'a8csp-carousel' ),
 						},
 					] }
 					value={ overflow }
@@ -200,16 +200,19 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					__next40pxDefaultSize
 				/>
 				<SelectControl
-					label={ __( 'Animate', 'carousel' ) }
+					label={ __( 'Animate', 'a8csp-carousel' ) }
 					onChange={ ( v ) => setAttributes( { animate: v } ) }
 					options={ [
 						{
 							value: 'one',
-							label: __( 'One slide at a time', 'carousel' ),
+							label: __(
+								'One slide at a time',
+								'a8csp-carousel'
+							),
 						},
 						{
 							value: 'all-visible',
-							label: __( 'All visible slides', 'carousel' ),
+							label: __( 'All visible slides', 'a8csp-carousel' ),
 						},
 					] }
 					value={ animate }
@@ -217,20 +220,20 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					__next40pxDefaultSize
 				/>
 				<SelectControl
-					label={ __( 'At end', 'carousel' ) }
+					label={ __( 'At end', 'a8csp-carousel' ) }
 					onChange={ ( v ) => setAttributes( { animateEnd: v } ) }
 					options={ [
 						{
 							value: 'stop',
-							label: __( 'Stop', 'carousel' ),
+							label: __( 'Stop', 'a8csp-carousel' ),
 						},
 						{
 							value: 'jump',
-							label: __( 'Jump to other end', 'carousel' ),
+							label: __( 'Jump to other end', 'a8csp-carousel' ),
 						},
 						{
 							value: 'infinite',
-							label: __( 'Infinite loop', 'carousel' ),
+							label: __( 'Infinite loop', 'a8csp-carousel' ),
 						},
 					] }
 					value={ animateEnd }
@@ -238,7 +241,10 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					__next40pxDefaultSize
 				/>
 				<TextControl
-					label={ __( 'Animation speed (in seconds)', 'carousel' ) }
+					label={ __(
+						'Animation speed (in seconds)',
+						'a8csp-carousel'
+					) }
 					max="10"
 					min="0.1"
 					step="0.1"
@@ -256,9 +262,9 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 
 	const styleInspectorControls = 'gallery' === attributes.type && (
 		<InspectorControls group="dimensions">
-			<div className="wpcomsp-carousel-track-height-input">
+			<div className="a8csp-carousel-track-height-input">
 				<TextControl
-					label={ __( 'Track height', 'carousel' ) }
+					label={ __( 'Track height', 'a8csp-carousel' ) }
 					onChange={ ( v ) =>
 						setAttributes( { trackHeight: Number( v ) } )
 					}
@@ -268,7 +274,7 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					__nextHasNoMarginBottom
 				/>
 				<SelectControl
-					label={ __( 'Unit', 'carousel' ) }
+					label={ __( 'Unit', 'a8csp-carousel' ) }
 					onChange={ ( v ) =>
 						setAttributes( { trackHeightUnit: v } )
 					}

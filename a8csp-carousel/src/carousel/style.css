@@ -1,4 +1,4 @@
-.wp-block-wpcomsp-carousel {
+.wp-block-a8csp-carousel {
 	--animation-speed: 0.3s;
 	--item-gap: var(--wp--preset--spacing--20);
 	--track-height: 430px;
@@ -9,27 +9,27 @@
 		width: 100%;
 	}
 
-	.wp-block-group.wp-block-wpcomsp-carousel-track {
+	.wp-block-group.wp-block-a8csp-carousel-track {
 		gap: var(--wp--style--block-gap);
 	}
 
-	&.has-overflow-hidden .wp-block-wpcomsp-carousel-track {
+	&.has-overflow-hidden .wp-block-a8csp-carousel-track {
 		overflow-x: hidden;
 	}
 
-	&.has-overflow-right .wp-block-wpcomsp-carousel-track {
+	&.has-overflow-right .wp-block-a8csp-carousel-track {
 		clip-path: inset(0 -100vw 0 0);
 	}
 
-	&.has-overflow-left .wp-block-wpcomsp-carousel-track {
+	&.has-overflow-left .wp-block-a8csp-carousel-track {
 		clip-path: inset(0 0 0 -100vw);
 	}
 
-	&.has-overflow-both .wp-block-wpcomsp-carousel-track {
+	&.has-overflow-both .wp-block-a8csp-carousel-track {
 		clip-path: inset(0 -100vw 0 -100vw);
 	}
 
-	.wp-block-wpcomsp-carousel-track > * {
+	.wp-block-a8csp-carousel-track > * {
 		flex: 1 0 auto;
 		margin: 0;
 		max-width: 100%;
@@ -37,7 +37,7 @@
 
 	@media (prefers-reduced-motion: no-preference) {
 
-		&.is-animating .wp-block-wpcomsp-carousel-track > * {
+		&.is-animating .wp-block-a8csp-carousel-track > * {
 			transition: transform var(--animation-speed) ease-in-out;
 		}
 	}

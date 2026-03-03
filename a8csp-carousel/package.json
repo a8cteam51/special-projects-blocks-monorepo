@@ -1,6 +1,6 @@
 {
-	"name": "carousel",
-	"version": "0.1.0",
+	"name": "a8csp-carousel",
+	"version": "1.1.1",
 	"description": "Create responsive image, post, product, or custom content carousels with optional navigation and pagination controls.",
 	"author": "The WordPress Contributors",
 	"license": "GPL-2.0-or-later",
@@ -16,7 +16,11 @@
 		"start": "wp-scripts start && wp-scripts build-blocks-manifest"
 	},
 	"files": [
-		"[^.]*"
+		"build/",
+		"classes/",
+		"a8csp-carousel.php",
+		"CHANGELOG.md",
+		"readme.txt"
 	],
 	"devDependencies": {
 		"@wordpress/scripts": "^31.5.0",

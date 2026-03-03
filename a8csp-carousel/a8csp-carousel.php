@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Carousel
  * Description:       Display a horizontal series of content.
- * Version:           0.1.1
+ * Version:           1.1.1
  * Requires at least: 6.7
  * Requires PHP:      8.0
  * Author:            The WordPress Contributors
@@ -10,9 +10,9 @@
  * Update URI:        https://opsoasis.wpspecialprojects.com/carousel/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       carousel
+ * Text Domain:       a8csp-carousel
  *
- * @package wpcomsp
+ * @package           a8csp
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -39,7 +39,7 @@ add_filter(
 	'wpcomsp_installed_blocks',
 	function ( $blocks ) {
 		// Add the plugin slug here to enable autoupdates.
-		$blocks[] = 'carousel';
+		$blocks[] = 'a8csp-carousel';
 
 		return $blocks;
 	}

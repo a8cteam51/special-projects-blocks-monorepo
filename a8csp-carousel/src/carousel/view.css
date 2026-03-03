@@ -1,6 +1,6 @@
-.wp-block-wpcomsp-carousel {
+.wp-block-a8csp-carousel {
 
-	.wp-block-wpcomsp-carousel-track {
+	.wp-block-a8csp-carousel-track {
 		container-name: carousel-track;
 		container-type: inline-size;
 		display: flex;
@@ -11,7 +11,7 @@
 		--wp--style--block-gap: var(--item-gap);
 	}
 
-	.wp-block-wpcomsp-carousel-track.wp-block-gallery.has-nested-images[class*="columns-"] {
+	.wp-block-a8csp-carousel-track.wp-block-gallery.has-nested-images[class*="columns-"] {
 
 		&.is-cropped figure.wp-block-image:not(#individual-image) {
 			height: var(--track-height);
