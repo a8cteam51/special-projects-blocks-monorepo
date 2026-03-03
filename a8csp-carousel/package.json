@@ -16,7 +16,11 @@
 		"start": "wp-scripts start && wp-scripts build-blocks-manifest"
 	},
 	"files": [
-		"[^.]*"
+		"build/",
+		"classes/",
+		"a8csp-carousel.php",
+		"CHANGELOG.md",
+		"readme.txt"
 	],
 	"devDependencies": {
 		"@wordpress/scripts": "^31.5.0",
