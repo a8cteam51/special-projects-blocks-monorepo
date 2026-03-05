@@ -1,5 +1,8 @@
 /* global getComputedStyle, MutationObserver, requestAnimationFrame, ResizeObserver */
 
+// WordPress dependencies.
+import domReady from '@wordpress/dom-ready';
+
 // Internal dependencies.
 import { getPath } from './imports/get-path';
 import { getPixelValue } from './imports/utils';
@@ -429,13 +432,8 @@ import { getPixelValue } from './imports/utils';
 	}
 
 	// Initialize on DOM ready.
-	if ( document.readyState === 'loading' ) {
-		document.addEventListener( 'DOMContentLoaded', () => {
-			initDynamicShapes();
-			setupMutationObserver();
-		} );
-	} else {
+	domReady( () => {
 		initDynamicShapes();
 		setupMutationObserver();
-	}
+	} );
 }
