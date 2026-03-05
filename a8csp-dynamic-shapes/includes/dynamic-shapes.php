@@ -2,12 +2,12 @@
 /**
  * Manages dynamic shape asset loading and filtering.
  *
- * @package wpcomsp-dynamic-shapes
+ * @package a8csp-dynamic-shapes
  */
 
 declare( strict_types=1 );
 
-namespace WPCOMSP\DynamicShapes;
+namespace A8CSP\DynamicShapes;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -35,7 +35,7 @@ function get_dynamic_shapes_blocks(): array {
 	 *
 	 * @return array<string> The blocks that support the dynamic shape feature.
 	 */
-	return apply_filters( 'wpcomsp_dynamic_shapes_blocks', $default_supported_blocks );
+	return apply_filters( 'a8csp_dynamic_shapes_blocks', $default_supported_blocks );
 }
 
 /**
@@ -448,7 +448,7 @@ function enqueue_block_editor_assets(): void {
 
 	wp_add_inline_script(
 		Functions\get_slug() . '-extend-blocks',
-		'const wpcomspDynamicShapeBlocks = ' . wp_json_encode(
+		'const a8cspDynamicShapeBlocks = ' . wp_json_encode(
 			get_dynamic_shapes_blocks()
 		) . ';',
 		'before'

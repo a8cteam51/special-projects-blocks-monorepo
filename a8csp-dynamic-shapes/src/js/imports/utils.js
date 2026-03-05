@@ -270,14 +270,14 @@ export const useSpacingPresets = () => {
  */
 export const axisConfig = ( keys ) => {
 	const labels = {
-		vtl: __( 'Top left', 'dynamic-shapes' ),
-		vtr: __( 'Top right', 'dynamic-shapes' ),
-		vbl: __( 'Bottom left', 'dynamic-shapes' ),
-		vbr: __( 'Bottom right', 'dynamic-shapes' ),
-		htl: __( 'Top left', 'dynamic-shapes' ),
-		htr: __( 'Top right', 'dynamic-shapes' ),
-		hbl: __( 'Bottom left', 'dynamic-shapes' ),
-		hbr: __( 'Bottom right', 'dynamic-shapes' ),
+		vtl: __( 'Top left', 'a8csp-dynamic-shapes' ),
+		vtr: __( 'Top right', 'a8csp-dynamic-shapes' ),
+		vbl: __( 'Bottom left', 'a8csp-dynamic-shapes' ),
+		vbr: __( 'Bottom right', 'a8csp-dynamic-shapes' ),
+		htl: __( 'Top left', 'a8csp-dynamic-shapes' ),
+		htr: __( 'Top right', 'a8csp-dynamic-shapes' ),
+		hbl: __( 'Bottom left', 'a8csp-dynamic-shapes' ),
+		hbr: __( 'Bottom right', 'a8csp-dynamic-shapes' ),
 	};
 
 	return keys.map( ( key ) => ( {

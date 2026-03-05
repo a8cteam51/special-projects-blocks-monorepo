@@ -28,7 +28,7 @@ The plugin adds a "Dynamic Shape" panel to the block inspector, allowing you to 
 
 ## Filters
 
-### wpcomsp_dynamic_shapes_blocks
+### a8csp_dynamic_shapes_blocks
 
 Filters the list of block types that support dynamic shape functionality.
 
@@ -40,7 +40,7 @@ Filters the list of block types that support dynamic shape functionality.
 **Example:**
 
 ```php
-add_filter( 'wpcomsp_dynamic_shapes_blocks', function( $blocks ) {
+add_filter( 'a8csp_dynamic_shapes_blocks', function( $blocks ) {
 	// Remove support from the Image block.
 	$blocks = array_diff( $blocks, array( 'core/image' ) );
 
@@ -81,7 +81,7 @@ The plugin automatically calculates padding adjustments for group blocks to acco
 
 = Can I use dynamic shapes with custom block types? =
 
-While the `wpcomsp_dynamic_shapes_blocks` filter allows for adding support for custom block types, the result may be undesirable.
+While the `a8csp_dynamic_shapes_blocks` filter allows for adding support for custom block types, the result may be undesirable.
 
 = Why does my corner radius look funny?
 

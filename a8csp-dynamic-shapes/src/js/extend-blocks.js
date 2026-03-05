@@ -1,4 +1,4 @@
-/* global ResizeObserver, wpcomspDynamicShapeBlocks */
+/* global ResizeObserver, a8cspDynamicShapeBlocks */
 
 // External dependencies.
 import clsx from 'clsx';
@@ -43,7 +43,7 @@ import {
  */
 function addAttributes( settings ) {
 	if (
-		wpcomspDynamicShapeBlocks.includes( settings.name ) &&
+		a8cspDynamicShapeBlocks.includes( settings.name ) &&
 		! settings.attributes.dynamicShape
 	) {
 		settings.attributes.dynamicShape = {
@@ -63,7 +63,7 @@ function addAttributes( settings ) {
  */
 const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
-		if ( ! wpcomspDynamicShapeBlocks.includes( props.name ) ) {
+		if ( ! a8cspDynamicShapeBlocks.includes( props.name ) ) {
 			return <BlockEdit { ...props } />;
 		}
 
@@ -291,8 +291,8 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 							hasValue={ () => !! dynamicShape }
 							label={
 								isImage
-									? __( 'Vertical insets', 'dynamic-shapes' )
-									: __( 'Vertical offsets', 'dynamic-shapes' )
+									? __( 'Vertical insets', 'a8csp-dynamic-shapes' )
+									: __( 'Vertical offsets', 'a8csp-dynamic-shapes' )
 							}
 							onChange={ ( newValues ) =>
 								setAttributes( {
@@ -309,7 +309,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 							hasValue={ () => !! dynamicShape }
 							label={ __(
 								'Horizontal insets',
-								'dynamic-shapes'
+								'a8csp-dynamic-shapes'
 							) }
 							onChange={ ( newValues ) =>
 								setAttributes( {
@@ -357,5 +357,5 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 	};
 }, 'addControls' );
 
-addFilter( 'blocks.registerBlockType', 'dynamic-shapes', addAttributes );
-addFilter( 'editor.BlockEdit', 'dynamic-shapes', addControls );
+addFilter( 'blocks.registerBlockType', 'a8csp-dynamic-shapes', addAttributes );
+addFilter( 'editor.BlockEdit', 'a8csp-dynamic-shapes', addControls );

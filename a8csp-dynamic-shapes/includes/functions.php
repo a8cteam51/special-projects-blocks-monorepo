@@ -2,12 +2,12 @@
 /**
  * Functions for the dynamic shapes plugin.
  *
- * @package wpcomsp-dynamic-shapes
+ * @package a8csp-dynamic-shapes
  */
 
 declare( strict_types=1 );
 
-namespace WPCOMSP\DynamicShapes\Functions;
+namespace A8CSP\DynamicShapes\Functions;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -29,12 +29,12 @@ function get_metadata( ?string $property = null ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$dir_path = constant( 'WPCOMSP_DYNAMIC_SHAPES_DIR' );
+		$dir_path = constant( 'A8CSP_DYNAMIC_SHAPES_DIR' );
 		if ( null === $dir_path ) {
 			return null;
 		}
 
-		$plugin_data = get_plugin_data( $dir_path . 'dynamic-shapes.php', true, false );
+		$plugin_data = get_plugin_data( $dir_path . 'a8csp-dynamic-shapes.php', true, false );
 	}
 
 	$metadata = $plugin_data;
@@ -65,7 +65,7 @@ function get_slug(): string {
  * @return array{ version: string, dependencies: array<string> }|null
  */
 function get_asset_meta( string $asset_path, ?array $extra_dependencies = null ): ?array {
-	$dir_path = constant( 'WPCOMSP_DYNAMIC_SHAPES_DIR' );
+	$dir_path = constant( 'A8CSP_DYNAMIC_SHAPES_DIR' );
 	if ( null === $dir_path ) {
 		return null;
 	}
@@ -114,8 +114,8 @@ function get_asset_meta( string $asset_path, ?array $extra_dependencies = null )
  * @return void
  */
 function enqueue_script( string $file_name ): void {
-	$dir_path = constant( 'WPCOMSP_DYNAMIC_SHAPES_DIR' );
-	$dir_url  = constant( 'WPCOMSP_DYNAMIC_SHAPES_URL' );
+	$dir_path = constant( 'A8CSP_DYNAMIC_SHAPES_DIR' );
+	$dir_url  = constant( 'A8CSP_DYNAMIC_SHAPES_URL' );
 	if ( null === $dir_path || null === $dir_url ) {
 		return;
 	}
@@ -142,8 +142,8 @@ function enqueue_script( string $file_name ): void {
  * @return void
  */
 function enqueue_style( string $file_name ): void {
-	$dir_path = constant( 'WPCOMSP_DYNAMIC_SHAPES_DIR' );
-	$dir_url  = constant( 'WPCOMSP_DYNAMIC_SHAPES_URL' );
+	$dir_path = constant( 'A8CSP_DYNAMIC_SHAPES_DIR' );
+	$dir_url  = constant( 'A8CSP_DYNAMIC_SHAPES_URL' );
 	if ( null === $dir_path || null === $dir_url ) {
 		return;
 	}

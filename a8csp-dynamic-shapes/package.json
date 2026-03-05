@@ -1,7 +1,7 @@
 {
-	"name": "dynamic-shapes",
+	"name": "a8csp-dynamic-shapes",
 	"version": "0.1.0",
-	"description": "Extends the core Group, Image, and Featured Image blocks with controls for adjusting corners to create unique shapes.",
+	"description": "Extends the core Group, Cover, Image, and Featured Image blocks with controls for adjusting corners to create unique shapes.",
 	"author": "Automattic Special Projects",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
