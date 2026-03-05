@@ -1,3 +1,19 @@
+.dynamic-shape-container {
+	position: relative;
+}
+
+.dynamic-shape-container.dynamic-shape-has-border::after {
+	background: var(--border-svg);
+	background-repeat: no-repeat;
+	clip-path: var(--clip-path);
+	content: "";
+	inset: 0;
+	margin: 0;
+	pointer-events: none;
+	position: absolute;
+	z-index: 2;
+}
+
 .dynamic-shape-container:not(.is-image) > * {
 	background: none !important;
 	margin-bottom: 0;
@@ -47,4 +63,8 @@
 .dynamic-shape-container.is-image > * img,
 .dynamic-shape-container.is-image > * .wp-block-post-featured-image__overlay {
 	clip-path: var(--clip-path);
+}
+
+.dynamic-shape-container.is-image > * figcaption {
+	display: none;
 }

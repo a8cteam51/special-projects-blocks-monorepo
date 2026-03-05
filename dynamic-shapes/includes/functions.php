@@ -135,7 +135,7 @@ function enqueue_script( string $file_name ): void {
 }
 
 /**
- * Enqueues a script with the given file name.
+ * Enqueues a stylesheet with the given file name.
  *
  * @param string $file_name The name of the file to enqueue.
  *

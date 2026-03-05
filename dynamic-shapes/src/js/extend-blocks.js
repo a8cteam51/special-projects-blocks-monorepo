@@ -26,7 +26,6 @@ import { AxisControls } from './imports/axis-controls';
 import {
 	axisConfig,
 	getComputedPixelValue,
-	hasAxisValues,
 	getPaddingVar,
 	getPixelValue,
 	isPresetValue,
@@ -36,7 +35,7 @@ import {
 } from './imports/utils';
 
 /**
- * Adds dynamic shape attributes to the core/image block.
+ * Adds dynamic shape attributes to supported blocks.
  *
  * @param {Object} settings Original block settings
  *
@@ -56,7 +55,7 @@ function addAttributes( settings ) {
 }
 
 /**
- * Adds dynamic shape controls to the core/image block.
+ * Adds dynamic shape controls to supported blocks.
  *
  * @param {Function} BlockEdit The block edit element.
  *
@@ -170,7 +169,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 					dynamicShape,
 					style?.border?.radius,
 					wrapperRef.current,
-					! isImage
+					isImage
 				)
 			);
 		}, [ dimensions, dynamicShape, style?.border?.radius, isImage ] );
@@ -216,8 +215,8 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				dimensions.width &&
 				dimensions.height
 			) {
-				// Double the border width to account for stroke being centered on path.
-				// It will be trimmed in half by the clip-path on the block.
+				// Double the border width to account for stroke being centered
+				// on path. The clip-path trims it to the correct visual width.
 				const borderWidth =
 					getPixelValue( style.border.width, wrapperRef.current ) * 2;
 
@@ -238,12 +237,9 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				const stroke = encodeURIComponent( borderColor );
 
 				const svg = `<svg width="${ dimensions.width }" height="${ dimensions.height }" viewBox="0 0 ${ dimensions.width } ${ dimensions.height }" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="${ path }" stroke="${ stroke }" stroke-width="${ borderWidth }"/></svg>`;
-				let bg = `url('data:image/svg+xml, ${ svg }')`;
-				if ( background ) {
-					bg += `, ${ background }`;
-				}
 
-				newStyles[ '--background' ] = bg;
+				newStyles[ '--border-svg' ] =
+					`url('data:image/svg+xml, ${ svg }')`;
 				newStyles[ '--stroke-width' ] = `${ borderWidth }px`;
 			}
 
@@ -271,18 +267,9 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 		const horizontalKeys = [ 'htl', 'htr', 'hbl', 'hbr' ];
 
 		const resetAxis = ( keys ) => {
-			// Apply undefined to each of the given keys.
-			const newDynamicShape = { ...dynamicShape };
-			keys.forEach( ( key ) => ( newDynamicShape[ key ] = undefined ) );
-
-			// Check if any meaningful values remain.
-			const hasValues = Object.values( newDynamicShape ).some(
-				( v ) => v !== undefined
-			);
-
-			setAttributes( {
-				dynamicShape: hasValues ? newDynamicShape : undefined,
-			} );
+			const updated = { ...dynamicShape };
+			keys.forEach( ( key ) => delete updated[ key ] );
+			setAttributes( { dynamicShape: updated } );
 		};
 
 		const resetDynamicShape = () => {
@@ -301,9 +288,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 					>
 						<AxisControls
 							corners={ axisConfig( verticalKeys ) }
-							hasValue={ () =>
-								hasAxisValues( dynamicShape, verticalKeys )
-							}
+							hasValue={ () => !! dynamicShape }
 							label={
 								isImage
 									? __( 'Vertical insets', 'dynamic-shapes' )
@@ -314,16 +299,14 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 									dynamicShape: newValues,
 								} )
 							}
-							onReset={ () => resetAxis( verticalKeys ) }
+							onDeselect={ () => resetAxis( verticalKeys ) }
 							presetKey="spacing"
 							presets={ presets }
 							values={ dynamicShape }
 						/>
 						<AxisControls
 							corners={ axisConfig( horizontalKeys ) }
-							hasValue={ () =>
-								hasAxisValues( dynamicShape, horizontalKeys )
-							}
+							hasValue={ () => !! dynamicShape }
 							label={ __(
 								'Horizontal insets',
 								'dynamic-shapes'
@@ -333,7 +316,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 									dynamicShape: newValues,
 								} )
 							}
-							onReset={ () => resetAxis( horizontalKeys ) }
+							onDeselect={ () => resetAxis( horizontalKeys ) }
 							presetKey="spacing"
 							presets={ presets }
 							values={ dynamicShape }

@@ -283,17 +283,15 @@ function apply_border_color_attributes( \WP_HTML_Tag_Processor $html, string $bo
 /**
  * Updates block border output.
  *
- * @param string               $block_content  Block content.
- * @param array<string, mixed> $attrs          Block attributes.
- * @param boolean              $is_image_block Whether the block is an image or featured image block.
+ * @param string               $block_content Block content.
+ * @param array<string, mixed> $attrs         Block attributes.
  *
  * @return string Modified block content.
  */
-function update_block_border( string $block_content, array $attrs, bool $is_image_block ): string {
-	$style_attributes = $attrs['style'] ?? array();
-	$border_data      = $style_attributes['border'] ?? array();
+function update_block_border( string $block_content, array $attrs ): string {
+	$border_data = $attrs['style']['border'] ?? array();
 
-	// Extract border widths and remove them from style attributes.
+	// Extract border widths.
 	$border_width_keys = array( 'width', 'top', 'right', 'bottom', 'left' );
 	$border_widths     = array_intersect_key( $border_data, array_flip( $border_width_keys ) );
 	$border_widths     = array_filter(
@@ -307,14 +305,8 @@ function update_block_border( string $block_content, array $attrs, bool $is_imag
 		return $block_content;
 	}
 
-	// Remove border widths and color from style attributes.
-	foreach ( array_keys( $border_widths ) as $key ) {
-		unset( $style_attributes['border'][ $key ] );
-	}
-	unset( $style_attributes['border']['color'] );
-
 	$html = new \WP_HTML_Tag_Processor( $block_content );
-	$html->next_tag( array( 'class' => 'is-style-dynamic-shape' ) );
+	$html->next_tag();
 
 	// Handle border color.
 	$border_color        = $attrs['borderColor'] ?? '';
@@ -341,27 +333,15 @@ function update_block_border( string $block_content, array $attrs, bool $is_imag
 	$html->set_attribute( 'data-border-width', $border_width );
 	$html->add_class( 'dynamic-shape-has-border' );
 
-	// Generate styles.
+	// Strip border styles from the current inline styles, preserving
+	// non-border styles (e.g., filter from shadow processing), and
+	// append the stroke-width custom property.
 	$border_styles = wp_style_engine_get_styles( array( 'border' => $border_widths ) )['css'];
-	$other_styles  = wp_style_engine_get_styles( $style_attributes )['css'];
-	$other_styles .= "--stroke-width: {$border_width};";
-
 	$current_style = $html->get_attribute( 'style' );
-
-	// Apply styles to the main block or image tag.
-	if ( $is_image_block ) {
-		// Image blocks: styles go on the img tag.
-		$html->set_bookmark( 'block_container' );
-
-		if ( $html->next_tag( array( 'tag_name' => 'img' ) ) ) {
-			$html->set_attribute( 'style', $other_styles );
-			apply_border_color_attributes( $html, $border_color, $custom_border_color );
-			$html->seek( 'block_container' );
-		}
-	} else {
-		// Other blocks: styles go on the main element.
-		$html->set_attribute( 'style', $other_styles );
-	}
+	$style         = is_string( $current_style ) && '' !== $current_style
+		? str_replace( $border_styles, '', $current_style )
+		: '';
+	$html->set_attribute( 'style', append_inline_style( $style, "--stroke-width: {$border_width};" ) );
 
 	return $html->get_updated_html();
 }
@@ -515,7 +495,41 @@ function filter_dynamic_shape_block( string $block_content, array $block ): stri
 
 		$html->set_attribute( 'data-dynamic-shape', $dynamic_shape );
 
+		if ( $is_image_block ) {
+			// Ensure border-radius is on the figure element so the front-end
+			// JS can read it via getComputedStyle for clip-path and border
+			// SVG calculations.
+			$border_radius = $block['attrs']['style']['border']['radius'] ?? null;
+			if ( null !== $border_radius ) {
+				$radius_css = wp_style_engine_get_styles( array( 'border' => array( 'radius' => $border_radius ) ) )['css'] ?? '';
+				if ( '' !== $radius_css ) {
+					$current_style = $html->get_attribute( 'style' ) ?? '';
+					$html->set_attribute( 'style', append_inline_style( $current_style, $radius_css ) );
+				}
+			}
+		} else {
+			// Non-image blocks: clip the block element itself.
+			$current_style = $html->get_attribute( 'style' ) ?? '';
+			$html->set_attribute( 'style', append_inline_style( $current_style, 'clip-path:var(--clip-path)' ) );
+		}
+
 		$block_content = $html->get_updated_html();
+
+		// Image blocks: clip visual children individually so
+		// filter: drop-shadow() on the figure can follow the clipped shape.
+		if ( $is_image_block ) {
+			$html = new \WP_HTML_Tag_Processor( $block_content );
+			while ( $html->next_tag() ) {
+				if (
+					'IMG' === $html->get_tag() ||
+					$html->has_class( 'wp-block-post-featured-image__overlay' )
+				) {
+					$current_style = $html->get_attribute( 'style' ) ?? '';
+					$html->set_attribute( 'style', append_inline_style( $current_style, 'clip-path:var(--clip-path)' ) );
+				}
+			}
+			$block_content = $html->get_updated_html();
+		}
 
 		if ( '' !== ( $block['attrs']['style']['shadow'] ?? '' ) ) {
 			$block_content = update_block_shadow( $block_content, $block['attrs']['style']['shadow'] );
@@ -523,10 +537,23 @@ function filter_dynamic_shape_block( string $block_content, array $block ): stri
 
 		$border_data = $block['attrs']['style']['border'] ?? array();
 		if ( array() !== $border_data ) {
-			$block_content = update_block_border( $block_content, $block['attrs'], $is_image_block );
+			$block_content = update_block_border( $block_content, $block['attrs'] );
+
+			// Inject border overlay span. Renders the border SVG (set as
+			// --border-svg by JS) above the block's content layers.
+			$overlay     = '<span class="dynamic-shape-border-overlay" aria-hidden="true" style="background:var(--border-svg);clip-path:var(--clip-path);bottom:0;left:0;margin:0;pointer-events:none;position:absolute;right:0;top:0;z-index:2;"></span>';
+			$closing_tag = $is_image_block ? '</figure>' : '</div>';
+			$last_pos    = strrpos( $block_content, $closing_tag );
+			if ( false !== $last_pos ) {
+				$block_content = substr_replace( $block_content, $overlay, $last_pos, 0 );
+			}
 		}
 
-		if ( ! $is_image_block ) {
+		if ( $is_image_block ) {
+			// Strip captions from image blocks — they would be clipped
+			// by the dynamic shape and are not visually supported.
+			$block_content = preg_replace( '/<figcaption[^>]*>.*?<\/figcaption>/s', '', $block_content );
+		} else {
 			$block_content = update_block_padding( $block_content, $block['attrs'] );
 		}
 

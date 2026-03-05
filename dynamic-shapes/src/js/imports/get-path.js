@@ -8,7 +8,7 @@ import { isPresetValue, getComputedPixelValue, getPixelValue } from './utils';
  * @param {Object}  dynamicShape The dynamic shape attributes.
  * @param {Object}  borderRadius The border radius attributes.
  * @param {Element} element      The element for relative unit calculations.
- * @param {boolean} isGroupBlock Whether this is a group block (affects coordinate handling).
+ * @param {boolean} isImage      Whether this is an image block (uses inset mode vs offset mode).
  *
  * @return {string} The clip-path CSS property.
  */
@@ -17,7 +17,7 @@ export const getPath = (
 	dynamicShape,
 	borderRadius,
 	element,
-	isGroupBlock = false
+	isImage = false
 ) => {
 	const { width, height } = dimensions;
 
@@ -48,8 +48,8 @@ export const getPath = (
 
 	// Normalize coordinates to absolute pixel positions.
 	// User-provided values represent offsets/insets, but the SVG path needs absolute coordinates.
-	if ( isGroupBlock ) {
-		// Group blocks: vertical values are offset.
+	if ( ! isImage ) {
+		// Non-image blocks: vertical values are offset.
 		// Find the maximum top offset and adjust all corners relative to it,
 		// so the shape extends outward from the block's top edge.
 		const maxTop = Math.max( vtl, vtr );

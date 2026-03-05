@@ -1,9 +1,7 @@
 // WordPress dependencies.
 import {
-	Button,
 	__experimentalToolsPanelItem as ToolsPanelItem, // eslint-disable-line
 } from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
 
 // Internal dependencies.
 import { CornerControl } from './corner-control';
@@ -12,28 +10,18 @@ export const AxisControls = ( {
 	corners,
 	label,
 	onChange,
+	onDeselect,
 	presetKey = 'spacing',
 	presets = [],
 	values,
 	hasValue,
-	onReset,
 } ) => {
 	return (
-		<ToolsPanelItem label={ label } hasValue={ hasValue }>
+		<ToolsPanelItem label={ label } hasValue={ hasValue } onDeselect={ onDeselect }>
 			<div className="dynamic-shapes-axis-controls">
-				<div className="dynamic-shapes-axis-controls__row">
-					<legend className="components-base-control__label dynamic-shapes-axis-controls__label">
-						{ label }
-					</legend>
-					<Button
-						onClick={ onReset }
-						className="component-box-control__reset-button"
-						variant="secondary"
-						size="small"
-					>
-						{ __( 'Reset', 'dynamic-shapes' ) }
-					</Button>
-				</div>
+				<legend className="components-base-control__label dynamic-shapes-axis-controls__label">
+					{ label }
+				</legend>
 				{ corners.map( ( { key, label: cornerLabel } ) => (
 					<CornerControl
 						key={ key }

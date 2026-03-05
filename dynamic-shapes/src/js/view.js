@@ -8,7 +8,6 @@ import { getPixelValue } from './imports/utils';
 	// Selectors.
 	const DYNAMIC_SHAPE_SELECTOR = '[data-dynamic-shape]';
 	const SITE_BLOCKS_SELECTOR = '.wp-site-blocks';
-	const IMG_OVERLAY_SELECTOR = '.wp-block-post-featured-image__overlay';
 	const IMAGE_BLOCK_CLASSES = [
 		'wp-block-image',
 		'wp-block-post-featured-image',
@@ -73,19 +72,6 @@ import { getPixelValue } from './imports/utils';
 	}
 
 	/**
-	 * Get the target element for clip-path operations.
-	 * For image blocks, this is the img element; for others, it's the block itself.
-	 *
-	 * @param {Object}  cachedData The cached data for the block.
-	 * @param {Element} block      The block element.
-	 *
-	 * @return {Element} The target element.
-	 */
-	function getTargetElement( cachedData, block ) {
-		return cachedData.imgElement || block;
-	}
-
-	/**
 	 * Schedule a block for clip-path update in the next animation frame.
 	 * Multiple calls for the same block are deduplicated via Set.
 	 *
@@ -104,10 +90,18 @@ import { getPixelValue } from './imports/utils';
 	 */
 	function processUpdateQueue() {
 		updateQueue.forEach( ( block ) => {
-			const cachedData = dynamicShapeBlocksData.get( block );
-			if ( cachedData ) {
+			let cachedData = dynamicShapeBlocksData.get( block );
+
+			// Initialize block data if not yet cached (e.g., newly added block).
+			if ( ! cachedData ) {
+				cachedData = initializeDynamicShapeBlock( block );
+				if ( ! cachedData ) {
+					return;
+				}
+			} else {
 				calculateBorderData( block, cachedData );
 			}
+
 			updateClipPath( block, 0, true );
 		} );
 		updateQueue.clear();
@@ -127,9 +121,6 @@ import { getPixelValue } from './imports/utils';
 				block.classList.contains( cls )
 			);
 
-			// Cache the img element for image blocks to avoid repeated queries.
-			const imgElement = isImage ? block.querySelector( 'img' ) : null;
-
 			const dynamicShapeData = JSON.parse( block.dataset.dynamicShape );
 
 			if ( ! isValidShapeData( dynamicShapeData ) ) {
@@ -137,13 +128,9 @@ import { getPixelValue } from './imports/utils';
 				return null;
 			}
 
-			const style = getComputedStyle( imgElement || block );
-			const background = style.background;
-
 			const cachedData = {
-				imgElement,
+				isImage,
 				dynamicShapeData,
-				background,
 				borderRadius: null, // Will be set by `calculateBorderData`.
 				borderData: null, // Will be set by `calculateBorderData`.
 			};
@@ -169,8 +156,8 @@ import { getPixelValue } from './imports/utils';
 	 * @param {Object}  cachedData The cached data object to update.
 	 */
 	function calculateBorderData( block, cachedData ) {
-		// Recalculate border radius with new computed values.
-		const style = getComputedStyle( getTargetElement( cachedData, block ) );
+		// Recalculate border radius from the block's computed styles.
+		const style = getComputedStyle( block );
 		cachedData.borderRadius = getBorderRadius( style );
 
 		// Recalculate border data if present.
@@ -233,11 +220,9 @@ import { getPixelValue } from './imports/utils';
 			}
 		}
 
-		const el = getTargetElement( cachedData, block );
-
-		// Get dimensions first - if not available, retry up to MAX_RETRY_COUNT times.
-		const width = el.offsetWidth;
-		const height = el.offsetHeight;
+		// Get dimensions - if not available, retry up to MAX_RETRY_COUNT times.
+		const width = block.offsetWidth;
+		const height = block.offsetHeight;
 
 		if ( ! width || ! height ) {
 			if ( retryCount < MAX_RETRY_COUNT ) {
@@ -249,77 +234,47 @@ import { getPixelValue } from './imports/utils';
 			return;
 		}
 
-		const args = [
-			{ width, height },
-			cachedData.dynamicShapeData,
-			cachedData.borderRadius,
-			el,
-		];
-
 		let path;
 		try {
-			path = getPath( ...args, ! cachedData.imgElement );
+			path = getPath(
+				{ width, height },
+				cachedData.dynamicShapeData,
+				cachedData.borderRadius,
+				block,
+				cachedData.isImage
+			);
 		} catch ( error ) {
 			logWarning( 'Failed to generate clip path:', error.message, block );
 			return;
 		}
 
-		if ( cachedData.imgElement ) {
-			applyImageClipPath( block, el, path );
-		} else {
-			applyBlockClipPath( block, path, width, height, cachedData );
+		block.style.setProperty( '--clip-path', `path('${ path }')` );
+
+		if ( cachedData.borderData ) {
+			applyBorderSvg( block, path, width, height, cachedData );
 		}
 	}
 
 	/**
-	 * Apply clip path to an image block and its overlay.
-	 *
-	 * This allows us to support most shadow styling
-	 * via `filter: drop-shadow` on the block wrapper.
-	 *
-	 * @param {Element} block The block element.
-	 * @param {Element} el    The image element.
-	 * @param {string}  path  The SVG path string.
-	 */
-	function applyImageClipPath( block, el, path ) {
-		const clipPath = `path('${ path }')`;
-		el.style.clipPath = clipPath;
-
-		const overlay = block.querySelector( IMG_OVERLAY_SELECTOR );
-		if ( overlay ) {
-			overlay.style.clipPath = clipPath;
-		}
-	}
-
-	/**
-	 * Apply clip path and optional border SVG to a non-image block.
+	 * Apply border SVG as a custom property for the border overlay span.
 	 *
 	 * @param {Element} block      The block element.
 	 * @param {string}  path       The SVG path string.
-	 * @param {number}  width      The block width.
-	 * @param {number}  height     The block height.
+	 * @param {number}  width      The element width.
+	 * @param {number}  height     The element height.
 	 * @param {Object}  cachedData The cached data for the block.
 	 */
-	function applyBlockClipPath( block, path, width, height, cachedData ) {
-		block.style.clipPath = `path('${ path }')`;
-
-		if ( ! cachedData.borderData ) {
-			return;
-		}
-
+	function applyBorderSvg( block, path, width, height, cachedData ) {
 		const { width: borderWidth, color: borderColor } =
 			cachedData.borderData;
 		const svg = `<svg width="${ width }" height="${ height }" viewBox="0 0 ${ width } ${ height }" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="${ path }" stroke="${ borderColor }" stroke-width="${ borderWidth }"/></svg>`;
 
-		// Set the SVG as a background image, preserving existing backgrounds.
-		// Applied as the first image in a multi-background setup.
-		block.style.background = `url("data:image/svg+xml,${ encodeSvgForDataUri(
-			svg
-		) }")`;
-
-		if ( cachedData.background ) {
-			block.style.background += `, ${ cachedData.background }`;
-		}
+		// Set as custom property for the border overlay span, which renders
+		// the border SVG above the block's content layers.
+		block.style.setProperty(
+			'--border-svg',
+			`url("data:image/svg+xml,${ encodeSvgForDataUri( svg ) }")`
+		);
 	}
 
 	/**
@@ -387,15 +342,21 @@ import { getPixelValue } from './imports/utils';
 
 		dynamicShapeBlocks.forEach( ( block ) => {
 			const cachedData = dynamicShapeBlocksData.get( block );
-			if ( cachedData?.imgElement ) {
-				const img = cachedData.imgElement;
-				const listener = () => {
-					imageLoadListeners.delete( img );
-					scheduleUpdate( block );
-				};
-				img.addEventListener( 'load', listener, { once: true } );
-				imageLoadListeners.set( img, listener );
+			if ( ! cachedData?.isImage ) {
+				return;
 			}
+
+			const img = block.querySelector( 'img' );
+			if ( ! img ) {
+				return;
+			}
+
+			const listener = () => {
+				imageLoadListeners.delete( img );
+				scheduleUpdate( block );
+			};
+			img.addEventListener( 'load', listener, { once: true } );
+			imageLoadListeners.set( img, listener );
 		} );
 	}
 

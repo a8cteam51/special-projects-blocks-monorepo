@@ -205,22 +205,6 @@ export const isPresetValue = ( value ) => {
 };
 
 /**
- * Gets the preset slug from a preset value.
- *
- * @param {string} value The preset value.
- *
- * @return {string|null} The preset slug or null
- */
-export const getPresetSlug = ( value ) => {
-	if ( ! isPresetValue( value ) ) {
-		return null;
-	}
-
-	const match = value.match( /var:preset\|spacing\|(.+)$/ );
-	return match ? match[ 1 ] : null;
-};
-
-/**
  * Resolves a color value from a palette and custom values with priority order.
  *
  * @param {Array}  palette    The color palette array.
@@ -275,22 +259,6 @@ export const useSpacingPresets = () => {
 		defaultSpacingPresets ||
 		[]
 	);
-};
-
-/**
- * Checks if any of the specified keys have values in the dynamic shape attribute.
- *
- * @param {Object} dynamicShape The dynamic shape object.
- * @param {Array}  keys         Array of keys to check.
- *
- * @return {boolean} True if any corner has a value.
- */
-export const hasAxisValues = ( dynamicShape, keys ) => {
-	if ( ! dynamicShape || ! Array.isArray( keys ) ) {
-		return false;
-	}
-
-	return keys.some( ( key ) => dynamicShape[ key ] );
 };
 
 /**
