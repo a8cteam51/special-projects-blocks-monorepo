@@ -17,7 +17,11 @@ export const AxisControls = ( {
 	hasValue,
 } ) => {
 	return (
-		<ToolsPanelItem label={ label } hasValue={ hasValue } onDeselect={ onDeselect }>
+		<ToolsPanelItem
+			label={ label }
+			hasValue={ hasValue }
+			onDeselect={ onDeselect }
+		>
 			<div className="dynamic-shapes-axis-controls">
 				<legend className="components-base-control__label dynamic-shapes-axis-controls__label">
 					{ label }

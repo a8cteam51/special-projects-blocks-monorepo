@@ -238,8 +238,9 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 				const svg = `<svg width="${ dimensions.width }" height="${ dimensions.height }" viewBox="0 0 ${ dimensions.width } ${ dimensions.height }" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="${ path }" stroke="${ stroke }" stroke-width="${ borderWidth }"/></svg>`;
 
-				newStyles[ '--border-svg' ] =
-					`url('data:image/svg+xml, ${ svg }')`;
+				newStyles[
+					'--border-svg'
+				] = `url('data:image/svg+xml, ${ svg }')`;
 				newStyles[ '--stroke-width' ] = `${ borderWidth }px`;
 			}
 
@@ -291,8 +292,14 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 							hasValue={ () => !! dynamicShape }
 							label={
 								isImage
-									? __( 'Vertical insets', 'a8csp-dynamic-shapes' )
-									: __( 'Vertical offsets', 'a8csp-dynamic-shapes' )
+									? __(
+											'Vertical insets',
+											'a8csp-dynamic-shapes'
+									  )
+									: __(
+											'Vertical offsets',
+											'a8csp-dynamic-shapes'
+									  )
 							}
 							onChange={ ( newValues ) =>
 								setAttributes( {
