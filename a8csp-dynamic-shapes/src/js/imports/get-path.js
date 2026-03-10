@@ -21,14 +21,19 @@ export const getPath = (
 ) => {
 	const { width, height } = dimensions;
 
+	// Round to hundredths to avoid floating-point artifacts in SVG path output.
+	const r = ( n ) => Math.round( n * 100 ) / 100;
+
 	const processValues = ( shape ) => {
 		const processValue = ( value ) => {
 			if ( ! value ) {
 				return 0;
 			}
-			return isPresetValue( value )
-				? getComputedPixelValue( value )
-				: parseInt( value ) || 0;
+			return r(
+				isPresetValue( value )
+					? getComputedPixelValue( value, element )
+					: parseInt( value ) || 0
+			);
 		};
 
 		return {
@@ -80,29 +85,29 @@ export const getPath = (
 			bottomRight: borderRadius,
 		};
 	}
-	const rtl = getPixelValue( borderRadius?.topLeft, element );
-	const rtr = getPixelValue( borderRadius?.topRight, element );
-	const rbr = getPixelValue( borderRadius?.bottomRight, element );
-	const rbl = getPixelValue( borderRadius?.bottomLeft, element );
+	const rtl = r( getPixelValue( borderRadius?.topLeft, element ) );
+	const rtr = r( getPixelValue( borderRadius?.topRight, element ) );
+	const rbr = r( getPixelValue( borderRadius?.bottomRight, element ) );
+	const rbl = r( getPixelValue( borderRadius?.bottomLeft, element ) );
 
 	const pathSegments = [
-		`M ${ htl } ${ vtl + rtl }`,
+		`M ${ htl } ${ r( vtl + rtl ) }`,
 		rtl > 0 || rtr > 0
-			? `A ${ rtl } ${ rtl } 0 0 1 ${ htl + rtl } ${ vtl } L ${
+			? `A ${ rtl } ${ rtl } 0 0 1 ${ r( htl + rtl ) } ${ vtl } L ${ r(
 					width - htr - rtr
-			  } ${ vtr }`
-			: `L ${ width - htr } ${ vtr }`,
+			  ) } ${ vtr }`
+			: `L ${ r( width - htr ) } ${ vtr }`,
 		rtr > 0 || rbr > 0
-			? `A ${ rtr } ${ rtr } 0 0 1 ${ width - htr } ${ vtr + rtr } L ${
-					width - hbr
-			  } ${ vbr - rbr }`
-			: `L ${ width - hbr } ${ vbr }`,
+			? `A ${ rtr } ${ rtr } 0 0 1 ${ r( width - htr ) } ${ r(
+					vtr + rtr
+			  ) } L ${ r( width - hbr ) } ${ r( vbr - rbr ) }`
+			: `L ${ r( width - hbr ) } ${ vbr }`,
 		rbr > 0 || rbl > 0
-			? `A ${ rbr } ${ rbr } 0 0 1 ${ width - hbr - rbr } ${ vbr } L ${
-					hbl + rbl
-			  } ${ vbl } `
+			? `A ${ rbr } ${ rbr } 0 0 1 ${ r(
+					width - hbr - rbr
+			  ) } ${ vbr } L ${ r( hbl + rbl ) } ${ vbl } `
 			: `L ${ hbl } ${ vbl }`,
-		rbl > 0 ? `A ${ rbl } ${ rbl } 0 0 1 ${ hbl } ${ vbl - rbl }` : '',
+		rbl > 0 ? `A ${ rbl } ${ rbl } 0 0 1 ${ hbl } ${ r( vbl - rbl ) }` : '',
 		`Z`,
 	];
 

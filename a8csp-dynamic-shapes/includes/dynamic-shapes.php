@@ -484,8 +484,27 @@ function clip_image_block_children( string $block_content ): string {
 			'IMG' === $html->get_tag() ||
 			true === $html->has_class( 'wp-block-post-featured-image__overlay' )
 		) {
-			$current_style = $html->get_attribute( 'style' ) ?? '';
+			$current_style = (string) ( $html->get_attribute( 'style' ) ?? '' );
+
+			// Strip border and box-shadow styles from img — the dynamic shape
+			// border is rendered via the SVG overlay, and shadow via the
+			// figure's drop-shadow filter.
+			$current_style = (string) preg_replace(
+				'/(?:border-(?:width|(?:top|bottom)-(?:left|right)-radius)|box-shadow)\s*:[^;]+;?\s*/',
+				'',
+				$current_style
+			);
+
 			$html->set_attribute( 'style', append_inline_style( $current_style, 'clip-path:var(--clip-path)' ) );
+
+			// Remove border color classes from img (handled by data attributes on the figure).
+			if ( 'IMG' === $html->get_tag() ) {
+				$class_attr = (string) ( $html->get_attribute( 'class' ) ?? '' );
+				if ( 1 === preg_match( '/has-[\w-]+-border-color/', $class_attr, $matches ) ) {
+					$html->remove_class( $matches[0] );
+				}
+				$html->remove_class( 'has-border-color' );
+			}
 		}
 	}
 
@@ -563,7 +582,7 @@ function maybe_enqueue_view_script(): void {
 }
 
 /**
- * Filters dynamic shape style block HTML.
+ * Filters dynamic shape block HTML.
  *
  * @param string               $block_content Block content.
  * @param array<string, mixed> $block         Full block.

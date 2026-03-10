@@ -64,9 +64,6 @@ export const getComputedPixelValue = ( value, element = null ) => {
 
 	// For CSS variables or preset values, we need to compute them first.
 	try {
-		// Use the provided element or create a temporary one.
-		const targetElement = element || document.documentElement;
-
 		// Convert preset to CSS variable if needed.
 		const cssVar = presetToCssVar( value );
 
@@ -77,10 +74,12 @@ export const getComputedPixelValue = ( value, element = null ) => {
 		}
 
 		// Resolve the CSS variable to pixels using a temporary element.
+		// Appended to documentElement (:root) to avoid triggering
+		// MutationObservers watching block containers on the front-end.
 		const temp = document.createElement( 'div' );
 		temp.style.cssText = 'position:absolute;visibility:hidden;height:0;';
 		temp.style.width = cssVar;
-		targetElement.appendChild( temp );
+		document.documentElement.appendChild( temp );
 		const pixels = parseFloat( window.getComputedStyle( temp ).width ) || 0;
 		temp.remove();
 
@@ -88,6 +87,25 @@ export const getComputedPixelValue = ( value, element = null ) => {
 	} catch ( error ) {
 		return 0;
 	}
+};
+
+/**
+ * Encode an SVG string for use in a data URI.
+ * Escapes characters that would break the URI or cause parsing issues.
+ *
+ * @param {string} svg The SVG string to encode.
+ *
+ * @return {string} The encoded SVG string.
+ */
+export const encodeSvgForDataUri = ( svg ) => {
+	return svg
+		.replace( /%/g, '%25' )
+		.replace( /"/g, "'" )
+		.replace( /#/g, '%23' )
+		.replace( /\{/g, '%7B' )
+		.replace( /\}/g, '%7D' )
+		.replace( /</g, '%3C' )
+		.replace( />/g, '%3E' );
 };
 
 /**
@@ -137,6 +155,10 @@ export const getPixelValue = ( value, element = null ) => {
 	const viewportWidth = window.innerWidth;
 	const viewportHeight = window.innerHeight;
 
+	if ( value.endsWith( 'rem' ) ) {
+		return number * rootFontSize;
+	}
+
 	if ( value.endsWith( 'em' ) ) {
 		if ( ! element ) {
 			return number * rootFontSize;
@@ -146,10 +168,6 @@ export const getPixelValue = ( value, element = null ) => {
 			getComputedStyle( element ).fontSize
 		);
 		return number * elementFontSize;
-	}
-
-	if ( value.endsWith( 'rem' ) ) {
-		return number * rootFontSize;
 	}
 
 	if ( value.endsWith( '%' ) ) {
@@ -238,7 +256,7 @@ export const useSpacingPresets = () => {
 	const blockSettings = useSettings( 'blocks.core/group' ) || [];
 
 	return (
-		blockSettings?.spacing?.presets ||
+		blockSettings[ 0 ]?.spacing?.presets ||
 		themeSpacingPresets ||
 		defaultSpacingPresets ||
 		[]

@@ -150,6 +150,10 @@ function enqueue_style( string $file_name ): void {
 
 	$asset_path = "build/css/$file_name.css";
 
+	if ( ! file_exists( $dir_path . $asset_path ) ) {
+		return;
+	}
+
 	wp_enqueue_style(
 		get_slug() . "-$file_name",
 		$dir_url . $asset_path,

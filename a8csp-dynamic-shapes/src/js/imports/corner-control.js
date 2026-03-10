@@ -58,7 +58,7 @@ export const CornerControl = ( {
 					{
 						value: 0,
 						label: '',
-						tooltip: __( 'None' ),
+						tooltip: __( 'None', 'a8csp-dynamic-shapes' ),
 					},
 					...presets.map( ( preset, index ) => ( {
 						value: index + 1,
@@ -72,8 +72,8 @@ export const CornerControl = ( {
 	const inputId = useInstanceId( CornerControl, 'corner-control-input' );
 
 	const handleToggleMode = useCallback( () => {
-		setShowCustomValueControl( ! showCustomValueControl );
-	}, [ showCustomValueControl ] );
+		setShowCustomValueControl( ( prev ) => ! prev );
+	}, [] );
 
 	const handleRangeChange = useCallback(
 		( newValue ) => {
@@ -149,10 +149,10 @@ export const CornerControl = ( {
 					}
 					aria-valuetext={
 						marks[ presetIndex !== undefined ? presetIndex + 1 : 0 ]
-							.tooltip
+							?.tooltip ?? ''
 					}
 					renderTooltipContent={ ( index ) =>
-						marks[ ! index ? 0 : index ].tooltip
+						marks[ ! index ? 0 : index ]?.tooltip ?? ''
 					}
 					min={ 0 }
 					max={ marks.length - 1 }
@@ -165,8 +165,8 @@ export const CornerControl = ( {
 				<Button
 					label={
 						showCustomValueControl
-							? __( 'Use size preset' )
-							: __( 'Set custom size' )
+							? __( 'Use size preset', 'a8csp-dynamic-shapes' )
+							: __( 'Set custom size', 'a8csp-dynamic-shapes' )
 					}
 					icon={ settings }
 					onClick={ handleToggleMode }

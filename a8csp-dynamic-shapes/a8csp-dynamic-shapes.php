@@ -1,10 +1,10 @@
 <?php
 /**
  * Plugin Name:       Dynamic Shapes
- * Description:       Extends the core Group, Image, and Featured Image blocks with controls for adjusting corners to create unique shapes.
+ * Description:       Extends the core Cover, Group, Image, and Featured Image blocks with controls for adjusting corners to create unique shapes.
  * Version:           0.1.0
  * Requires at least: 6.7
- * Requires PHP:      7.4
+ * Requires PHP:      8.0
  * Author:            Automattic Special Projects
  * Author URI:        https://wpspecialprojects.wordpress.com/
  * Update URI:        https://opsoasis.wpspecialprojects.com/dynamic-shapes/

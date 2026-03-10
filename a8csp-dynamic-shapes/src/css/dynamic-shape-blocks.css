@@ -42,6 +42,11 @@
 		clip-path: var(--clip-path);
 		z-index: -1;
 	}
+
+	/* Reset border-radius so the editor's outline indicator doesn't follow
+	   the block's rounded corners, which would obscure corner controls.
+	   The clip-path handles the visual shape, so this has no visual effect. */
+	border-radius: 0 !important;
 }
 
 .dynamic-shape-container.dynamic-shape-has-border:not(.is-image) > * {

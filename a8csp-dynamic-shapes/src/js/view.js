@@ -5,7 +5,7 @@ import domReady from '@wordpress/dom-ready';
 
 // Internal dependencies.
 import { getPath } from './imports/get-path';
-import { getPixelValue } from './imports/utils';
+import { encodeSvgForDataUri, getPixelValue } from './imports/utils';
 
 {
 	// Selectors.
@@ -32,25 +32,6 @@ import { getPixelValue } from './imports/utils';
 	let resizeObserver = null;
 	let mutationObserver = null;
 	let mutationTimeout = null;
-
-	/**
-	 * Encode an SVG string for use in a data URI.
-	 * Escapes characters that would break the URI or cause parsing issues.
-	 *
-	 * @param {string} svg The SVG string to encode.
-	 *
-	 * @return {string} The encoded SVG string.
-	 */
-	function encodeSvgForDataUri( svg ) {
-		return svg
-			.replace( /%/g, '%25' )
-			.replace( /"/g, "'" )
-			.replace( /#/g, '%23' )
-			.replace( /\{/g, '%7B' )
-			.replace( /\}/g, '%7D' )
-			.replace( /</g, '%3C' )
-			.replace( />/g, '%3E' );
-	}
 
 	/**
 	 * Validate that parsed shape data has the required structure.
@@ -171,7 +152,9 @@ import { getPixelValue } from './imports/utils';
 				width: getPixelValue( block.dataset.borderWidth, block ) * 2,
 				// Decode the color since the data attribute is URL-encoded.
 				// It will be re-encoded by encodeSvgForDataUri().
-				color: decodeURIComponent( block.dataset.borderColor ),
+				color: decodeURIComponent(
+					block.dataset.borderColor || 'currentcolor'
+				),
 			};
 		} else {
 			cachedData.borderData = null;
@@ -253,7 +236,12 @@ import { getPixelValue } from './imports/utils';
 			return;
 		}
 
-		block.style.setProperty( '--clip-path', `path('${ path }')` );
+		const newClipPath = `path('${ path }')`;
+		if ( block.style.getPropertyValue( '--clip-path' ) === newClipPath ) {
+			return;
+		}
+
+		block.style.setProperty( '--clip-path', newClipPath );
 
 		if ( cachedData.borderData ) {
 			applyBorderSvg( block, path, width, height, cachedData );
@@ -430,8 +418,13 @@ import { getPixelValue } from './imports/utils';
 
 		// Batch clip path updates using requestAnimationFrame to avoid layout thrashing.
 		requestAnimationFrame( () => {
-			dynamicShapeBlocks.forEach( updateClipPath );
-			isInitializing = false;
+			try {
+				dynamicShapeBlocks.forEach( ( block ) =>
+					updateClipPath( block )
+				);
+			} finally {
+				isInitializing = false;
+			}
 		} );
 	}
 
