@@ -101,7 +101,7 @@ export const CornerControl = ( {
 	return (
 		<div className="dynamic-shapes-corner-control">
 			<CornerIcon corner={ corner } />
-			{ showCustomValueControl ? (
+			{ showCustomValueControl || marks.length === 0 ? (
 				<>
 					<Tooltip placement="top-end" text={ label }>
 						<UnitControl
@@ -161,18 +161,20 @@ export const CornerControl = ( {
 					hideLabelFromVision
 				/>
 			) }
-			<Button
-				label={
-					showCustomValueControl
-						? __( 'Use size preset' )
-						: __( 'Set custom size' )
-				}
-				icon={ settings }
-				onClick={ handleToggleMode }
-				isPressed={ showCustomValueControl }
-				size="small"
-				iconSize={ 24 }
-			/>
+			{ marks.length > 0 && (
+				<Button
+					label={
+						showCustomValueControl
+							? __( 'Use size preset' )
+							: __( 'Set custom size' )
+					}
+					icon={ settings }
+					onClick={ handleToggleMode }
+					isPressed={ showCustomValueControl }
+					size="small"
+					iconSize={ 24 }
+				/>
+			) }
 		</div>
 	);
 };

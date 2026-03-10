@@ -173,6 +173,8 @@ import { getPixelValue } from './imports/utils';
 				// It will be re-encoded by encodeSvgForDataUri().
 				color: decodeURIComponent( block.dataset.borderColor ),
 			};
+		} else {
+			cachedData.borderData = null;
 		}
 	}
 
@@ -255,6 +257,8 @@ import { getPixelValue } from './imports/utils';
 
 		if ( cachedData.borderData ) {
 			applyBorderSvg( block, path, width, height, cachedData );
+		} else {
+			block.style.removeProperty( '--border-svg' );
 		}
 	}
 

@@ -33,7 +33,10 @@ export const AxisControls = ( {
 						label={ cornerLabel }
 						value={ values?.[ key ] || '' }
 						onChange={ ( value ) =>
-							onChange( { ...values, [ key ]: value || '' } )
+							onChange( {
+								...( values || {} ),
+								[ key ]: value || '',
+							} )
 						}
 						presets={ presets }
 						presetKey={ presetKey }
