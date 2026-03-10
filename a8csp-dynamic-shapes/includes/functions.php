@@ -7,7 +7,7 @@
 
 declare( strict_types=1 );
 
-namespace A8CSP\DynamicShapes\Functions;
+namespace A8CSPDynamicShapes\Functions;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,7 +25,6 @@ function get_metadata( ?string $property = null ) {
 
 	if ( null === $plugin_data ) {
 		if ( ! function_exists( 'get_plugin_data' ) ) {
-			/* @phpstan-ignore requireOnce.fileNotFound */
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 

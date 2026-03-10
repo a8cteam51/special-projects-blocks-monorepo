@@ -24,7 +24,7 @@ define( 'A8CSP_DYNAMIC_SHAPES_URL', plugin_dir_url( __FILE__ ) );
 if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
 	require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
 
-	$wpcomsp_blocks_self_update = WPCOMSP_Blocks_Self_Update::get_instance();
+	$wpcomsp_blocks_self_update = WPCOMSP_Blocks_Self_Update::get_instance(); // @phpstan-ignore class.notFound
 	$wpcomsp_blocks_self_update->hooks();
 }
 
@@ -45,6 +45,6 @@ add_filter(
 );
 
 // Autoload all files in the includes directory.
-foreach ( glob( __DIR__ . '/includes/*.php' ) as $a8csp_dynamic_shapes_filename ) {
+foreach ( (array) glob( __DIR__ . '/includes/*.php' ) as $a8csp_dynamic_shapes_filename ) {
 	include $a8csp_dynamic_shapes_filename;
 }

@@ -7,7 +7,7 @@
 
 declare( strict_types=1 );
 
-namespace A8CSP\DynamicShapes;
+namespace A8CSPDynamicShapes;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -62,7 +62,7 @@ function parse_preset_value( string $preset_value ): ?array {
 	}
 
 	// Match the pattern: var:preset|{type}|{value}. phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-	if ( preg_match( '/^var:preset\|([^|]+)\|(.+)$/', $preset_value, $matches ) ) {
+	if ( 1 === preg_match( '/^var:preset\|([^|]+)\|(.+)$/', $preset_value, $matches ) ) {
 		return array(
 			'type' => $matches[1],
 			'slug' => $matches[2],
@@ -137,6 +137,31 @@ function parse_size_to_pixels( string $size ): int {
 }
 
 /**
+ * Gets the CSS size value for a spacing preset slug.
+ *
+ * @param string $slug The spacing preset slug.
+ *
+ * @return string The CSS size value, or empty string if not found.
+ */
+function get_spacing_preset_size( string $slug ): string {
+	$theme_settings  = wp_get_global_settings();
+	$spacing_presets = $theme_settings['spacing']['spacingSizes'] ?? array();
+	$preset_sources  = $spacing_presets['theme'] ?? $spacing_presets['default'] ?? array();
+
+	if ( ! is_array( $preset_sources ) ) {
+		return '';
+	}
+
+	foreach ( $preset_sources as $preset ) {
+		if ( isset( $preset['slug'] ) && $preset['slug'] === $slug ) {
+			return $preset['size'] ?? '';
+		}
+	}
+
+	return '';
+}
+
+/**
  * Gets the computed pixel value of a preset or regular value.
  *
  * @param string $value The value to compute.
@@ -148,42 +173,16 @@ function get_computed_pixel_value( string $value ): int {
 		return 0;
 	}
 
-	// If it's already a numeric or pixel value, extract the number.
 	if ( is_numeric( $value ) || str_ends_with( $value, 'px' ) ) {
 		return (int) $value;
 	}
 
-	// For preset values, we need to get the actual CSS value.
 	$parsed = parse_preset_value( $value );
-	if ( null === $parsed ) {
+	if ( null === $parsed || 'spacing' !== $parsed['type'] ) {
 		return 0;
 	}
 
-	$preset_type = $parsed['type'];
-	$preset_slug = $parsed['slug'];
-
-	// Currently only spacing presets are supported for pixel conversion.
-	if ( 'spacing' !== $preset_type ) {
-		return 0;
-	}
-
-	// Get spacing presets from WordPress theme settings.
-	$theme_settings  = wp_get_global_settings();
-	$spacing_presets = $theme_settings['spacing']['spacingSizes'] ?? array();
-	$preset_sources  = $spacing_presets['theme'] ?? $spacing_presets['default'] ?? array();
-
-	if ( ! is_array( $preset_sources ) ) {
-		return 0;
-	}
-
-	// Find the matching preset.
-	foreach ( $preset_sources as $preset ) {
-		if ( isset( $preset['slug'] ) && $preset['slug'] === $preset_slug ) {
-			return parse_size_to_pixels( $preset['size'] ?? '' );
-		}
-	}
-
-	return 0;
+	return parse_size_to_pixels( get_spacing_preset_size( $parsed['slug'] ) );
 }
 
 /**
@@ -469,6 +468,101 @@ function enqueue_block_assets(): void {
 }
 
 /**
+ * Adds clip-path to image block visual children (img, overlay).
+ *
+ * Applied individually so filter: drop-shadow() on the figure
+ * can follow the clipped shape.
+ *
+ * @param string $block_content Block content.
+ *
+ * @return string Modified block content.
+ */
+function clip_image_block_children( string $block_content ): string {
+	$html = new \WP_HTML_Tag_Processor( $block_content );
+	while ( $html->next_tag() ) {
+		if (
+			'IMG' === $html->get_tag() ||
+			true === $html->has_class( 'wp-block-post-featured-image__overlay' )
+		) {
+			$current_style = $html->get_attribute( 'style' ) ?? '';
+			$html->set_attribute( 'style', append_inline_style( $current_style, 'clip-path:var(--clip-path)' ) );
+		}
+	}
+
+	return $html->get_updated_html();
+}
+
+/**
+ * Injects a border overlay span before the block's closing tag.
+ *
+ * Renders the border SVG (set as --border-svg by JS) above
+ * the block's content layers.
+ *
+ * @param string $block_content Block content.
+ * @param bool   $is_image      Whether this is an image block.
+ *
+ * @return string Modified block content.
+ */
+function inject_border_overlay( string $block_content, bool $is_image ): string {
+	$overlay     = '<span class="dynamic-shape-border-overlay" aria-hidden="true" style="background:var(--border-svg);clip-path:var(--clip-path);bottom:0;left:0;margin:0;pointer-events:none;position:absolute;right:0;top:0;z-index:2;"></span>';
+	$closing_tag = $is_image ? '</figure>' : '</div>';
+	$last_pos    = strrpos( $block_content, $closing_tag );
+
+	if ( false !== $last_pos ) {
+		$block_content = substr_replace( $block_content, $overlay, $last_pos, 0 );
+	}
+
+	return $block_content;
+}
+
+/**
+ * Applies border-radius inline styles to the figure element.
+ *
+ * WordPress doesn't output border-radius on the figure for image
+ * blocks, so we inject it so the front-end JS can read it via
+ * getComputedStyle for clip-path and border SVG calculations.
+ *
+ * @param \WP_HTML_Tag_Processor $html  Tag processor positioned on the figure.
+ * @param array<string, mixed>   $attrs Block attributes.
+ *
+ * @return void
+ */
+function apply_figure_border_radius( \WP_HTML_Tag_Processor $html, array $attrs ): void {
+	$border_radius = $attrs['style']['border']['radius'] ?? null;
+	if ( null === $border_radius ) {
+		return;
+	}
+
+	$radius_css = wp_style_engine_get_styles( array( 'border' => array( 'radius' => $border_radius ) ) )['css'] ?? '';
+	if ( '' === $radius_css ) {
+		return;
+	}
+
+	$current_style = $html->get_attribute( 'style' ) ?? '';
+	$html->set_attribute( 'style', append_inline_style( $current_style, $radius_css ) );
+}
+
+/**
+ * Enqueues the front-end view script once per page load.
+ *
+ * @return void
+ */
+function maybe_enqueue_view_script(): void {
+	static $enqueued = false;
+	if ( $enqueued ) {
+		return;
+	}
+
+	add_action(
+		'wp_enqueue_scripts',
+		function () {
+			Functions\enqueue_script( 'view' );
+		}
+	);
+	$enqueued = true;
+}
+
+/**
  * Filters dynamic shape style block HTML.
  *
  * @param string               $block_content Block content.
@@ -484,91 +578,44 @@ function filter_dynamic_shape_block( string $block_content, array $block ): stri
 	}
 
 	$dynamic_shape = $block['attrs']['dynamicShape'] ?? null;
-	if ( null !== $dynamic_shape && array() !== $dynamic_shape ) {
-		$is_image_block = in_array( $block_name, array( 'core/image', 'core/post-featured-image' ), true );
-
-		$html = new \WP_HTML_Tag_Processor( $block_content );
-
-		$html->next_tag();
-
-		$dynamic_shape = wp_json_encode( $dynamic_shape );
-
-		$html->set_attribute( 'data-dynamic-shape', $dynamic_shape );
-
-		if ( $is_image_block ) {
-			// Ensure border-radius is on the figure element so the front-end
-			// JS can read it via getComputedStyle for clip-path and border
-			// SVG calculations.
-			$border_radius = $block['attrs']['style']['border']['radius'] ?? null;
-			if ( null !== $border_radius ) {
-				$radius_css = wp_style_engine_get_styles( array( 'border' => array( 'radius' => $border_radius ) ) )['css'] ?? '';
-				if ( '' !== $radius_css ) {
-					$current_style = $html->get_attribute( 'style' ) ?? '';
-					$html->set_attribute( 'style', append_inline_style( $current_style, $radius_css ) );
-				}
-			}
-		} else {
-			// Non-image blocks: clip the block element itself.
-			$current_style = $html->get_attribute( 'style' ) ?? '';
-			$html->set_attribute( 'style', append_inline_style( $current_style, 'clip-path:var(--clip-path)' ) );
-		}
-
-		$block_content = $html->get_updated_html();
-
-		// Image blocks: clip visual children individually so
-		// filter: drop-shadow() on the figure can follow the clipped shape.
-		if ( $is_image_block ) {
-			$html = new \WP_HTML_Tag_Processor( $block_content );
-			while ( $html->next_tag() ) {
-				if (
-					'IMG' === $html->get_tag() ||
-					$html->has_class( 'wp-block-post-featured-image__overlay' )
-				) {
-					$current_style = $html->get_attribute( 'style' ) ?? '';
-					$html->set_attribute( 'style', append_inline_style( $current_style, 'clip-path:var(--clip-path)' ) );
-				}
-			}
-			$block_content = $html->get_updated_html();
-		}
-
-		if ( '' !== ( $block['attrs']['style']['shadow'] ?? '' ) ) {
-			$block_content = update_block_shadow( $block_content, $block['attrs']['style']['shadow'] );
-		}
-
-		$border_data = $block['attrs']['style']['border'] ?? array();
-		if ( array() !== $border_data ) {
-			$block_content = update_block_border( $block_content, $block['attrs'] );
-
-			// Inject border overlay span. Renders the border SVG (set as
-			// --border-svg by JS) above the block's content layers.
-			$overlay     = '<span class="dynamic-shape-border-overlay" aria-hidden="true" style="background:var(--border-svg);clip-path:var(--clip-path);bottom:0;left:0;margin:0;pointer-events:none;position:absolute;right:0;top:0;z-index:2;"></span>';
-			$closing_tag = $is_image_block ? '</figure>' : '</div>';
-			$last_pos    = strrpos( $block_content, $closing_tag );
-			if ( false !== $last_pos ) {
-				$block_content = substr_replace( $block_content, $overlay, $last_pos, 0 );
-			}
-		}
-
-		if ( $is_image_block ) {
-			// Strip captions from image blocks — they would be clipped
-			// by the dynamic shape and are not visually supported.
-			$block_content = preg_replace( '/<figcaption[^>]*>.*?<\/figcaption>/s', '', $block_content );
-		} else {
-			$block_content = update_block_padding( $block_content, $block['attrs'] );
-		}
-
-		// Enqueue view script once per page load.
-		static $view_script_enqueued = false;
-		if ( ! $view_script_enqueued ) {
-			add_action(
-				'wp_enqueue_scripts',
-				function () {
-					Functions\enqueue_script( 'view' );
-				}
-			);
-			$view_script_enqueued = true;
-		}
+	if ( null === $dynamic_shape || array() === $dynamic_shape ) {
+		return $block_content;
 	}
+
+	$is_image_block = in_array( $block_name, array( 'core/image', 'core/post-featured-image' ), true );
+	$html           = new \WP_HTML_Tag_Processor( $block_content );
+	$html->next_tag();
+	$html->set_attribute( 'data-dynamic-shape', wp_json_encode( $dynamic_shape ) );
+
+	if ( $is_image_block ) {
+		apply_figure_border_radius( $html, $block['attrs'] );
+	} else {
+		$current_style = $html->get_attribute( 'style' ) ?? '';
+		$html->set_attribute( 'style', append_inline_style( $current_style, 'clip-path:var(--clip-path)' ) );
+	}
+
+	$block_content = $html->get_updated_html();
+
+	if ( $is_image_block ) {
+		$block_content = clip_image_block_children( $block_content );
+	}
+
+	if ( '' !== ( $block['attrs']['style']['shadow'] ?? '' ) ) {
+		$block_content = update_block_shadow( $block_content, $block['attrs']['style']['shadow'] );
+	}
+
+	if ( array() !== ( $block['attrs']['style']['border'] ?? array() ) ) {
+		$block_content = update_block_border( $block_content, $block['attrs'] );
+		$block_content = inject_border_overlay( $block_content, $is_image_block );
+	}
+
+	if ( $is_image_block ) {
+		$block_content = (string) preg_replace( '/<figcaption[^>]*>.*?<\/figcaption>/s', '', $block_content );
+	} else {
+		$block_content = update_block_padding( $block_content, $block['attrs'] );
+	}
+
+	maybe_enqueue_view_script();
 
 	return $block_content;
 }

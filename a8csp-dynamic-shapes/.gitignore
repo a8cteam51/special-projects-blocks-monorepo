@@ -11,6 +11,10 @@ coverage
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
+# Composer
+composer.phar
+/vendor/
+
 # Dependency directories
 node_modules/
 
