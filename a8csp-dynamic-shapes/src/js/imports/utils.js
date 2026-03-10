@@ -76,31 +76,15 @@ export const getComputedPixelValue = ( value, element = null ) => {
 			return getPixelValue( value, element );
 		}
 
-		// Extract the CSS variable name (remove 'var(' and ')').
-		const varName = cssVar.replace( /^var\(/, '' ).replace( /\)$/, '' );
+		// Resolve the CSS variable to pixels using a temporary element.
+		const temp = document.createElement( 'div' );
+		temp.style.cssText = 'position:absolute;visibility:hidden;height:0;';
+		temp.style.width = cssVar;
+		targetElement.appendChild( temp );
+		const pixels = parseFloat( window.getComputedStyle( temp ).width ) || 0;
+		temp.remove();
 
-		// Get the computed style.
-		const computedStyle = window.getComputedStyle( targetElement );
-		const computedValue = computedStyle.getPropertyValue( varName ).trim();
-
-		if ( ! computedValue ) {
-			return 0;
-		}
-
-		// Handle clamp() values by extracting the minimum value.
-		if ( computedValue.includes( 'clamp(' ) ) {
-			// Extract the first value from clamp(min, preferred, max).
-			const clampMatch = computedValue.match( /clamp\(\s*([^,)]+)/ );
-			if ( clampMatch ) {
-				// Use getPixelValue to convert the minimum value (which may be in rem, vw, etc.).
-				return getPixelValue( clampMatch[ 1 ].trim(), element );
-			}
-			return 0;
-		}
-
-		// For other computed values (may be in px, rem, em, %, vw, vh, etc.),
-		// use getPixelValue to convert to pixels.
-		return getPixelValue( computedValue, element );
+		return pixels;
 	} catch ( error ) {
 		return 0;
 	}
