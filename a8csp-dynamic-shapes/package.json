@@ -19,7 +19,12 @@
 		"plugin-zip": "wp-scripts plugin-zip"
 	},
 	"files": [
-		"[^.]*"
+		"a8csp-dynamic-shapes.php",
+		"build/",
+		"classes/",
+		"includes/",
+		"readme.txt",
+		"CHANGELOG.md"
 	],
 	"devDependencies": {
 		"@wordpress/icons": "^11.8.0",
