@@ -249,14 +249,25 @@ export const resolveColor = (
  * @return {Array} The resolved spacing presets.
  */
 export const useSpacingPresets = () => {
-	const defaultSpacingPresets =
-		useSettings( 'spacing.spacingSizes.default' )?.[ 0 ] || null;
-	const themeSpacingPresets =
-		useSettings( 'spacing.spacingSizes.theme' )?.[ 0 ] || null;
+	const defaultSpacingPresets = useSettings(
+		'spacing.spacingSizes.default'
+	)?.[ 0 ];
+	const themeSpacingPresets = useSettings(
+		'spacing.spacingSizes.theme'
+	)?.[ 0 ];
 	const blockPresets =
-		useSettings( 'blocks.core/group' )?.[ 0 ]?.spacing?.presets || null;
+		useSettings( 'blocks.core/group' )?.[ 0 ]?.spacing?.presets;
 
-	return blockPresets ?? themeSpacingPresets ?? defaultSpacingPresets ?? [];
+	if ( blockPresets?.length ) {
+		return blockPresets;
+	}
+	if ( themeSpacingPresets?.length ) {
+		return themeSpacingPresets;
+	}
+	if ( defaultSpacingPresets?.length ) {
+		return defaultSpacingPresets;
+	}
+	return [];
 };
 
 /**

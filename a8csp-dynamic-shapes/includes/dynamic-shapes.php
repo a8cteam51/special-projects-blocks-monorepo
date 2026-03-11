@@ -146,7 +146,9 @@ function parse_size_to_pixels( string $size ): int {
 function get_spacing_preset_size( string $slug ): string {
 	$theme_settings  = wp_get_global_settings();
 	$spacing_presets = $theme_settings['spacing']['spacingSizes'] ?? array();
-	$preset_sources  = $spacing_presets['theme'] ?? $spacing_presets['default'] ?? array();
+	$theme_presets   = $spacing_presets['theme'] ?? array();
+	$default_presets = $spacing_presets['default'] ?? array();
+	$preset_sources  = array() !== $theme_presets ? $theme_presets : $default_presets;
 
 	if ( ! is_array( $preset_sources ) ) {
 		return '';
@@ -593,12 +595,7 @@ function maybe_enqueue_view_script(): void {
 		return;
 	}
 
-	add_action(
-		'wp_enqueue_scripts',
-		function () {
-			Functions\enqueue_script( 'view' );
-		}
-	);
+	Functions\enqueue_script( 'view' );
 	$enqueued = true;
 }
 

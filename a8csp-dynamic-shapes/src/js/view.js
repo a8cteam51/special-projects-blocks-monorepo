@@ -185,8 +185,8 @@ import { encodeSvgForDataUri, getPixelValue } from './imports/utils';
 	 * @param {boolean} forceUpdate Whether to force update even if clip path exists.
 	 */
 	function updateClipPath( block, retryCount = 0, forceUpdate = false ) {
-		// Skip if block already has a clip path and the update is not forced.
-		if ( ! forceUpdate && block.style.clipPath ) {
+		// Skip if block already has a computed clip path and the update is not forced.
+		if ( ! forceUpdate && block.style.getPropertyValue( '--clip-path' ) ) {
 			return;
 		}
 
