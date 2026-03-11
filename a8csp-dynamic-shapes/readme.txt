@@ -83,7 +83,7 @@ While the `a8csp_dynamic_shapes_blocks` filter allows for adding support for cus
 
 = Why does my corner radius look funny? =
 
-Arcs in the generated path assume a 90-degree angle, yielding poor results on corners configured to very acute or obtuse angles.
+Rounded corners use cubic Bezier curves that approximate circular arcs. The approximation is highly accurate for typical shapes, but extreme combinations of large radii with very acute or obtuse corner angles may produce slightly imperfect curves.
 
 == Changelog ==
 
