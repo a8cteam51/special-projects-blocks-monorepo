@@ -77,7 +77,7 @@ export const CornerControl = ( {
 
 	const handleRangeChange = useCallback(
 		( newValue ) => {
-			onChange( newValue + 'px' );
+			onChange( newValue !== undefined ? newValue + 'px' : undefined );
 		},
 		[ onChange ]
 	);
@@ -113,7 +113,7 @@ export const CornerControl = ( {
 							units={ [
 								{ value: 'px', label: 'px', default: 0 },
 							] }
-							value={ value }
+							value={ isPresetValue( value ) ? undefined : value }
 							onChange={ onChange }
 							onUnitChange={ () => {} }
 							onFocus={ () => {} }
@@ -128,7 +128,7 @@ export const CornerControl = ( {
 						aria-controls={ inputId }
 						label={ label }
 						hideLabelFromVision
-						value={ parseInt( value ) || 0 }
+						value={ parseInt( value, 10 ) || 0 }
 						onChange={ handleRangeChange }
 						min={ 0 }
 						max={ 100 }

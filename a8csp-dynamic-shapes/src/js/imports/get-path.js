@@ -118,7 +118,7 @@ export const getPath = (
 			return r(
 				isPresetValue( value )
 					? getComputedPixelValue( value, element )
-					: parseInt( value ) || 0
+					: parseFloat( value ) || 0
 			);
 		};
 

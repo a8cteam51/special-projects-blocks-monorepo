@@ -247,7 +247,9 @@ function append_inline_style( string|true|null $existing_styles, string $new_sty
 function update_block_shadow( string $block_content, string $shadow ): string {
 	$html = new \WP_HTML_Tag_Processor( $block_content );
 
-	$html->next_tag();
+	if ( ! $html->next_tag() ) {
+		return $block_content;
+	}
 
 	$shadow    = preset_to_css_var( $shadow );
 	$new_style = append_inline_style( $html->get_attribute( 'style' ), "filter: drop-shadow($shadow);" );
@@ -275,8 +277,32 @@ function apply_border_color_attributes( \WP_HTML_Tag_Processor $html, string $bo
 		$html->remove_class( 'has-border-color' );
 		$html->set_attribute( 'data-border-color', rawurlencode( $custom_border_color ) );
 	} else {
-		$html->set_attribute( 'data-border-color', 'currentcolor' );
+		$html->set_attribute( 'data-border-color', '%23000000' );
 	}
+}
+
+/**
+ * Resolves a single border width value from block border data.
+ *
+ * Uses the uniform 'width' if set, otherwise falls back to the 'top'
+ * side width (SVG stroke can't accommodate different widths per side).
+ *
+ * @param array<string, mixed> $border_widths Filtered border width data.
+ *
+ * @return string The resolved border width value, or empty string if none.
+ */
+function get_border_width( array $border_widths ): string {
+	if ( isset( $border_widths['width'] ) ) {
+		return $border_widths['width'];
+	}
+
+	$top_width = $border_widths['top'] ?? null;
+
+	if ( is_array( $top_width ) && isset( $top_width['width'] ) ) {
+		return $top_width['width'];
+	}
+
+	return is_string( $top_width ) ? $top_width : '';
 }
 
 /**
@@ -304,30 +330,22 @@ function update_block_border( string $block_content, array $attrs ): string {
 		return $block_content;
 	}
 
+	$border_width = get_border_width( $border_widths );
+
+	if ( '' === $border_width ) {
+		return $block_content;
+	}
+
 	$html = new \WP_HTML_Tag_Processor( $block_content );
-	$html->next_tag();
+
+	if ( ! $html->next_tag() ) {
+		return $block_content;
+	}
 
 	// Handle border color.
 	$border_color        = $attrs['borderColor'] ?? '';
 	$custom_border_color = $border_data['color'] ?? '';
 	apply_border_color_attributes( $html, $border_color, $custom_border_color );
-
-	// Calculate border width (use 'width' if set, otherwise use 'top' width,
-	// as SVG stroke can't accommodate different widths per side).
-	$top_width = $border_widths['top'] ?? null;
-	if ( isset( $border_widths['width'] ) ) {
-		$border_width = $border_widths['width'];
-	} elseif ( is_array( $top_width ) && isset( $top_width['width'] ) ) {
-		$border_width = $top_width['width'];
-	} elseif ( is_string( $top_width ) ) {
-		$border_width = $top_width;
-	} else {
-		$border_width = '';
-	}
-
-	if ( '' === $border_width ) {
-		return $block_content;
-	}
 
 	$html->set_attribute( 'data-border-width', $border_width );
 	$html->add_class( 'dynamic-shape-has-border' );
@@ -335,7 +353,7 @@ function update_block_border( string $block_content, array $attrs ): string {
 	// Strip border styles from the current inline styles, preserving
 	// non-border styles (e.g., filter from shadow processing), and
 	// append the stroke-width custom property.
-	$border_styles = wp_style_engine_get_styles( array( 'border' => $border_widths ) )['css'];
+	$border_styles = wp_style_engine_get_styles( array( 'border' => $border_widths ) )['css'] ?? '';
 	$current_style = $html->get_attribute( 'style' );
 	$style         = is_string( $current_style ) && '' !== $current_style
 		? str_replace( $border_styles, '', $current_style )
@@ -378,7 +396,10 @@ function get_dynamic_shape_padding_value( string $value ): ?string {
  */
 function update_block_padding( string $block_content, array $attrs ): string {
 	$html = new \WP_HTML_Tag_Processor( $block_content );
-	$html->next_tag();
+
+	if ( ! $html->next_tag() ) {
+		return $block_content;
+	}
 
 	$inline_styles = append_inline_style( $html->get_attribute( 'style' ), '' );
 	$has_border    = str_contains( $inline_styles, '--stroke-width' );
@@ -582,6 +603,38 @@ function maybe_enqueue_view_script(): void {
 }
 
 /**
+ * Applies style transforms (shadow, border, padding/figcaption) to block content.
+ *
+ * @param string               $block_content Block content.
+ * @param array<string, mixed> $attrs         Block attributes.
+ * @param bool                 $is_image      Whether this is an image block.
+ *
+ * @return string Modified block content.
+ */
+function apply_style_transforms( string $block_content, array $attrs, bool $is_image ): string {
+	if ( $is_image ) {
+		$block_content = clip_image_block_children( $block_content );
+	}
+
+	if ( '' !== ( $attrs['style']['shadow'] ?? '' ) ) {
+		$block_content = update_block_shadow( $block_content, $attrs['style']['shadow'] );
+	}
+
+	if ( array() !== ( $attrs['style']['border'] ?? array() ) ) {
+		$block_content = update_block_border( $block_content, $attrs );
+		$block_content = inject_border_overlay( $block_content, $is_image );
+	}
+
+	if ( $is_image ) {
+		$block_content = (string) preg_replace( '/<figcaption[^>]*>.*?<\/figcaption>/s', '', $block_content );
+	} else {
+		$block_content = update_block_padding( $block_content, $attrs );
+	}
+
+	return $block_content;
+}
+
+/**
  * Filters dynamic shape block HTML.
  *
  * @param string               $block_content Block content.
@@ -590,7 +643,7 @@ function maybe_enqueue_view_script(): void {
  * @return string Modified block content.
  */
 function filter_dynamic_shape_block( string $block_content, array $block ): string {
-	$block_name = $block['blockName'];
+	$block_name = $block['blockName'] ?? '';
 
 	if ( ! in_array( $block_name, get_dynamic_shapes_blocks(), true ) ) {
 		return $block_content;
@@ -603,7 +656,11 @@ function filter_dynamic_shape_block( string $block_content, array $block ): stri
 
 	$is_image_block = in_array( $block_name, array( 'core/image', 'core/post-featured-image' ), true );
 	$html           = new \WP_HTML_Tag_Processor( $block_content );
-	$html->next_tag();
+
+	if ( ! $html->next_tag() ) {
+		return $block_content;
+	}
+
 	$html->set_attribute( 'data-dynamic-shape', wp_json_encode( $dynamic_shape ) );
 
 	if ( $is_image_block ) {
@@ -613,26 +670,7 @@ function filter_dynamic_shape_block( string $block_content, array $block ): stri
 		$html->set_attribute( 'style', append_inline_style( $current_style, 'clip-path:var(--clip-path)' ) );
 	}
 
-	$block_content = $html->get_updated_html();
-
-	if ( $is_image_block ) {
-		$block_content = clip_image_block_children( $block_content );
-	}
-
-	if ( '' !== ( $block['attrs']['style']['shadow'] ?? '' ) ) {
-		$block_content = update_block_shadow( $block_content, $block['attrs']['style']['shadow'] );
-	}
-
-	if ( array() !== ( $block['attrs']['style']['border'] ?? array() ) ) {
-		$block_content = update_block_border( $block_content, $block['attrs'] );
-		$block_content = inject_border_overlay( $block_content, $is_image_block );
-	}
-
-	if ( $is_image_block ) {
-		$block_content = (string) preg_replace( '/<figcaption[^>]*>.*?<\/figcaption>/s', '', $block_content );
-	} else {
-		$block_content = update_block_padding( $block_content, $block['attrs'] );
-	}
+	$block_content = apply_style_transforms( $html->get_updated_html(), $block['attrs'], $is_image_block );
 
 	maybe_enqueue_view_script();
 

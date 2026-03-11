@@ -153,7 +153,7 @@ import { encodeSvgForDataUri, getPixelValue } from './imports/utils';
 				// Decode the color since the data attribute is URL-encoded.
 				// It will be re-encoded by encodeSvgForDataUri().
 				color: decodeURIComponent(
-					block.dataset.borderColor || 'currentcolor'
+					block.dataset.borderColor || '%23000000'
 				),
 			};
 		} else {
@@ -169,19 +169,11 @@ import { encodeSvgForDataUri, getPixelValue } from './imports/utils';
 	 * @return {Object} The border radii.
 	 */
 	function getBorderRadius( style ) {
-		const values = style.borderRadius.split( ' ' ).map( ( v ) => v.trim() );
-		const [ v0, v1, v2, v3 ] = values;
-
-		// CSS border-radius shorthand follows the pattern:
-		// 1 value:  all corners
-		// 2 values: top-left/bottom-right, top-right/bottom-left
-		// 3 values: top-left, top-right/bottom-left, bottom-right
-		// 4 values: top-left, top-right, bottom-right, bottom-left
 		return {
-			topLeft: v0,
-			topRight: v1 ?? v0,
-			bottomRight: v2 ?? v0,
-			bottomLeft: v3 ?? v1 ?? v0,
+			topLeft: style.borderTopLeftRadius,
+			topRight: style.borderTopRightRadius,
+			bottomRight: style.borderBottomRightRadius,
+			bottomLeft: style.borderBottomLeftRadius,
 		};
 	}
 

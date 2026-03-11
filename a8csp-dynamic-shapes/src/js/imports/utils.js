@@ -221,14 +221,14 @@ export const resolveColor = (
 	attributes,
 	fallback = 'transparent'
 ) => {
-	if ( ! palette || ! Array.isArray( attributes ) ) {
+	if ( ! Array.isArray( attributes ) ) {
 		return fallback;
 	}
 
 	for ( const attr of attributes ) {
 		const { value, paletteKey = false } = attr;
 
-		if ( paletteKey ) {
+		if ( paletteKey && palette ) {
 			const colorEntry = palette.find(
 				( entry ) => entry.slug === value
 			);
@@ -250,17 +250,13 @@ export const resolveColor = (
  */
 export const useSpacingPresets = () => {
 	const defaultSpacingPresets =
-		useSettings( 'spacing.spacingSizes.default' )?.[ 0 ] || [];
+		useSettings( 'spacing.spacingSizes.default' )?.[ 0 ] || null;
 	const themeSpacingPresets =
-		useSettings( 'spacing.spacingSizes.theme' )?.[ 0 ] || [];
-	const blockSettings = useSettings( 'blocks.core/group' ) || [];
+		useSettings( 'spacing.spacingSizes.theme' )?.[ 0 ] || null;
+	const blockPresets =
+		useSettings( 'blocks.core/group' )?.[ 0 ]?.spacing?.presets || null;
 
-	return (
-		blockSettings[ 0 ]?.spacing?.presets ||
-		themeSpacingPresets ||
-		defaultSpacingPresets ||
-		[]
-	);
+	return blockPresets ?? themeSpacingPresets ?? defaultSpacingPresets ?? [];
 };
 
 /**
