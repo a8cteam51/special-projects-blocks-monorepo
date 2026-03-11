@@ -1,7 +1,7 @@
 {
-	"name": "dynamic-shapes",
+	"name": "a8csp-dynamic-shapes",
 	"version": "0.1.0",
-	"description": "Extends the core Group, Image, and Featured Image blocks with controls for adjusting corners to create unique shapes.",
+	"description": "Extends the core Group, Cover, Image, and Featured Image blocks with controls for adjusting corners to create unique shapes.",
 	"author": "Automattic Special Projects",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
@@ -19,15 +19,20 @@
 		"plugin-zip": "wp-scripts plugin-zip"
 	},
 	"files": [
-		"[^.]*"
+		"a8csp-dynamic-shapes.php",
+		"build/",
+		"classes/",
+		"includes/",
+		"readme.txt",
+		"CHANGELOG.md"
 	],
 	"devDependencies": {
-		"@wordpress/icons": "^11.1.0",
-		"@wordpress/postcss-plugins-preset": "^5.32.0",
-		"@wordpress/scripts": "^30.25.0",
+		"@wordpress/icons": "^11.8.0",
+		"@wordpress/postcss-plugins-preset": "^5.41.0",
+		"@wordpress/scripts": "^31.6.0",
 		"clsx": "^2.1.1",
 		"postcss-cli": "^11.0.0",
 		"postcss-nested": "^7.0.2",
-		"postcss-preset-env": "^10.1.3"
+		"postcss-preset-env": "^11.2.0"
 	}
 }

@@ -64,9 +64,6 @@ export const getComputedPixelValue = ( value, element = null ) => {
 
 	// For CSS variables or preset values, we need to compute them first.
 	try {
-		// Use the provided element or create a temporary one.
-		const targetElement = element || document.documentElement;
-
 		// Convert preset to CSS variable if needed.
 		const cssVar = presetToCssVar( value );
 
@@ -76,34 +73,39 @@ export const getComputedPixelValue = ( value, element = null ) => {
 			return getPixelValue( value, element );
 		}
 
-		// Extract the CSS variable name (remove 'var(' and ')').
-		const varName = cssVar.replace( /^var\(/, '' ).replace( /\)$/, '' );
+		// Resolve the CSS variable to pixels using a temporary element.
+		// Appended to documentElement (:root) to avoid triggering
+		// MutationObservers watching block containers on the front-end.
+		const temp = document.createElement( 'div' );
+		temp.style.cssText = 'position:absolute;visibility:hidden;height:0;';
+		temp.style.width = cssVar;
+		document.documentElement.appendChild( temp );
+		const pixels = parseFloat( window.getComputedStyle( temp ).width ) || 0;
+		temp.remove();
 
-		// Get the computed style.
-		const computedStyle = window.getComputedStyle( targetElement );
-		const computedValue = computedStyle.getPropertyValue( varName ).trim();
-
-		if ( ! computedValue ) {
-			return 0;
-		}
-
-		// Handle clamp() values by extracting the minimum value.
-		if ( computedValue.includes( 'clamp(' ) ) {
-			// Extract the first value from clamp(min, preferred, max).
-			const clampMatch = computedValue.match( /clamp\(\s*([^,)]+)/ );
-			if ( clampMatch ) {
-				// Use getPixelValue to convert the minimum value (which may be in rem, vw, etc.).
-				return getPixelValue( clampMatch[ 1 ].trim(), element );
-			}
-			return 0;
-		}
-
-		// For other computed values (may be in px, rem, em, %, vw, vh, etc.),
-		// use getPixelValue to convert to pixels.
-		return getPixelValue( computedValue, element );
+		return pixels;
 	} catch ( error ) {
 		return 0;
 	}
+};
+
+/**
+ * Encode an SVG string for use in a data URI.
+ * Escapes characters that would break the URI or cause parsing issues.
+ *
+ * @param {string} svg The SVG string to encode.
+ *
+ * @return {string} The encoded SVG string.
+ */
+export const encodeSvgForDataUri = ( svg ) => {
+	return svg
+		.replace( /%/g, '%25' )
+		.replace( /"/g, "'" )
+		.replace( /#/g, '%23' )
+		.replace( /\{/g, '%7B' )
+		.replace( /\}/g, '%7D' )
+		.replace( /</g, '%3C' )
+		.replace( />/g, '%3E' );
 };
 
 /**
@@ -153,6 +155,10 @@ export const getPixelValue = ( value, element = null ) => {
 	const viewportWidth = window.innerWidth;
 	const viewportHeight = window.innerHeight;
 
+	if ( value.endsWith( 'rem' ) ) {
+		return number * rootFontSize;
+	}
+
 	if ( value.endsWith( 'em' ) ) {
 		if ( ! element ) {
 			return number * rootFontSize;
@@ -162,10 +168,6 @@ export const getPixelValue = ( value, element = null ) => {
 			getComputedStyle( element ).fontSize
 		);
 		return number * elementFontSize;
-	}
-
-	if ( value.endsWith( 'rem' ) ) {
-		return number * rootFontSize;
 	}
 
 	if ( value.endsWith( '%' ) ) {
@@ -202,22 +204,6 @@ export const isPresetValue = ( value ) => {
 	return (
 		value && typeof value === 'string' && value.includes( 'var:preset|' )
 	);
-};
-
-/**
- * Gets the preset slug from a preset value.
- *
- * @param {string} value The preset value.
- *
- * @return {string|null} The preset slug or null
- */
-export const getPresetSlug = ( value ) => {
-	if ( ! isPresetValue( value ) ) {
-		return null;
-	}
-
-	const match = value.match( /var:preset\|spacing\|(.+)$/ );
-	return match ? match[ 1 ] : null;
 };
 
 /**
@@ -270,27 +256,11 @@ export const useSpacingPresets = () => {
 	const blockSettings = useSettings( 'blocks.core/group' ) || [];
 
 	return (
-		blockSettings?.spacing?.presets ||
+		blockSettings[ 0 ]?.spacing?.presets ||
 		themeSpacingPresets ||
 		defaultSpacingPresets ||
 		[]
 	);
-};
-
-/**
- * Checks if any of the specified keys have values in the dynamic shape attribute.
- *
- * @param {Object} dynamicShape The dynamic shape object.
- * @param {Array}  keys         Array of keys to check.
- *
- * @return {boolean} True if any corner has a value.
- */
-export const hasAxisValues = ( dynamicShape, keys ) => {
-	if ( ! dynamicShape || ! Array.isArray( keys ) ) {
-		return false;
-	}
-
-	return keys.some( ( key ) => dynamicShape[ key ] );
 };
 
 /**
@@ -302,14 +272,14 @@ export const hasAxisValues = ( dynamicShape, keys ) => {
  */
 export const axisConfig = ( keys ) => {
 	const labels = {
-		vtl: __( 'Top left', 'dynamic-shapes' ),
-		vtr: __( 'Top right', 'dynamic-shapes' ),
-		vbl: __( 'Bottom left', 'dynamic-shapes' ),
-		vbr: __( 'Bottom right', 'dynamic-shapes' ),
-		htl: __( 'Top left', 'dynamic-shapes' ),
-		htr: __( 'Top right', 'dynamic-shapes' ),
-		hbl: __( 'Bottom left', 'dynamic-shapes' ),
-		hbr: __( 'Bottom right', 'dynamic-shapes' ),
+		vtl: __( 'Top left', 'a8csp-dynamic-shapes' ),
+		vtr: __( 'Top right', 'a8csp-dynamic-shapes' ),
+		vbl: __( 'Bottom left', 'a8csp-dynamic-shapes' ),
+		vbr: __( 'Bottom right', 'a8csp-dynamic-shapes' ),
+		htl: __( 'Top left', 'a8csp-dynamic-shapes' ),
+		htr: __( 'Top right', 'a8csp-dynamic-shapes' ),
+		hbl: __( 'Bottom left', 'a8csp-dynamic-shapes' ),
+		hbr: __( 'Bottom right', 'a8csp-dynamic-shapes' ),
 	};
 
 	return keys.map( ( key ) => ( {

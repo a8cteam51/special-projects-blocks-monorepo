@@ -1,4 +1,4 @@
-/* global ResizeObserver, wpcomspDynamicShapeBlocks */
+/* global ResizeObserver, a8cspDynamicShapeBlocks */
 
 // External dependencies.
 import clsx from 'clsx';
@@ -25,8 +25,8 @@ import { getPath } from './imports/get-path';
 import { AxisControls } from './imports/axis-controls';
 import {
 	axisConfig,
+	encodeSvgForDataUri,
 	getComputedPixelValue,
-	hasAxisValues,
 	getPaddingVar,
 	getPixelValue,
 	isPresetValue,
@@ -36,7 +36,7 @@ import {
 } from './imports/utils';
 
 /**
- * Adds dynamic shape attributes to the core/image block.
+ * Adds dynamic shape attributes to supported blocks.
  *
  * @param {Object} settings Original block settings
  *
@@ -44,7 +44,7 @@ import {
  */
 function addAttributes( settings ) {
 	if (
-		wpcomspDynamicShapeBlocks.includes( settings.name ) &&
+		a8cspDynamicShapeBlocks.includes( settings.name ) &&
 		! settings.attributes.dynamicShape
 	) {
 		settings.attributes.dynamicShape = {
@@ -56,7 +56,7 @@ function addAttributes( settings ) {
 }
 
 /**
- * Adds dynamic shape controls to the core/image block.
+ * Adds dynamic shape controls to supported blocks.
  *
  * @param {Function} BlockEdit The block edit element.
  *
@@ -64,14 +64,13 @@ function addAttributes( settings ) {
  */
 const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
-		if ( ! wpcomspDynamicShapeBlocks.includes( props.name ) ) {
+		if ( ! a8cspDynamicShapeBlocks.includes( props.name ) ) {
 			return <BlockEdit { ...props } />;
 		}
 
 		const { attributes, setAttributes, name } = props;
 		const { dynamicShape, style } = attributes;
 
-		const isGroup = 'core/group' === name;
 		const isImage = [ 'core/image', 'core/post-featured-image' ].includes(
 			name
 		);
@@ -129,10 +128,20 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				const element = img || wrapperRef.current;
 				if ( element ) {
 					const { width, height } = element.getBoundingClientRect();
+					const newWidth = Math.round( width );
+					const newHeight = Math.round( height );
 
-					setDimensions( {
-						width: Math.round( width ),
-						height: Math.round( height ),
+					setDimensions( ( prev ) => {
+						if (
+							prev.width === newWidth &&
+							prev.height === newHeight
+						) {
+							return prev;
+						}
+						return {
+							width: newWidth,
+							height: newHeight,
+						};
 					} );
 				}
 			};
@@ -147,6 +156,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				resizeObserver.observe( wrapperRef.current );
 			}
 
+			// For cached images that are already loaded, ensure dimensions are captured.
+			if ( img?.complete ) {
+				updateDimensions();
+			}
 			img?.addEventListener( 'load', updateDimensions );
 
 			return () => {
@@ -167,10 +180,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 					dynamicShape,
 					style?.border?.radius,
 					wrapperRef.current,
-					isGroup
+					isImage
 				)
 			);
-		}, [ dimensions, dynamicShape, style?.border?.radius, isGroup ] );
+		}, [ dimensions, dynamicShape, style?.border?.radius, isImage ] );
 
 		// Update the padding variables when the padding style changes.
 		useEffect( () => {
@@ -213,8 +226,8 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				dimensions.width &&
 				dimensions.height
 			) {
-				// Double the border width to account for stroke being centered on path.
-				// It will be trimmed in half by the clip-path on the block.
+				// Double the border width to account for stroke being centered
+				// on path. The clip-path trims it to the correct visual width.
 				const borderWidth =
 					getPixelValue( style.border.width, wrapperRef.current ) * 2;
 
@@ -232,15 +245,11 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 					'#000000'
 				);
 
-				const stroke = encodeURIComponent( borderColor );
+				const svg = `<svg width="${ dimensions.width }" height="${ dimensions.height }" viewBox="0 0 ${ dimensions.width } ${ dimensions.height }" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="${ path }" stroke="${ borderColor }" stroke-width="${ borderWidth }"/></svg>`;
 
-				const svg = `<svg width="${ dimensions.width }" height="${ dimensions.height }" viewBox="0 0 ${ dimensions.width } ${ dimensions.height }" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="${ path }" stroke="${ stroke }" stroke-width="${ borderWidth }"/></svg>`;
-				let bg = `url('data:image/svg+xml, ${ svg }')`;
-				if ( background ) {
-					bg += `, ${ background }`;
-				}
-
-				newStyles[ '--background' ] = bg;
+				newStyles[
+					'--border-svg'
+				] = `url("data:image/svg+xml,${ encodeSvgForDataUri( svg ) }")`;
 				newStyles[ '--stroke-width' ] = `${ borderWidth }px`;
 			}
 
@@ -268,18 +277,9 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 		const horizontalKeys = [ 'htl', 'htr', 'hbl', 'hbr' ];
 
 		const resetAxis = ( keys ) => {
-			// Apply undefined to each of the given keys.
-			const newDynamicShape = { ...dynamicShape };
-			keys.forEach( ( key ) => ( newDynamicShape[ key ] = undefined ) );
-
-			// Check if any meaningful values remain.
-			const hasValues = Object.values( newDynamicShape ).some(
-				( v ) => v !== undefined
-			);
-
-			setAttributes( {
-				dynamicShape: hasValues ? newDynamicShape : undefined,
-			} );
+			const updated = { ...dynamicShape };
+			keys.forEach( ( key ) => delete updated[ key ] );
+			setAttributes( { dynamicShape: updated } );
 		};
 
 		const resetDynamicShape = () => {
@@ -288,60 +288,60 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 		const presets = useSpacingPresets();
 
-		const withControls = (
-			<>
-				<BlockEdit { ...props } />
-				<InspectorControls group="styles">
-					<ToolsPanel
-						label={ __( 'Dynamic Shape' ) }
-						resetAll={ () => resetDynamicShape() }
-					>
-						<AxisControls
-							corners={ axisConfig( verticalKeys ) }
-							hasValue={ () =>
-								hasAxisValues( dynamicShape, verticalKeys )
-							}
-							label={
-								isGroup
-									? __( 'Vertical offsets', 'dynamic-shapes' )
-									: __( 'Vertical insets', 'dynamic-shapes' )
-							}
-							onChange={ ( newValues ) =>
-								setAttributes( {
-									dynamicShape: newValues,
-								} )
-							}
-							onReset={ () => resetAxis( verticalKeys ) }
-							presetKey="spacing"
-							presets={ presets }
-							values={ dynamicShape }
-						/>
-						<AxisControls
-							corners={ axisConfig( horizontalKeys ) }
-							hasValue={ () =>
-								hasAxisValues( dynamicShape, horizontalKeys )
-							}
-							label={ __(
-								'Horizontal insets',
-								'dynamic-shapes'
-							) }
-							onChange={ ( newValues ) =>
-								setAttributes( {
-									dynamicShape: newValues,
-								} )
-							}
-							onReset={ () => resetAxis( horizontalKeys ) }
-							presetKey="spacing"
-							presets={ presets }
-							values={ dynamicShape }
-						/>
-					</ToolsPanel>
-				</InspectorControls>
-			</>
+		const controls = (
+			<InspectorControls group="styles">
+				<ToolsPanel
+					label={ __( 'Dynamic Shape', 'a8csp-dynamic-shapes' ) }
+					resetAll={ () => resetDynamicShape() }
+				>
+					<AxisControls
+						corners={ axisConfig( verticalKeys ) }
+						hasValue={ () => !! dynamicShape }
+						label={
+							isImage
+								? __(
+										'Vertical insets',
+										'a8csp-dynamic-shapes'
+								  )
+								: __(
+										'Vertical offsets',
+										'a8csp-dynamic-shapes'
+								  )
+						}
+						onChange={ ( newValues ) =>
+							setAttributes( {
+								dynamicShape: newValues,
+							} )
+						}
+						onDeselect={ () => resetAxis( verticalKeys ) }
+						presetKey="spacing"
+						presets={ presets }
+						values={ dynamicShape }
+					/>
+					<AxisControls
+						corners={ axisConfig( horizontalKeys ) }
+						hasValue={ () => !! dynamicShape }
+						label={ __(
+							'Horizontal insets',
+							'a8csp-dynamic-shapes'
+						) }
+						onChange={ ( newValues ) =>
+							setAttributes( {
+								dynamicShape: newValues,
+							} )
+						}
+						onDeselect={ () => resetAxis( horizontalKeys ) }
+						presetKey="spacing"
+						presets={ presets }
+						values={ dynamicShape }
+					/>
+				</ToolsPanel>
+			</InspectorControls>
 		);
 
 		const className = clsx(
 			'dynamic-shape-container',
+			isImage && 'is-image',
 			style?.border?.width && 'dynamic-shape-has-border'
 		);
 
@@ -360,15 +360,24 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			[ path, paddingProps, bgAndBorderProps, shadowProps ]
 		);
 
-		return dynamicShape ? (
-			<div className={ className } ref={ wrapperRef } style={ styles }>
-				{ withControls }
-			</div>
-		) : (
-			withControls
+		return (
+			<>
+				{ controls }
+				{ dynamicShape ? (
+					<div
+						className={ className }
+						ref={ wrapperRef }
+						style={ styles }
+					>
+						<BlockEdit { ...props } />
+					</div>
+				) : (
+					<BlockEdit { ...props } />
+				) }
+			</>
 		);
 	};
 }, 'addControls' );
 
-addFilter( 'blocks.registerBlockType', 'dynamic-shapes', addAttributes );
-addFilter( 'editor.BlockEdit', 'dynamic-shapes', addControls );
+addFilter( 'blocks.registerBlockType', 'a8csp-dynamic-shapes', addAttributes );
+addFilter( 'editor.BlockEdit', 'a8csp-dynamic-shapes', addControls );

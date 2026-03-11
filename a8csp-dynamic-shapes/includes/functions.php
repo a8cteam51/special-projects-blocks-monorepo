@@ -2,12 +2,12 @@
 /**
  * Functions for the dynamic shapes plugin.
  *
- * @package wpcomsp-dynamic-shapes
+ * @package a8csp-dynamic-shapes
  */
 
 declare( strict_types=1 );
 
-namespace WPCOMSP\DynamicShapes\Functions;
+namespace A8CSPDynamicShapes\Functions;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,11 +25,14 @@ function get_metadata( ?string $property = null ) {
 
 	if ( null === $plugin_data ) {
 		if ( ! function_exists( 'get_plugin_data' ) ) {
-			/* @phpstan-ignore requireOnce.fileNotFound */
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$plugin_data = get_plugin_data( __DIR__ . '/dynamic-shapes.php', true, false );
+		if ( ! defined( 'A8CSP_DYNAMIC_SHAPES_DIR' ) ) {
+			return null;
+		}
+
+		$plugin_data = get_plugin_data( A8CSP_DYNAMIC_SHAPES_DIR . 'a8csp-dynamic-shapes.php', true, false );
 	}
 
 	$metadata = $plugin_data;
@@ -60,11 +63,11 @@ function get_slug(): string {
  * @return array{ version: string, dependencies: array<string> }|null
  */
 function get_asset_meta( string $asset_path, ?array $extra_dependencies = null ): ?array {
-	$dir_path = constant( 'WPCOMSP_DYNAMIC_SHAPES_DIR' );
-	if ( null === $dir_path ) {
+	if ( ! defined( 'A8CSP_DYNAMIC_SHAPES_DIR' ) ) {
 		return null;
 	}
 
+	$dir_path   = A8CSP_DYNAMIC_SHAPES_DIR;
 	$asset_path = str_starts_with( $asset_path, $dir_path ) ? $asset_path : $dir_path . $asset_path;
 	if ( ! file_exists( $asset_path ) ) {
 		return null;
@@ -109,11 +112,12 @@ function get_asset_meta( string $asset_path, ?array $extra_dependencies = null )
  * @return void
  */
 function enqueue_script( string $file_name ): void {
-	$dir_path = constant( 'WPCOMSP_DYNAMIC_SHAPES_DIR' );
-	$dir_url  = constant( 'WPCOMSP_DYNAMIC_SHAPES_URL' );
-	if ( null === $dir_path || null === $dir_url ) {
+	if ( ! defined( 'A8CSP_DYNAMIC_SHAPES_DIR' ) || ! defined( 'A8CSP_DYNAMIC_SHAPES_URL' ) ) {
 		return;
 	}
+
+	$dir_path = A8CSP_DYNAMIC_SHAPES_DIR;
+	$dir_url  = A8CSP_DYNAMIC_SHAPES_URL;
 
 	$asset_path = "build/js/$file_name.js";
 	$asset_meta = get_asset_meta( $dir_path . $asset_path );
@@ -130,20 +134,25 @@ function enqueue_script( string $file_name ): void {
 }
 
 /**
- * Enqueues a script with the given file name.
+ * Enqueues a stylesheet with the given file name.
  *
  * @param string $file_name The name of the file to enqueue.
  *
  * @return void
  */
 function enqueue_style( string $file_name ): void {
-	$dir_path = constant( 'WPCOMSP_DYNAMIC_SHAPES_DIR' );
-	$dir_url  = constant( 'WPCOMSP_DYNAMIC_SHAPES_URL' );
-	if ( null === $dir_path || null === $dir_url ) {
+	if ( ! defined( 'A8CSP_DYNAMIC_SHAPES_DIR' ) || ! defined( 'A8CSP_DYNAMIC_SHAPES_URL' ) ) {
 		return;
 	}
 
+	$dir_path = A8CSP_DYNAMIC_SHAPES_DIR;
+	$dir_url  = A8CSP_DYNAMIC_SHAPES_URL;
+
 	$asset_path = "build/css/$file_name.css";
+
+	if ( ! file_exists( $dir_path . $asset_path ) ) {
+		return;
+	}
 
 	wp_enqueue_style(
 		get_slug() . "-$file_name",

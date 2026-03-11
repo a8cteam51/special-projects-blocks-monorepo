@@ -2,18 +2,18 @@
 /**
  * Manages dynamic shape asset loading and filtering.
  *
- * @package wpcomsp-dynamic-shapes
+ * @package a8csp-dynamic-shapes
  */
 
 declare( strict_types=1 );
 
-namespace WPCOMSP\DynamicShapes;
+namespace A8CSPDynamicShapes;
 
 defined( 'ABSPATH' ) || exit;
 
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_block_editor_assets' );
 add_action( 'enqueue_block_assets', __NAMESPACE__ . '\enqueue_block_assets' );
-add_action( 'init', __NAMESPACE__ . '\add_block_filters' );
+add_filter( 'render_block', __NAMESPACE__ . '\filter_dynamic_shape_block', 10, 2 );
 
 /**
  * Returns the blocks that support the dynamic shape feature.
@@ -21,6 +21,13 @@ add_action( 'init', __NAMESPACE__ . '\add_block_filters' );
  * @return array<string> The blocks that support the dynamic shape feature.
  */
 function get_dynamic_shapes_blocks(): array {
+	$default_supported_blocks = array(
+		'core/cover',
+		'core/group',
+		'core/image',
+		'core/post-featured-image',
+	);
+
 	/**
 	 * Filters the blocks that support the dynamic shape feature.
 	 *
@@ -28,7 +35,7 @@ function get_dynamic_shapes_blocks(): array {
 	 *
 	 * @return array<string> The blocks that support the dynamic shape feature.
 	 */
-	return apply_filters( 'wpcomsp_dynamic_shapes_blocks', array( 'core/group', 'core/image', 'core/post-featured-image' ) );
+	return apply_filters( 'a8csp_dynamic_shapes_blocks', $default_supported_blocks );
 }
 
 /**
@@ -55,7 +62,7 @@ function parse_preset_value( string $preset_value ): ?array {
 	}
 
 	// Match the pattern: var:preset|{type}|{value}. phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-	if ( preg_match( '/^var:preset\|([^|]+)\|(.+)$/', $preset_value, $matches ) ) {
+	if ( 1 === preg_match( '/^var:preset\|([^|]+)\|(.+)$/', $preset_value, $matches ) ) {
 		return array(
 			'type' => $matches[1],
 			'slug' => $matches[2],
@@ -130,6 +137,31 @@ function parse_size_to_pixels( string $size ): int {
 }
 
 /**
+ * Gets the CSS size value for a spacing preset slug.
+ *
+ * @param string $slug The spacing preset slug.
+ *
+ * @return string The CSS size value, or empty string if not found.
+ */
+function get_spacing_preset_size( string $slug ): string {
+	$theme_settings  = wp_get_global_settings();
+	$spacing_presets = $theme_settings['spacing']['spacingSizes'] ?? array();
+	$preset_sources  = $spacing_presets['theme'] ?? $spacing_presets['default'] ?? array();
+
+	if ( ! is_array( $preset_sources ) ) {
+		return '';
+	}
+
+	foreach ( $preset_sources as $preset ) {
+		if ( isset( $preset['slug'] ) && $preset['slug'] === $slug ) {
+			return $preset['size'] ?? '';
+		}
+	}
+
+	return '';
+}
+
+/**
  * Gets the computed pixel value of a preset or regular value.
  *
  * @param string $value The value to compute.
@@ -141,73 +173,42 @@ function get_computed_pixel_value( string $value ): int {
 		return 0;
 	}
 
-	// If it's already a numeric or pixel value, extract the number.
 	if ( is_numeric( $value ) || str_ends_with( $value, 'px' ) ) {
 		return (int) $value;
 	}
 
-	// For preset values, we need to get the actual CSS value.
 	$parsed = parse_preset_value( $value );
-	if ( null === $parsed ) {
+	if ( null === $parsed || 'spacing' !== $parsed['type'] ) {
 		return 0;
 	}
 
-	$preset_type = $parsed['type'];
-	$preset_slug = $parsed['slug'];
-
-	// Currently only spacing presets are supported for pixel conversion.
-	if ( 'spacing' !== $preset_type ) {
-		return 0;
-	}
-
-	// Get spacing presets from WordPress theme settings.
-	$theme_settings  = wp_get_global_settings();
-	$spacing_presets = $theme_settings['spacing']['spacingSizes'] ?? array();
-	$preset_sources  = $spacing_presets['theme'] ?? $spacing_presets['default'] ?? array();
-
-	if ( ! is_array( $preset_sources ) ) {
-		return 0;
-	}
-
-	// Find the matching preset.
-	foreach ( $preset_sources as $preset ) {
-		if ( isset( $preset['slug'] ) && $preset['slug'] === $preset_slug ) {
-			return parse_size_to_pixels( $preset['size'] ?? '' );
-		}
-	}
-
-	return 0;
+	return parse_size_to_pixels( get_spacing_preset_size( $parsed['slug'] ) );
 }
 
 /**
  * Gets a theme palette color.
  *
  * Browsers don't recognize CSS variables when applied inline on an SVG
- * set as an inline `background` property, so this unfortunately
- * necessitates parsing the hex value from the theme.json file.
+ * set as an inline `background` property, so the hex value needs to be
+ * parsed from the theme settings.
  *
  * @param string $slug Slug.
  *
  * @return string Color.
  */
 function get_theme_palette_color( string $slug ): string {
-	$theme_json_path = get_stylesheet_directory() . '/theme.json';
-	$result          = '#000000';
+	$theme_settings = wp_get_global_settings();
+	$palette        = $theme_settings['color']['palette']['theme']
+					?? $theme_settings['color']['palette']['default']
+					?? array();
 
-	if ( file_exists( $theme_json_path ) ) {
-		$file_contents = file_get_contents( $theme_json_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$theme_json    = false !== $file_contents ? json_decode( $file_contents, true ) : array();
-
-		if ( isset( $theme_json['settings']['color']['palette'] ) ) {
-			foreach ( $theme_json['settings']['color']['palette'] as $color ) {
-				if ( isset( $color['slug'] ) && $color['slug'] === $slug ) {
-					$result = $color['color'];
-				}
-			}
+	foreach ( $palette as $color ) {
+		if ( isset( $color['slug'] ) && $color['slug'] === $slug ) {
+			return rawurlencode( $color['color'] );
 		}
 	}
 
-	return rawurlencode( $result );
+	return rawurlencode( '#000000' );
 }
 
 /**
@@ -287,10 +288,9 @@ function apply_border_color_attributes( \WP_HTML_Tag_Processor $html, string $bo
  * @return string Modified block content.
  */
 function update_block_border( string $block_content, array $attrs ): string {
-	$style_attributes = $attrs['style'] ?? array();
-	$border_data      = $style_attributes['border'] ?? array();
+	$border_data = $attrs['style']['border'] ?? array();
 
-	// Extract border widths and remove them from style attributes.
+	// Extract border widths.
 	$border_width_keys = array( 'width', 'top', 'right', 'bottom', 'left' );
 	$border_widths     = array_intersect_key( $border_data, array_flip( $border_width_keys ) );
 	$border_widths     = array_filter(
@@ -304,14 +304,8 @@ function update_block_border( string $block_content, array $attrs ): string {
 		return $block_content;
 	}
 
-	// Remove border widths and color from style attributes.
-	foreach ( array_keys( $border_widths ) as $key ) {
-		unset( $style_attributes['border'][ $key ] );
-	}
-	unset( $style_attributes['border']['color'] );
-
 	$html = new \WP_HTML_Tag_Processor( $block_content );
-	$html->next_tag( array( 'class' => 'is-style-dynamic-shape' ) );
+	$html->next_tag();
 
 	// Handle border color.
 	$border_color        = $attrs['borderColor'] ?? '';
@@ -338,27 +332,15 @@ function update_block_border( string $block_content, array $attrs ): string {
 	$html->set_attribute( 'data-border-width', $border_width );
 	$html->add_class( 'dynamic-shape-has-border' );
 
-	// Generate styles.
+	// Strip border styles from the current inline styles, preserving
+	// non-border styles (e.g., filter from shadow processing), and
+	// append the stroke-width custom property.
 	$border_styles = wp_style_engine_get_styles( array( 'border' => $border_widths ) )['css'];
-	$other_styles  = wp_style_engine_get_styles( $style_attributes )['css'];
-	$other_styles .= "--stroke-width: {$border_width};";
-
 	$current_style = $html->get_attribute( 'style' );
-
-	// Apply styles to the main block or image tag.
-	if ( is_string( $current_style ) && '' !== $current_style && str_contains( $current_style, $border_styles ) ) {
-		// Group block: styles go on the main element.
-		$html->set_attribute( 'style', $other_styles );
-	} else {
-		// Image block: styles go on the img tag.
-		$html->set_bookmark( 'block_container' );
-
-		if ( $html->next_tag( array( 'tag_name' => 'img' ) ) ) {
-			$html->set_attribute( 'style', $other_styles );
-			apply_border_color_attributes( $html, $border_color, $custom_border_color );
-			$html->seek( 'block_container' );
-		}
-	}
+	$style         = is_string( $current_style ) && '' !== $current_style
+		? str_replace( $border_styles, '', $current_style )
+		: '';
+	$html->set_attribute( 'style', append_inline_style( $style, "--stroke-width: {$border_width};" ) );
 
 	return $html->get_updated_html();
 }
@@ -394,7 +376,7 @@ function get_dynamic_shape_padding_value( string $value ): ?string {
  *
  * @return string Modified block content.
  */
-function update_group_block_padding( string $block_content, array $attrs ): string {
+function update_block_padding( string $block_content, array $attrs ): string {
 	$html = new \WP_HTML_Tag_Processor( $block_content );
 	$html->next_tag();
 
@@ -465,7 +447,7 @@ function enqueue_block_editor_assets(): void {
 
 	wp_add_inline_script(
 		Functions\get_slug() . '-extend-blocks',
-		'const wpcomspDynamicShapeBlocks = ' . wp_json_encode(
+		'const a8cspDynamicShapeBlocks = ' . wp_json_encode(
 			get_dynamic_shapes_blocks()
 		) . ';',
 		'before'
@@ -486,18 +468,121 @@ function enqueue_block_assets(): void {
 }
 
 /**
- * Adds block content filters for dynamic shape blocks.
+ * Adds clip-path to image block visual children (img, overlay).
  *
- * @return void
+ * Applied individually so filter: drop-shadow() on the figure
+ * can follow the clipped shape.
+ *
+ * @param string $block_content Block content.
+ *
+ * @return string Modified block content.
  */
-function add_block_filters(): void {
-	foreach ( get_dynamic_shapes_blocks() as $block_name ) {
-		add_filter( "render_block_{$block_name}", __NAMESPACE__ . '\filter_dynamic_shape_block', 10, 2 );
+function clip_image_block_children( string $block_content ): string {
+	$html = new \WP_HTML_Tag_Processor( $block_content );
+	while ( $html->next_tag() ) {
+		if (
+			'IMG' === $html->get_tag() ||
+			true === $html->has_class( 'wp-block-post-featured-image__overlay' )
+		) {
+			$current_style = (string) ( $html->get_attribute( 'style' ) ?? '' );
+
+			// Strip border and box-shadow styles from img — the dynamic shape
+			// border is rendered via the SVG overlay, and shadow via the
+			// figure's drop-shadow filter.
+			$current_style = (string) preg_replace(
+				'/(?:border-(?:width|(?:top|bottom)-(?:left|right)-radius)|box-shadow)\s*:[^;]+;?\s*/',
+				'',
+				$current_style
+			);
+
+			$html->set_attribute( 'style', append_inline_style( $current_style, 'clip-path:var(--clip-path)' ) );
+
+			// Remove border color classes from img (handled by data attributes on the figure).
+			if ( 'IMG' === $html->get_tag() ) {
+				$class_attr = (string) ( $html->get_attribute( 'class' ) ?? '' );
+				if ( 1 === preg_match( '/has-[\w-]+-border-color/', $class_attr, $matches ) ) {
+					$html->remove_class( $matches[0] );
+				}
+				$html->remove_class( 'has-border-color' );
+			}
+		}
 	}
+
+	return $html->get_updated_html();
 }
 
 /**
- * Filters dynamic shape style block HTML.
+ * Injects a border overlay span before the block's closing tag.
+ *
+ * Renders the border SVG (set as --border-svg by JS) above
+ * the block's content layers.
+ *
+ * @param string $block_content Block content.
+ * @param bool   $is_image      Whether this is an image block.
+ *
+ * @return string Modified block content.
+ */
+function inject_border_overlay( string $block_content, bool $is_image ): string {
+	$overlay     = '<span class="dynamic-shape-border-overlay" aria-hidden="true" style="background:var(--border-svg);clip-path:var(--clip-path);bottom:0;left:0;margin:0;pointer-events:none;position:absolute;right:0;top:0;z-index:2;"></span>';
+	$closing_tag = $is_image ? '</figure>' : '</div>';
+	$last_pos    = strrpos( $block_content, $closing_tag );
+
+	if ( false !== $last_pos ) {
+		$block_content = substr_replace( $block_content, $overlay, $last_pos, 0 );
+	}
+
+	return $block_content;
+}
+
+/**
+ * Applies border-radius inline styles to the figure element.
+ *
+ * WordPress doesn't output border-radius on the figure for image
+ * blocks, so we inject it so the front-end JS can read it via
+ * getComputedStyle for clip-path and border SVG calculations.
+ *
+ * @param \WP_HTML_Tag_Processor $html  Tag processor positioned on the figure.
+ * @param array<string, mixed>   $attrs Block attributes.
+ *
+ * @return void
+ */
+function apply_figure_border_radius( \WP_HTML_Tag_Processor $html, array $attrs ): void {
+	$border_radius = $attrs['style']['border']['radius'] ?? null;
+	if ( null === $border_radius ) {
+		return;
+	}
+
+	$radius_css = wp_style_engine_get_styles( array( 'border' => array( 'radius' => $border_radius ) ) )['css'] ?? '';
+	if ( '' === $radius_css ) {
+		return;
+	}
+
+	$current_style = $html->get_attribute( 'style' ) ?? '';
+	$html->set_attribute( 'style', append_inline_style( $current_style, $radius_css ) );
+}
+
+/**
+ * Enqueues the front-end view script once per page load.
+ *
+ * @return void
+ */
+function maybe_enqueue_view_script(): void {
+	static $enqueued = false;
+	if ( $enqueued ) {
+		return;
+	}
+
+	add_action(
+		'wp_enqueue_scripts',
+		function () {
+			Functions\enqueue_script( 'view' );
+		}
+	);
+	$enqueued = true;
+}
+
+/**
+ * Filters dynamic shape block HTML.
  *
  * @param string               $block_content Block content.
  * @param array<string, mixed> $block         Full block.
@@ -505,43 +590,51 @@ function add_block_filters(): void {
  * @return string Modified block content.
  */
 function filter_dynamic_shape_block( string $block_content, array $block ): string {
-	$dynamic_shape = $block['attrs']['dynamicShape'] ?? null;
-	if ( null !== $dynamic_shape && array() !== $dynamic_shape ) {
-		$html = new \WP_HTML_Tag_Processor( $block_content );
+	$block_name = $block['blockName'];
 
-		$html->next_tag();
-
-		$dynamic_shape = wp_json_encode( $dynamic_shape );
-
-		$html->set_attribute( 'data-dynamic-shape', $dynamic_shape );
-
-		$block_content = $html->get_updated_html();
-
-		if ( '' !== ( $block['attrs']['style']['shadow'] ?? '' ) ) {
-			$block_content = update_block_shadow( $block_content, $block['attrs']['style']['shadow'] );
-		}
-
-		$border_data = $block['attrs']['style']['border'] ?? array();
-		if ( array() !== $border_data ) {
-			$block_content = update_block_border( $block_content, $block['attrs'] );
-		}
-
-		if ( 'core/group' === $block['blockName'] ) {
-			$block_content = update_group_block_padding( $block_content, $block['attrs'] );
-		}
-
-		// Enqueue view script once per page load.
-		static $view_script_enqueued = false;
-		if ( ! $view_script_enqueued ) {
-			add_action(
-				'wp_enqueue_scripts',
-				function () {
-					Functions\enqueue_script( 'view' );
-				}
-			);
-			$view_script_enqueued = true;
-		}
+	if ( ! in_array( $block_name, get_dynamic_shapes_blocks(), true ) ) {
+		return $block_content;
 	}
+
+	$dynamic_shape = $block['attrs']['dynamicShape'] ?? null;
+	if ( null === $dynamic_shape || array() === $dynamic_shape ) {
+		return $block_content;
+	}
+
+	$is_image_block = in_array( $block_name, array( 'core/image', 'core/post-featured-image' ), true );
+	$html           = new \WP_HTML_Tag_Processor( $block_content );
+	$html->next_tag();
+	$html->set_attribute( 'data-dynamic-shape', wp_json_encode( $dynamic_shape ) );
+
+	if ( $is_image_block ) {
+		apply_figure_border_radius( $html, $block['attrs'] );
+	} else {
+		$current_style = $html->get_attribute( 'style' ) ?? '';
+		$html->set_attribute( 'style', append_inline_style( $current_style, 'clip-path:var(--clip-path)' ) );
+	}
+
+	$block_content = $html->get_updated_html();
+
+	if ( $is_image_block ) {
+		$block_content = clip_image_block_children( $block_content );
+	}
+
+	if ( '' !== ( $block['attrs']['style']['shadow'] ?? '' ) ) {
+		$block_content = update_block_shadow( $block_content, $block['attrs']['style']['shadow'] );
+	}
+
+	if ( array() !== ( $block['attrs']['style']['border'] ?? array() ) ) {
+		$block_content = update_block_border( $block_content, $block['attrs'] );
+		$block_content = inject_border_overlay( $block_content, $is_image_block );
+	}
+
+	if ( $is_image_block ) {
+		$block_content = (string) preg_replace( '/<figcaption[^>]*>.*?<\/figcaption>/s', '', $block_content );
+	} else {
+		$block_content = update_block_padding( $block_content, $block['attrs'] );
+	}
+
+	maybe_enqueue_view_script();
 
 	return $block_content;
 }
