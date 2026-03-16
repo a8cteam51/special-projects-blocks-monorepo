@@ -2,7 +2,7 @@
 	position: relative;
 }
 
-.watco-overlay {
+.watco__overlay {
 	background-color: var(--wp--preset--color--base);
 	bottom: 0;
 	box-sizing: border-box;
@@ -26,10 +26,10 @@
 		}
 	}
 
-	&.watco-overlay--style-modal {
+	&.watco--style-modal {
 		transition: none;
 
-		.watco-overlay__content {
+		.watco__content {
 			background-color: var(--wp--preset--color--base);
 			padding: 2rem;
 		}
@@ -47,7 +47,7 @@
 	}
 }
 
-.watco-overlay__content {
+.watco__content {
 	padding: var(--wp--preset--spacing--20, 1rem);
 	padding-block-end: 0;
 }

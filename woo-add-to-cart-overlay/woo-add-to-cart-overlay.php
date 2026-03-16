@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:       WooCommerce Add To Cart Overlay
- * Description:       Replaces the default Add To Cart button with a button that opens an overlay showing the add to cart form.
- * Version:           0.1.0
+ * Description:       Replaces the default add-to-cart button with a button that opens an overlay showing the add to cart form.
+ * Version:           0.2.0
  * Author:            WordPress Special Projects Team
  * Author URI:        https://wpspecialprojects.wordpress.com/
  * Update URI:        https://opsoasis.wpspecialprojects.com/woo-add-to-cart-overlay/
@@ -12,6 +12,7 @@
  * Requires at least: 6.8
  * Tested up to:      6.9.1
  * Requires PHP:      8.1
+ * Requires Plugins:  woocommerce
  *
  * @package           a8csp
  */

@@ -3,7 +3,7 @@ import './style.scss';
 document.addEventListener( 'click', ( ev ) => {
 	const target = ev.target;
 	const overlayWrapper = target.closest( '.watco' );
-	const overlay = overlayWrapper?.querySelector( '.watco-overlay' );
+	const overlay = overlayWrapper?.querySelector( '.watco__overlay' );
 
 	closeOtherOpenOverlays( ev );
 
@@ -11,7 +11,7 @@ document.addEventListener( 'click', ( ev ) => {
 		return;
 	}
 
-	//add-to-cart-button -> open overlay
+	//add-to-cart-button -> toggle overlay
 	if ( target.closest( '.watco-add-to-cart-button' ) ) {
 		displayForm( overlay, true );
 	}
@@ -25,7 +25,7 @@ document.addEventListener( 'click', ( ev ) => {
 document.addEventListener( 'keyup', ( ev ) => {
 	if ( ev.key === 'Escape' ) {
 		const openOverlays = document.querySelectorAll(
-			'.watco-overlay.show-form'
+			'.watco__overlay.show-form'
 		);
 		openOverlays.forEach( ( openOverlay ) => {
 			displayForm( openOverlay, false );
@@ -37,7 +37,7 @@ document.addEventListener( 'submit', ( event ) => {
 	const form = event.target;
 
 	//ignore if not a watco cart form
-	if ( ! form.closest( 'form.cart' ) || ! form.closest( '.watco-overlay' ) ) {
+	if ( ! form.closest( 'form.cart' ) || ! form.closest( '.watco__overlay' ) ) {
 		return;
 	}
 
@@ -114,16 +114,16 @@ document.addEventListener( 'submit', ( event ) => {
 } );
 
 /**
- * Close open overlays other than the one clicked (.watco-overlay__content)
+ * Close open overlays other than the one clicked (.watco__overlay__content)
  *
  * @param {MouseEvent|null} ev The element that was clicked.
  */
 function closeOtherOpenOverlays( ev ) {
 	const target = ev.target;
 	const overlayWrapper = target?.closest( '.watco' );
-	const overlay = overlayWrapper?.querySelector( '.watco-overlay' );
+	const overlay = overlayWrapper?.querySelector( '.watco__overlay' );
 	const openOverlays = document.querySelectorAll(
-		'.watco-overlay.show-form'
+		'.watco__overlay.show-form'
 	);
 
 	// close open overlays
@@ -134,7 +134,7 @@ function closeOtherOpenOverlays( ev ) {
 			! overlay ||
 			overlay !== openOverlay ||
 			! openOverlay
-				.querySelector( '.watco-overlay__content' )
+				.querySelector( '.watco__overlay__content' )
 				?.contains( target )
 		) {
 			// prevent event on mobile or on desktop if clicked on the same product
@@ -155,7 +155,7 @@ function closeOtherOpenOverlays( ev ) {
  * Toggle or hide the overlay. If @param toggle is false,
  * the overlay will be closed. Otherwise it will be toggled.
  *
- * @param {HTMLElement} overlay Overlay element (.watco-overlay).
+ * @param {HTMLElement} overlay Overlay element (.watco__overlay).
  * @param {boolean}     toggle  Whether to toggle or close the overlay.
  */
 function displayForm( overlay, toggle ) {
@@ -176,7 +176,7 @@ function displayForm( overlay, toggle ) {
 			overlay.querySelector( '.watco__product-link' )?.focus();
 
 			document.dispatchEvent(
-				new CustomEvent( 'watco-overlay-shown', {
+				new CustomEvent( 'watco__overlay-shown', {
 					detail: { overlayWrapper, overlay },
 				} )
 			);
@@ -193,7 +193,7 @@ function displayForm( overlay, toggle ) {
 		document.documentElement.classList.remove( 'has-modal-open' );
 
 		document.dispatchEvent(
-			new CustomEvent( 'watco-overlay-hidden', {
+			new CustomEvent( 'watco__overlay-hidden', {
 				detail: { overlayWrapper, overlay },
 			} )
 		);
