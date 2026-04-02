@@ -10,6 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/**
+ * Class WPCOMSP_Blocks_Self_Update
+ */
 class WPCOMSP_Blocks_Self_Update {
 
 	public static $instance;
@@ -29,6 +32,8 @@ class WPCOMSP_Blocks_Self_Update {
 
 	/**
 	 * Initialize WordPress hooks
+	 *
+	 * @return void
 	 */
 	public function hooks() {
 		add_filter( 'update_plugins_opsoasis.wpspecialprojects.com', array( $this, 'self_update' ), 10, 3 );
@@ -37,11 +42,11 @@ class WPCOMSP_Blocks_Self_Update {
 	/**
 	 * Check for updates to this plugin
 	 *
-	 * @param array  $update   Array of update data.
+	 * @param array  $update      Array of update data.
 	 * @param array  $plugin_data Array of plugin data.
 	 * @param string $plugin_file Path to plugin file.
 	 *
-	 * @return array|bool Array of update data or false if no update available.
+	 * @return array|boolean Array of update data or false if no update available.
 	 */
 	public function self_update( $update, array $plugin_data, string $plugin_file ) {
 		// Already completed update check elsewhere.
@@ -62,13 +67,16 @@ class WPCOMSP_Blocks_Self_Update {
 			)
 		);
 
-		// Bail if this plugin wasn't found on opsoasis.mystagingwebsite.com.
-		if ( 404 === wp_remote_retrieve_response_code( $response ) || 202 === wp_remote_retrieve_response_code( $response ) ) {
+		// Bail on request error or non-200 response.
+		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			return $update;
 		}
 
-		$updated_version = wp_remote_retrieve_body( $response );
-		$updated_array   = json_decode( $updated_version, true );
+		$updated_array = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		if ( ! isset( $updated_array['slug'], $updated_array['version'], $updated_array['package_url'] ) ) {
+			return $update;
+		}
 
 		return array(
 			'slug'    => $updated_array['slug'],

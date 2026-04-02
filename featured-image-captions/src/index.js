@@ -142,7 +142,10 @@ const withCaptionFeaturedImage = createHigherOrderComponent(
 							setAttributes( { caption: value } )
 						}
 						inlineToolbar
-						placeholder="Add caption (Leave blank to use image caption)"
+						placeholder={ __(
+							'Add caption (Leave blank to use image caption)',
+							'featured-image-captions'
+						) }
 					/>
 				</div>
 			);

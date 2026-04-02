@@ -77,12 +77,13 @@ add_action( 'wp_enqueue_scripts', 'featured_image_captions_frontend_styles' );
 /**
  * Appends a caption to the Featured Image block output.
  *
- * @param string               $block_content The block content.
- * @param array<string, mixed> $block         The block data.
+ * @param string               $block_content  The block content.
+ * @param array<string, mixed> $block          The block data.
+ * @param WP_Block             $block_instance The block instance.
  *
  * @return string
  */
-function featured_image_captions_render_caption( string $block_content, array $block ): string {
+function featured_image_captions_render_caption( string $block_content, array $block, WP_Block $block_instance ): string {
 	if ( empty( $block['attrs']['isCaptionEnabled'] ) ) {
 		return $block_content;
 	}
@@ -91,7 +92,8 @@ function featured_image_captions_render_caption( string $block_content, array $b
 	if ( ! empty( $block['attrs']['caption'] ) && is_string( $block['attrs']['caption'] ) ) {
 		$figcaption = $block['attrs']['caption'];
 	} else {
-		$figcaption = get_the_post_thumbnail_caption();
+		$post_id    = isset( $block_instance->context['postId'] ) ? (int) $block_instance->context['postId'] : null;
+		$figcaption = get_the_post_thumbnail_caption( $post_id );
 	}
 
 	if ( is_string( $figcaption ) && '' !== $figcaption ) {
@@ -104,7 +106,7 @@ function featured_image_captions_render_caption( string $block_content, array $b
 
 	return $block_content;
 }
-add_filter( 'render_block_core/post-featured-image', 'featured_image_captions_render_caption', 10, 2 );
+add_filter( 'render_block_core/post-featured-image', 'featured_image_captions_render_caption', 10, 3 );
 
 /**
  * Setup auto-updates for this plugin from our monorepo.
