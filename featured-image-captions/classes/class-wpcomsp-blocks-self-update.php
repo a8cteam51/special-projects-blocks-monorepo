@@ -10,9 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-/**
- * Class WPCOMSP_Blocks_Self_Update
- */
 class WPCOMSP_Blocks_Self_Update {
 
 	public static $instance;
