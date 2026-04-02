@@ -19,9 +19,12 @@ defined( 'ABSPATH' ) || exit;
 
 // If no other WPCOMSP Block Plugin added the self update class, add it.
 if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
-	require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
+	$self_update_file = __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
 
-	WPCOMSP_Blocks_Self_Update::get_instance()->hooks();
+	if ( file_exists( $self_update_file ) ) {
+		require $self_update_file;
+		WPCOMSP_Blocks_Self_Update::get_instance()->hooks();
+	}
 }
 
 /**
