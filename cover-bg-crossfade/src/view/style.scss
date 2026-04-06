@@ -1,5 +1,9 @@
 body:has(.wp-block-cover.is-style-a8csp-cover-bg-crossfade) {
 	overscroll-behavior: none;
+
+	@media (prefers-reduced-motion: reduce) {
+		overscroll-behavior: revert;
+	}
 }
 
 .wp-block-cover {
@@ -18,6 +22,11 @@ body:has(.wp-block-cover.is-style-a8csp-cover-bg-crossfade) {
 				position: fixed;
 				transition: opacity 0.5s ease-out;
 				z-index: -1;
+
+				@media (prefers-reduced-motion: reduce) {
+					position: absolute;
+					transition: none;
+				}
 			}
 
 			&:not(.show-video) {
