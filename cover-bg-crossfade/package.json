@@ -15,8 +15,7 @@
 		"start": "wp-scripts start src/view --output-path=build/view"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.59.1",
-		"@wordpress/browserslist-config": "^6.29.0",
-		"@wordpress/scripts": "^30.22.0"
+		"@wordpress/scripts": "^30.22.0",
+		"@wordpress/browserslist-config": "^6.29.0"
 	}
 }
