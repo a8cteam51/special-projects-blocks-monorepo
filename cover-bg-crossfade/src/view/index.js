@@ -3,7 +3,9 @@ let requestedUpdate = false;
 
 import './style.scss';
 
-initCrossfadeCovers();
+if ( ! window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches ) {
+	initCrossfadeCovers();
+}
 
 function initCrossfadeCovers() {
 	document

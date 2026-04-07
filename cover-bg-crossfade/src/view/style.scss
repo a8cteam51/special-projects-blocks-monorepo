@@ -37,3 +37,32 @@ body:has(.wp-block-cover.is-style-a8csp-cover-bg-crossfade) {
 		}
 	}
 }
+
+@media (prefers-reduced-motion: reduce) {
+
+	body:has(.wp-block-cover.is-style-a8csp-cover-bg-crossfade) {
+		overscroll-behavior: auto;
+	}
+
+	.wp-block-cover {
+
+		&.is-style-a8csp-cover-bg-crossfade {
+
+			:where(body:not(.wp-admin)) & {
+
+				:is(.wp-block-cover__video-background, .wp-block-cover__image-background, .wp-block-cover__background) {
+					position: absolute;
+					transition: none;
+					z-index: 0;
+				}
+
+				&:not(.show-video) {
+
+					:is(.wp-block-cover__video-background, .wp-block-cover__image-background, .wp-block-cover__background) {
+						opacity: 1;
+					}
+				}
+			}
+		}
+	}
+}
