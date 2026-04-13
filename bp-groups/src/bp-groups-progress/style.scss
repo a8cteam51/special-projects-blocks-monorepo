@@ -1,12 +1,15 @@
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
+.wp-block-a8csp-bp-groups-progress {
+	font-weight: 700;
 
-.wp-block-a8csp-bp-groups-gutenberg {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
+	.group-progress-bar-background {
+		background-color: grey;
+		height: 12px;
+		margin-top: var(--wp--preset--spacing--10);
+		width: 100%;
+	}
+
+	.group-progress-bar-fill {
+		background-color: var(--wp--preset--color--primary);
+		height: 12px;
+	}
 }

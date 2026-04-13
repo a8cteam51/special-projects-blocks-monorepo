@@ -1,0 +1,12 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/bp-members-variations",
+	"version": "0.1.0",
+	"title": "BP Members Block Variations",
+	"category": "widgets",
+	"description": "A block to display BuddyPress members.",
+	"example": {},
+	"textdomain": "bp-members",
+	"editorScript": "file:./index.js"
+}

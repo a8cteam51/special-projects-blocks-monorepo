@@ -23,30 +23,58 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @see https://make.wordpress.org/core/2025/03/13/more-efficient-block-type-registration-in-6-8/
  * @see https://make.wordpress.org/core/2024/10/17/new-block-type-registration-apis-to-improve-performance-in-wordpress-6-7/
+ *
+ * @return void
  */
 function a8csp_bp_groups_block_init() {
 	if ( class_exists( 'BuddyPress' ) && bp_is_active( 'groups' ) ) {
 		wp_register_block_types_from_metadata_collection( __DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php' );
 	}
 }
+
 add_action( 'init', 'a8csp_bp_groups_block_init' );
 
-
 /**
- * Inserts the campaign content into the group home page.
+ * Include the necessary classes for the plugin.
  *
  * @return void
  */
-function insert_campaign_content() {
-	$group            = groups_get_current_group();
-	$bp_is_group_home = bp_is_group_home();
+function a8csp_bp_groups_include_classes() {
+	if ( bp_is_active( 'groups' ) ) {
+		include_once __DIR__ . '/includes/Groups-Block-Bindings.php';
+		include_once __DIR__ . '/includes/Groups-Type-REST-Controller.php';
+		include_once __DIR__ . '/includes/Groups-Progress-Bar.php';
 
-	if ( $bp_is_group_home && bp_current_user_can( 'groups_access_group' ) ) {
-		$campaign_content = groups_get_groupmeta( $group->id, 'content', true );
-		if ( $campaign_content ) {
-			echo '<div class="campaign-content">' . wp_kses_post( wpautop( $campaign_content ) ) . '</div>';
-		}
+		A8CSP\BP_GROUPS\Groups_Type_REST_Controller::init();
+		A8CSP\BP_GROUPS\Groups_Block_Bindings::group_block_bindings();
 	}
 }
 
-add_action( 'bp_before_group_body', 'insert_campaign_content' );
+add_action( 'bp_init', 'a8csp_bp_groups_include_classes' );
+
+/**
+ * Get the current group object.
+ *
+ * @param string|false $field Optional. The specific field to retrieve from the group object. Default false.
+ *
+ * @return \BP_Groups_Group|int The current group object or 0 if not found.
+ */
+function a8csp_get_current_group( $field = false ) {
+	$group = 0;
+
+	$group = groups_get_current_group();
+
+	if ( 0 === $group ) {
+		$group = bp_get_group();
+	}
+
+	if ( ! $group instanceof \BP_Groups_Group ) {
+		return 0;
+	}
+
+	if ( false !== $field && isset( $group->{$field} ) ) {
+		return $group->{$field};
+	}
+
+	return $group;
+}

@@ -18,7 +18,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 export default function save() {
 	return (
 		<p { ...useBlockProps.save() }>
-			{ 'Bp Groups Gutenberg – hello from the saved content!' }
+			{ 'Breadcrumbs – hello from the saved content!' }
 		</p>
 	);
 }

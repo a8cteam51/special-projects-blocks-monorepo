@@ -1,19 +1,42 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "a8csp/bp-groups-gutenberg",
+	"name": "a8csp/bp-groups-progress",
 	"version": "0.1.0",
-	"title": "Bp Groups Gutenberg",
+	"title": "Progress Bar",
 	"category": "widgets",
-	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"icon": "ellipsis",
+	"description": "Add progress bar for BP Groups.",
 	"example": {},
-	"supports": {
-		"html": false
+	"usesContext": [ "postId", "postType" ],
+	"attributes": {
+		"showProgressText": {
+			"type": "boolean",
+			"default": true
+		},
+		"progressText": {
+			"type": "string",
+			"default": "Progress"
+		}
 	},
-	"textdomain": "bp-groups-gutenberg",
+	"supports": {
+		"html": false,
+		"color": {
+			"text": true,
+			"background": false
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"textAlign": true
+		}
+	},
+	"textdomain": "bp-groups-progress",
 	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
-	"viewScript": "file:./view.js"
+	"render": "file:./render.php"
 }

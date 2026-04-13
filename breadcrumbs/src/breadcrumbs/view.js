@@ -21,5 +21,5 @@
  */
 
 /* eslint-disable no-console */
-console.log( 'Hello World! (from a8csp-bp-groups-gutenberg block)' );
+console.log( 'Hello World! (from a8csp-breadcrumbs block)' );
 /* eslint-enable no-console */

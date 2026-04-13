@@ -1,0 +1,17 @@
+.wp-block-audreycapital-breadcrumb {
+	font-size: clamp(0.75rem, 0.648rem + 0.3546vw, 0.875rem);
+
+	.bbp-breadcrumb,
+	.community-breadcrumb {
+		float: initial;
+	}
+
+	.bbp-breadcrumb > p,
+	.breadcrumbs {
+		display: flex;
+		gap: clamp(0.25rem, 0.0461rem + 0.7092vw, 0.5rem);
+		justify-content: center;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+}

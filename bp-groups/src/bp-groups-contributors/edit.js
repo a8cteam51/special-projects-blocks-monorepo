@@ -3,7 +3,7 @@
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
  */
-import { __ } from '@wordpress/i18n'
+import { __ } from '@wordpress/i18n';
 
 /**
  * React hook that is used to mark the block wrapper element.
@@ -15,16 +15,9 @@ import {
 	useBlockProps,
 	RichText,
 	InspectorControls,
-} from '@wordpress/block-editor'
+} from '@wordpress/block-editor';
 
-import {
-	CheckboxControl,
-	RadioControl,
-	TextControl,
-	ToggleControl,
-	RangeControl,
-	PanelBody,
-} from '@wordpress/components'
+import { TextControl, RangeControl, PanelBody } from '@wordpress/components';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -32,7 +25,7 @@ import {
  *
  * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
  */
-import './editor.scss'
+import './editor.scss';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -40,85 +33,89 @@ import './editor.scss'
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
+ * @param {Object}   props               Props passed from the editor.
+ * @param {Object}   props.attributes    Block attributes.
+ * @param {Function} props.setAttributes Function to update block attributes.
+ *
  * @return {Element} Element to render.
  */
-export default function Edit({ attributes, setAttributes }) {
-	const { perPage, countText, allMembersText, avatarSize } = attributes
-	const avatars = perPage ? [...Array(perPage).keys()] : []
-	console.log(avatars)
+export default function Edit( { attributes, setAttributes } ) {
+	const { perPage, countText, allMembersText, avatarSize } = attributes;
+	const avatars = perPage ? [ ...Array( perPage ).keys() ] : [];
+
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Settings', 'bp-groups-contributors')}>
+				<PanelBody title={ __( 'Settings', 'bp-groups-contributors' ) }>
 					<TextControl
-						label={__(
+						label={ __(
 							'Contributors per page',
-							'bp-groups-contributors',
-						)}
-						type='number'
-						value={perPage}
-						onChange={(value) =>
-							setAttributes({ perPage: parseInt(value) })
+							'bp-groups-contributors'
+						) }
+						type="number"
+						value={ perPage }
+						onChange={ ( value ) =>
+							setAttributes( { perPage: parseInt( value ) } )
 						}
-						help={__(
+						help={ __(
 							'Number of contributors to display before the show more button appears.',
-							'bp-groups-contributors',
-						)}
+							'bp-groups-contributors'
+						) }
 					/>
 					<RangeControl
-						label={__('Avatar Size', 'bp-groups-contributors')}
-						value={avatarSize}
-						onChange={(value) =>
-							setAttributes({ avatarSize: value })
+						label={ __( 'Avatar Size', 'bp-groups-contributors' ) }
+						value={ avatarSize }
+						onChange={ ( value ) =>
+							setAttributes( { avatarSize: value } )
 						}
-						min={10}
-						max={150}
+						min={ 10 }
+						max={ 150 }
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<div {...useBlockProps()}>
+			<div { ...useBlockProps() }>
 				<p>
-					{`${perPage ? perPage * 2 : 0}`}
+					{ `${ perPage ? perPage * 2 : 0 }` }
 					&nbsp;
 					<RichText
-						tagName='span'
-						value={countText}
-						onChange={(value) =>
-							setAttributes({ countText: value })
+						tagName="span"
+						value={ countText }
+						onChange={ ( value ) =>
+							setAttributes( { countText: value } )
 						}
-						placeholder={__(
+						placeholder={ __(
 							'Contributors count text',
-							'bp-groups-contributors',
-						)}
+							'bp-groups-contributors'
+						) }
 					/>
 					&nbsp;
 					<RichText
-						tagName='button'
-						value={allMembersText}
-						onChange={(value) =>
-							setAttributes({ allMembersText: value })
+						tagName="button"
+						value={ allMembersText }
+						onChange={ ( value ) =>
+							setAttributes( { allMembersText: value } )
 						}
-						placeholder={__(
+						placeholder={ __(
 							'All members text',
-							'bp-groups-contributors',
-						)}
-						className='bp-groups-contributors__view-all'
+							'bp-groups-contributors'
+						) }
+						className="bp-groups-contributors__view-all"
 					/>
 				</p>
-				<ul className='bp-groups-contributors__avatars'>
-					{avatars.map((_, index) => (
+				<ul className="bp-groups-contributors__avatars">
+					{ avatars.map( ( _, index ) => (
 						<li
-							key={index}
-							className='bp-groups-contributors__avatar'
-							style={{
+							key={ index }
+							className="bp-groups-contributors__avatar"
+							style={ {
 								backgroundColor: '#ccc',
 								width: avatarSize,
 								height: avatarSize,
-							}}
+							} }
 						></li>
-					))}
+					) ) }
 				</ul>
 			</div>
 		</>
-	)
+	);
 }

@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/breadcrumbs",
+	"version": "0.1.0",
+	"title": "Breadcrumbs",
+	"category": "widgets",
+	"keywords": ["breadcrumb", "navigation", "bbPress", "BuddyPress"],
+	"icon": "arrow-right-alt2",
+	"description": "Block to display breadcrumb navigation for bbPress and BuddyPress.",
+	"supports": {
+		"html": false,
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalFontStyle": true,
+			"__experimentalFontWeight": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalTextTransform": true,
+			"__experimentalWritingMode": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"color": {
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"align": ["wide", "full"]
+	},
+	"attributes": {
+		"hideSingleBreadcrumb": {
+			"type": "boolean",
+			"default": false
+		},
+		"hideHomeBreadcrumb": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"textdomain": "audreycapital-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

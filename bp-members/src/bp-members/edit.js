@@ -46,12 +46,12 @@ const TEMPLATE = [
 	[
 		'core/image',
 		{
-			aspectRatio: '3/2',
+			aspectRatio: '1',
 			scale: 'cover',
 			metadata: {
 				bindings: {
 					url: {
-						source: 'bp-groups/group-cover-image',
+						source: 'bp-members/member-avatar',
 					},
 				},
 			},
@@ -63,7 +63,7 @@ const TEMPLATE = [
 			metadata: {
 				bindings: {
 					content: {
-						source: 'bp-groups/group-heading',
+						source: 'bp-members/member-heading',
 					},
 				},
 			},
@@ -75,7 +75,7 @@ const TEMPLATE = [
 			metadata: {
 				bindings: {
 					content: {
-						source: 'bp-groups/group-description',
+						source: 'bp-members/member-x-profile',
 					},
 				},
 			},
@@ -85,7 +85,7 @@ const TEMPLATE = [
 
 function PostTemplateInnerBlocks( { classList } ) {
 	const innerBlocksProps = useInnerBlocksProps(
-		{ className: clsx( 'a8csp-bp-group', classList ) },
+		{ className: clsx( 'a8csp-bp-member', classList ) },
 		{ template: TEMPLATE, __unstableDisableLayoutClassNames: true }
 	);
 	return <li { ...innerBlocksProps } />;
@@ -95,7 +95,7 @@ function PostTemplateBlockPreview( { blocks, classList, isHidden } ) {
 	const blockPreviewProps = useBlockPreview( {
 		blocks,
 		props: {
-			className: clsx( 'a8csp-bp-group', classList ),
+			className: clsx( 'a8csp-bp-member', classList ),
 		},
 	} );
 
@@ -112,6 +112,8 @@ const MemoizedPostTemplateBlockPreview = memo( PostTemplateBlockPreview );
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
+ *
  * @param {Object} props Props passed from the editor.
  *
  * @return {Element} Element to render.
@@ -124,7 +126,7 @@ export default function Edit( props ) {
 		clientId,
 		__unstableLayoutClassNames,
 	} = props;
-	const { groupType, groupOrder, perPage } = attributes;
+	const { memberType, memberOrder, perPage } = attributes;
 	const { type: layoutType, columnCount = 3 } = layout || {};
 
 	const blockProps = useBlockProps( {
@@ -144,76 +146,74 @@ export default function Edit( props ) {
 		[ clientId ]
 	);
 
-	const [ groupTypes, setGroupTypes ] = useState( [] );
+	const [ memberTypes, setMemberTypes ] = useState( [] );
 	const [ blockContexts, setBlockContexts ] = useState( [] );
-	const [ orderBy, setOrderBy ] = useState( groupOrder );
+	const [ orderBy, setOrderBy ] = useState( memberOrder );
 
 	useEffect( () => {
-		apiFetch( { path: '/buddypress/v1/group-types' } ).then( ( types ) => {
-			setGroupTypes( types );
+		apiFetch( { path: '/buddypress/v1/member-types' } ).then( ( types ) => {
+			setMemberTypes( types );
 		} );
-	}, [] );
+	} );
 
 	const { receiveEntityRecords } = useDispatch( 'core' );
 
 	useEffect( () => {
 		const queryParams = { type: orderBy, per_page: perPage };
 
-		if ( groupType && 'active' !== groupType ) {
-			queryParams.group_type = groupType;
+		if ( memberType ) {
+			queryParams.member_type = memberType;
 		}
 
 		apiFetch( {
-			path: addQueryArgs( '/buddypress/v1/groups', queryParams ),
-		} ).then( ( groups ) => {
-			setBlockContexts( groups );
+			path: addQueryArgs( '/buddypress/v1/members', queryParams ),
+		} ).then( ( members ) => {
+			setBlockContexts( members );
 		} );
-	}, [ orderBy, groupType, perPage, receiveEntityRecords ] );
+	}, [ orderBy, memberType, perPage, receiveEntityRecords ] );
 
-	const groupTypeOptions = () => {
-		if ( groupTypes.length === 0 ) {
+	const memberTypeOptions = () => {
+		if ( memberTypes.length === 0 ) {
 			return [];
 		}
 
-		const groupTypesSelect = groupTypes.map( ( type ) => ( {
+		const memberTypesSelect = memberTypes.map( ( type ) => ( {
 			label: type.name,
 			value: type.slug,
 		} ) );
 
-		groupTypesSelect.unshift(
-			{
-				label: __( 'All Groups', 'a8csp-bp-groups' ),
-				value: '',
-			},
-			{
-				label: __( 'Active Groups', 'a8csp-bp-groups' ),
-				value: 'active',
-			}
-		);
+		memberTypesSelect.unshift( {
+			label: __( 'All Member Types', 'a8csp-bp-members' ),
+			value: '',
+		} );
 
-		return groupTypesSelect;
+		return memberTypesSelect;
 	};
 
-	const GroupOrderOptions = [
+	const MemberOrderOptions = [
 		{
-			label: __( 'Last Active', 'a8csp-bp-groups' ),
+			label: __( 'Last Active', 'a8csp-bp-members' ),
 			value: 'active',
 		},
 		{
-			label: __( 'Most Members', 'a8csp-bp-groups' ),
-			value: 'popular',
-		},
-		{
-			label: __( 'Newly Created', 'a8csp-bp-groups' ),
+			label: __( 'Newest Registered', 'a8csp-bp-members' ),
 			value: 'newest',
 		},
 		{
-			label: __( 'Alphabetical', 'a8csp-bp-groups' ),
+			label: __( 'Alphabetical', 'a8csp-bp-members' ),
 			value: 'alphabetical',
 		},
 		{
-			label: __( 'Random', 'a8csp-bp-groups' ),
+			label: __( 'Random', 'a8csp-bp-members' ),
 			value: 'random',
+		},
+		{
+			label: __( 'Online', 'a8csp-bp-members' ),
+			value: 'online',
+		},
+		{
+			label: __( 'Popular', 'a8csp-bp-members' ),
+			value: 'popular',
 		},
 	];
 
@@ -247,44 +247,34 @@ export default function Edit( props ) {
 				<ToolbarGroup controls={ displayLayoutControls } />
 			</BlockControls>
 			<InspectorControls>
-				<PanelBody title={ __( 'Group Types', 'a8csp-bp-groups' ) }>
-					{ groupTypes.length > 0 && (
-						<>
-							<SelectControl
-								label={ __(
-									'Select a group type',
-									'a8csp-bp-groups'
-								) }
-								options={ groupTypeOptions() }
-								value={ groupType }
-								onChange={ ( value ) =>
-									setAttributes( { groupType: value } )
-								}
-							/>
-							{ groupType === 'active' && (
-								<p>
-									{ __(
-										'Currently, active groups are those without a specific group type.',
-										'a8csp-bp-groups'
-									) }
-								</p>
+				<PanelBody title={ __( 'Member Types', 'a8csp-bp-members' ) }>
+					{ memberTypes.length > 0 && (
+						<SelectControl
+							label={ __(
+								'Select a member type',
+								'a8csp-bp-members'
 							) }
-						</>
+							options={ memberTypeOptions() }
+							value={ memberType }
+							onChange={ ( value ) =>
+								setAttributes( { memberType: value } )
+							}
+						/>
 					) }
 					<SelectControl
 						label={ __(
-							'Select a group order',
-							'a8csp-bp-groups'
+							'Select a member order',
+							'a8csp-bp-members'
 						) }
-						options={ GroupOrderOptions }
+						options={ MemberOrderOptions }
 						value={ orderBy }
 						onChange={ ( value ) => {
 							setOrderBy( value );
-							setAttributes( { groupOrder: value } );
+							setAttributes( { memberOrder: value } );
 						} }
 					/>
 				</PanelBody>
-				<PanelBody title={ __( 'Display', 'a8csp-bp-groups' ) }>
+				<PanelBody title={ __( 'Display', 'a8csp-bp-members' ) }>
 					<RangeControl
 						label={ __( 'Items per page' ) }
 						min={ 1 }
@@ -306,7 +296,7 @@ export default function Edit( props ) {
 							key={ blockContext.id }
 							value={ {
 								postId: blockContext.id,
-								postType: 'bp_group',
+								postType: 'bp_user',
 							} }
 						>
 							{ blockContext.id === blockContexts[ 0 ]?.id ? (
