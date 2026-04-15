@@ -139,10 +139,11 @@ class Block_Bindings {
 	 * @return string The value of the member X profile field, or an empty string if not found.
 	 */
 	public static function member_x_profile( array $source_args, $block_instance ): string {
-		$member_id = self::get_member_id( $block_instance->context );
-		$field_id  = isset( $source_args['field_id'] ) ? absint( $source_args['field_id'] ) : 0;
+		$member_id  = self::get_member_id( $block_instance->context );
+		$field_name = isset( $source_args['field_id'] ) ? $source_args['field_id'] : '';
+		$field_id   = xprofile_get_field_id_from_name( $field_name );
 
-		if ( 0 === $field_id ) {
+		if ( 0 === $field_id || null === $field_id ) {
 			return '';
 		}
 

@@ -106,7 +106,7 @@ export const withBuddypressXProfileControls = ( BlockEdit ) => ( props ) => {
 				( data ) => {
 					const fieldData = data.map( ( field ) => ( {
 						label: field.name,
-						value: field.id,
+						value: field.name,
 					} ) );
 
 					fieldData.unshift( {
@@ -120,7 +120,6 @@ export const withBuddypressXProfileControls = ( BlockEdit ) => ( props ) => {
 		}, [] );
 
 		const updateAttributes = ( fieldId ) => {
-			fieldId = parseInt( fieldId );
 			setAttributes( {
 				metadata: {
 					bindings: {
