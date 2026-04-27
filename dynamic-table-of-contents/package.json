@@ -1,6 +1,6 @@
 {
     "name": "dynamic-table-of-contents",
-    "version": "0.1.9",
+    "version": "0.2.0",
     "description": "Creates a table of contents that's dynamically (PHP) rendered.",
     "author": "The WordPress Contributors",
     "license": "GPL-2.0-or-later",

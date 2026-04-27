@@ -2,7 +2,7 @@
 Contributors:      The WordPress Contributors
 Tags:              block
 Tested up to:      6.1
-Stable tag:        0.1.0
+Stable tag:        0.2.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,7 +43,50 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 (or jpg, jpeg, gif).
 2. This is the second screen shot
 
+== Filters ==
+
+= `a8csp_dynamic_table_of_contents_heading_selectors` =
+
+Filters the CSS selectors used by the view script to collect headings for the table of contents.
+
+**Parameters**
+
+* `string[] $default_heading_selectors` - Array of selectors for table of contents headings.
+* `array    $attributes`                - Block attributes.
+* `WP_Block $block`                     - The block object.
+
+**Return**
+
+An array of selectors.
+
+**Example - limit the TOC to H2 headings only**
+
+`
+add_filter(
+    'a8csp_dynamic_table_of_contents_heading_selectors',
+    static function ( array $heading_selectors ): array {
+        return array( '.wp-block-post-content h2' );
+    }
+);
+`
+
+**Example - drop H1 from the TOC, keep everything else**
+
+`
+add_filter(
+    'a8csp_dynamic_table_of_contents_heading_selectors',
+    static function ( array $heading_selectors ): array {
+        return array_values(
+            array_diff( $heading_selectors, array( '.wp-block-post-content h1' ) )
+        );
+    }
+);
+`
+
 == Changelog ==
+
+= 0.2.0 =
+* Add `a8csp_dynamic_table_of_contents_heading_selectors` filter to customize which headings are listed in the TOC.
 
 = 0.1.0 =
 * Release
