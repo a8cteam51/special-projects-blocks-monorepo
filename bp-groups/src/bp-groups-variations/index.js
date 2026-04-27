@@ -6,6 +6,9 @@ import {
 	registerBlockVariation,
 	getBlockBindingsSources,
 } from '@wordpress/blocks';
+import { InspectorControls } from '@wordpress/block-editor';
+import { addFilter } from '@wordpress/hooks';
+import { PanelBody, ToggleControl } from '@wordpress/components';
 
 registerBlockVariation( 'core/heading', {
 	name: 'bp-groups-heading',
@@ -88,3 +91,72 @@ registerBlockVariation( 'core/paragraph', {
 	},
 	isActive: [ 'metadata.bindings.content' ],
 } );
+
+export const withBuddypressGroupAvatarControls = ( BlockEdit ) => ( props ) => {
+	if (
+		props?.attributes?.metadata?.bindings?.url?.source ===
+		'bp-groups/group-cover-image'
+	) {
+		const { attributes, setAttributes } = props;
+		const { metadata, href } = attributes;
+
+		const updateImageLink = ( newValue ) => {
+			let newAttributes = { ...attributes };
+
+			if ( newValue ) {
+				newAttributes = {
+					...newAttributes,
+					href: '#',
+					linkDestination: 'custom',
+					metadata: {
+						...newAttributes.metadata,
+						bindings: {
+							...newAttributes.metadata.bindings,
+							href: {
+								source: 'bp-groups/group-cover-image',
+							},
+						},
+					},
+				};
+			} else {
+				delete newAttributes.metadata.bindings.href;
+				newAttributes.href = undefined;
+				delete newAttributes.linkDestination;
+			}
+
+			setAttributes( newAttributes );
+		};
+
+		return (
+			<>
+				<BlockEdit key="edit" { ...props } />
+				<InspectorControls>
+					<Panel>
+						<PanelBody
+							title={ __( 'Avatar Settings', 'bp-groups' ) }
+						>
+							<ToggleControl
+								label={ __(
+									'Link to Group Page',
+									'bp-groups'
+								) }
+								checked={ href }
+								onChange={ ( newValue ) => {
+									updateImageLink( newValue );
+								} }
+							/>
+						</PanelBody>
+					</Panel>
+				</InspectorControls>
+			</>
+		);
+	} else {
+		return <BlockEdit key="edit" { ...props } />;
+	}
+};
+
+addFilter(
+	'editor.BlockEdit',
+	'core/image',
+	withBuddypressGroupAvatarControls
+);

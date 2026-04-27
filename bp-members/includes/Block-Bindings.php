@@ -66,7 +66,6 @@ class Block_Bindings {
 	 * @return string The URL of the member avatar.
 	 */
 	public static function member_avatar( array $source_args, $block_instance ): string {
-
 		$avatar_url = bp_core_fetch_avatar(
 			array(
 				'item_id' => self::get_member_id( $block_instance->context ),
@@ -196,6 +195,32 @@ class Block_Bindings {
 			default:
 				return esc_html( $data );
 		}
+	}
+
+	/**
+	 * Filter callback to add a link to the member's profile page when the image block is bound to the member avatar.
+	 *
+	 * @param string $block_content The original block content.
+	 * @param array  $block         The block data.
+	 * @param object $instance      The block instance containing context information.
+	 *
+	 * @return string The modified block content with a link to the member's profile page if applicable.
+	 */
+	public static function render_block_core_image_avatar( $block_content, $block, $instance ) {
+		if ( isset( $block['attrs']['metadata']['bindings']['href']['source'] ) && 'bp-members/member-avatar' === $block['attrs']['metadata']['bindings']['href']['source'] ) {
+			$member_id = self::get_member_id( $instance->context );
+			if ( 0 !== $member_id ) {
+				$member_url = bp_members_get_user_url( $member_id );
+
+				if ( '' !== $member_url ) {
+					$tags = new \WP_HTML_Tag_Processor( $block_content );
+					$tags->next_tag( array( 'tag_name' => 'a' ) );
+					$tags->set_attribute( 'href', $member_url );
+					$block_content = $tags->get_updated_html();
+				}
+			}
+		}
+		return $block_content;
 	}
 
 	/**

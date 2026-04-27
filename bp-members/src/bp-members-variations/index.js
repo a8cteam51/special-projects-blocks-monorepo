@@ -10,7 +10,12 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { addFilter } from '@wordpress/hooks';
 import apiFetch from '@wordpress/api-fetch';
 import { useEffect, useState } from '@wordpress/element';
-import { Panel, PanelBody, SelectControl } from '@wordpress/components';
+import {
+	Panel,
+	PanelBody,
+	ToggleControl,
+	SelectControl,
+} from '@wordpress/components';
 
 registerBlockVariation( 'core/heading', {
 	name: 'bp-members-heading',
@@ -168,3 +173,68 @@ addFilter(
 	'core/paragraph',
 	withBuddypressXProfileControls
 );
+
+export const withBuddypressAvatarControls = ( BlockEdit ) => ( props ) => {
+	if (
+		props?.attributes?.metadata?.bindings?.url?.source ===
+		'bp-members/member-avatar'
+	) {
+		const { attributes, setAttributes } = props;
+		const { metadata, href } = attributes;
+
+		const updateImageLink = ( newValue ) => {
+			let newAttributes = { ...attributes };
+
+			if ( newValue ) {
+				newAttributes = {
+					...newAttributes,
+					href: '#',
+					linkDestination: 'custom',
+					metadata: {
+						...newAttributes.metadata,
+						bindings: {
+							...newAttributes.metadata.bindings,
+							href: {
+								source: 'bp-members/member-avatar',
+							},
+						},
+					},
+				};
+			} else {
+				delete newAttributes.metadata.bindings.href;
+				newAttributes.href = undefined;
+				delete newAttributes.linkDestination;
+			}
+
+			setAttributes( newAttributes );
+		};
+
+		return (
+			<>
+				<BlockEdit key="edit" { ...props } />
+				<InspectorControls>
+					<Panel>
+						<PanelBody
+							title={ __( 'Avatar Settings', 'bp-members' ) }
+						>
+							<ToggleControl
+								label={ __(
+									'Link to Member Profile',
+									'bp-members'
+								) }
+								checked={ href }
+								onChange={ ( newValue ) => {
+									updateImageLink( newValue );
+								} }
+							/>
+						</PanelBody>
+					</Panel>
+				</InspectorControls>
+			</>
+		);
+	} else {
+		return <BlockEdit key="edit" { ...props } />;
+	}
+};
+
+addFilter( 'editor.BlockEdit', 'core/image', withBuddypressAvatarControls );

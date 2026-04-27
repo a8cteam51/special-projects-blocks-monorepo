@@ -35,6 +35,8 @@ function a8csp_bp_members_block_init() {
 
 		include __DIR__ . '/includes/Block-Bindings.php';
 		A8CAP\BP_MEMBERS\Block_Bindings::member_block_bindings();
+
+		add_filter( 'render_block_core/image', array( 'A8CAP\BP_MEMBERS\Block_Bindings', 'render_block_core_image_avatar' ), 10, 3 );
 	}
 }
 

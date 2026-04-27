@@ -145,6 +145,32 @@ class Groups_Block_Bindings {
 	}
 
 	/**
+	 * Filter callback to add a link to the group's page when the image block is bound to the group avatar.
+	 *
+	 * @param string $block_content The original block content.
+	 * @param array  $block         The block data.
+	 * @param object $instance      The block instance containing context information.
+	 *
+	 * @return string The modified block content with a link to the group's page if applicable.
+	 */
+	public static function render_block_core_image_avatar( $block_content, $block, $instance ) {
+		if ( isset( $block['attrs']['metadata']['bindings']['href']['source'] ) && 'bp-groups/group-cover-image' === $block['attrs']['metadata']['bindings']['href']['source'] ) {
+			$group = self::get_current_group( $instance->context );
+			if ( $group instanceof \BP_Groups_Group ) {
+				$group_url = bp_get_group_url( $group );
+
+				if ( '' !== $group_url ) {
+					$tags = new \WP_HTML_Tag_Processor( $block_content );
+					$tags->next_tag( array( 'tag_name' => 'a' ) );
+					$tags->set_attribute( 'href', $group_url );
+					$block_content = $tags->get_updated_html();
+				}
+			}
+		}
+		return $block_content;
+	}
+
+	/**
 	 * Retrieves the current BuddyPress group object.
 	 *
 	 * @param array<mixed> $context The block context which may contain 'postId' and 'postType' for group blocks.

@@ -47,6 +47,8 @@ function a8csp_bp_groups_include_classes() {
 
 		A8CSP\BP_GROUPS\Groups_Type_REST_Controller::init();
 		A8CSP\BP_GROUPS\Groups_Block_Bindings::group_block_bindings();
+
+		add_filter( 'render_block_core/image', array( 'A8CSP\BP_GROUPS\Groups_Block_Bindings', 'render_block_core_image_avatar' ), 10, 3 );
 	}
 }
 
