@@ -20,6 +20,40 @@ wp_enqueue_script(
 	$asset_deps['version'],
 	true
 );
+
+$default_heading_selectors = array(
+	'.wp-block-post-content h1',
+	'.wp-block-post-content h2',
+	'.wp-block-post-content h3',
+	'.wp-block-post-content h4',
+	'.wp-block-post-content h5',
+	'.wp-block-post-content h6',
+);
+
+/**
+ * Filters the selectors used by the view script to collect headings for the table of contents.
+ *
+ * @since 0.2.0
+ *
+ * @param string[] $default_heading_selectors Array of selectors for table of contents headings.
+ * @param array    $attributes                Block attributes.
+ * @param WP_Block $block                     The block object.
+ */
+$heading_selectors = apply_filters(
+	'a8csp_dynamic_table_of_contents_heading_selectors',
+	$default_heading_selectors,
+	$attributes,
+	$block
+);
+
+wp_add_inline_script(
+	'wpcomsp-dynamic-table-of-contents-view',
+	sprintf(
+		'window.wpcomspDynamicTOC=window.wpcomspDynamicTOC||{};window.wpcomspDynamicTOC.headingSelector=%s;',
+		wp_json_encode( implode( ', ', $heading_selectors ) )
+	),
+	'before'
+);
 ?>
 
 <div <?php echo wp_kses_post( get_block_wrapper_attributes() ); ?>>

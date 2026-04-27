@@ -1,4 +1,6 @@
-const $headings = document.querySelectorAll('.wp-block-post-content h1, .wp-block-post-content h2, .wp-block-post-content h3, .wp-block-post-content h4, .wp-block-post-content h5, .wp-block-post-content h6');
+const $defaultHeadingSelector = '.wp-block-post-content h1, .wp-block-post-content h2, .wp-block-post-content h3, .wp-block-post-content h4, .wp-block-post-content h5, .wp-block-post-content h6';
+const $headingSelector = (window.wpcomspDynamicTOC && window.wpcomspDynamicTOC.headingSelector) || $defaultHeadingSelector;
+const $headings = document.querySelectorAll($headingSelector);
 const $headingList = document.querySelector('.wp-block-wpcomsp-dynamic-table-of-contents ul');
 
 // This is the observer that will be used to highlight the current heading.
