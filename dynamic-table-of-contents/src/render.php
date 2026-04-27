@@ -49,7 +49,7 @@ $heading_selectors = apply_filters(
 wp_add_inline_script(
 	'wpcomsp-dynamic-table-of-contents-view',
 	sprintf(
-		'window.wpcomspDynamicTOC=window.wpcomspDynamicTOC||{};window.wpcomspDynamicTOC.headingSelector=%s;',
+		'window.wpcomspDynamicTOC=window.wpcomspDynamicTOC||{};window.wpcomspDynamicTOC.headingSelectors=%s;',
 		wp_json_encode( implode( ', ', $heading_selectors ) )
 	),
 	'before'
