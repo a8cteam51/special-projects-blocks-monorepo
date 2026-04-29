@@ -19,8 +19,8 @@ import {
 
 registerBlockVariation( 'core/heading', {
 	name: 'bp-members-heading',
-	title: __( 'Members Heading', 'bp-members' ),
-	description: __( 'Display a members heading', 'bp-members' ),
+	title: __( 'Members Heading', 'bp-members-blocks' ),
+	description: __( 'Display a members heading', 'bp-members-blocks' ),
 	scope: [ 'inserter', 'transform' ],
 	attributes: {
 		metadata: {
@@ -41,8 +41,8 @@ const isMemberAvatarEnabled = getBlockBindingsSources()?.hasOwnProperty(
 if ( isMemberAvatarEnabled ) {
 	registerBlockVariation( 'core/image', {
 		name: 'bp-members-avatar',
-		title: __( 'Members Avatar', 'bp-members' ),
-		description: __( 'Display a members avatar', 'bp-members' ),
+		title: __( 'Members Avatar', 'bp-members-blocks' ),
+		description: __( 'Display a members avatar', 'bp-members-blocks' ),
 		scope: [ 'inserter', 'transform' ],
 		attributes: {
 			metadata: {
@@ -64,8 +64,8 @@ const isMemberCoverImageEnabled = getBlockBindingsSources()?.hasOwnProperty(
 if ( isMemberCoverImageEnabled ) {
 	registerBlockVariation( 'core/image', {
 		name: 'bp-members-cover-image',
-		title: __( 'Members Cover Image', 'bp-members' ),
-		description: __( 'Display a members cover image', 'bp-members' ),
+		title: __( 'Members Cover Image', 'bp-members-blocks' ),
+		description: __( 'Display a members cover image', 'bp-members-blocks' ),
 		scope: [ 'inserter', 'transform' ],
 		attributes: {
 			metadata: {
@@ -82,8 +82,8 @@ if ( isMemberCoverImageEnabled ) {
 
 registerBlockVariation( 'core/paragraph', {
 	name: 'bp-members-x-profile',
-	title: __( 'Members X Profile', 'bp-members' ),
-	description: __( 'Display members X Profile field', 'bp-members' ),
+	title: __( 'Members X Profile', 'bp-members-blocks' ),
+	description: __( 'Display members X Profile field', 'bp-members-blocks' ),
 	scope: [ 'inserter', 'transform' ],
 	attributes: {
 		metadata: {
@@ -115,7 +115,7 @@ export const withBuddypressXProfileControls = ( BlockEdit ) => ( props ) => {
 					} ) );
 
 					fieldData.unshift( {
-						label: __( 'Select a field', 'bp-members' ),
+						label: __( 'Select a field', 'bp-members-blocks' ),
 						value: '',
 					} );
 
@@ -144,12 +144,15 @@ export const withBuddypressXProfileControls = ( BlockEdit ) => ( props ) => {
 				<InspectorControls>
 					<Panel>
 						<PanelBody
-							title={ __( 'X Profile Fields', 'bp-members' ) }
+							title={ __(
+								'X Profile Fields',
+								'bp-members-blocks'
+							) }
 						>
 							<SelectControl
 								label={ __(
 									'Select X Profile Field',
-									'bp-members'
+									'bp-members-blocks'
 								) }
 								value={
 									metadata?.bindings?.content?.args
@@ -215,12 +218,15 @@ export const withBuddypressAvatarControls = ( BlockEdit ) => ( props ) => {
 				<InspectorControls>
 					<Panel>
 						<PanelBody
-							title={ __( 'Avatar Settings', 'bp-members' ) }
+							title={ __(
+								'Avatar Settings',
+								'bp-members-blocks'
+							) }
 						>
 							<ToggleControl
 								label={ __(
 									'Link to Member Profile',
-									'bp-members'
+									'bp-members-blocks'
 								) }
 								checked={ href }
 								onChange={ ( newValue ) => {

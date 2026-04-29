@@ -42,7 +42,7 @@ class Breadcrumbs {
 	 * @return string Breadcrumbs HTML.
 	 */
 	public static function get_crumbs_html( $hide_home_link = false ): string {
-		$skip_breadcrumbs = apply_filters( 'audreycapital_features_skip_breadcrumbs', false );
+		$skip_breadcrumbs = apply_filters( 'a8csp_skip_breadcrumbs', false );
 
 		if ( $skip_breadcrumbs ) {
 			return '';
@@ -70,25 +70,43 @@ class Breadcrumbs {
 
 		self::$crumbs = array();
 
+		$is_home        = is_home();
+		$page_for_posts = get_option( 'page_for_posts' );
+		$is_bbp_page    = self::check_bbpress_page();
+
 		if ( ! $hide_home_link ) {
 			self::add_home();
 		}
 
-		if ( class_exists( \bbPress::class ) ) {
-			self::build_bbpress();
+		if ( $is_home ) {
+			if ( 0 !== (int) $page_for_posts ) {
+				self::add_crumb( get_permalink( $page_for_posts ), get_the_title( $page_for_posts ), true );
+			}
+		}
+
+		if ( $is_bbp_page ) {
+			self::build_bbpress( $hide_home_link );
 		}
 
 		if ( class_exists( \BuddyPress::class ) ) {
 			self::build_buddypress();
 		}
 
-		if ( is_archive() ) {
+		if ( is_archive() && ! $is_bbp_page ) {
 			self::build_archive();
 		}
 
-		if ( is_singular() ) {
+		if ( is_singular() && ! $is_bbp_page ) {
 			self::build_single_hierarchy();
 			self::build_singular();
+		}
+
+		if ( is_404() ) {
+			self::add_crumb( '', __( 'Page Not Found', 'a8csp-breadcrumbs-block' ), true );
+		}
+
+		if ( is_search() ) {
+			self::add_crumb( '', __( 'Search Results', 'a8csp-breadcrumbs-block' ), true );
 		}
 
 		// Allow filtering of the breadcrumb items.
@@ -115,17 +133,38 @@ class Breadcrumbs {
 	}
 
 	/**
+	 * Check if the current page is a bbPress page.
+	 *
+	 * This method checks if the bbPress plugin is active and if the current page is a bbPress forum, topic, or reply page.
+	 *
+	 * @return boolean True if it's a bbPress page, false otherwise.
+	 */
+	protected static function check_bbpress_page(): bool {
+		if ( class_exists( '\bbPress' ) ) {
+			return \bbp_is_forum() || \bbp_is_forum_archive() || \bbp_is_topic() || \bbp_is_single_topic() || \bbp_is_topic_archive() || \bbp_is_reply();
+		}
+		return false;
+	}
+
+	/**
 	 * Build breadcrumbs for bbPress.
 	 *
 	 * Uses the bbPress breadcrumb function to generate the breadcrumb HTML.
 	 *
+	 * @param boolean $hide_home_link Whether to hide the home link in the breadcrumbs.
+	 *
 	 * @return void
 	 */
-	protected static function build_bbpress(): void {
-		if ( function_exists( bbp_get_breadcrumb ) ) {
+	protected static function build_bbpress( $hide_home_link ): void {
+		if ( function_exists( '\bbp_get_breadcrumb' ) ) {
 			add_filter( 'bbp_breadcrumbs', array( self::class, 'capture_bbp_breadcrumbs' ), 20 );
 			add_filter( 'bbp_no_breadcrumb', '__return_false' );
-			self::$crumbs_html = bbp_get_breadcrumb();
+			self::$crumbs_html = \bbp_get_breadcrumb(
+				array(
+					'home_text'    => apply_filters( 'a8csp_breadcrumbs_home_label', __( 'Home', 'a8csp-breadcrumbs-block' ) ),
+					'include_home' => ! $hide_home_link,
+				)
+			);
 			remove_filter( 'bbp_no_breadcrumb', '__return_false' );
 		}
 	}
@@ -137,8 +176,23 @@ class Breadcrumbs {
 	 *
 	 * @return array The array of breadcrumb items.
 	 */
-	public static function capture_bbp_breadcrumbs( array $crumbs ): array {
-		self::$crumbs = $crumbs;
+	public static function capture_bbp_breadcrumbs( $crumbs ): array {
+
+		$bbp_crumbs = array();
+
+		foreach ( $crumbs as $crumb ) {
+			preg_match( '/<a\s+[^>]*href="([^"]*)"/', $crumb, $matches );
+			$href = $matches[1] ?? '';
+
+			$bbp_crumbs[] = array(
+				'link'    => esc_url( untrailingslashit( $href ) ),
+				'label'   => wp_strip_all_tags( $crumb ),
+				'current' => '' === $href ? true : false,
+			);
+		}
+
+		self::$crumbs = $bbp_crumbs;
+
 		return $crumbs;
 	}
 
@@ -156,7 +210,7 @@ class Breadcrumbs {
 			return;
 		}
 
-		self::$crumbs = $crumbs;
+		self::$crumbs = array_merge( self::$crumbs, $crumbs );
 	}
 
 	/**
@@ -166,9 +220,10 @@ class Breadcrumbs {
 	 */
 	private static function add_home(): void {
 		$home_url   = apply_filters( 'a8csp_breadcrumbs_home_url', get_home_url() );
-		$home_label = apply_filters( 'a8csp_breadcrumbs_home_label', __( 'Home', 'breadcrumbs' ) );
+		$home_label = apply_filters( 'a8csp_breadcrumbs_home_label', __( 'Home', 'a8csp-breadcrumbs-block' ) );
+		$current    = is_front_page() || ( is_front_page() && is_home() );
 
-		self::add_crumb( $home_url, $home_label );
+		self::add_crumb( $home_url, $home_label, $current );
 	}
 
 	/**
@@ -181,7 +236,7 @@ class Breadcrumbs {
 	private static function build_singular(): void {
 		$post_id = get_the_id();
 
-		if ( 0 < $post_id ) {
+		if ( 0 < $post_id && ! is_front_page() ) {
 			self::add_crumb( get_permalink( $post_id ), get_the_title( $post_id ), true );
 		}
 	}
@@ -200,8 +255,10 @@ class Breadcrumbs {
 				if ( 0 < $post_id ) {
 					$post_type      = get_post_type( $post_id );
 					$page_for_posts = get_option( 'page_for_posts' );
-					if ( false !== $page_for_posts && 'post' === $post_type ) {
+					if ( 0 !== (int) $page_for_posts && 'post' === $post_type ) {
 						self::add_crumb( get_permalink( $page_for_posts ), get_the_title( $page_for_posts ), false );
+					} elseif ( 'post' === $post_type && 0 === (int) $page_for_posts ) {
+						break;
 					} else {
 						$post_object    = get_post_type_object( $post_type );
 						$post_type_name = isset( $post_object->labels->name ) ? $post_object->labels->name : 'archive';
@@ -237,6 +294,7 @@ class Breadcrumbs {
 		switch ( true ) {
 			case is_category():
 				$category = get_queried_object();
+				self::get_term_ancestors_items( $category->term_id, $category->taxonomy );
 				self::add_crumb( get_category_link( $category->term_id ), single_cat_title( '', false ), true );
 				break;
 			case is_tag():
@@ -245,6 +303,7 @@ class Breadcrumbs {
 				break;
 			case is_tax():
 				$term = get_queried_object();
+				self::get_term_ancestors_items( $term->term_id, $term->taxonomy );
 				self::add_crumb( get_term_link( $term->term_id, $term->taxonomy ), single_term_title( '', false ), true );
 				break;
 			case is_author():
@@ -264,6 +323,30 @@ class Breadcrumbs {
 				$post_type = get_queried_object();
 				self::add_crumb( get_post_type_archive_link( $post_type->name ), post_type_archive_title( '', false ), true );
 				break;
+		}
+	}
+
+	/**
+	 * Get the ancestor terms for a given term and add them as breadcrumb items.
+	 *
+	 * This method checks if the taxonomy is hierarchical and retrieves the ancestors of the term. It then adds each ancestor as a breadcrumb item.
+	 *
+	 * @param integer $term_id  The ID of the term.
+	 * @param string  $taxonomy The taxonomy of the term.
+	 *
+	 * @return void
+	 */
+	private static function get_term_ancestors_items( $term_id, $taxonomy ) {
+		// Check if taxonomy is hierarchical and add ancestor term links.
+		if ( is_taxonomy_hierarchical( $taxonomy ) ) {
+			$term_ancestors = get_ancestors( $term_id, $taxonomy, 'taxonomy' );
+			$term_ancestors = array_reverse( $term_ancestors );
+			foreach ( $term_ancestors as $ancestor_id ) {
+				$ancestor_term = get_term( $ancestor_id, $taxonomy );
+				if ( $ancestor_term && ! is_wp_error( $ancestor_term ) ) {
+					self::add_crumb( get_term_link( $ancestor_term ), $ancestor_term->name, false );
+				}
+			}
 		}
 	}
 

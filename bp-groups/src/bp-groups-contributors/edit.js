@@ -46,11 +46,11 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings', 'bp-groups-contributors' ) }>
+				<PanelBody title={ __( 'Settings', 'bp-groups-blocks' ) }>
 					<TextControl
 						label={ __(
 							'Contributors per page',
-							'bp-groups-contributors'
+							'bp-groups-blocks'
 						) }
 						type="number"
 						value={ perPage }
@@ -59,11 +59,11 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 						help={ __(
 							'Number of contributors to display before the show more button appears.',
-							'bp-groups-contributors'
+							'bp-groups-blocks'
 						) }
 					/>
 					<RangeControl
-						label={ __( 'Avatar Size', 'bp-groups-contributors' ) }
+						label={ __( 'Avatar Size', 'bp-groups-blocks' ) }
 						value={ avatarSize }
 						onChange={ ( value ) =>
 							setAttributes( { avatarSize: value } )
@@ -85,7 +85,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 						placeholder={ __(
 							'Contributors count text',
-							'bp-groups-contributors'
+							'bp-groups-blocks'
 						) }
 					/>
 					&nbsp;
@@ -97,7 +97,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 						placeholder={ __(
 							'All members text',
-							'bp-groups-contributors'
+							'bp-groups-blocks'
 						) }
 						className="bp-groups-contributors__view-all"
 					/>

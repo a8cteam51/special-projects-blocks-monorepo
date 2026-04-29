@@ -1,7 +1,16 @@
 <?php
-	$group_id = $block->context['postId'] ? $block->context['postId'] : a8csp_get_current_group( 'id' );
-	$meta     = groups_get_groupmeta( $group_id, 'progress', true );
-	$progress = '' === $meta ? 0 : (int) $meta;
+use A8CSP\BP_GROUPS\Groups_Block_Bindings;
+
+defined( 'ABSPATH' ) || exit;
+
+$group = Groups_Block_Bindings::get_current_group( $block->context );
+
+if ( 0 === $group ) {
+	return '';
+}
+
+$meta     = groups_get_groupmeta( $group->id, 'progress', true );
+$progress = '' === $meta ? 0 : (int) $meta;
 ?>
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
 	<?php if ( $attributes['showProgressText'] ) { ?>
@@ -24,7 +33,7 @@
 				<?php
 				echo esc_html(
 					/* translators: %d is the progress percentage. */
-					sprintf( __( 'Progress: %d%%', 'bp-groups-progress' ), $progress )
+					sprintf( __( 'Progress: %d%%', 'bp-groups-blocks' ), $progress )
 				);
 				?>
 			</span>

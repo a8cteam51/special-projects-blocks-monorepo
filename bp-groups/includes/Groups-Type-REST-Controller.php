@@ -69,7 +69,7 @@ class Groups_Type_REST_Controller extends \WP_REST_Controller {
 					'permission_callback' => array( $this, 'get_item_permissions_check' ),
 					'args'                => array(
 						'type' => array(
-							'description' => __( 'Unique identifier for the group type.', 'a8csp-bp-groups' ),
+							'description' => __( 'Unique identifier for the group type.', 'bp-groups-blocks' ),
 							'type'        => 'string',
 							'required'    => true,
 						),
@@ -121,7 +121,7 @@ class Groups_Type_REST_Controller extends \WP_REST_Controller {
 		if ( ! $type ) {
 			return new \WP_Error(
 				'rest_group_type_invalid',
-				__( 'Invalid group type.', 'a8csp-bp-groups' ),
+				__( 'Invalid group type.', 'bp-groups-blocks' ),
 				array( 'status' => 404 )
 			);
 		}
@@ -156,7 +156,7 @@ class Groups_Type_REST_Controller extends \WP_REST_Controller {
 		}
 		return new \WP_Error(
 			'rest_forbidden',
-			__( 'You do not have permissions to view group types.', 'a8csp-bp-groups' ),
+			__( 'You do not have permissions to view group types.', 'bp-groups-blocks' ),
 			array( 'status' => 403 )
 		);
 	}
@@ -227,31 +227,31 @@ class Groups_Type_REST_Controller extends \WP_REST_Controller {
 			'type'       => 'object',
 			'properties' => array(
 				'name'          => array(
-					'description' => __( 'The unique identifier for the group type.', 'a8csp-bp-groups' ),
+					'description' => __( 'The unique identifier for the group type.', 'bp-groups-blocks' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
 				'slug'          => array(
-					'description' => __( 'The slug for the group type.', 'a8csp-bp-groups' ),
+					'description' => __( 'The slug for the group type.', 'bp-groups-blocks' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
 				'singular_name' => array(
-					'description' => __( 'The singular name for the group type.', 'a8csp-bp-groups' ),
+					'description' => __( 'The singular name for the group type.', 'bp-groups-blocks' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
 				'plural_name'   => array(
-					'description' => __( 'The plural name for the group type.', 'a8csp-bp-groups' ),
+					'description' => __( 'The plural name for the group type.', 'bp-groups-blocks' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
 				'has_directory' => array(
-					'description' => __( 'Whether the group type has a directory.', 'a8csp-bp-groups' ),
+					'description' => __( 'Whether the group type has a directory.', 'bp-groups-blocks' ),
 					'type'        => 'boolean',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,

@@ -20,7 +20,7 @@ class Block_Bindings {
 			register_block_bindings_source(
 				'bp-members/member-avatar',
 				array(
-					'label'              => __( 'Member Avatar', 'bp-members' ),
+					'label'              => __( 'Member Avatar', 'bp-members-blocks' ),
 					'get_value_callback' => array( __CLASS__, 'member_avatar' ),
 					'uses_context'       => array( 'postId', 'postType' ),
 				),
@@ -31,7 +31,7 @@ class Block_Bindings {
 			register_block_bindings_source(
 				'bp-members/member-cover-image',
 				array(
-					'label'              => __( 'Member Cover Image', 'bp-members' ),
+					'label'              => __( 'Member Cover Image', 'bp-members-blocks' ),
 					'get_value_callback' => array( __CLASS__, 'member_cover_image' ),
 					'uses_context'       => array( 'postId', 'postType' ),
 				),
@@ -41,7 +41,7 @@ class Block_Bindings {
 		register_block_bindings_source(
 			'bp-members/member-heading',
 			array(
-				'label'              => __( 'Member Name', 'bp-members' ),
+				'label'              => __( 'Member Name', 'bp-members-blocks' ),
 				'get_value_callback' => array( __CLASS__, 'member_heading' ),
 				'uses_context'       => array( 'postId', 'postType' ),
 			),
@@ -50,7 +50,7 @@ class Block_Bindings {
 		register_block_bindings_source(
 			'bp-members/member-x-profile',
 			array(
-				'label'              => __( 'Member X Profile Data', 'bp-members' ),
+				'label'              => __( 'Member X Profile Data', 'bp-members-blocks' ),
 				'get_value_callback' => array( __CLASS__, 'member_x_profile' ),
 				'uses_context'       => array( 'postId', 'postType' ),
 			),
@@ -120,7 +120,7 @@ class Block_Bindings {
 		$heading = bp_core_get_user_displayname( self::get_member_id( $block_instance->context ) );
 		$url     = bp_members_get_user_url( self::get_member_id( $block_instance->context ) );
 
-		if ( '' !== $url ) {
+		if ( '' !== $url && ! bp_is_user() ) {
 			$heading = sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html( $heading ) );
 		} else {
 			$heading = esc_html( $heading );

@@ -22,7 +22,7 @@ class Groups_Block_Bindings {
 		register_block_bindings_source(
 			'bp-groups/group-heading',
 			array(
-				'label'              => __( 'Group Name', 'bp-groups' ),
+				'label'              => __( 'Group Name', 'bp-groups-blocks' ),
 				'get_value_callback' => array( __CLASS__, 'group_heading' ),
 				'uses_context'       => array( 'postId', 'postType' ),
 			),
@@ -31,7 +31,7 @@ class Groups_Block_Bindings {
 		register_block_bindings_source(
 			'bp-groups/group-description',
 			array(
-				'label'              => __( 'Group Description', 'bp-groups' ),
+				'label'              => __( 'Group Description', 'bp-groups-blocks' ),
 				'get_value_callback' => array( __CLASS__, 'group_description' ),
 				'uses_context'       => array( 'postId', 'postType' ),
 			),
@@ -41,7 +41,7 @@ class Groups_Block_Bindings {
 			register_block_bindings_source(
 				'bp-groups/group-cover-image',
 				array(
-					'label'              => __( 'Group Cover Image', 'bp-groups' ),
+					'label'              => __( 'Group Cover Image', 'bp-groups-blocks' ),
 					'get_value_callback' => array( __CLASS__, 'group_cover_image' ),
 					'uses_context'       => array( 'postId', 'postType' ),
 				),
@@ -52,7 +52,7 @@ class Groups_Block_Bindings {
 			register_block_bindings_source(
 				'bp-groups/group-avatar',
 				array(
-					'label'              => __( 'Group Avatar', 'bp-groups' ),
+					'label'              => __( 'Group Avatar', 'bp-groups-blocks' ),
 					'get_value_callback' => array( __CLASS__, 'group_avatar' ),
 					'uses_context'       => array( 'postId', 'postType' ),
 				),
@@ -117,7 +117,7 @@ class Groups_Block_Bindings {
 		$heading = $group instanceof \BP_Groups_Group ? $group->name : '';
 		$url     = $group instanceof \BP_Groups_Group ? bp_get_group_url( $group ) : '';
 
-		if ( '' !== $url ) {
+		if ( '' !== $url && ! bp_is_group() ) {
 			$heading = sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html( $heading ) );
 		} else {
 			$heading = esc_html( $heading );

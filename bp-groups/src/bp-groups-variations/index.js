@@ -8,12 +8,12 @@ import {
 } from '@wordpress/blocks';
 import { InspectorControls } from '@wordpress/block-editor';
 import { addFilter } from '@wordpress/hooks';
-import { PanelBody, ToggleControl } from '@wordpress/components';
+import { Panel, PanelBody, ToggleControl } from '@wordpress/components';
 
 registerBlockVariation( 'core/heading', {
 	name: 'bp-groups-heading',
-	title: __( 'Groups Heading', 'bp-groups' ),
-	description: __( 'Display a groups heading', 'bp-groups' ),
+	title: __( 'Groups Heading', 'bp-groups-blocks' ),
+	description: __( 'Display a groups heading', 'bp-groups-blocks' ),
 	scope: [ 'inserter', 'transform' ],
 	attributes: {
 		metadata: {
@@ -35,8 +35,8 @@ const isGroupCoverImageEnabled = getBlockBindingsSources()?.hasOwnProperty(
 if ( isGroupCoverImageEnabled ) {
 	registerBlockVariation( 'core/image', {
 		name: 'bp-groups-cover-image',
-		title: __( 'Groups Cover Image', 'bp-groups' ),
-		description: __( 'Display a groups cover image', 'bp-groups' ),
+		title: __( 'Groups Cover Image', 'bp-groups-blocks' ),
+		description: __( 'Display a groups cover image', 'bp-groups-blocks' ),
 		scope: [ 'inserter', 'transform' ],
 		attributes: {
 			metadata: {
@@ -59,8 +59,8 @@ const isGroupAvatarImageEnabled = getBlockBindingsSources()?.hasOwnProperty(
 if ( isGroupAvatarImageEnabled ) {
 	registerBlockVariation( 'core/image', {
 		name: 'bp-groups-avatar-image',
-		title: __( 'Groups Avatar Image', 'bp-groups' ),
-		description: __( 'Display a groups avatar image', 'bp-groups' ),
+		title: __( 'Groups Avatar Image', 'bp-groups-blocks' ),
+		description: __( 'Display a groups avatar image', 'bp-groups-blocks' ),
 		scope: [ 'inserter', 'transform' ],
 		attributes: {
 			metadata: {
@@ -77,8 +77,8 @@ if ( isGroupAvatarImageEnabled ) {
 
 registerBlockVariation( 'core/paragraph', {
 	name: 'bp-groups-description',
-	title: __( 'Groups Description', 'bp-groups' ),
-	description: __( 'Display a groups description', 'bp-groups' ),
+	title: __( 'Groups Description', 'bp-groups-blocks' ),
+	description: __( 'Display a groups description', 'bp-groups-blocks' ),
 	scope: [ 'inserter', 'transform' ],
 	attributes: {
 		metadata: {
@@ -133,12 +133,15 @@ export const withBuddypressGroupAvatarControls = ( BlockEdit ) => ( props ) => {
 				<InspectorControls>
 					<Panel>
 						<PanelBody
-							title={ __( 'Avatar Settings', 'bp-groups' ) }
+							title={ __(
+								'Avatar Settings',
+								'bp-groups-blocks'
+							) }
 						>
 							<ToggleControl
 								label={ __(
 									'Link to Group Page',
-									'bp-groups'
+									'bp-groups-blocks'
 								) }
 								checked={ href }
 								onChange={ ( newValue ) => {

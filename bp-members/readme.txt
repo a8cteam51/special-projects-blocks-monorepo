@@ -10,8 +10,35 @@ Custom block & block variation for BuddyPress members.
 
 == Description ==
 
-A query loop like block to display users. This also includes block variations for the core/image block to display the user avatar, 
-the core/title block to display the user name and a link to their page and a core/paragraph block to display arbitrary x-profile data.
+One custom block and four block variations for BuddyPress Members.
+
+## Custom Block
+
+- BP Members List
+A query loop like block to display users.
+
+Options include:
+- Display in Column or list
+- Number of Columns if Colums is chosen
+- Display members based on member type, if member types have been set up
+- Order by standard BuddyPress orders e.g. Last active etc
+- How many items to display per page.
+
+Note this does not support pagination currently.
+
+## Custom Block Variations
+
+- Members Heading (core/heading block variation)
+Displays the members name. If not on the user profile page, this will link back to the profile page
+
+- Members Avatar (core/image block variation)
+Displays the members avatar if avatars are allowed. There is also the option to link this back to the memebers profile page.
+
+- Members Cover Image (core/image block variation)
+Displays the members cover image cover images are allowed
+
+- Members X Profile (core/paragraph block variation)
+Displays the members x-profile data. This block has a dropdown which allows the editor to pick which data to display here.
 
 == Installation ==
 
@@ -22,13 +49,37 @@ e.g.
 1. Upload the plugin files to the `/wp-content/plugins/bp-members` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress
 
+== Frequently Asked Questions ==
+
+= Does this work if BuddyPress is not installed? =
+
+No, this will only work with BuddyPress.
+
+= Can I use these blocks on an FSE template? =
+
+You can use these blocks on a template that corresponds with the BuddyPress members archive page, or a BuddyPress user profile page.
+They will not work on other template pages, except the Members list block, which can be used anywhere
+
+= Can I use these blocks on a post or page? =
+
+The only block that will work on a post or page is the Members List Block. However you can use the block and block variations as innerblocks
+of the members list block, because they will inherit the member ID from the query, similar to the query loop block.
+
+= Can I remove any blocks or block variations I don't like? =
+
+Yes you can remove custom blocks in the normal way using the `unregister_block_type()` (php)
+
+for block variations:
+
+```
+wp.domReady( () => {
+    wp.blocks.unregisterBlockVariation( 'core/image', 'bp-members-avatar' );
+} );
+
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Screenshot in the wp-admin of the Members List, with the other blocks / block variations added as innerblocks. 
+2. Screenshot of how this looks in the front end.
 
 == Changelog ==
 

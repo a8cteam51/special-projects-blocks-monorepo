@@ -69,7 +69,7 @@ class Members_Type_REST_Controller extends \WP_REST_Controller {
 					'permission_callback' => array( $this, 'get_item_permissions_check' ),
 					'args'                => array(
 						'type' => array(
-							'description' => __( 'Unique identifier for the member type.', 'a8csp-bp-members' ),
+							'description' => __( 'Unique identifier for the member type.', 'bp-members-blocks' ),
 							'type'        => 'string',
 							'required'    => true,
 						),
@@ -121,7 +121,7 @@ class Members_Type_REST_Controller extends \WP_REST_Controller {
 		if ( ! $type ) {
 			return new \WP_Error(
 				'rest_member_type_invalid',
-				__( 'Invalid member type.', 'a8csp-bp-members' ),
+				__( 'Invalid member type.', 'bp-members-blocks' ),
 				array( 'status' => 404 )
 			);
 		}
@@ -156,7 +156,7 @@ class Members_Type_REST_Controller extends \WP_REST_Controller {
 		}
 		return new \WP_Error(
 			'rest_forbidden',
-			__( 'You do not have permissions to view member types.', 'a8csp-bp-members' ),
+			__( 'You do not have permissions to view member types.', 'bp-members-blocks' ),
 			array( 'status' => 403 )
 		);
 	}
@@ -227,31 +227,31 @@ class Members_Type_REST_Controller extends \WP_REST_Controller {
 			'type'       => 'object',
 			'properties' => array(
 				'name'          => array(
-					'description' => __( 'The unique identifier for the member type.', 'a8csp-bp-members' ),
+					'description' => __( 'The unique identifier for the member type.', 'bp-members-blocks' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
 				'slug'          => array(
-					'description' => __( 'The slug for the member type.', 'a8csp-bp-members' ),
+					'description' => __( 'The slug for the member type.', 'bp-members-blocks' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
 				'singular_name' => array(
-					'description' => __( 'The singular name for the member type.', 'a8csp-bp-members' ),
+					'description' => __( 'The singular name for the member type.', 'bp-members-blocks' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
 				'plural_name'   => array(
-					'description' => __( 'The plural name for the member type.', 'a8csp-bp-members' ),
+					'description' => __( 'The plural name for the member type.', 'bp-members-blocks' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
 				'has_directory' => array(
-					'description' => __( 'Whether the member type has a directory.', 'a8csp-bp-members' ),
+					'description' => __( 'Whether the member type has a directory.', 'bp-members-blocks' ),
 					'type'        => 'boolean',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,

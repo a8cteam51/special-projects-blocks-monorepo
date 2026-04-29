@@ -1,1 +1,7 @@
-@forward "common";
+.wp-block-a8csp-breadcrumbs-block {
+	.community-breadcrumb .breadcrumbs {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+}

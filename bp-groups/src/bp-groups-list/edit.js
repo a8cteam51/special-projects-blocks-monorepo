@@ -182,11 +182,11 @@ export default function Edit( props ) {
 
 		groupTypesSelect.unshift(
 			{
-				label: __( 'All Groups', 'a8csp-bp-groups' ),
+				label: __( 'All Groups', 'bp-groups-blocks' ),
 				value: '',
 			},
 			{
-				label: __( 'Active Groups', 'a8csp-bp-groups' ),
+				label: __( 'Active Groups', 'bp-groups-blocks' ),
 				value: 'active',
 			}
 		);
@@ -196,23 +196,23 @@ export default function Edit( props ) {
 
 	const GroupOrderOptions = [
 		{
-			label: __( 'Last Active', 'a8csp-bp-groups' ),
+			label: __( 'Last Active', 'bp-groups-blocks' ),
 			value: 'active',
 		},
 		{
-			label: __( 'Most Members', 'a8csp-bp-groups' ),
+			label: __( 'Most Members', 'bp-groups-blocks' ),
 			value: 'popular',
 		},
 		{
-			label: __( 'Newly Created', 'a8csp-bp-groups' ),
+			label: __( 'Newly Created', 'bp-groups-blocks' ),
 			value: 'newest',
 		},
 		{
-			label: __( 'Alphabetical', 'a8csp-bp-groups' ),
+			label: __( 'Alphabetical', 'bp-groups-blocks' ),
 			value: 'alphabetical',
 		},
 		{
-			label: __( 'Random', 'a8csp-bp-groups' ),
+			label: __( 'Random', 'bp-groups-blocks' ),
 			value: 'random',
 		},
 	];
@@ -247,13 +247,13 @@ export default function Edit( props ) {
 				<ToolbarGroup controls={ displayLayoutControls } />
 			</BlockControls>
 			<InspectorControls>
-				<PanelBody title={ __( 'Group Types', 'a8csp-bp-groups' ) }>
+				<PanelBody title={ __( 'Group Types', 'bp-groups-blocks' ) }>
 					{ groupTypes.length > 0 && (
 						<>
 							<SelectControl
 								label={ __(
 									'Select a group type',
-									'a8csp-bp-groups'
+									'bp-groups-blocks'
 								) }
 								options={ groupTypeOptions() }
 								value={ groupType }
@@ -265,7 +265,7 @@ export default function Edit( props ) {
 								<p>
 									{ __(
 										'Currently, active groups are those without a specific group type.',
-										'a8csp-bp-groups'
+										'bp-groups-blocks'
 									) }
 								</p>
 							) }
@@ -274,7 +274,7 @@ export default function Edit( props ) {
 					<SelectControl
 						label={ __(
 							'Select a group order',
-							'a8csp-bp-groups'
+							'bp-groups-blocks'
 						) }
 						options={ GroupOrderOptions }
 						value={ orderBy }
@@ -284,7 +284,7 @@ export default function Edit( props ) {
 						} }
 					/>
 				</PanelBody>
-				<PanelBody title={ __( 'Display', 'a8csp-bp-groups' ) }>
+				<PanelBody title={ __( 'Display', 'bp-groups-blocks' ) }>
 					<RangeControl
 						label={ __( 'Items per page' ) }
 						min={ 1 }

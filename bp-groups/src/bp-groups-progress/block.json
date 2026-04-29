@@ -35,7 +35,7 @@
 			"textAlign": true
 		}
 	},
-	"textdomain": "bp-groups-progress",
+	"textdomain": "bp-groups-blocks",
 	"editorScript": "file:./index.js",
 	"style": "file:./style-index.css",
 	"render": "file:./render.php"

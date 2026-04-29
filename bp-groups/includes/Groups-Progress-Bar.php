@@ -19,13 +19,13 @@ class Groups_Progress_Bar extends BP_Group_Extension {
 	public function __construct() {
 		$args = array(
 			'slug'       => 'group-progress',
-			'name'       => __( 'Group Progress', 'bp-groups' ),
+			'name'       => __( 'Group Progress', 'bp-groups-blocks' ),
 			'visibility' => 'private',
 			'show_tab'   => 'noone',
 			'screens'    => array(
 				'edit'   => array(
 					'enabled' => true,
-					'name'    => __( 'Group Progress', 'bp-groups' ),
+					'name'    => __( 'Group Progress', 'bp-groups-blocks' ),
 				),
 				'create' => array(
 					'enabled' => true,
@@ -54,14 +54,14 @@ class Groups_Progress_Bar extends BP_Group_Extension {
 		?>
 		<h3>
 		<?php
-		echo esc_html( apply_filters( 'bp_group_progress_settings_screen_title', __( 'Group Progress', 'bp-groups' ) ) );
+		echo esc_html( apply_filters( 'bp_group_progress_settings_screen_title', __( 'Group Progress', 'bp-groups-blocks' ) ) );
 		?>
 		</h3>
 		<div
 			id="group-progress-editor"
 			class="group-progress-editor"
 		>
-			<label for="progress"><?php esc_html_e( 'Progress', 'bp-groups' ); ?></label>
+			<label for="progress"><?php esc_html_e( 'Progress', 'bp-groups-blocks' ); ?></label>
 			<input
 				type="range"
 				id="progress"
@@ -92,7 +92,7 @@ class Groups_Progress_Bar extends BP_Group_Extension {
 		$context = $this->get_current_context();
 
 		if ( ! isset( $_POST[ "_bp_group_{$context}_nonce_group-progress" ] ) || false === wp_verify_nonce( $_POST[ "_bp_group_{$context}_nonce_group-progress" ], "bp_group_extension_group-progress_{$context}" ) ) {
-			bp_core_add_message( __( 'Security check failed.', 'bp-groups' ), 'error' );
+			bp_core_add_message( __( 'Security check failed.', 'bp-groups-blocks' ), 'error' );
 			return;
 		}
 
@@ -101,13 +101,13 @@ class Groups_Progress_Bar extends BP_Group_Extension {
 		}
 
 		if ( ! isset( $progress ) || $progress < 0 || $progress > 100 ) {
-			bp_core_add_message( __( 'Please enter a valid progress value between 0 and 100.', 'bp-groups' ), 'error' );
+			bp_core_add_message( __( 'Please enter a valid progress value between 0 and 100.', 'bp-groups-blocks' ), 'error' );
 			return;
 		}
 
 		groups_update_groupmeta( $group_id, 'progress', $progress );
 
-		bp_core_add_message( __( 'Settings saved.', 'bp-groups' ) );
+		bp_core_add_message( __( 'Settings saved.', 'bp-groups-blocks' ) );
 	}
 
 	/**
@@ -127,6 +127,3 @@ class Groups_Progress_Bar extends BP_Group_Extension {
 		return 'unknown';
 	}
 }
-
-// Register the extension
-bp_register_group_extension( 'A8CSP\BP_GROUPS\Groups_Progress_Bar' );

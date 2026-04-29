@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Bp Groups Gutenberg
+ * Plugin Name:       BP Groups Blocks
  * Description:       Example block scaffolded with Create Block tool.
  * Version:           0.1.0
  * Requires at least: 6.8
@@ -8,7 +8,7 @@
  * Author:            The WordPress Contributors
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       bp-groups-gutenberg
+ * Text Domain:       bp-groups-blocks
  *
  * @package A8csp
  */
@@ -16,6 +16,16 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+/**
+ * The progress bar block is gated behind a filter to allow sites to disable it if they choose.
+ *
+ * @return boolean Whether the progress bar should be registered and shown in the group edit screen.
+ */
+function a8csp_bp_groups_progress_bar() {
+	return apply_filters( 'bp_groups_progress_bar', true );
+}
+
 /**
  * Registers the block(s) metadata from the `blocks-manifest.php` and registers the block type(s)
  * based on the registered block metadata. Behind the scenes, it registers also all assets so they can be enqueued
@@ -29,6 +39,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 function a8csp_bp_groups_block_init() {
 	if ( class_exists( 'BuddyPress' ) && bp_is_active( 'groups' ) ) {
 		wp_register_block_types_from_metadata_collection( __DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php' );
+	}
+
+	if ( false === a8csp_bp_groups_progress_bar() ) {
+		unregister_block_type( 'a8csp/bp-groups-progress' );
 	}
 }
 
@@ -49,34 +63,12 @@ function a8csp_bp_groups_include_classes() {
 		A8CSP\BP_GROUPS\Groups_Block_Bindings::group_block_bindings();
 
 		add_filter( 'render_block_core/image', array( 'A8CSP\BP_GROUPS\Groups_Block_Bindings', 'render_block_core_image_avatar' ), 10, 3 );
+
+		if ( true === a8csp_bp_groups_progress_bar() ) {
+			// Register the extension
+			bp_register_group_extension( 'A8CSP\BP_GROUPS\Groups_Progress_Bar' );
+		}
 	}
 }
 
 add_action( 'bp_init', 'a8csp_bp_groups_include_classes' );
-
-/**
- * Get the current group object.
- *
- * @param string|false $field Optional. The specific field to retrieve from the group object. Default false.
- *
- * @return \BP_Groups_Group|int The current group object or 0 if not found.
- */
-function a8csp_get_current_group( $field = false ) {
-	$group = 0;
-
-	$group = groups_get_current_group();
-
-	if ( 0 === $group ) {
-		$group = bp_get_group();
-	}
-
-	if ( ! $group instanceof \BP_Groups_Group ) {
-		return 0;
-	}
-
-	if ( false !== $field && isset( $group->{$field} ) ) {
-		return $group->{$field};
-	}
-
-	return $group;
-}

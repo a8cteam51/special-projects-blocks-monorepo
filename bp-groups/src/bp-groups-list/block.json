@@ -20,7 +20,7 @@
 		"layout": true,
 		"reusable": false,
 		"spacing": {
-			"blockGap": true,
+			"blockGap": [ "horizontal", "vertical" ],
 			"margin": true,
 			"padding": true
 		}
@@ -43,7 +43,7 @@
 			"default": 3
 		}
 	},
-	"textdomain": "bp-groups-list",
+	"textdomain": "bp-groups-blocks",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",

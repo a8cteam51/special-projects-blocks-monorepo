@@ -6,14 +6,45 @@ Stable tag:        0.1.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-Example block scaffolded with Create Block tool.
+Breadcrumbs block for BuddyPress and BBPress, modified from Tremi's Audrey Capital breadcrumb block
 
 == Description ==
 
-This is the long description. No limit, and you can use Markdown (as well as in the following sections).
+Breadcrumbs block that works with BuddyPress and BBPress. It also works with other WordPress pages.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+## Settings
+
+There are two setting for this block:
+
+- [ ] Hide single breadcrumb
+- [ ] Hide Home breadcrumb
+
+Which hide singluar breadcrumbs and hides the home page breadcrumb respectively
+
+## Filters
+
+There are 5 filters for this plugin
+
+`apply_filters( 'a8csp_skip_breadcrumbs', boolean $skip_breadcrumbs );`
+
+Setting this to true will skip the breadcrumbs (which can be used with conditional checks for certain post types etc)
+
+`apply_filters( 'a8csp_breadcrumbs_items', array $breadcrumbs );`
+
+Allows filtering of the breadcrumbs array
+
+`apply_filters( 'a8csp_breadcrumbs_home_url', string $home_url );`
+
+Allows filtering of the home url to make it different from the standard WordPress `get_home_url()`
+
+`apply_filters( 'a8csp_breadcrumbs_home_label', string $home_text );`
+
+Allows filtering of the home link text value
+
+`apply_filters( 'a8csp_breadcrumbs_separator', string $sep );`
+
+Allows filtering of the seperator between the breadcrumb items. This should be an SVG.
+
 
 == Installation ==
 
@@ -27,29 +58,18 @@ e.g.
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= Can I use this without BuddyPress or BBPress =
 
-An answer to that question.
+Yes, although there might be better solutions out there!
 
-= What about foo bar? =
+= How do I add breadcrumbs to BBPress pages? =
 
-Answer to foo bar dilemma.
+BBP Style pack has to be installed to make BBPress pages work with FSE. At the time of writing, it does not include blocks that have been added via a template,
+it does add blocks that have been added to a page though, and the breadcrumbs show up there.
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Breadcrumbs in the WP Admin
+2. BuddyPress Breadcrumbs on the front end of a site
 
-== Changelog ==
 
-= 0.1.0 =
-* Release
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above. This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation." Arbitrary sections will be shown below the built-in sections outlined above.

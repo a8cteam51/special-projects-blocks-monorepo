@@ -5,7 +5,7 @@
 	"version": "0.1.0",
 	"title": "BP Groups Block Variations",
 	"category": "widgets",
-	"description": "A block to display BuddyPress groups.",
+	"description": "A block to display BuddyPress group variations",
 	"example": {},
 	"textdomain": "bp-groups",
 	"editorScript": "file:./index.js"

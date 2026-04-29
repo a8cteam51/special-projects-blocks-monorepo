@@ -183,7 +183,7 @@ export default function Edit( props ) {
 		} ) );
 
 		memberTypesSelect.unshift( {
-			label: __( 'All Member Types', 'a8csp-bp-members' ),
+			label: __( 'All Member Types', 'bp-members-blocks' ),
 			value: '',
 		} );
 
@@ -192,27 +192,27 @@ export default function Edit( props ) {
 
 	const MemberOrderOptions = [
 		{
-			label: __( 'Last Active', 'a8csp-bp-members' ),
+			label: __( 'Last Active', 'bp-members-blocks' ),
 			value: 'active',
 		},
 		{
-			label: __( 'Newest Registered', 'a8csp-bp-members' ),
+			label: __( 'Newest Registered', 'bp-members-blocks' ),
 			value: 'newest',
 		},
 		{
-			label: __( 'Alphabetical', 'a8csp-bp-members' ),
+			label: __( 'Alphabetical', 'bp-members-blocks' ),
 			value: 'alphabetical',
 		},
 		{
-			label: __( 'Random', 'a8csp-bp-members' ),
+			label: __( 'Random', 'bp-members-blocks' ),
 			value: 'random',
 		},
 		{
-			label: __( 'Online', 'a8csp-bp-members' ),
+			label: __( 'Online', 'bp-members-blocks' ),
 			value: 'online',
 		},
 		{
-			label: __( 'Popular', 'a8csp-bp-members' ),
+			label: __( 'Popular', 'bp-members-blocks' ),
 			value: 'popular',
 		},
 	];
@@ -247,12 +247,12 @@ export default function Edit( props ) {
 				<ToolbarGroup controls={ displayLayoutControls } />
 			</BlockControls>
 			<InspectorControls>
-				<PanelBody title={ __( 'Member Types', 'a8csp-bp-members' ) }>
+				<PanelBody title={ __( 'Member Types', 'bp-members-blocks' ) }>
 					{ memberTypes.length > 0 && (
 						<SelectControl
 							label={ __(
 								'Select a member type',
-								'a8csp-bp-members'
+								'bp-members-blocks'
 							) }
 							options={ memberTypeOptions() }
 							value={ memberType }
@@ -264,7 +264,7 @@ export default function Edit( props ) {
 					<SelectControl
 						label={ __(
 							'Select a member order',
-							'a8csp-bp-members'
+							'bp-members-blocks'
 						) }
 						options={ MemberOrderOptions }
 						value={ orderBy }
@@ -274,9 +274,9 @@ export default function Edit( props ) {
 						} }
 					/>
 				</PanelBody>
-				<PanelBody title={ __( 'Display', 'a8csp-bp-members' ) }>
+				<PanelBody title={ __( 'Display', 'bp-members-blocks' ) }>
 					<RangeControl
-						label={ __( 'Items per page' ) }
+						label={ __( 'Items per page', 'bp-members-blocks' ) }
 						min={ 1 }
 						max={ 100 }
 						onChange={ ( newPerPage ) => {

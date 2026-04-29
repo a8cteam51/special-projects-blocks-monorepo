@@ -29,7 +29,7 @@
 			"default": 50
 		}
 	},
-	"textdomain": "bp-groups-contributors",
+	"textdomain": "bp-groups-blocks",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
