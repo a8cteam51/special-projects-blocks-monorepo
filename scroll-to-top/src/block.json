@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "wpcomsp/scroll-to-top",
 	"version": "0.1.1",
-	"title": "Scroll to top block",
+	"title": "Scroll to Top",
 	"category": "widgets",
 	"icon": "arrow-up-alt",
 	"description": "A button that scrolls the page to the top.",
