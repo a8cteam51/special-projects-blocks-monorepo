@@ -1,0 +1,94 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/podcast-feed",
+	"version": "0.1.0",
+	"title": "Podcast RSS Feed",
+	"category": "media",
+	"icon": "rss",
+	"description": "Display podcast episodes from any RSS feed with customizable options.",
+	"attributes": {
+		"feedUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"numberOfEpisodes": {
+			"type": "number",
+			"default": 10
+		},
+		"showTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"showCoverArt": {
+			"type": "boolean",
+			"default": true
+		},
+		"showPlayer": {
+			"type": "boolean",
+			"default": true
+		},
+		"showDescription": {
+			"type": "boolean",
+			"default": true
+		},
+		"showDuration": {
+			"type": "boolean",
+			"default": true
+		},
+		"showPublishDate": {
+			"type": "boolean",
+			"default": true
+		},
+		"showEpisodeNumber": {
+			"type": "boolean",
+			"default": false
+		},
+		"layoutType": {
+			"type": "string",
+			"default": "list",
+			"enum": [ "list", "grid" ]
+		},
+		"columns": {
+			"type": "number",
+			"default": 3
+		},
+		"season": {
+			"type": "string",
+			"default": ""
+		},
+		"noEpisodesMessage": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": true,
+		"color": {
+			"background": true,
+			"text": true,
+			"__experimentalSkipSerialization": [ "background", "text" ]
+		},
+		"spacing": {
+			"blockGap": true,
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true
+		}
+	},
+	"textdomain": "a8csp-podcast-feed",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}
