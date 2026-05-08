@@ -1,0 +1,30 @@
+{
+	"name": "table-plus",
+	"version": "0.1.0",
+	"description": "A structured, flexible table block with per-cell editing, header/footer rows, and customisable borders.",
+	"author": "WordPress Special Projects Team",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build --blocks-manifest",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"fix:css": "wp-scripts lint-style --fix",
+		"fix:js": "wp-scripts lint-js --fix",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start --blocks-manifest"
+	},
+	"dependencies": {
+		"@wordpress/block-editor": "latest",
+		"@wordpress/blocks": "latest",
+		"@wordpress/components": "latest",
+		"@wordpress/data": "latest",
+		"@wordpress/i18n": "latest",
+		"@wordpress/icons": "latest"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^32.1.0"
+	}
+}

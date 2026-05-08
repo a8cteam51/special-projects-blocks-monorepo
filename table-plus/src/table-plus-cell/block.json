@@ -1,0 +1,34 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/table-plus-cell",
+	"version": "0.1.0",
+	"title": "Cell",
+	"category": "text",
+	"icon": "table-col-after",
+	"description": "A cell inside a Table Plus Row block.",
+	"parent": [ "wpcomsp/table-plus-row" ],
+	"attributes": {
+		"content": {
+			"type": "string",
+			"source": "html",
+			"selector": "div"
+		}
+	},
+	"supports": {
+		"html": false,
+		"inserter": false,
+		"color": {
+			"background": true,
+			"text": true
+		},
+		"typography": {
+			"fontSize": true,
+			"fontWeight": true
+		}
+	},
+	"textdomain": "table-plus",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
