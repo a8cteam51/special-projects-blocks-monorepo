@@ -1,0 +1,40 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Table Plus block — playground demo",
+		"description": "Spins up a fresh WordPress site, installs the table-plus@0.1.0 release plugin, and lands the user in the block editor on a sample post containing a populated Table Plus block.",
+		"author": "WordPress Special Projects Team",
+		"categories": [ "Block" ]
+	},
+	"preferredVersions": {
+		"php": "8.2",
+		"wp": "latest"
+	},
+	"phpExtensionBundles": [ "kitchen-sink" ],
+	"features": {
+		"networking": true
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "url",
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/table-plus%400.1.0/table-plus.zip"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "writeFile",
+			"path": "/tmp/table-plus-demo-post.html",
+			"data": "<!-- wp:wpcomsp/table-plus -->\n<!-- wp:wpcomsp/table-plus-row {\"rowType\":\"header\",\"lock\":{\"move\":true,\"remove\":false}} -->\n<tr class=\"wp-block-wpcomsp-table-plus-row\"><!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">Name</div>\n<!-- /wp:wpcomsp/table-plus-cell -->\n\n<!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">Role</div>\n<!-- /wp:wpcomsp/table-plus-cell -->\n\n<!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">Status</div>\n<!-- /wp:wpcomsp/table-plus-cell --></tr>\n<!-- /wp:wpcomsp/table-plus-row -->\n\n<!-- wp:wpcomsp/table-plus-row -->\n<tr class=\"wp-block-wpcomsp-table-plus-row\"><!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">Alice</div>\n<!-- /wp:wpcomsp/table-plus-cell -->\n\n<!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">Engineer</div>\n<!-- /wp:wpcomsp/table-plus-cell -->\n\n<!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">Active</div>\n<!-- /wp:wpcomsp/table-plus-cell --></tr>\n<!-- /wp:wpcomsp/table-plus-row -->\n\n<!-- wp:wpcomsp/table-plus-row -->\n<tr class=\"wp-block-wpcomsp-table-plus-row\"><!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">Bob</div>\n<!-- /wp:wpcomsp/table-plus-cell -->\n\n<!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">Designer</div>\n<!-- /wp:wpcomsp/table-plus-cell -->\n\n<!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">Active</div>\n<!-- /wp:wpcomsp/table-plus-cell --></tr>\n<!-- /wp:wpcomsp/table-plus-row -->\n\n<!-- wp:wpcomsp/table-plus-row -->\n<tr class=\"wp-block-wpcomsp-table-plus-row\"><!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">Carol</div>\n<!-- /wp:wpcomsp/table-plus-cell -->\n\n<!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">PM</div>\n<!-- /wp:wpcomsp/table-plus-cell -->\n\n<!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">On leave</div>\n<!-- /wp:wpcomsp/table-plus-cell --></tr>\n<!-- /wp:wpcomsp/table-plus-row -->\n\n<!-- wp:wpcomsp/table-plus-row {\"rowType\":\"footer\",\"lock\":{\"move\":true,\"remove\":false}} -->\n<tr class=\"wp-block-wpcomsp-table-plus-row\"><!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">3 people</div>\n<!-- /wp:wpcomsp/table-plus-cell -->\n\n<!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">3 roles</div>\n<!-- /wp:wpcomsp/table-plus-cell -->\n\n<!-- wp:wpcomsp/table-plus-cell -->\n<div class=\"wp-block-wpcomsp-table-plus-cell\">2 active</div>\n<!-- /wp:wpcomsp/table-plus-cell --></tr>\n<!-- /wp:wpcomsp/table-plus-row -->\n<!-- /wp:wpcomsp/table-plus -->\n"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once '/wordpress/wp-load.php'; wp_update_post( array( 'ID' => 1, 'post_title' => 'Table Plus Demo', 'post_content' => file_get_contents( '/tmp/table-plus-demo-post.html' ), 'post_status' => 'publish' ) ); @unlink( '/tmp/table-plus-demo-post.html' );"
+		}
+	],
+	"landingPage": "/wp-admin/post.php?post=1&action=edit"
+}
