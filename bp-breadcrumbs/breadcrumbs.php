@@ -55,7 +55,7 @@ add_filter(
 		$plugin_data = get_plugin_data( __FILE__ );
 
 		// Add the plugin slug here to enable autoupdates.
-		$blocks[] = 'breadcrumbs';
+		$blocks[] = 'bp-breadcrumbs';
 
 		return $blocks;
 	}
