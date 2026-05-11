@@ -117,7 +117,7 @@ class Groups_Block_Bindings {
 		$heading = $group instanceof \BP_Groups_Group ? $group->name : '';
 		$url     = $group instanceof \BP_Groups_Group ? bp_get_group_url( $group ) : '';
 
-		if ( '' !== $url && ! bp_is_group() ) {
+		if ( '' !== $url && ! ( isset( $block_instance->context['postType'] ) && 'page' === $block_instance->context['postType'] ) ) {
 			$heading = sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html( $heading ) );
 		} else {
 			$heading = esc_html( $heading );
