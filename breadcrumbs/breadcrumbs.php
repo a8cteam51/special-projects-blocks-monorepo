@@ -32,3 +32,31 @@ function a8csp_breadcrumbs_block_init() {
 	wp_register_block_types_from_metadata_collection( __DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php' );
 }
 add_action( 'init', 'a8csp_breadcrumbs_block_init' );
+
+// If no other WPCOMSP Block Plugin added the self update class, add it.
+if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
+	require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
+
+	$wpcomsp_blocks_self_update = WPCOMSP_Blocks_Self_Update::get_instance();
+	$wpcomsp_blocks_self_update->hooks();
+}
+
+/**
+ * Setup auto-updates for this plugin from our monorepo.
+ * Done in an anonymous function for simplicity in making this a drop-in snippet.
+ *
+ * @param array $blocks Array of plugin files.
+ *
+ * @return array
+ */
+add_filter(
+	'wpcomsp_installed_blocks',
+	function ( $blocks ) {
+		$plugin_data = get_plugin_data( __FILE__ );
+
+		// Add the plugin slug here to enable autoupdates.
+		$blocks[] = 'breadcrumbs';
+
+		return $blocks;
+	}
+);

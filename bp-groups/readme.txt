@@ -29,7 +29,7 @@ Options include:
 Note this does not support pagination currently.
 
 - Group Progress
-A block and setting that can display the progress of a group in the style of a termometer. This must be set up manually.
+A block and setting that can display the progress of a group in the style of a thermometer. This must be set up manually.
 
 ## Block Variations:
 
