@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/bp-groups-list",
+	"version": "0.1.0",
+	"title": "BP Groups List",
+	"category": "widgets",
+	"icon": "buddicons-groups",
+	"description": "Example block scaffolded with Create Block tool.",
+	"example": {},
+	"supports": {
+		"align": [ "wide", "full" ],
+		"allowedBlocks": true,
+		"color": {
+			"text": true,
+			"background": true,
+			"link": true
+		},
+		"html": false,
+		"layout": true,
+		"reusable": false,
+		"spacing": {
+			"blockGap": [ "horizontal", "vertical" ],
+			"margin": true,
+			"padding": true
+		}
+	},
+	"attributes": {
+		"groupType": {
+			"type": "string",
+			"default": ""
+		},
+		"groupOrder": {
+			"type": "string",
+			"default": "alphabetical"
+		},
+		"layoutType": {
+			"type": "string",
+			"default": "constrained"
+		},
+		"perPage": {
+			"type": "number",
+			"default": 3
+		}
+	},
+	"textdomain": "bp-groups-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

@@ -1,0 +1,34 @@
+{
+	"name": "bp-groups",
+	"version": "0.1.0",
+	"description": "Example block scaffolded with Create Block tool.",
+	"author": "The WordPress Contributors",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build --blocks-manifest",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"format:scripts": "wp-scripts format",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start --blocks-manifest"
+	},
+	"dependencies": {
+		"@wordpress/api-fetch": "latest",
+		"@wordpress/block-editor": "latest",
+		"@wordpress/blocks": "latest",
+		"@wordpress/components": "latest",
+		"@wordpress/data": "latest",
+		"@wordpress/element": "latest",
+		"@wordpress/i18n": "latest",
+		"@wordpress/icons": "latest",
+		"@wordpress/url": "latest",
+		"clsx": "^2.1.1"
+	},
+	"devDependencies": {
+		"@wordpress/eslint-plugin": "^24.5.0",
+		"@wordpress/scripts": "^31.5.0"
+	}
+}

@@ -1,0 +1,22 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-a8csp-bp-groups-list {
+	list-style: none;
+	margin-left: 0;
+	padding-left: 0;
+
+	&.is-layout-grid {
+		@media screen and (max-width: 960px) {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		@media screen and (max-width: 600px) {
+			grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+		}
+	}
+}

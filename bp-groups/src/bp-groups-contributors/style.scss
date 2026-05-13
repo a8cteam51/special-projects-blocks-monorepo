@@ -1,0 +1,39 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.bp-groups-contributors {
+	&__view-all {
+		background-color: transparent;
+		border: none;
+		color: currentColor;
+		font-size: inherit;
+		text-decoration: underline;
+	}
+	&__avatars {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	&__avatar:not([hidden]) {
+		display: inline-block;
+		margin-right: var(--wp--preset--spacing--10);
+
+		&.fade-in {
+			animation: fadeIn 0.3s ease-in-out forwards;
+		}
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
