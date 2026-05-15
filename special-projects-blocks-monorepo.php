@@ -26,21 +26,9 @@ function wpcomsp_autoload_monorepo_blocks() {
 	$dirs = glob( __DIR__ . '/*', GLOB_ONLYDIR );
 
 	foreach ( $dirs as $dir ) {
-		$plugin_file = $dir . DIRECTORY_SEPARATOR . basename( $dir ) . '.php';
-		if ( ! file_exists( $plugin_file ) ) {
-			continue;
+		if ( file_exists( $dir . DIRECTORY_SEPARATOR . basename( $dir ) . '.php' ) && is_dir( $dir . DIRECTORY_SEPARATOR . 'build' ) ) {
+			include $dir . DIRECTORY_SEPARATOR . basename( $dir ) . '.php';
 		}
-
-		// Block plugins have a `src` directory that must be compiled to `build`.
-		// PHP-only sub-plugins have no `src` and load directly.
-		$has_src   = is_dir( $dir . DIRECTORY_SEPARATOR . 'src' );
-		$has_build = is_dir( $dir . DIRECTORY_SEPARATOR . 'build' );
-
-		if ( $has_src && ! $has_build ) {
-			continue;
-		}
-
-		include $plugin_file;
 	}
 }
 add_action( 'plugins_loaded', 'wpcomsp_autoload_monorepo_blocks' );
