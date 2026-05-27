@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, video, featured-image, media, post-thumbnail
 Tested up to:      6.8.2
-Stable tag:        0.1.2
+Stable tag:        0.3.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 6.6
@@ -16,12 +16,14 @@ The **Featured Video** plugin extends WordPress functionality to allow you to us
 
 **Key Features:**
 
-* **Easy Setup**: Simply upload a video and set it as your featured video
+* **Easy Setup**: Upload a video, drag-and-drop a file, or paste an external URL
 * **Automatic Replacement**: Featured videos automatically replace featured images in post displays
-* **Responsive Design**: Videos are responsive and maintain proper aspect ratios
-* **Autoplay Support**: Videos can autoplay with muted audio for better user experience
-* **Cross-Browser Compatibility**: Works across all modern browsers
-* **Accessibility**: Includes fallback text for browsers that don't support video
+* **Per-Post Playback Options**: Toggle autoplay, loop, mute, inline playback, and native controls
+* **Play-Icon Overlay**: Optionally show a centered play button overlay for click-to-play UX
+* **Custom Poster Image**: Pick any image from the media library as the video's poster
+* **External Sources**: Use a direct video URL (.mp4/.webm/.ogv/.mov) or any oEmbed provider (YouTube, Vimeo, etc.)
+* **Works on All Thumbnail-Supporting Post Types**: Posts, pages, and any CPT with thumbnail support
+* **Accessibility**: Fallback text for unsupported browsers and an accessible play-icon button
 
 **How It Works:**
 
@@ -47,7 +49,15 @@ The plugin supports all video formats that WordPress supports, including MP4, We
 
 = Will the video autoplay? =
 
-Yes, the featured video will autoplay with muted audio and loop continuously for a dynamic effect.
+Autoplay is opt-in per post in the Featured Video panel. When you enable autoplay the plugin automatically enables Mute too, because browsers refuse to autoplay videos with sound.
+
+= Can I use a YouTube or Vimeo URL? =
+
+Yes. Switch the "Video Source" select to "External Video" and paste the URL. Any provider that WordPress's oEmbed system supports will work. Direct video URLs (.mp4, .webm, .ogv, .mov) are rendered as a native HTML5 `<video>` element and respect all the playback toggles.
+
+= Do the playback options apply to embedded providers? =
+
+No. Autoplay, loop, mute, inline, controls, and the play-icon overlay only apply to videos uploaded to the media library or pasted as a direct video URL. Provider embeds (YouTube, Vimeo, etc.) use the provider's own player.
 
 = Can I still use featured images? =
 
@@ -79,6 +89,18 @@ The plugin uses WordPress's post meta system to store the featured video ID. The
 - The `intrinsic-ignore` class is added for proper responsive behavior
 
 == Changelog ==
+
+= 0.3.0 =
+* Add support for any post type that supports thumbnails (previously posts only)
+* Add featured-video rendering on single post and single page templates
+* Add external video URL support (oEmbed providers + direct .mp4/.webm/.ogv/.mov URLs)
+* Add drag-and-drop video uploading in the editor sidebar
+* Add per-post playback toggles (autoplay, loop, mute, playsinline, controls)
+* Add custom poster image picker
+* Add optional play-icon overlay with a click-to-play frontend handler
+* Fix: per-post options were overwriting the video-ID meta on every change
+* Fix: poster image is now actually rendered on the frontend
+* Fix: options sanitizer now strictly allowlists known keys and casts to the right type
 
 = 0.1.2 =
 * Add readme.txt file

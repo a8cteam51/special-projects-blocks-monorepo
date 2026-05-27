@@ -1,0 +1,40 @@
+.wpcomsp-has-play-icon {
+	position: relative;
+
+	.wpcomsp-featured-video__play {
+		position: absolute;
+		inset: 50% auto auto 50%;
+		transform: translate(-50%, -50%);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 72px;
+		height: 72px;
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: rgba(0, 0, 0, 0.6);
+		color: #fff;
+		cursor: pointer;
+		transition: background 0.2s ease, transform 0.2s ease;
+
+		&:hover,
+		&:focus-visible {
+			background: rgba(0, 0, 0, 0.8);
+			transform: translate(-50%, -50%) scale(1.05);
+		}
+
+		&:focus-visible {
+			outline: 2px solid #fff;
+			outline-offset: 2px;
+		}
+
+		svg {
+			margin-left: 4px; // visually center the triangle
+		}
+	}
+
+	&.is-playing .wpcomsp-featured-video__play {
+		display: none;
+	}
+}
