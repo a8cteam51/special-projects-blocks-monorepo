@@ -1,0 +1,14 @@
+.wp-block-wpcomsp-table-plus-row {
+	display: flex !important;
+	flex-direction: row;
+	width: 100%;
+
+	&.is-row-header .wp-block-wpcomsp-table-plus-cell {
+		background-color: rgba(0, 0, 0, 0.05);
+		font-weight: 600;
+	}
+
+	&.is-row-footer .wp-block-wpcomsp-table-plus-cell {
+		font-style: italic;
+	}
+}

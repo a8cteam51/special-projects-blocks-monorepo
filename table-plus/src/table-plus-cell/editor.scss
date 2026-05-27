@@ -1,0 +1,9 @@
+.wp-block-wpcomsp-table-plus-cell {
+	flex: 1;
+	min-width: 3em;
+	padding: 8px 12px;
+	border-width: var(--tp-border-width, 1px);
+	border-style: var(--tp-border-style, solid);
+	border-color: var(--tp-border-color, #ddd);
+	vertical-align: top;
+}

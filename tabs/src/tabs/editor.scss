@@ -12,6 +12,11 @@
 		}
 	}
 
+	// Hide scroll arrows in editor
+	.scroll-arrow {
+		display: none !important;
+	}
+
 	.tab-button-text {
 		display: inline-block;
 		min-width: 60px;

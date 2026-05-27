@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/table-plus",
+	"version": "0.1.0",
+	"title": "Table Plus",
+	"category": "text",
+	"icon": "editor-table",
+	"description": "A structured table block with row and cell inner blocks.",
+	"attributes": {
+		"style": {
+			"type": "object",
+			"default": {
+				"border": {
+					"width": "1px",
+					"style": "solid",
+					"color": "#dddddd"
+				}
+			}
+		}
+	},
+	"supports": {
+		"html": false,
+		"color": {
+			"background": true,
+			"text": true
+		},
+		"typography": {
+			"fontSize": true
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"color": true,
+				"style": true,
+				"width": true
+			},
+			"__experimentalSkipSerialization": true
+		}
+	},
+	"textdomain": "table-plus",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

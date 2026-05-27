@@ -1,0 +1,16 @@
+{
+	"name": "wpcomsp/table-plus",
+	"description": "Table Plus block plugin (test harness).",
+	"license": "GPL-2.0-or-later",
+	"type": "wordpress-plugin",
+	"require": {
+		"php": ">=7.4"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^9.6"
+	},
+	"scripts": {
+		"test": "phpunit",
+		"test:coverage": "phpunit --coverage-text"
+	}
+}

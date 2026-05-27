@@ -1,0 +1,9 @@
+.distignore
+.DS_Store
+.git
+node_modules
+src
+*.zip
+*.tar.gz
+package.json
+package-lock.json

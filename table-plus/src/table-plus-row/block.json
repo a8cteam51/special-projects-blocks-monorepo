@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpcomsp/table-plus-row",
+	"version": "0.1.0",
+	"title": "Row",
+	"category": "text",
+	"icon": "table-row-after",
+	"description": "A row inside a Table Plus block.",
+	"parent": [ "wpcomsp/table-plus" ],
+	"attributes": {
+		"rowType": {
+			"type": "string",
+			"enum": [ "header", "body", "footer" ],
+			"default": "body"
+		}
+	},
+	"supports": {
+		"html": false,
+		"inserter": false,
+		"color": {
+			"background": true,
+			"text": true
+		},
+		"typography": {
+			"fontSize": true
+		}
+	},
+	"textdomain": "table-plus",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

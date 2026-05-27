@@ -1,0 +1,38 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/bp-groups-contributors",
+	"version": "0.1.0",
+	"title": "BP Groups Contributors",
+	"category": "widgets",
+	"icon": "admin-users",
+	"description": "Add a contributor list to your group.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"perPage": {
+			"type": "number",
+			"default": 5
+		},
+		"countText": {
+			"type": "string",
+			"default": "members"
+		},
+		"allMembersText": {
+			"type": "string",
+			"default": "View All"
+		},
+		"avatarSize": {
+			"type": "number",
+			"default": 50
+		}
+	},
+	"textdomain": "bp-groups-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}

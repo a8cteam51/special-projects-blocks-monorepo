@@ -1,0 +1,28 @@
+@import url(https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap);
+
+.wp-block-wpcomsp-table-plus {
+	border-collapse: collapse;
+	width: 100%;
+	border: none !important;
+	font-family: Inter, sans-serif;
+
+	th.wp-block-wpcomsp-table-plus-cell,
+	td.wp-block-wpcomsp-table-plus-cell {
+		padding: 0.5em 0.75em;
+		border-width: var(--tp-border-width, 1px);
+		border-style: var(--tp-border-style, solid);
+		border-color: var(--tp-border-color, #ddd);
+		vertical-align: top;
+		text-align: left;
+	}
+
+	th.wp-block-wpcomsp-table-plus-cell {
+		background-color: rgba(0, 0, 0, 0.05);
+		font-weight: 600;
+	}
+
+	strong,
+ b {
+		font-weight: 800;
+	}
+}

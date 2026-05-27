@@ -1,0 +1,15 @@
+.wp-block-a8csp-bp-groups-progress {
+	font-weight: 700;
+
+	.group-progress-bar-background {
+		background-color: grey;
+		height: 12px;
+		margin-top: var(--wp--preset--spacing--10);
+		width: 100%;
+	}
+
+	.group-progress-bar-fill {
+		background-color: var(--wp--preset--color--primary);
+		height: 12px;
+	}
+}

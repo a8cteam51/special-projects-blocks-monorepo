@@ -1,0 +1,49 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/bp-members",
+	"version": "0.1.0",
+	"title": "BP Members List",
+	"category": "widgets",
+	"icon": "buddicons-buddypress-logo",
+	"description": "A block to display BuddyPress members.",
+	"example": {},
+	"supports": {
+		"align": [ "wide", "full" ],
+		"color": {
+			"text": true,
+			"background": true,
+			"link": true
+		},
+		"html": false,
+		"layout": true,
+		"reusable": false,
+		"spacing": {
+			"blockGap": true,
+			"margin": true,
+			"padding": true
+		}
+	},
+	"attributes": {
+		"memberType": {
+			"type": "string",
+			"default": ""
+		},
+		"memberOrder": {
+			"type": "string",
+			"default": "alphabetical"
+		},
+		"layoutType": {
+			"type": "string",
+			"default": "constrained"
+		},
+		"perPage": {
+			"type": "number",
+			"default": 3
+		}
+	},
+	"textdomain": "bp-members-blocks",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}
