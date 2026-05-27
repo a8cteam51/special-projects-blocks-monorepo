@@ -3,8 +3,15 @@ import { MediaUpload, MediaUploadCheck } from "@wordpress/block-editor";
 import { __ } from "@wordpress/i18n";
 
 const VideoControls = (props) => {
-	const { videoSource, videoOptions, setPoster, setOption, selectedVideoId } =
-		props;
+	const {
+		videoSource,
+		videoOptions,
+		setPoster,
+		removePoster,
+		setOption,
+		setOptions,
+		selectedVideoId,
+	} = props;
 
 	if ("local" !== videoSource || !selectedVideoId) {
 		return null;
@@ -12,12 +19,27 @@ const VideoControls = (props) => {
 
 	const { posterId } = videoOptions;
 
+	const onChangeAutoplay = (value) => {
+		// Batch both writes — two separate setOption calls would each capture
+		// the same stale videoOptions and the second would clobber the first,
+		// silently dropping the implicit `muted: true`.
+		if (value && !videoOptions.muted) {
+			setOptions({ autoplay: value, muted: true });
+			return;
+		}
+		setOption("autoplay", value);
+	};
+
 	return (
 		<Flex alignment="center" direction="column" gap={4}>
 			<ToggleControl
 				__nextHasNoMarginBottom
 				label={__("Auto Play", "featured-video")}
-				onChange={(value) => setOption("autoplay", value)}
+				help={__(
+					"Browsers require autoplaying videos to be muted.",
+					"featured-video",
+				)}
+				onChange={onChangeAutoplay}
 				checked={
 					"boolean" === typeof videoOptions.autoplay
 						? videoOptions.autoplay
@@ -60,6 +82,20 @@ const VideoControls = (props) => {
 						: true
 				}
 			/>
+			<ToggleControl
+				__nextHasNoMarginBottom
+				label={__("Show Play Icon", "featured-video")}
+				help={__(
+					"Display a centred play button overlay on the frontend.",
+					"featured-video",
+				)}
+				onChange={(value) => setOption("showPlayIcon", value)}
+				checked={
+					"boolean" === typeof videoOptions.showPlayIcon
+						? videoOptions.showPlayIcon
+						: false
+				}
+			/>
 			<MediaUploadCheck>
 				<MediaUpload
 					onSelect={setPoster}
@@ -80,15 +116,13 @@ const VideoControls = (props) => {
 										</Button>
 									</FlexBlock>
 								)}
-								{posterId && (
+								{!!posterId && (
 									<FlexBlock>
 										<Button
 											__next40pxDefaultSize
 											variant="secondary"
 											style={{ width: "100%", justifyContent: "center" }}
-											onClick={() => {
-												setOption("posterId", "");
-											}}
+											onClick={removePoster}
 										>
 											{__("Remove Poster", "featured-video")}
 										</Button>

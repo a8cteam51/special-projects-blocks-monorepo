@@ -1,6 +1,7 @@
 import { useSelect } from "@wordpress/data";
 import { MediaUpload, MediaUploadCheck } from "@wordpress/block-editor";
-import { Button, Flex, FlexItem } from "@wordpress/components";
+import { uploadMedia } from "@wordpress/media-utils";
+import { Button, DropZone, Flex, FlexItem } from "@wordpress/components";
 import { useRef } from "@wordpress/element";
 import { __ } from "@wordpress/i18n";
 
@@ -16,6 +17,19 @@ const LocalControl = (props) => {
 	);
 
 	const toggleRef = useRef();
+
+	const onFilesDrop = (filesList) => {
+		uploadMedia({
+			filesList,
+			allowedTypes: ["video"],
+			onFileChange: ([file]) => {
+				if (file?.id) {
+					setVideoId(file);
+				}
+			},
+			onError: () => {},
+		});
+	};
 
 	return (
 		<MediaUploadCheck>
@@ -47,6 +61,7 @@ const LocalControl = (props) => {
 											poster={posterSourceUrl}
 										/>
 									)}
+									<DropZone onFilesDrop={onFilesDrop} />
 								</Button>
 							</FlexItem>
 							{selectedVideoId && (

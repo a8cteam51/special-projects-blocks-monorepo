@@ -11,6 +11,11 @@ import LocalControl from "./local-control";
 import ExternalControl from "./external-control";
 import VideoControls from "./video-controls";
 
+const META_KEY = "_wpcomsp_featured_video_id";
+const META_OPTIONS_KEY = "_wpcomsp_featured_video_options";
+
+const isAttachmentId = (value) => /^\d+$/.test(String(value));
+
 const FeaturedVideo = () => {
 	const postType = useSelect(
 		(select) => select("core/editor").getCurrentPostType(),
@@ -25,17 +30,10 @@ const FeaturedVideo = () => {
 		[postType],
 	);
 
-	if (!hasPostThumbnailSupport) {
-		return null;
-	}
-
-	const META_KEY = "_wpcomsp_featured_video_id";
-	const META_OPTIONS_KEY = "_wpcomsp_featured_video_options";
 	const [meta, setMeta] = useEntityProp("postType", postType, "meta");
 
 	const selectedVideoId = meta?.[META_KEY] || "";
 	const videoOptions = meta?.[META_OPTIONS_KEY] || {};
-
 	const posterId = videoOptions.posterId || "";
 
 	const posterSourceUrl = useSelect(
@@ -44,11 +42,27 @@ const FeaturedVideo = () => {
 		[posterId],
 	);
 
-	console.log(posterId);
+	// Tracks the user's choice of source when no video is set yet. Once a
+	// video exists, `videoSource` is derived from the stored value so the
+	// panel stays in sync even after the entity meta hydrates.
+	const [chosenSource, setChosenSource] = useState("local");
+
+	if (!hasPostThumbnailSupport) {
+		return null;
+	}
+
+	const videoSource = selectedVideoId
+		? isAttachmentId(selectedVideoId)
+			? "local"
+			: "external"
+		: chosenSource;
+
+	const setOptions = (updates) => {
+		setMeta({ [META_OPTIONS_KEY]: { ...videoOptions, ...updates } });
+	};
 
 	const setOption = (key, value) => {
-		const updatedOptions = { ...videoOptions, [key]: value };
-		setMeta({ [META_KEY]: updatedOptions });
+		setOptions({ [key]: value });
 	};
 
 	const setPoster = (media) => {
@@ -58,29 +72,21 @@ const FeaturedVideo = () => {
 	};
 
 	const removePoster = () => {
-		setOption("posterId", null);
+		setOption("posterId", 0);
 	};
 
 	const removeVideo = () => {
 		setMeta({ [META_KEY]: "" });
 	};
 
-	const removeVideoOptions = () => {
-		setMeta({ [META_OPTIONS_KEY]: {} });
-	};
-
-	const [videoSource, setVideoSource] = useState(() => {
-		return Number.isInteger(Number(selectedVideoId)) ? "local" : "external";
-	});
-
 	const onChangeVideoSource = (newSource) => {
 		if (videoSource !== newSource) {
-			removeVideo();
-			removeVideoOptions();
-			removePoster();
+			// Clear the id and the options together in one write — separate
+			// `setMeta` calls would each capture the same stale options and
+			// the later one would overwrite the earlier.
+			setMeta({ [META_KEY]: "", [META_OPTIONS_KEY]: {} });
 		}
-
-		setVideoSource(newSource);
+		setChosenSource(newSource);
 	};
 
 	const setVideoId = (media) => {
@@ -156,7 +162,9 @@ const FeaturedVideo = () => {
 					videoSource={videoSource}
 					videoOptions={videoOptions}
 					setPoster={setPoster}
+					removePoster={removePoster}
 					setOption={setOption}
+					setOptions={setOptions}
 				/>
 			</Flex>
 		</PluginDocumentSettingPanel>
