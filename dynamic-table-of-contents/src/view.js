@@ -1,52 +1,70 @@
-const $defaultHeadingSelectors = '.wp-block-post-content h1, .wp-block-post-content h2, .wp-block-post-content h3, .wp-block-post-content h4, .wp-block-post-content h5, .wp-block-post-content h6';
-const $headingSelectors = (window.wpcomspDynamicTOC && window.wpcomspDynamicTOC.headingSelectors) || $defaultHeadingSelectors;
-const $headings = document.querySelectorAll($headingSelectors);
-const $headingList = document.querySelector('.wp-block-wpcomsp-dynamic-table-of-contents ul');
+const $defaultHeadingSelectors =
+	'.wp-block-post-content h1, .wp-block-post-content h2, .wp-block-post-content h3, .wp-block-post-content h4, .wp-block-post-content h5, .wp-block-post-content h6';
+const $headingSelectors =
+	( window.wpcomspDynamicTOC && window.wpcomspDynamicTOC.headingSelectors ) ||
+	$defaultHeadingSelectors;
+const $headings = document.querySelectorAll( $headingSelectors );
+const $headingList = document.querySelector(
+	'.wp-block-wpcomsp-dynamic-table-of-contents ul'
+);
+const $allowCustomTitles =
+	document
+		.querySelector( '.wp-block-wpcomsp-dynamic-table-of-contents' )
+		.getAttribute( 'data-custom-titles' ) === 'true';
 
 // This is the observer that will be used to highlight the current heading.
-const $observer = new IntersectionObserver((entries) => {
-	let $links = document.querySelectorAll('.wp-block-wpcomsp-dynamic-table-of-contents a');
+const $observer = new IntersectionObserver(
+	( entries ) => {
+		let $links = document.querySelectorAll(
+			'.wp-block-wpcomsp-dynamic-table-of-contents a'
+		);
 
-	entries.forEach((entry) => {
-		const $id = entry.target.id;
-		const $link = document.querySelector(`.wp-block-wpcomsp-dynamic-table-of-contents a[href="#${$id}"]`);
+		entries.forEach( ( entry ) => {
+			const $id = entry.target.id;
+			const $link = document.querySelector(
+				`.wp-block-wpcomsp-dynamic-table-of-contents a[href="#${ $id }"]`
+			);
 
-		if (entry.isIntersecting) {
-			$links.forEach((link) => {
-				link.classList.remove('active');
-			});
+			if ( entry.isIntersecting ) {
+				$links.forEach( ( link ) => {
+					link.classList.remove( 'active' );
+				} );
 
-			$link.classList.add('active');
-		}
-	});
-},
-{
-	rootMargin: '0px 0px -75% 0px',
-});
+				$link.classList.add( 'active' );
+			}
+		} );
+	},
+	{
+		rootMargin: '0px 0px -75% 0px',
+	}
+);
 
-$headings.forEach((heading, index) => {
+$headings.forEach( ( heading, index ) => {
 	const $id = heading.id;
 
-	if ($id.length) {
+	if ( $id.length ) {
 		// Create new elements.
-		const $latestListItem = document.createElement('li');
-		const $latestLink = document.createElement('a');
+		const $latestListItem = document.createElement( 'li' );
+		const $latestLink = document.createElement( 'a' );
+		const customTitle = heading.getAttribute( 'customtitle' );
 
 		// Add attributes to new elements.
-		$latestLink.href = `#${$id}`;
-		$latestLink.textContent = heading.textContent;
+		$latestLink.href = `#${ $id }`;
+		$latestLink.textContent =
+			$allowCustomTitles && customTitle
+				? customTitle
+				: heading.textContent;
 
 		// Setup the first element as active.
-		if (0 === index) {
-			$latestLink.classList.add('active');
+		if ( 0 === index ) {
+			$latestLink.classList.add( 'active' );
 		}
 
 		// Add new elements to the markup.
-		$latestListItem.appendChild($latestLink);
-		$headingList.appendChild($latestListItem);
+		$latestListItem.appendChild( $latestLink );
+		$headingList.appendChild( $latestListItem );
 
 		// Setup on scroll highlighting.
-		$observer.observe(heading);
+		$observer.observe( heading );
 	}
-
-});
+} );

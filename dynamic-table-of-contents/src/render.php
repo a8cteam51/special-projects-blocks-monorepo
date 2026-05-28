@@ -21,13 +21,11 @@ wp_enqueue_script(
 	true
 );
 
-$default_heading_selectors = array(
-	'.wp-block-post-content h1',
-	'.wp-block-post-content h2',
-	'.wp-block-post-content h3',
-	'.wp-block-post-content h4',
-	'.wp-block-post-content h5',
-	'.wp-block-post-content h6',
+$default_heading_selectors = array_map(
+	function ( $level ) {
+		return sprintf( '.wp-block-post-content h%d', $level );
+	},
+	$attributes['headingLevels'] ? $attributes['headingLevels'] : range( 1, 6 )
 );
 
 /**
@@ -46,6 +44,22 @@ $heading_selectors = apply_filters(
 	$block
 );
 
+/**
+ * Filters the value used by the view script to determine if custom titles are allowed for the table of contents.
+ *
+ * @since 0.3.0
+ *
+ * @param string[] $default_heading_selectors Array of selectors for table of contents headings.
+ * @param array    $attributes                Block attributes.
+ * @param WP_Block $block                     The block object.
+ */
+$allow_custom_titles = apply_filters(
+	'wpcomsp_dynamic_table_of_contents_allow_custom_titles',
+	$attributes['customTitles'] ? 'true' : 'false',
+	$attributes,
+	$block
+);
+
 wp_add_inline_script(
 	'wpcomsp-dynamic-table-of-contents-view',
 	sprintf(
@@ -56,7 +70,7 @@ wp_add_inline_script(
 );
 ?>
 
-<div <?php echo wp_kses_post( get_block_wrapper_attributes() ); ?>>
+<div <?php echo wp_kses_post( get_block_wrapper_attributes( array( 'data-custom-titles' => $allow_custom_titles ) ) ); ?>>
 	<?php
 	$block_title = $attributes['title'] ?? '';
 	$block_title = apply_filters( 'wpcomsp_dynamic_table_of_contents_block_title', $block_title, $attributes );

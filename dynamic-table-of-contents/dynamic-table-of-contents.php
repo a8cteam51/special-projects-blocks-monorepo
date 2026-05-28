@@ -4,7 +4,7 @@
  * Description:       Creates a table of contents that's dynamically (PHP) rendered.
  * Requires at least: 6.1
  * Requires PHP:      8.0
- * Version:           0.2.0
+ * Version:           0.3.0
  * Author:            WordPress Special Projects Team
  * Author URI:        https://wpspecialprojects.wordpress.com/
  * Update URI:        https://opsoasis.wpspecialprojects.com/dynamic-table-of-contents/
@@ -80,14 +80,16 @@ function wpcomsp_dynamic_table_of_contents_block_render( $block_content, $block 
 	$processor = new WP_HTML_Tag_Processor( $block_content );
 	$processor->next_tag();
 
-	// If the heading already has an ID, don't add one.
-	if ( null !== $processor->get_attribute( 'ID' ) ) {
-		return $block_content;
+	if ( isset( $block['attrs']['customTitle'] ) && ! empty( $block['attrs']['customTitle'] ) ) {
+		$processor->set_attribute( 'customtitle', $block['attrs']['customTitle'] );
 	}
 
-	// If the heading doesn't have an ID, add one.
-	$content = wp_strip_all_tags( $block_content );
-	$processor->set_attribute( 'ID', esc_attr( sanitize_title( $content ) ) );
+	// If the heading already has an ID, don't add one.
+	if ( null === $processor->get_attribute( 'ID' ) ) {
+		// If the heading doesn't have an ID, add one.
+		$content = wp_strip_all_tags( $block_content );
+		$processor->set_attribute( 'id', esc_attr( sanitize_title( $content ) ) );
+	}
 
 	return $processor->get_updated_html();
 }
