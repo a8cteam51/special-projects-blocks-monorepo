@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Modal
  * Description:       A modal block that can be toggled open and closed.
- * Version:           0.1.2
+ * Version:           0.1.3
  * Requires at least: 6.6
  * Requires PHP:      7.2
  * Author:            WordPress Special Projects Team
@@ -207,7 +207,8 @@ function a8csp_modal_insert_modal_templates() {
 			aria-modal="true"
 			data-wp-interactive="a8csp/modal"
 			data-wp-class--is-open="state.isModalOpen"
-			data-wp-on--keydown="actions.handleModalKeydown"
+			data-wp-on-document--keydown="actions.handleModalKeydown"
+			data-wp-on--click="actions.handleModalClick"
 			data-wp-bind--aria-hidden="!state.isModalOpen"
 			data-wp-bind--inert="!state.isModalOpen"
 			data-wp-bind--aria-label="context.title"
@@ -254,7 +255,7 @@ function a8csp_modal_default_inner_content( $template ) {
 	?>
 	<div class="wp-block-a8csp-modal-container--inner">
 
-		<?php echo do_blocks( $template['content'] ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+		<?php echo apply_filters( 'the_content', $template['content'] ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 	</div>
 
 	<button
