@@ -43,6 +43,15 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 (or jpg, jpeg, gif).
 2. This is the second screen shot
 
+== Settings ==
+
+There are 3 settings for this block:
+
+Block Title: The title displayed for the table of contents block
+Heading Selectors: Which headings should be displayed in the table of contents block. This can be overwritten by the filter below.
+Custom Titles: Whether to allow the user to enter custom titles for each heading instead of using the text content.
+ - If this is enabled, the user can add a custom title to the input field. The data is saved in the heading attributes block.
+
 == Filters ==
 
 = `a8csp_dynamic_table_of_contents_heading_selectors` =
@@ -83,7 +92,27 @@ add_filter(
 );
 `
 
+= `wpcomsp_dynamic_table_of_contents_allow_custom_titles` = 
+
+Filters the value used by the view script to determine if custom titles are allowed for the table of contents.
+
+** Example - remove any custom titles from the TOC block **
+
+`
+add_filter(
+    'wpcomsp_dynamic_table_of_contents_allow_custom_titles',
+    static function ( string $heading_selectors ): string {
+        return 'false';
+    }
+);
+`
+
 == Changelog ==
+
+= 0.3.0 =
+* Added the ability to choose which heading levels are displayed in the toc block in the gutenberg editor
+* Added the ability to choose a different title than the one displayed in the content for the TOC list item
+* Added the `wpcomsp_dynamic_table_of_contents_allow_custom_titles` filter to override user preference.
 
 = 0.2.0 =
 * Add `a8csp_dynamic_table_of_contents_heading_selectors` filter to customize which headings are listed in the TOC.

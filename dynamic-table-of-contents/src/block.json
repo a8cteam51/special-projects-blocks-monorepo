@@ -27,13 +27,19 @@
 			"color": true
 		}
 	},
-	"usesContext": [
-		"postId"
-	],
+	"usesContext": [ "postId" ],
 	"attributes": {
 		"title": {
 			"type": "string",
 			"default": "Table of Contents"
+		},
+		"headingLevels": {
+			"type": "array",
+			"default": [ 1, 2, 3 ]
+		},
+		"customTitles": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"textdomain": "dynamic-table-of-contents",
