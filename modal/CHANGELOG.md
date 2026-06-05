@@ -2,7 +2,7 @@
 
 -   Add support for iFrames by rendering the modal content through `the_content` filter
 -   Stop media in a Modal from playing when the modal is closed
--   Improvements to the closing state of the modal, adding by adding a document event listener and also adding a click event to the modal top level container.
+-   Improvements to the closing state of the modal, by adding a document event listener and also adding a click event to the modal top level container.
 -   Minor updates to the CSS
 
 ## 0.1.2 (2025-10-21)

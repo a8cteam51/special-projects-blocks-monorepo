@@ -17,7 +17,7 @@ const { actions, state, helpers } = store( 'a8csp/modal', {
 			const modal = helpers.getModal( id );
 			const focusElements = [
 				...modal.querySelectorAll(
-					'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"]'
+					'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])'
 				),
 			].filter(
 				( element ) =>
@@ -125,9 +125,8 @@ const { actions, state, helpers } = store( 'a8csp/modal', {
 		},
 		handleModalClick( event ) {
 			const { id } = getContext();
-			const modalContainer = event.target.id.includes( id );
 
-			if ( ! modalContainer ) {
+			if ( event.target.id !== id ) {
 				return;
 			}
 
@@ -154,7 +153,7 @@ const { actions, state, helpers } = store( 'a8csp/modal', {
 				return;
 			}
 
-			if ( event.target.className.includes( 'wp-block-a8csp-modal' ) ) {
+			if ( event.target.classList.contains( 'wp-block-a8csp-modal' ) ) {
 				return;
 			}
 
