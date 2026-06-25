@@ -7,6 +7,10 @@ contains a root autoloader plus independently releasable plugin folders.
 Additional project documentation may live in the
 [repository wiki](https://github.com/a8cteam51/special-projects-blocks-monorepo/wiki).
 
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to set up, build, and submit changes,
+and the [wiki](https://github.com/a8cteam51/special-projects-blocks-monorepo/wiki) for
+longer-form process docs.
+
 ## What is here
 
 - `special-projects-blocks-monorepo.php` is an optional root plugin autoloader.
@@ -133,6 +137,13 @@ through the `update_plugins_opsoasis.wpspecialprojects.com` update filter.
 - When adding a new plugin directory, use a matching `<directory>.php` entry
   point and ensure the build produces the `build/` directory expected by the root
   autoloader.
+
+## Contributing
+
+Read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening a pull request. It covers the
+"do you actually need a new block?" gate, local setup, scaffolding new blocks with the
+`a8csp` namespace, coding standards, and the PR checklist. Use the issue templates to
+file bug reports, enhancements, or new-block proposals.
 
 ## License
 
