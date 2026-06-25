@@ -1,0 +1,66 @@
+name: 🧱 New block proposal
+description: Propose a new block for the monorepo (engineering-lead sign-off required).
+title: "New block: <block name>"
+labels: ["blocks", "idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The gold standard is **not** creating a new block — every block is permanent
+        maintenance. Please confirm you've ruled out the alternatives below before
+        proposing. An engineering lead must approve before development starts.
+  - type: checkboxes
+    id: gate
+    attributes:
+      label: Have you ruled out the alternatives?
+      description: A new block should be the last resort. See [How to extend a WordPress block](https://developer.wordpress.org/news/2024/08/15/how-to-extend-a-wordpress-block/).
+      options:
+        - label: This can't be built with a **pattern** of existing blocks.
+          required: true
+        - label: This can't be built with the **Block Bindings API**.
+          required: true
+        - label: This can't be built with the **Interactivity API** on an existing block.
+          required: true
+        - label: This can't be built by **extending/restyling a core block** (block styles, variations, filters).
+          required: true
+  - type: textarea
+    id: reuse-check
+    attributes:
+      label: Existing-block check
+      description: Which existing monorepo plugins did you check, and why don't they fit? (See the inventory in the README.)
+    validations:
+      required: true
+  - type: input
+    id: block-name
+    attributes:
+      label: Proposed block name
+      description: Use the `a8csp` namespace.
+      placeholder: "a8csp/<block-slug>"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What does the block do? Be verbose — this informs the block.json description and automated tooling.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+  - type: textarea
+    id: wireframe
+    attributes:
+      label: Wireframe / design / screenshot
+      description: Figma link or image showing the intended block.
+  - type: textarea
+    id: project-context
+    attributes:
+      label: Project context
+      description: Which project surfaced this need, and where will the block be used? Include a Figma link if available.
