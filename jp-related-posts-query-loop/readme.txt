@@ -32,6 +32,15 @@ The **Jetpack Related Posts Query Loop** plugin adds a query block variation nam
 - This block variation uses Jetpack's Related Posts feature. If Jetpack is not activated or it returns no results, the block will display random posts from the site.
 - In the editor, the block will display the latest posts.
 
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd jp-related-posts-query-loop`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
+
 == Changelog ==
 
 = 0.2.0 =

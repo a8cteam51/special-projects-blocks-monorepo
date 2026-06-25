@@ -22,6 +22,15 @@ This block also supports WordPress' **typography and spacing controls**, allowin
 3. Configure the start/end values, duration, and optional pre/post text.
 4. Customize spacing and typography to match your design.
 
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd counter`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
+
 == Frequently Asked Questions ==
 
 = What values can I use for the counter? =

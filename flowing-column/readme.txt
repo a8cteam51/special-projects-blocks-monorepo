@@ -33,6 +33,15 @@ The Flowing Column block allows you to create multi-column layouts that automati
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. The Flowing Column block will be available in the block editor under the "Design" category
 
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd flowing-column`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
+
 == Usage ==
 
 **Adding the Block:**

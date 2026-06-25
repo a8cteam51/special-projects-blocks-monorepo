@@ -17,3 +17,13 @@ Enables a block, 'Scroll Progress Bar', which adds a native HTML `<progress>` el
 Add a custom HTML class to the block, then write custom CSS within your theme to style the progress bar. For example, you may wish to apply colors from your theme.
 
 [This CSS Tricks article](https://css-tricks.com/html5-progress-element/) provides a good overview of the `<progress>` element and how to style it.
+
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd scroll-progress-bar`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
+

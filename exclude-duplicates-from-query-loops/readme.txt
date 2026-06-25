@@ -30,6 +30,15 @@ The **Exclude Duplicate Posts from Query Loops** plugin adds a query block setti
 
 - Depending on the query loop settings and the available posts, it is possible that a query loop will display no posts because all posts have already been displayed before.
 
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd exclude-duplicates-from-query-loops`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
+
 == Changelog ==
 
 = 0.1.0 =

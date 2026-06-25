@@ -42,12 +42,17 @@ Displays the members x-profile data. This block has a dropdown which allows the 
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
-
 1. Upload the plugin files to the `/wp-content/plugins/bp-members` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress
+
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd bp-members`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
 
 == Frequently Asked Questions ==
 

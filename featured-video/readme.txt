@@ -37,6 +37,15 @@ The plugin hooks into WordPress's featured image system and automatically replac
 4. Upload or select a video file to use as your featured video
 5. The video will automatically replace the featured image in post displays
 
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd featured-video`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
+
 == Frequently Asked Questions ==
 
 = How do I set a featured video? =

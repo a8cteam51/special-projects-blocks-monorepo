@@ -57,13 +57,17 @@ add_filter( 'bp_groups_progress_bar', function() {
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
-
 1. Upload the plugin files to the `/wp-content/plugins/bp-groups` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the 'Plugins' screen in WordPress
 
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd bp-groups`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
 
 == Frequently Asked Questions ==
 

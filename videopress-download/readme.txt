@@ -23,10 +23,6 @@ as might be the case for synced patterns and templates, it will not work.
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
-
 1. Upload the plugin files to the `/wp-content/plugins/videopress-download` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the 'Plugins' screen in WordPress
 
@@ -41,6 +37,14 @@ however there is a couple of issues that need to be thought through if this work
 but instead there was an iFrame with the embed url in the block $content. This usually happened when the VideoPress block had been copied and pasted.
 To get around this I had to get the url from the media library, which might be more difficult in the front end.
 
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd videopress-download`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
 
 == Changelog ==
 

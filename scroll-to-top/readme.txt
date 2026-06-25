@@ -26,6 +26,15 @@ Features:
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Add the Scroll to Top block to any page or post using the block editor.
 
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd scroll-to-top`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
+
 == Frequently Asked Questions ==
 
 = Where can I place the Scroll to Top block? =
