@@ -73,8 +73,10 @@ commands.
 
 ## Local development
 
-There are no npm workspaces declared. Work in the plugin directory you are
-changing unless you specifically need the root all-plugin build.
+There are no npm workspaces declared — each plugin has its own `package.json` and
+`package-lock.json`. See [ARCHITECTURE.md](./ARCHITECTURE.md) for why. Work in the
+plugin directory you are changing unless you specifically need the root all-plugin
+build.
 
 ```sh
 cd <plugin-directory>
