@@ -66,21 +66,31 @@ composer run-script packages-install
 
 ## Creating a new block
 
-Scaffold from the **monorepo root** with `@wordpress/create-block`, using the `a8csp`
-namespace:
+Scaffold from the **monorepo root**:
 
 ```sh
-npx @wordpress/create-block@latest <plugin-slug> --namespace a8csp
+npm run new-block -- <plugin-slug> "Block Title" [--dynamic]
 ```
 
-Then follow these rules:
+This wraps `@wordpress/create-block` (pinned, `--namespace a8csp`) and then applies all
+the monorepo conventions for you, so a new package starts correct rather than being
+hand-patched. It sets up:
 
-- **Namespace everything `a8csp`.** Keep blocks project-agnostic — no project names,
-  data, or project-specific styling in the block.
+- the `a8csp` namespace and a matching `<plugin-slug>/<plugin-slug>.php` entry file;
+- the canonical plugin header (Author, Author URI, `Update URI`, GPL-2.0-or-later,
+  Text Domain);
+- the shared self-update class in `classes/` plus the `wpcomsp_installed_blocks` wiring;
+- a non-boilerplate `readme.txt` (with a "Building from source" section) and a
+  `CHANGELOG.md`.
+
+Use `--dynamic` for a server-rendered block (`render.php`); omit it for a static
+(`save.js`) block.
+
+You still own the block itself — fill in the source and follow these rules:
+
+- **Keep blocks project-agnostic.** No project names, data, or project-specific styling.
 - **One block plugin per directory.** The only exception is tightly-coupled block
   families (e.g. a `tabs` container with its child `tab` block).
-- **Match the entry filename to the directory:** `<plugin-slug>/<plugin-slug>.php`.
-- **Add a `CHANGELOG.md`** at the plugin root and keep it current.
 - **Keep styling minimal and structural.** Blocks should read like wireframes and
   render un-broken in the latest `twenty-*` theme. Ship structural CSS only; project
   styling belongs in the project via

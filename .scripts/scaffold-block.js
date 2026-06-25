@@ -240,6 +240,23 @@ All notable changes to this project will be documented in this file.
   }
 }
 
+// 2h. Remove any src/**/README.md boilerplate create-block emits (the interactive
+// template ships one); our plugins document themselves via readme.txt.
+{
+  const srcDir = path.join(targetDir, 'src');
+  (function walk(d) {
+    if (!fs.existsSync(d)) return;
+    for (const f of fs.readdirSync(d)) {
+      const fp = path.join(d, f);
+      if (fs.statSync(fp).isDirectory()) walk(fp);
+      else if (f === 'README.md') {
+        fs.rmSync(fp);
+        console.log(`  removed ${path.relative(targetDir, fp)}`);
+      }
+    }
+  })(srcDir);
+}
+
 // ---- 3. next steps --------------------------------------------------------
 console.log(`
 ✔ Created ${slug}/ with monorepo conventions applied.

@@ -22,8 +22,13 @@ longer-form process docs.
 - `.scripts/build-all.js` is the root build helper used by `npm run build`. It
   finds plugin `src/` directories, runs each plugin build, and removes
   `node_modules` after each build.
+- `.scripts/scaffold-block.js` scaffolds a new block plugin with all the monorepo
+  conventions applied; run it via `npm run new-block` (see
+  [CONTRIBUTING.md](./CONTRIBUTING.md#creating-a-new-block)).
 - `.github/workflows/make-plugin-release.yml` creates GitHub releases for
   changed top-level plugin directories on pushes to `trunk`.
+- `.github/workflows/pr-lint.yml` and `pr-build.yml` lint and build each changed
+  plugin on pull requests, before it can merge and auto-release.
 - `.utilities/class-wpcomsp-blocks-self-update.php` is the shared self-update
   class copied into plugin directories.
 
@@ -88,6 +93,10 @@ npm run build
 Most plugin manifests also define `format`, `lint:js`, `lint:css` or
 `lint:styles`, `packages-update`, and `plugin-zip`; use the target plugin's
 `package.json` for the exact script names.
+
+To start a new block plugin with all the conventions applied, run
+`npm run new-block -- <slug> "Block Title"` from the repo root — see
+[CONTRIBUTING.md](./CONTRIBUTING.md#creating-a-new-block).
 
 The root build is marked for CI use in `package.json`:
 
