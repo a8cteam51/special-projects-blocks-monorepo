@@ -4,7 +4,8 @@
   "description": "Build all blocks in the monorepo, for CI only. For local development, use scripts inside the individual blocks.",
   "private": true,
   "scripts": {
-    "build": "node .scripts/build-all.js && rm -rf node_modules"
+    "build": "node .scripts/build-all.js && rm -rf node_modules",
+    "new-block": "node .scripts/scaffold-block.js"
   },
   "devDependencies": {
     "glob": "^11.0.0"
