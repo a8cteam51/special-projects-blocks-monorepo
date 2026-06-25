@@ -1,0 +1,114 @@
+name: Lint changed plugins
+
+# Runs JS/CSS and PHP linting on every pull request, scoped to the top-level
+# plugin directories that the PR actually changed. Reuses the changed-files
+# matrix pattern from make-plugin-release.yml so contributors get fast,
+# targeted feedback before review.
+
+on:
+  pull_request:
+    branches:
+      - trunk
+
+permissions:
+  contents: read
+
+jobs:
+  get-changed-folders:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get changed top-level plugin directories
+        id: changed_files
+        uses: tj-actions/changed-files@v43
+        with:
+          dir_names: true
+          files_ignore: |
+            .github/**
+            .utilities/**
+            .scripts/**
+          dir_names_include_files: false
+          dir_names_exclude_current_dir: true
+          dir_names_max_depth: 1
+          matrix: true
+    outputs:
+      matrix: ${{ steps.changed_files.outputs.all_changed_files }}
+
+  lint-js-css:
+    name: Lint JS/CSS (${{ matrix.dir }})
+    needs: get-changed-folders
+    if: ${{ needs.get-changed-folders.outputs.matrix != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dir: ${{ fromJSON( needs.get-changed-folders.outputs.matrix ) }}
+      fail-fast: false
+      max-parallel: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Detect plugin
+        id: check
+        run: |
+          if [ -f "${{ matrix.dir }}/package.json" ]; then
+            echo "is_plugin=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_plugin=false" >> "$GITHUB_OUTPUT"
+            echo "No package.json in ${{ matrix.dir }} — skipping JS/CSS lint."
+          fi
+      - name: Install dependencies
+        if: steps.check.outputs.is_plugin == 'true'
+        run: npm ci --prefix "${{ matrix.dir }}"
+      - name: Lint JS
+        if: steps.check.outputs.is_plugin == 'true'
+        run: npm run --prefix "${{ matrix.dir }}" --if-present lint:js
+      - name: Lint CSS
+        # --if-present: a few PHP/JS-only plugins (e.g. cover-bg-crossfade) have
+        # no lint:css script; skip them instead of failing.
+        if: steps.check.outputs.is_plugin == 'true'
+        run: npm run --prefix "${{ matrix.dir }}" --if-present lint:css
+
+  lint-php:
+    name: Lint PHP (PHPCS)
+    needs: get-changed-folders
+    if: ${{ needs.get-changed-folders.outputs.matrix != '[]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          tools: composer
+      # The PHPCS ruleset (.phpcs.xml) pulls a8cteam51/team51-configs, a PRIVATE
+      # composer VCS repo. CI needs read access to install it. Provide a token
+      # with repo-read scope as the COMPOSER_GITHUB_TOKEN secret (a classic PAT
+      # or a GitHub App token). Without it, the install step below will fail.
+      - name: Configure composer auth for private team51-configs
+        env:
+          COMPOSER_TOKEN: ${{ secrets.COMPOSER_GITHUB_TOKEN }}
+        run: |
+          if [ -n "$COMPOSER_TOKEN" ]; then
+            composer config --global github-oauth.github.com "$COMPOSER_TOKEN"
+          else
+            echo "::warning::COMPOSER_GITHUB_TOKEN secret is not set; installing the private team51-configs PHPCS ruleset will likely fail."
+          fi
+      - name: Install PHP tooling
+        run: composer run-script packages-install
+      - name: Run PHPCS on changed plugin directories
+        run: |
+          TARGETS=""
+          for d in $(echo '${{ needs.get-changed-folders.outputs.matrix }}' | jq -r '.[]'); do
+            if [ -d "$d" ] && [ -n "$(find "$d" -name '*.php' -print -quit)" ]; then
+              TARGETS="$TARGETS $d"
+            fi
+          done
+          if [ -n "$TARGETS" ]; then
+            echo "Running PHPCS on:$TARGETS"
+            vendor/bin/phpcs --standard=.phpcs.xml $TARGETS
+          else
+            echo "No PHP in changed plugin directories — skipping PHPCS."
+          fi
