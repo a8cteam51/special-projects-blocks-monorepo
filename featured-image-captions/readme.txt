@@ -20,6 +20,15 @@ Extends the core Featured Image block with optional caption display. A toolbar b
 3. Click the caption toggle button in the block toolbar to enable caption display.
 4. Optionally enter a custom caption in the field that appears. If left blank, the image's media library caption will be used.
 
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd featured-image-captions`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
+
 == Changelog ==
 
 = 1.0.0 =

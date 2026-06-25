@@ -48,13 +48,17 @@ Allows filtering of the seperator between the breadcrumb items. This should be a
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
-
 1. Upload the plugin files to the `/wp-content/plugins/breadcrumbs` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the 'Plugins' screen in WordPress
 
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd bp-breadcrumbs`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
 
 == Frequently Asked Questions ==
 

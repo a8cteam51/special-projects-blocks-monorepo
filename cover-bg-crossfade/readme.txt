@@ -32,6 +32,14 @@ The **Cover Background Crossfade** plugin extends WordPress functionality to all
 
 - The cover backgrounds are displayed behind the content and will not be visible if the post content block or the surrounding containers have a background color assigned to them.
 
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd cover-bg-crossfade`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
 
 == Changelog ==
 
