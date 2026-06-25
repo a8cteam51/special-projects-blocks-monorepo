@@ -1,0 +1,86 @@
+name: Build changed plugins
+
+# Smoke-tests that every changed plugin still builds, before it can merge to
+# trunk. make-plugin-release.yml runs the same `npm ci && npm run build` on push
+# to trunk and then auto-releases, so a broken build is otherwise only caught
+# *after* merge as a broken release. This catches it at PR time.
+
+on:
+  pull_request:
+    branches:
+      - trunk
+
+permissions:
+  contents: read
+
+jobs:
+  get-changed-folders:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get changed top-level plugin directories
+        id: changed_files
+        uses: tj-actions/changed-files@v43
+        with:
+          dir_names: true
+          files_ignore: |
+            .github/**
+            .utilities/**
+            .scripts/**
+          dir_names_include_files: false
+          dir_names_exclude_current_dir: true
+          dir_names_max_depth: 1
+          matrix: true
+    outputs:
+      matrix: ${{ steps.changed_files.outputs.all_changed_files }}
+
+  build:
+    name: Build (${{ matrix.dir }})
+    needs: get-changed-folders
+    if: ${{ needs.get-changed-folders.outputs.matrix != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dir: ${{ fromJSON( needs.get-changed-folders.outputs.matrix ) }}
+      fail-fast: false
+      max-parallel: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Detect plugin
+        id: check
+        run: |
+          if [ -f "${{ matrix.dir }}/package.json" ]; then
+            echo "is_plugin=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_plugin=false" >> "$GITHUB_OUTPUT"
+            echo "No package.json in ${{ matrix.dir }} — skipping build."
+          fi
+      - name: Install dependencies
+        if: steps.check.outputs.is_plugin == 'true'
+        run: npm ci --prefix "${{ matrix.dir }}"
+      - name: Build
+        if: steps.check.outputs.is_plugin == 'true'
+        run: npm run build --prefix "${{ matrix.dir }}"
+      - name: Assert build output exists
+        # Only blocks with a src/ are expected to emit build/. A few PHP-only
+        # plugins (e.g. jp-related-posts-query-loop) have a no-op build script
+        # and produce nothing, which is correct — so gate the assertion on src/.
+        # Build scripts otherwise vary (--output-path=build/view, dual builds,
+        # --blocks-manifest), so the contract is "the release build succeeds",
+        # not a fixed output path.
+        if: steps.check.outputs.is_plugin == 'true'
+        run: |
+          if [ -d "${{ matrix.dir }}/src" ]; then
+            if [ ! -d "${{ matrix.dir }}/build" ]; then
+              echo "::error::${{ matrix.dir }} has src/ but produced no build/ — the autoloader and release both require it."
+              exit 1
+            fi
+            echo "${{ matrix.dir }}/build present."
+          else
+            echo "${{ matrix.dir }} has no src/ — no build output expected."
+          fi
