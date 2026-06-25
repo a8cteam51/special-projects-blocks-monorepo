@@ -5,8 +5,8 @@
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Version:           0.1.3
- * Author:            Automattic Special Projects
- * Author URI:        https://wpspecialprojects.wordpress.com/
+ * Author:            Automattic Special Projects Team
+ * Author URI:        https://specialprojects.automattic.com/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       stretchy-type

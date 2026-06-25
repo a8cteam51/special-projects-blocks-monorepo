@@ -136,6 +136,6 @@ through the `update_plugins_opsoasis.wpspecialprojects.com` update filter.
 
 ## License
 
-The tracked root `LICENSE` file is MIT. Root package metadata, Composer
-metadata, and plugin headers declare `GPL-2.0-or-later`; resolve that mismatch
-before relying on a single repository-wide license declaration.
+This project is licensed under `GPL-2.0-or-later`. The root `LICENSE` file,
+package metadata, Composer metadata, and plugin headers all declare
+`GPL-2.0-or-later`.

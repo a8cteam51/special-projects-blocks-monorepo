@@ -1,5 +1,5 @@
 === Flowing Column ===
-Contributors:      tommusrhodus
+Contributors:      wpspecialprojects
 Tags:              block, columns, layout, responsive
 Tested up to:      6.7
 Stable tag:        0.1.0

@@ -2,7 +2,7 @@
 	"name": "jp-related-posts-query-loop",
 	"version": "0.2.0",
 	"description": "Adds a query loop variation to display related posts from Jetpack.",
-	"author": "WordPress Special Projects Team",
+	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",
 	"scripts": {
 		"build": "echo 'No js build step necessary.'",

@@ -2,7 +2,7 @@
 	"name": "modal",
 	"version": "0.1.2",
 	"description": "An interactive block with the Interactivity API.",
-	"author": "WordPress Special Projects Team",
+	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {

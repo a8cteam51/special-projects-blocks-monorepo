@@ -2,7 +2,7 @@
 	"name": "featured-video",
 	"version": "0.3.0",
 	"description": "Add the ability to use Featured Video inplace of Featured Image.",
-	"author": "WordPress Special Projects Team",
+	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",
 	"scripts": {
 		"build": "wp-scripts build src/editor --output-path=build/editor && wp-scripts build src/view --output-path=build/view",
