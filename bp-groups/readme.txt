@@ -1,5 +1,5 @@
 === Bp Groups Gutenberg ===
-Contributors:      The WordPress Contributors
+Contributors:      wpspecialprojects
 Tags:              block BuddyPress
 Tested up to:      6.8
 Stable tag:        0.1.0

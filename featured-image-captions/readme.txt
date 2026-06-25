@@ -1,5 +1,5 @@
 === Featured Image Captions ===
-Contributors:      The WordPress Contributors
+Contributors:      wpspecialprojects
 Tags:              block, featured-image, caption, image
 Requires at least: 6.1
 Tested up to:      6.7

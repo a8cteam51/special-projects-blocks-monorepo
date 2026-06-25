@@ -2,7 +2,7 @@
 	"name": "override-post-links",
 	"version": "0.1.1",
 	"description": "Add a panel in the WP Admin allowing the user to enter a link which overrides the post links to the new link.",
-	"author": "WordPress Special Projects Team",
+	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {

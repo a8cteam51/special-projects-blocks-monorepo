@@ -5,8 +5,9 @@
  * Description:       A block that allows users to organize content into tabs.
  * Requires at least: 6.5
  * Requires PHP:      8.0
- * Version:           0.1.1
- * Author:            WordPress Special Projects Team
+ * Version:           0.1.2
+ * Author:            Automattic Special Projects Team
+ * Author URI:        https://specialprojects.automattic.com/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       tabs

@@ -1,5 +1,5 @@
 === Counter Block ===
-Contributors:      The WordPress Contributors
+Contributors:      wpspecialprojects
 Tags:              block, counter, animation, numbers
 Tested up to:      6.7
 Stable tag:        1.0.0

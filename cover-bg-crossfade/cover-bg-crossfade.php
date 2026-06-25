@@ -3,8 +3,8 @@
  * Plugin Name:       Cover Background Crossfade
  * Description:       Adds Crossfading background images or videos of multiple cover blocks on a single page based on their scroll position.
  * Version:           0.1.0
- * Author:            WordPress Special Projects Team
- * Author URI:        https://wpspecialprojects.wordpress.com/
+ * Author:            Automattic Special Projects Team
+ * Author URI:        https://specialprojects.automattic.com/
  * Update URI:        https://opsoasis.wpspecialprojects.com/cover-bg-crossfade/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html

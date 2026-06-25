@@ -1,5 +1,5 @@
 === Override Post Links ===
-Contributors:      The WordPress Contributors
+Contributors:      wpspecialprojects
 Tags:              block
 Tested up to:      6.7
 Stable tag:        0.1.0

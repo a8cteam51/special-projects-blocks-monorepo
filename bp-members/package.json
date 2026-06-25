@@ -1,8 +1,8 @@
 {
 	"name": "bp-members",
 	"version": "0.1.0",
-	"description": "Example block scaffolded with Create Block tool.",
-	"author": "The WordPress Contributors",
+	"description": "BuddyPress-gated member list and member variation blocks.",
+	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {

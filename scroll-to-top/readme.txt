@@ -1,5 +1,5 @@
 === Scroll to Top ===
-Contributors:      WordPress.com Special Projects Team
+Contributors:      wpspecialprojects
 Tags:              block, scroll, button
 Tested up to:      6.1
 Stable tag:        0.1.1

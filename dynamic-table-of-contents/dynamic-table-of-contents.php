@@ -5,8 +5,8 @@
  * Requires at least: 6.1
  * Requires PHP:      8.0
  * Version:           0.2.0
- * Author:            WordPress Special Projects Team
- * Author URI:        https://wpspecialprojects.wordpress.com/
+ * Author:            Automattic Special Projects Team
+ * Author URI:        https://specialprojects.automattic.com/
  * Update URI:        https://opsoasis.wpspecialprojects.com/dynamic-table-of-contents/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html

@@ -3,8 +3,8 @@
  * Plugin Name: Featured Video
  * Description: Add the ability to use Featured Video inplace of Featured Image. <strong>Supported Block:</strong> core/post-featured-image
  * Version: 0.3.0
- * Author: WordPress Special Projects Team
- * Author URI: https://wpspecialprojects.wordpress.com/
+ * Author: Automattic Special Projects Team
+ * Author URI: https://specialprojects.automattic.com/
  * Update URI: https://opsoasis.wpspecialprojects.com/featured-video/
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html

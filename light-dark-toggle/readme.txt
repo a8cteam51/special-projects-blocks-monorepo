@@ -1,5 +1,5 @@
 === Light Dark Toggle ===
-Contributors:      The WordPress Contributors
+Contributors:      wpspecialprojects
 Tags:              block
 Tested up to:      6.7
 Stable tag:        1.0.0

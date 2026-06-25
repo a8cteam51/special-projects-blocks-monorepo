@@ -6,10 +6,13 @@
 	"title": "BP Groups List",
 	"category": "widgets",
 	"icon": "buddicons-groups",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Display a list of BuddyPress groups.",
 	"example": {},
 	"supports": {
-		"align": [ "wide", "full" ],
+		"align": [
+			"wide",
+			"full"
+		],
 		"allowedBlocks": true,
 		"color": {
 			"text": true,
@@ -20,7 +23,10 @@
 		"layout": true,
 		"reusable": false,
 		"spacing": {
-			"blockGap": [ "horizontal", "vertical" ],
+			"blockGap": [
+				"horizontal",
+				"vertical"
+			],
 			"margin": true,
 			"padding": true
 		}
