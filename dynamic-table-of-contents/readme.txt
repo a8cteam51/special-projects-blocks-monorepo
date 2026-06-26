@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, table of contents, navigation, headings, accessibility
 Tested up to:      6.8
-Stable tag:        0.2.0
+Stable tag:        0.3.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,6 +18,7 @@ The list is assembled in the browser at render time from the post's live heading
 
 * **Self-building list** — the table of contents is generated on the frontend from the post's headings; there is no manual list to maintain.
 * **Automatic heading anchors** — a `render_block` filter adds an `id` (slugified from the heading text) to every `core/heading` that lacks one, so each table entry links to its section. Headings that already have an `id` are left untouched.
+* **Headings from wrapper blocks** — an optional **Include headings nested in other blocks** toggle lists headings rendered by blocks such as accordions (which wrap their title in extra elements and so never get a server-side anchor). When enabled, the view script generates an anchor for each such heading and ignores decorative, `aria-hidden` icons when building the label.
 * **Scroll-spy highlighting** — an `IntersectionObserver` watches the headings and adds an `active` class to the matching link as each section scrolls into view, so the table tracks the reader's position. The active entry is shown in bold.
 * **Editable title** — the block title is editable inline via RichText and defaults to "Table of Contents". An empty title is omitted from the output.
 * **Heading selection filter** — by default the table collects all `h1`–`h6` headings inside `.wp-block-post-content`. The `a8csp_dynamic_table_of_contents_heading_selectors` filter lets you change which headings are listed (for example, H2 only).
@@ -64,6 +65,10 @@ add_filter(
 );
 `
 
+= Why are accordion (or other wrapper-block) headings missing from the list? =
+
+The automatic anchor only runs on `core/heading` blocks. Headings rendered by other blocks — such as accordions, which wrap their title in a button and extra `span` elements — never receive a server-side `id`, so by default they are skipped. Enable the **Include headings nested in other blocks** toggle in the block's settings to list them; the view script then generates an anchor for each from its text and links the entry to it. Decorative, `aria-hidden` icons (like an accordion toggle's `+`/`-`) are ignored when building the label.
+
 = Why doesn't the block show up on a page or in other contexts? =
 
 The block renders only when it has a post context (a `postId`). It is designed for the singular post view, where a table of contents for the post's headings makes sense, and is intentionally skipped elsewhere.
@@ -77,6 +82,11 @@ The view script uses an `IntersectionObserver` to track which heading is in view
 Yes. The title is editable inline in the editor and defaults to "Table of Contents". Leaving it empty removes it from the output. You can also adjust the rendered title programmatically with the `wpcomsp_dynamic_table_of_contents_block_title` filter.
 
 == Changelog ==
+
+= 0.3.0 =
+* Added an **Include headings nested in other blocks** toggle (off by default) that lists headings from wrapper blocks such as accordions, generating an anchor for each from its text.
+* Heading labels now ignore decorative, `aria-hidden` icons (for example an accordion toggle's `+`/`-` marker).
+* The scroll-spy `IntersectionObserver` no longer throws when a heading has no matching table-of-contents link.
 
 = 0.2.0 =
 * Server-rendered table of contents block that builds its list on the frontend from the post's headings.

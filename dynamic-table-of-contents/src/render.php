@@ -46,11 +46,14 @@ $heading_selectors = apply_filters(
 	$block
 );
 
+$include_nested_headings = ! empty( $attributes['includeNestedHeadings'] );
+
 wp_add_inline_script(
 	'wpcomsp-dynamic-table-of-contents-view',
 	sprintf(
-		'window.wpcomspDynamicTOC=window.wpcomspDynamicTOC||{};window.wpcomspDynamicTOC.headingSelectors=%s;',
-		wp_json_encode( implode( ', ', $heading_selectors ) )
+		'window.wpcomspDynamicTOC=window.wpcomspDynamicTOC||{};window.wpcomspDynamicTOC.headingSelectors=%1$s;window.wpcomspDynamicTOC.includeNestedHeadings=%2$s;',
+		wp_json_encode( implode( ', ', $heading_selectors ) ),
+		wp_json_encode( $include_nested_headings )
 	),
 	'before'
 );
