@@ -2,6 +2,7 @@ const $defaultHeadingSelectors = '.wp-block-post-content h1, .wp-block-post-cont
 const $config = window.wpcomspDynamicTOC || {};
 const $headingSelectors = $config.headingSelectors || $defaultHeadingSelectors;
 const $includeNestedHeadings = Boolean($config.includeNestedHeadings);
+const $excludeSelectors = $config.excludeSelectors || '';
 const $headings = document.querySelectorAll($headingSelectors);
 const $headingList = document.querySelector('.wp-block-wpcomsp-dynamic-table-of-contents ul');
 
@@ -78,6 +79,12 @@ let $isFirstEntry = true;
 $headings.forEach((heading, index) => {
 	// Never list the table of contents' own title.
 	if (heading.closest('.wp-block-wpcomsp-dynamic-table-of-contents')) {
+		return;
+	}
+
+	// Let authors opt a heading out by adding the exclude class to the heading
+	// or any block wrapping it.
+	if ($excludeSelectors && heading.closest($excludeSelectors)) {
 		return;
 	}
 

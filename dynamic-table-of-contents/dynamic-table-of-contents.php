@@ -4,7 +4,7 @@
  * Description:       Creates a table of contents that's dynamically (PHP) rendered.
  * Requires at least: 6.1
  * Requires PHP:      8.0
- * Version:           0.3.0
+ * Version:           0.4.0
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
  * Update URI:        https://opsoasis.wpspecialprojects.com/dynamic-table-of-contents/

@@ -48,12 +48,33 @@ $heading_selectors = apply_filters(
 
 $include_nested_headings = ! empty( $attributes['includeNestedHeadings'] );
 
+$default_exclude_selectors = array( '.hide-from-toc' );
+
+/**
+ * Filters the selectors that exclude a heading from the table of contents.
+ *
+ * A heading is skipped when it — or any ancestor — matches one of these selectors.
+ *
+ * @since 0.4.0
+ *
+ * @param string[] $default_exclude_selectors Array of selectors that exclude a heading.
+ * @param array    $attributes                Block attributes.
+ * @param WP_Block $block                     The block object.
+ */
+$exclude_selectors = apply_filters(
+	'a8csp_dynamic_table_of_contents_exclude_selectors',
+	$default_exclude_selectors,
+	$attributes,
+	$block
+);
+
 wp_add_inline_script(
 	'wpcomsp-dynamic-table-of-contents-view',
 	sprintf(
-		'window.wpcomspDynamicTOC=window.wpcomspDynamicTOC||{};window.wpcomspDynamicTOC.headingSelectors=%1$s;window.wpcomspDynamicTOC.includeNestedHeadings=%2$s;',
+		'window.wpcomspDynamicTOC=window.wpcomspDynamicTOC||{};window.wpcomspDynamicTOC.headingSelectors=%1$s;window.wpcomspDynamicTOC.includeNestedHeadings=%2$s;window.wpcomspDynamicTOC.excludeSelectors=%3$s;',
 		wp_json_encode( implode( ', ', $heading_selectors ) ),
-		wp_json_encode( $include_nested_headings )
+		wp_json_encode( $include_nested_headings ),
+		wp_json_encode( implode( ', ', $exclude_selectors ) )
 	),
 	'before'
 );

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.4.0 - 2026-07-01
+
+### Added
+
+- Per-heading opt-out: adding the `hide-from-toc` CSS class to a heading — or to any block wrapping it, such as a Group or Column — keeps that heading (or every heading in that section) out of the table of contents. The class check runs on the frontend via `element.closest()`.
+- New `a8csp_dynamic_table_of_contents_exclude_selectors` filter to customize which selectors exclude a heading. It receives the default selectors, the block attributes, and the block object, and must return an array of selectors that the view script tests each heading against.
+
 ## 0.3.0 - 2026-06-26
 
 ### Added

@@ -1,6 +1,6 @@
 {
     "name": "dynamic-table-of-contents",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "description": "Creates a table of contents that's dynamically (PHP) rendered.",
     "author": "Automattic Special Projects Team",
     "license": "GPL-2.0-or-later",

@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, table of contents, navigation, headings, accessibility
 Tested up to:      6.8
-Stable tag:        0.3.0
+Stable tag:        0.4.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,6 +22,7 @@ The list is assembled in the browser at render time from the post's live heading
 * **Scroll-spy highlighting** — an `IntersectionObserver` watches the headings and adds an `active` class to the matching link as each section scrolls into view, so the table tracks the reader's position. The active entry is shown in bold.
 * **Editable title** — the block title is editable inline via RichText and defaults to "Table of Contents". An empty title is omitted from the output.
 * **Heading selection filter** — by default the table collects all `h1`–`h6` headings inside `.wp-block-post-content`. The `a8csp_dynamic_table_of_contents_heading_selectors` filter lets you change which headings are listed (for example, H2 only).
+* **Per-heading opt-out** — add the `hide-from-toc` CSS class to a heading (via **Advanced > Additional CSS class(es)**) to keep it out of the list. Adding the class to a wrapping block (such as a Group or Column) excludes every heading inside it. The `a8csp_dynamic_table_of_contents_exclude_selectors` filter lets you change the class(es) that trigger the opt-out.
 * **Title filter** — the `wpcomsp_dynamic_table_of_contents_block_title` filter lets you adjust the rendered title.
 * **Block supports** — background and text colour, padding / margin / block gap spacing, sticky positioning, and border width, radius, and colour, all through the standard block editor controls.
 * **Post-aware rendering** — the block renders only in the context of a post (it requires a `postId`), so it stays out of contexts where a table of contents would not apply.
@@ -69,6 +70,21 @@ add_filter(
 
 The automatic anchor only runs on `core/heading` blocks. Headings rendered by other blocks — such as accordions, which wrap their title in a button and extra `span` elements — never receive a server-side `id`, so by default they are skipped. Enable the **Include headings nested in other blocks** toggle in the block's settings to list them; the view script then generates an anchor for each from its text and links the entry to it. Decorative, `aria-hidden` icons (like an accordion toggle's `+`/`-`) are ignored when building the label.
 
+= How do I keep a specific heading out of the list? =
+
+Add the `hide-from-toc` CSS class to the heading. In the block editor, select the heading, open **Advanced** in the block settings sidebar, and enter `hide-from-toc` under **Additional CSS class(es)**. That heading is then skipped when the table is built. Adding the class to a block that wraps several headings — such as a Group or Column — excludes every heading inside it, so you can drop a whole section in one step.
+
+To change which class triggers the opt-out, use the `a8csp_dynamic_table_of_contents_exclude_selectors` filter, which receives the default selectors, the block attributes, and the block object, and must return an array of CSS selectors. A heading is excluded when it, or any ancestor, matches one of them:
+
+`
+add_filter(
+    'a8csp_dynamic_table_of_contents_exclude_selectors',
+    static function ( array $exclude_selectors ): array {
+        return array( '.no-toc' );
+    }
+);
+`
+
 = Why doesn't the block show up on a page or in other contexts? =
 
 The block renders only when it has a post context (a `postId`). It is designed for the singular post view, where a table of contents for the post's headings makes sense, and is intentionally skipped elsewhere.
@@ -82,6 +98,10 @@ The view script uses an `IntersectionObserver` to track which heading is in view
 Yes. The title is editable inline in the editor and defaults to "Table of Contents". Leaving it empty removes it from the output. You can also adjust the rendered title programmatically with the `wpcomsp_dynamic_table_of_contents_block_title` filter.
 
 == Changelog ==
+
+= 0.4.0 =
+* Added a per-heading opt-out: adding the `hide-from-toc` CSS class to a heading (or a block wrapping it) keeps it out of the table of contents.
+* New `a8csp_dynamic_table_of_contents_exclude_selectors` filter to customize which selectors exclude a heading.
 
 = 0.3.0 =
 * Added an **Include headings nested in other blocks** toggle (off by default) that lists headings from wrapper blocks such as accordions, generating an anchor for each from its text.
