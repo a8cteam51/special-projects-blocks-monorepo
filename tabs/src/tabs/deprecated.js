@@ -37,6 +37,13 @@ const v1 = {
 			enum: [ 'all', 'insert', 'contentOnly', false ],
 		},
 	},
+	supports: {
+		anchor: true,
+		align: [ 'wide', 'full' ],
+		html: false,
+		interactivity: true,
+		multiple: false,
+	},
 	save( { attributes: { tabs } } ) {
 		const tabButtons = [];
 		for ( let index = 0; index < tabs?.length; index++ ) {

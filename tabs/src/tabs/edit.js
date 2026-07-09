@@ -51,6 +51,11 @@ function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 	};
 
 	const handleKeyDown = ( event ) => {
+		// Ignore keystrokes bubbling up from the RichText title so typing
+		// (e.g. spaces) is not intercepted.
+		if ( event.target !== event.currentTarget ) {
+			return;
+		}
 		if ( event.key === 'Enter' || event.key === ' ' ) {
 			event.preventDefault();
 			setActiveTab();
