@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, tabs, accordion, accessibility, gutenberg
 Tested up to:      6.8
-Stable tag:        0.1.2
+Stable tag:        0.1.3
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,6 +69,9 @@ When the tab list overflows its container, left and right scroll arrows appear s
 Yes. Each Tab is an inner-blocks container, so a tab panel can hold any blocks. New tabs start with an empty paragraph that you can replace or build on.
 
 == Changelog ==
+
+= 0.1.3 =
+* Fix frontend keyboard focus for tab controls by keeping the selected tab in the tab order.
 
 = 0.1.2 =
 * Two-block Tabs / Tab architecture with a default two-tab layout.

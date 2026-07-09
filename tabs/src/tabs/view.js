@@ -18,9 +18,7 @@ class TabsAutomatic {
 		this.firstTab = null;
 		this.lastTab = null;
 
-		this.tabs = Array.from(
-			this.tablistNode.querySelectorAll( '.tab' )
-		);
+		this.tabs = Array.from( this.tablistNode.querySelectorAll( '.tab' ) );
 		this.tabpanels = [];
 
 		for ( let i = 0; i < this.tabs.length; i += 1 ) {
@@ -39,6 +37,14 @@ class TabsAutomatic {
 			}
 			this.lastTab = tab;
 		}
+
+		const selectedTab = this.tabs.find(
+			( tab ) => tab.getAttribute( 'aria-selected' ) === 'true'
+		);
+
+		if ( selectedTab || this.firstTab ) {
+			this.setSelectedTab( selectedTab || this.firstTab, false );
+		}
 	}
 
 	setSelectedTab( currentTab, setFocus ) {
@@ -49,15 +55,19 @@ class TabsAutomatic {
 			const tab = this.tabs[ i ];
 			if ( currentTab === tab ) {
 				tab.setAttribute( 'aria-selected', 'true' );
-				tab.removeAttribute( 'tabindex' );
-				this.tabpanels[ i ].removeAttribute( 'hidden' );
+				tab.tabIndex = 0;
+				if ( this.tabpanels[ i ] ) {
+					this.tabpanels[ i ].removeAttribute( 'hidden' );
+				}
 				if ( setFocus ) {
 					tab.focus();
 				}
 			} else {
 				tab.setAttribute( 'aria-selected', 'false' );
 				tab.tabIndex = -1;
-				this.tabpanels[ i ].setAttribute( 'hidden', true );
+				if ( this.tabpanels[ i ] ) {
+					this.tabpanels[ i ].setAttribute( 'hidden', true );
+				}
 			}
 		}
 	}
@@ -162,14 +172,20 @@ class TabsScrollHandler {
 
 		// Keyboard support for scroll arrows
 		this.leftArrow.addEventListener( 'keydown', ( event ) => {
-			if ( ( event.key === 'Enter' || event.key === ' ' ) && ! this.leftArrow.classList.contains( 'hidden' ) ) {
+			if (
+				( event.key === 'Enter' || event.key === ' ' ) &&
+				! this.leftArrow.classList.contains( 'hidden' )
+			) {
 				event.preventDefault();
 				this.scrollLeft();
 			}
 		} );
 
 		this.rightArrow.addEventListener( 'keydown', ( event ) => {
-			if ( ( event.key === 'Enter' || event.key === ' ' ) && ! this.rightArrow.classList.contains( 'hidden' ) ) {
+			if (
+				( event.key === 'Enter' || event.key === ' ' ) &&
+				! this.rightArrow.classList.contains( 'hidden' )
+			) {
 				event.preventDefault();
 				this.scrollRight();
 			}
@@ -190,7 +206,7 @@ class TabsScrollHandler {
 		const scrollAmount = this.tablist.clientWidth * 0.8;
 		this.tablist.scrollBy( {
 			left: -scrollAmount,
-			behavior: 'smooth'
+			behavior: 'smooth',
 		} );
 	}
 
@@ -198,7 +214,7 @@ class TabsScrollHandler {
 		const scrollAmount = this.tablist.clientWidth * 0.8;
 		this.tablist.scrollBy( {
 			left: scrollAmount,
-			behavior: 'smooth'
+			behavior: 'smooth',
 		} );
 	}
 

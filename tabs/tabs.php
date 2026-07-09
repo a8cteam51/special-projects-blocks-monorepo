@@ -5,7 +5,7 @@
  * Description:       A block that allows users to organize content into tabs.
  * Requires at least: 6.5
  * Requires PHP:      8.0
- * Version:           0.1.2
+ * Version:           0.1.3
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
  * License:           GPL-2.0-or-later
@@ -26,6 +26,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * through the block editor in the corresponding context.
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
+ *
+ * @return void
  */
 function wpcomsp_tabs_block_init() {
 	register_block_type( __DIR__ . '/build/tabs' );
