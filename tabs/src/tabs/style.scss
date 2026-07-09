@@ -5,6 +5,7 @@
 @use "@wordpress/base-styles/mixins" as *;
 
 .wp-block-wpcomsp-tabs {
+
 	.tabs-container {
 		display: flex;
 		align-items: center;
@@ -24,7 +25,7 @@
 		padding: 8px 12px;
 		cursor: pointer;
 		font-size: 16px;
-		font-weight: bold;
+		font-weight: 700;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		transition: all 0.2s ease;
 
@@ -33,7 +34,7 @@
 		}
 
 		&::before {
-			content: '';
+			content: "";
 			display: inline-block;
 			width: 0;
 			height: 0;
@@ -99,7 +100,7 @@
 		margin: 0 0 -2px;
 		padding: 3px 3px 4px;
 		outline: none;
-		font-weight: bold;
+		font-weight: 700;
 		overflow: hidden;
 		text-align: center;
 		cursor: pointer;
@@ -111,7 +112,7 @@
 		width: 100%;
 
 		&[aria-selected="true"] {
-			border-bottom: 2px solid black;
+			border-bottom: 2px solid #000;
 		}
 
 		.tab-button-text {
@@ -145,6 +146,7 @@
 	}
 
 	@include break-mobile {
+
 		.scroll-arrow {
 			display: block;
 		}

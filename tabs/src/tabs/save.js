@@ -9,9 +9,10 @@ function TabButton( { isSelected, tabNumber, title } ) {
 		<div
 			id={ `tab-${ tabNumber }` }
 			role="tab"
-			className='tab'
+			className="tab"
 			aria-selected={ isSelected }
 			aria-controls={ `tabpanel-${ tabNumber }` }
+			tabIndex={ isSelected ? 0 : -1 }
 		>
 			<RichText.Content
 				tagName="span"
