@@ -284,6 +284,29 @@ function apply_border_color_attributes( \WP_HTML_Tag_Processor $html, string $bo
 }
 
 /**
+ * Extracts the border width data from a block's border styles.
+ *
+ * Border styles also carry non-width data such as radius and color, which
+ * are handled elsewhere.
+ *
+ * @param array<string, mixed> $attrs Block attributes.
+ *
+ * @return array<string, mixed> Filtered border width data, empty if none set.
+ */
+function get_border_widths( array $attrs ): array {
+	$border_data       = $attrs['style']['border'] ?? array();
+	$border_width_keys = array( 'width', 'top', 'right', 'bottom', 'left' );
+	$border_widths     = array_intersect_key( $border_data, array_flip( $border_width_keys ) );
+
+	return array_filter(
+		$border_widths,
+		function ( mixed $value ): bool {
+			return '' !== $value;
+		}
+	);
+}
+
+/**
  * Resolves a single border width value from block border data.
  *
  * Uses the uniform 'width' if set, otherwise falls back to the 'top'
@@ -308,6 +331,20 @@ function get_border_width( array $border_widths ): string {
 }
 
 /**
+ * Determines whether a block has a border width to render.
+ *
+ * A border radius alone doesn't qualify: with no width there's no stroke to
+ * draw, so the block needs neither the border treatment nor an overlay.
+ *
+ * @param array<string, mixed> $attrs Block attributes.
+ *
+ * @return bool True if the block has a resolvable border width.
+ */
+function has_border_width( array $attrs ): bool {
+	return '' !== get_border_width( get_border_widths( $attrs ) );
+}
+
+/**
  * Updates block border output.
  *
  * @param string               $block_content Block content.
@@ -316,23 +353,9 @@ function get_border_width( array $border_widths ): string {
  * @return string Modified block content.
  */
 function update_block_border( string $block_content, array $attrs ): string {
-	$border_data = $attrs['style']['border'] ?? array();
-
-	// Extract border widths.
-	$border_width_keys = array( 'width', 'top', 'right', 'bottom', 'left' );
-	$border_widths     = array_intersect_key( $border_data, array_flip( $border_width_keys ) );
-	$border_widths     = array_filter(
-		$border_widths,
-		function ( mixed $value ): bool {
-			return '' !== $value;
-		}
-	);
-
-	if ( array() === $border_widths ) {
-		return $block_content;
-	}
-
-	$border_width = get_border_width( $border_widths );
+	$border_data   = $attrs['style']['border'] ?? array();
+	$border_widths = get_border_widths( $attrs );
+	$border_width  = get_border_width( $border_widths );
 
 	if ( '' === $border_width ) {
 		return $block_content;
@@ -360,7 +383,12 @@ function update_block_border( string $block_content, array $attrs ): string {
 	$style         = is_string( $current_style ) && '' !== $current_style
 		? str_replace( $border_styles, '', $current_style )
 		: '';
-	$html->set_attribute( 'style', append_inline_style( $style, "--stroke-width: {$border_width};" ) );
+
+	// `position: relative` makes the block the containing block for the
+	// absolutely positioned overlay span injected by inject_border_overlay().
+	// Core only positions cover and featured image blocks; group and image
+	// blocks would otherwise resolve the overlay against a distant ancestor.
+	$html->set_attribute( 'style', append_inline_style( $style, "--stroke-width: {$border_width};position:relative;" ) );
 
 	return $html->get_updated_html();
 }
@@ -540,15 +568,33 @@ function clip_image_block_children( string $block_content ): string {
  * Renders the border SVG (set as --border-svg by JS) above
  * the block's content layers.
  *
+ * The closing tag is read from the rendered markup rather than assumed from
+ * the block type: the Group block's `tagName` attribute lets it render as a
+ * section, header, main, article, aside, or footer instead of a div.
+ *
  * @param string $block_content Block content.
- * @param bool   $is_image      Whether this is an image block.
  *
  * @return string Modified block content.
  */
-function inject_border_overlay( string $block_content, bool $is_image ): string {
+function inject_border_overlay( string $block_content ): string {
+	$html = new \WP_HTML_Tag_Processor( $block_content );
+
+	if ( ! $html->next_tag() ) {
+		return $block_content;
+	}
+
+	$root_tag = $html->get_tag();
+
+	if ( null === $root_tag ) {
+		return $block_content;
+	}
+
 	$overlay     = '<span class="dynamic-shape-border-overlay" aria-hidden="true" style="background:var(--border-svg);clip-path:var(--clip-path);bottom:0;left:0;margin:0;pointer-events:none;position:absolute;right:0;top:0;z-index:2;"></span>';
-	$closing_tag = $is_image ? '</figure>' : '</div>';
-	$last_pos    = strrpos( $block_content, $closing_tag );
+	$closing_tag = '</' . strtolower( $root_tag ) . '>';
+
+	// The root element wraps the whole block, so its closing tag is the last
+	// occurrence of that tag name — nested tags of the same name close first.
+	$last_pos = strripos( $block_content, $closing_tag );
 
 	if ( false !== $last_pos ) {
 		$block_content = substr_replace( $block_content, $overlay, $last_pos, 0 );
@@ -617,9 +663,9 @@ function apply_style_transforms( string $block_content, array $attrs, bool $is_i
 		$block_content = update_block_shadow( $block_content, $attrs['style']['shadow'] );
 	}
 
-	if ( array() !== ( $attrs['style']['border'] ?? array() ) ) {
+	if ( has_border_width( $attrs ) ) {
 		$block_content = update_block_border( $block_content, $attrs );
-		$block_content = inject_border_overlay( $block_content, $is_image );
+		$block_content = inject_border_overlay( $block_content );
 	}
 
 	if ( $is_image ) {
