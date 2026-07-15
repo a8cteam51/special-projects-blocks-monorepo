@@ -23,8 +23,8 @@ import { __ } from '@wordpress/i18n';
 // Internal dependencies.
 import { getPath } from './imports/get-path';
 import { AxisControls } from './imports/axis-controls';
+import { axisConfig, useSpacingPresets } from './imports/editor-utils';
 import {
-	axisConfig,
 	encodeSvgForDataUri,
 	getComputedPixelValue,
 	getPaddingVar,
@@ -32,7 +32,6 @@ import {
 	isPresetValue,
 	presetToCssVar,
 	resolveColor,
-	useSpacingPresets,
 } from './imports/utils';
 
 /**

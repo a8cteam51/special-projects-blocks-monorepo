@@ -1,8 +1,13 @@
 /* global getComputedStyle */
 
-// WordPress dependencies.
-import { useSettings } from '@wordpress/block-editor';
-import { __ } from '@wordpress/i18n';
+/**
+ * Shared helpers for both the editor and front-end bundles.
+ *
+ * This module is reachable from `view.js`, so it must stay free of
+ * `@wordpress/block-editor` imports — anything imported here lands in
+ * `view.asset.php` and gets enqueued on the front-end. Editor-only
+ * helpers belong in `editor-utils.js`.
+ */
 
 /**
  * Converts a preset value to a CSS variable.
@@ -241,56 +246,4 @@ export const resolveColor = (
 	}
 
 	return fallback;
-};
-
-/**
- * Custom hook to get spacing presets with fallback priority.
- *
- * @return {Array} The resolved spacing presets.
- */
-export const useSpacingPresets = () => {
-	const defaultSpacingPresets = useSettings(
-		'spacing.spacingSizes.default'
-	)?.[ 0 ];
-	const themeSpacingPresets = useSettings(
-		'spacing.spacingSizes.theme'
-	)?.[ 0 ];
-	const blockPresets =
-		useSettings( 'blocks.core/group' )?.[ 0 ]?.spacing?.presets;
-
-	if ( blockPresets?.length ) {
-		return blockPresets;
-	}
-	if ( themeSpacingPresets?.length ) {
-		return themeSpacingPresets;
-	}
-	if ( defaultSpacingPresets?.length ) {
-		return defaultSpacingPresets;
-	}
-	return [];
-};
-
-/**
- * Creates corner configuration arrays for axis controls.
- *
- * @param {Array} keys Array of corner keys.
- *
- * @return {Array} Array of corner objects with key and label.
- */
-export const axisConfig = ( keys ) => {
-	const labels = {
-		vtl: __( 'Top left', 'a8csp-dynamic-shapes' ),
-		vtr: __( 'Top right', 'a8csp-dynamic-shapes' ),
-		vbl: __( 'Bottom left', 'a8csp-dynamic-shapes' ),
-		vbr: __( 'Bottom right', 'a8csp-dynamic-shapes' ),
-		htl: __( 'Top left', 'a8csp-dynamic-shapes' ),
-		htr: __( 'Top right', 'a8csp-dynamic-shapes' ),
-		hbl: __( 'Bottom left', 'a8csp-dynamic-shapes' ),
-		hbr: __( 'Bottom right', 'a8csp-dynamic-shapes' ),
-	};
-
-	return keys.map( ( key ) => ( {
-		key,
-		label: labels[ key ],
-	} ) );
 };
