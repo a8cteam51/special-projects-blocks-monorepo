@@ -199,10 +199,19 @@ function get_computed_pixel_value( string $value ): int {
  * @return string Color.
  */
 function get_theme_palette_color( string $slug ): string {
-	$theme_settings = wp_get_global_settings();
-	$palette        = $theme_settings['color']['palette']['theme']
-					?? $theme_settings['color']['palette']['default']
-					?? array();
+	$theme_settings  = wp_get_global_settings();
+	$palettes        = $theme_settings['color']['palette'] ?? array();
+	$theme_palette   = $palettes['theme'] ?? array();
+	$default_palette = $palettes['default'] ?? array();
+
+	// A theme can define an empty palette to clear the theme colors, so fall
+	// back on emptiness rather than absence — otherwise an empty theme palette
+	// would shadow the default one and every color would resolve to black.
+	$palette = array() !== $theme_palette ? $theme_palette : $default_palette;
+
+	if ( ! is_array( $palette ) ) {
+		return rawurlencode( '#000000' );
+	}
 
 	foreach ( $palette as $color ) {
 		if ( isset( $color['slug'] ) && $color['slug'] === $slug ) {

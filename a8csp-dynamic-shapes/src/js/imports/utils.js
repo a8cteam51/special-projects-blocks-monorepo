@@ -85,10 +85,14 @@ export const getComputedPixelValue = ( value, element = null ) => {
 		temp.style.cssText = 'position:absolute;visibility:hidden;height:0;';
 		temp.style.width = cssVar;
 		document.documentElement.appendChild( temp );
-		const pixels = parseFloat( window.getComputedStyle( temp ).width ) || 0;
-		temp.remove();
 
-		return pixels;
+		// `finally` so the node can't outlive the measurement if reading the
+		// computed style throws.
+		try {
+			return parseFloat( window.getComputedStyle( temp ).width ) || 0;
+		} finally {
+			temp.remove();
+		}
 	} catch ( error ) {
 		return 0;
 	}
