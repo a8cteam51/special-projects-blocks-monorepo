@@ -284,6 +284,30 @@ function apply_border_color_attributes( \WP_HTML_Tag_Processor $html, string $bo
 }
 
 /**
+ * Strips inline border-color declarations from a style attribute value.
+ *
+ * A palette border color is saved as a class, which apply_border_color_attributes()
+ * removes. A custom color is saved as an inline `border-color` instead, and core's
+ * `html :where([style*=border-color])` rule gives any element carrying one
+ * `border-style: solid` — which, with the width stripped, renders a spurious
+ * medium-width border over the SVG stroke. Remove the inline half here so both
+ * kinds of border color are taken off the block.
+ *
+ * @param string $style Inline style attribute value.
+ *
+ * @return string The style value with border-color declarations removed.
+ */
+function remove_inline_border_color( string $style ): string {
+	// The lookbehind keeps custom properties such as `--theme-border-color`
+	// from matching.
+	return (string) preg_replace(
+		'/(?<![\w-])border(?:-(?:top|right|bottom|left))?-color\s*:[^;]*;?\s*/',
+		'',
+		$style
+	);
+}
+
+/**
  * Extracts the border width data from a block's border styles.
  *
  * Border styles also carry non-width data such as radius and color, which
@@ -383,6 +407,7 @@ function update_block_border( string $block_content, array $attrs ): string {
 	$style         = is_string( $current_style ) && '' !== $current_style
 		? str_replace( $border_styles, '', $current_style )
 		: '';
+	$style         = remove_inline_border_color( $style );
 
 	// `position: relative` makes the block the containing block for the
 	// absolutely positioned overlay span injected by inject_border_overlay().
@@ -545,6 +570,7 @@ function clip_image_block_children( string $block_content ): string {
 				'',
 				$current_style
 			);
+			$current_style = remove_inline_border_color( $current_style );
 
 			$html->set_attribute( 'style', append_inline_style( $current_style, 'clip-path:var(--clip-path)' ) );
 
