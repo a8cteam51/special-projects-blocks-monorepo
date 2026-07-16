@@ -9,7 +9,20 @@
 	"description": "Add a contributor list to your group.",
 	"example": {},
 	"supports": {
-		"html": false
+		"color": {
+			"background": true,
+			"text": true
+		},
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"textAlign": true
+		}
 	},
 	"attributes": {
 		"perPage": {
@@ -27,6 +40,18 @@
 		"avatarSize": {
 			"type": "number",
 			"default": 50
+		},
+		"showAvatars": {
+			"type": "boolean",
+			"default": true
+		},
+		"showMemberCount": {
+			"type": "boolean",
+			"default": true
+		},
+		"memberLink": {
+			"type": "boolean",
+			"default": true
 		}
 	},
 	"textdomain": "bp-groups-blocks",

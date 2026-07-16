@@ -1,6 +1,6 @@
 {
 	"name": "bp-groups",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "BuddyPress-gated blocks for group lists, contributors, progress bars, and group variations.",
 	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",
