@@ -225,9 +225,13 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				dimensions.width &&
 				dimensions.height
 			) {
-				// Double the border width to account for stroke being centered
-				// on path. The clip-path trims it to the correct visual width.
-				const borderWidth =
+				// Double the border width for the SVG only: the stroke is
+				// centered on the path, so the clip-path trims its outer half,
+				// leaving the authored width visible. The `--stroke-width`
+				// custom property below must stay the single, visible width —
+				// it feeds the padding calc, matching the front end where PHP
+				// sets it to the raw border width.
+				const strokeWidth =
 					getPixelValue( style.border.width, wrapperRef.current ) * 2;
 
 				const borderColor = resolveColor(
@@ -244,12 +248,12 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 					'#000000'
 				);
 
-				const svg = `<svg width="${ dimensions.width }" height="${ dimensions.height }" viewBox="0 0 ${ dimensions.width } ${ dimensions.height }" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="${ path }" stroke="${ borderColor }" stroke-width="${ borderWidth }"/></svg>`;
+				const svg = `<svg width="${ dimensions.width }" height="${ dimensions.height }" viewBox="0 0 ${ dimensions.width } ${ dimensions.height }" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="${ path }" stroke="${ borderColor }" stroke-width="${ strokeWidth }"/></svg>`;
 
 				newStyles[
 					'--border-svg'
 				] = `url("data:image/svg+xml,${ encodeSvgForDataUri( svg ) }")`;
-				newStyles[ '--stroke-width' ] = `${ borderWidth }px`;
+				newStyles[ '--stroke-width' ] = style.border.width;
 			}
 
 			setBgAndBorderProps( newStyles );
