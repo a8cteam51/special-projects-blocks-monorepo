@@ -9,10 +9,7 @@
 	"description": "Display a list of BuddyPress groups.",
 	"example": {},
 	"supports": {
-		"align": [
-			"wide",
-			"full"
-		],
+		"align": [ "wide", "full" ],
 		"allowedBlocks": true,
 		"color": {
 			"text": true,
@@ -23,10 +20,7 @@
 		"layout": true,
 		"reusable": false,
 		"spacing": {
-			"blockGap": [
-				"horizontal",
-				"vertical"
-			],
+			"blockGap": [ "horizontal", "vertical" ],
 			"margin": true,
 			"padding": true
 		}

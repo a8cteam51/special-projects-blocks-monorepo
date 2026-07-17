@@ -98,7 +98,7 @@ export const withBuddypressGroupAvatarControls = ( BlockEdit ) => ( props ) => {
 		'bp-groups/group-cover-image'
 	) {
 		const { attributes, setAttributes } = props;
-		const { metadata, href } = attributes;
+		const { href } = attributes;
 
 		const updateImageLink = ( newValue ) => {
 			let newAttributes = { ...attributes };
@@ -153,9 +153,8 @@ export const withBuddypressGroupAvatarControls = ( BlockEdit ) => ( props ) => {
 				</InspectorControls>
 			</>
 		);
-	} else {
-		return <BlockEdit key="edit" { ...props } />;
 	}
+	return <BlockEdit key="edit" { ...props } />;
 };
 
 addFilter(
