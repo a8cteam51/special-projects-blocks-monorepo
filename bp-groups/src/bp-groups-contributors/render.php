@@ -36,8 +36,8 @@ $i                 = 1;
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
 	<?php
 	printf(
-		'<p class="bp-groups-contributors__count">%s %s %s</p>',
-		$show_member_count ? intval( $members_count ) : '',
+		'<p class="bp-groups-contributors__count">%s%s %s</p>',
+		$show_member_count ? intval( $members_count ) . ' ' : '',
 		esc_html( $count_text ),
 		$show_avatars && ( $members_count > $members_per_page ) && 'button' === $all_members_style ? '<button class="bp-groups-contributors__view-all" tabindex="0">' . esc_html( $all_members_text ) . '</button>' : ''
 	);
@@ -58,7 +58,7 @@ $i                 = 1;
 						)
 					);
 
-					$member_link = $member_link ? bp_get_group_member_domain() : '';
+					$member_domain = $member_link ? bp_get_group_member_domain() : '';
 					?>
 						<li
 							class="bp-groups-contributors__avatar"
@@ -68,7 +68,7 @@ $i                 = 1;
 							if ( $member_link ) {
 								printf(
 									'<a href="%s" class="bp-groups-contributors__avatar-link">%s</a>',
-									esc_url( $member_link ),
+									esc_url( $member_domain ),
 									wp_kses_post( $member_avatar )
 								);
 							} else {
