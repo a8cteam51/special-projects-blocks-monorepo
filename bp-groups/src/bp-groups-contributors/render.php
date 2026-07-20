@@ -24,6 +24,7 @@ $members_count     = $members['count'];
 $show_avatars      = $attributes['showAvatars'] ?? true;
 $show_member_count = $attributes['showMemberCount'] ?? true;
 $member_link       = $attributes['memberLink'] ?? true;
+$all_members_style = $attributes['showAllMembersStyle'] ?? 'button';
 $members_per_page  = $attributes['perPage'] ?? 5;
 $count_text        = $attributes['countText'] ?? __( 'members', 'bp-groups-blocks' );
 $all_members_text  = $attributes['allMembersText'] ?? __( 'View All', 'bp-groups-blocks' );
@@ -38,7 +39,7 @@ $i                 = 1;
 		'<p class="bp-groups-contributors__count">%s %s %s</p>',
 		$show_member_count ? intval( $members_count ) : '',
 		esc_html( $count_text ),
-		$show_avatars && ( $members_count > $members_per_page ) ? '<button class="bp-groups-contributors__view-all" tabindex="0">' . esc_html( $all_members_text ) . '</button>' : ''
+		$show_avatars && ( $members_count > $members_per_page ) && 'button' === $all_members_style ? '<button class="bp-groups-contributors__view-all" tabindex="0">' . esc_html( $all_members_text ) . '</button>' : ''
 	);
 	?>
 
@@ -77,6 +78,14 @@ $i                 = 1;
 						</li>
 					<?php
 					++$i;
+				}
+				if ( $show_avatars && ( $members_count > $members_per_page ) && 'link' === $all_members_style ) {
+					printf(
+						'<li class="bp-groups-contributors__avatar bp-groups-contributors__avatar--more" %s><button data-size="%s" class="bp-groups-contributors__view-all" tabindex="0">%s</button></li>',
+						( $members_count > $members_per_page ) ? '' : 'hidden',
+						esc_attr( $size ),
+						esc_html( '+' . ( $members_count - $members_per_page ) )
+					);
 				}
 			}
 			?>

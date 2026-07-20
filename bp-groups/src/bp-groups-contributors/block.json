@@ -52,6 +52,10 @@
 		"memberLink": {
 			"type": "boolean",
 			"default": true
+		},
+		"showAllMembersStyle": {
+			"type": "string",
+			"default": "button"
 		}
 	},
 	"textdomain": "bp-groups-blocks",

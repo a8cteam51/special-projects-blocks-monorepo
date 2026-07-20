@@ -22,6 +22,7 @@ import {
 	RangeControl,
 	PanelBody,
 	ToggleControl,
+	SelectControl,
 } from '@wordpress/components';
 
 /**
@@ -53,6 +54,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		showAvatars,
 		showMemberCount,
 		memberLink,
+		showAllMembersStyle,
 	} = attributes;
 
 	const avatars = perPage ? [ ...Array( perPage ).keys() ] : [];
@@ -114,6 +116,22 @@ export default function Edit( { attributes, setAttributes } ) {
 									'bp-groups-blocks'
 								) }
 							/>
+							<SelectControl
+								label={ __(
+									'Show all style',
+									'bp-groups-blocks'
+								) }
+								value={ showAllMembersStyle }
+								options={ [
+									{ label: 'Button', value: 'button' },
+									{ label: 'Inline Link', value: 'link' },
+								] }
+								onChange={ ( newStyle ) =>
+									setAttributes( {
+										showAllMembersStyle: newStyle,
+									} )
+								}
+							/>
 						</>
 					) }
 					<h3>{ __( 'Member Count', 'bp-groups-blocks' ) }</h3>
@@ -142,7 +160,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							'bp-groups-blocks'
 						) }
 					/>
-					{ showAvatars && (
+					{ showAvatars && showAllMembersStyle === 'button' && (
 						<RichText
 							tagName="button"
 							value={ allMembersText }
@@ -158,7 +176,13 @@ export default function Edit( { attributes, setAttributes } ) {
 					) }
 				</p>
 				{ showAvatars && (
-					<ul className="bp-groups-contributors__avatars">
+					<ul
+						className="bp-groups-contributors__avatars"
+						style={ {
+							display: 'flex',
+							flexWrap: 'wrap',
+						} }
+					>
 						{ avatars.map( ( _, index ) => (
 							<li
 								key={ index }
@@ -170,6 +194,21 @@ export default function Edit( { attributes, setAttributes } ) {
 								} }
 							></li>
 						) ) }
+						{ showAvatars && showAllMembersStyle === 'link' && (
+							<li
+								className="bp-groups-contributors__avatar"
+								style={ {
+									backgroundColor: '#ccc',
+									display: 'inline-flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+									width: avatarSize,
+									height: avatarSize,
+								} }
+							>
+								+{ perPage }
+							</li>
+						) }
 					</ul>
 				) }
 			</div>

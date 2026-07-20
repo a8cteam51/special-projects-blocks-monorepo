@@ -115,6 +115,7 @@ Updates to the BP Groups Contributors block.
 - Added option to hide the avatar list (showing just the member count)
 - Added option to link to the members home page
 - Added option to hide the members count
+- Added style option for the show more button
 
 
 = 0.1.0 =
