@@ -27,6 +27,7 @@ $member_link       = $attributes['memberLink'] ?? true;
 $all_members_style = $attributes['showAllMembersStyle'] ?? 'button';
 $members_per_page  = $attributes['perPage'] ?? 5;
 $count_text        = $attributes['countText'] ?? __( 'members', 'bp-groups-blocks' );
+$count_text_single = $attributes['countTextSingle'] ?? __( 'member', 'bp-groups-blocks' );
 $all_members_text  = $attributes['allMembersText'] ?? __( 'View All', 'bp-groups-blocks' );
 $size              = $attributes['avatarSize'] ?? 50;
 $img_size          = $size < 50 ? 'thumb' : 'full';
@@ -38,7 +39,7 @@ $i                 = 1;
 	printf(
 		'<p class="bp-groups-contributors__count">%s%s %s</p>',
 		$show_member_count ? intval( $members_count ) . ' ' : '',
-		esc_html( $count_text ),
+		1 === intval( $members_count ) && $show_member_count ? esc_html( $count_text_single ) : esc_html( $count_text ),
 		$show_avatars && ( $members_count > $members_per_page ) && 'button' === $all_members_style ? '<button class="bp-groups-contributors__view-all" tabindex="0">' . esc_html( $all_members_text ) . '</button>' : ''
 	);
 	?>

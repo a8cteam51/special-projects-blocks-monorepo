@@ -33,6 +33,10 @@
 			"type": "string",
 			"default": "members"
 		},
+		"countTextSingle": {
+			"type": "string",
+			"default": "member"
+		},
 		"allMembersText": {
 			"type": "string",
 			"default": "View All"

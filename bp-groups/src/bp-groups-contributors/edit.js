@@ -49,6 +49,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	const {
 		perPage,
 		countText,
+		countTextSingle,
 		allMembersText,
 		avatarSize,
 		showAvatars,
@@ -157,6 +158,18 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 						placeholder={ __(
 							'Contributors count text',
+							'bp-groups-blocks'
+						) }
+					/>
+					/
+					<RichText
+						tagName="span"
+						value={ countTextSingle }
+						onChange={ ( value ) =>
+							setAttributes( { countTextSingle: value } )
+						}
+						placeholder={ __(
+							'Single count text',
 							'bp-groups-blocks'
 						) }
 					/>
