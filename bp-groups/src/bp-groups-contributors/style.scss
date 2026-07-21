@@ -6,13 +6,15 @@
  */
 
 .bp-groups-contributors {
+
 	&__view-all {
 		background-color: transparent;
 		border: none;
-		color: currentColor;
+		color: currentcolor;
 		font-size: inherit;
 		text-decoration: underline;
 	}
+
 	&__avatars {
 		list-style: none;
 		padding: 0;
@@ -30,9 +32,11 @@
 }
 
 @keyframes fadeIn {
+
 	from {
 		opacity: 0;
 	}
+
 	to {
 		opacity: 1;
 	}

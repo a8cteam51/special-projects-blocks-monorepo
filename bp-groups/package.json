@@ -1,6 +1,6 @@
 {
 	"name": "bp-groups",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "BuddyPress-gated blocks for group lists, contributors, progress bars, and group variations.",
 	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",
@@ -22,6 +22,7 @@
 		"@wordpress/components": "latest",
 		"@wordpress/data": "latest",
 		"@wordpress/element": "latest",
+		"@wordpress/hooks": "^4.51.0",
 		"@wordpress/i18n": "latest",
 		"@wordpress/icons": "latest",
 		"@wordpress/url": "latest",

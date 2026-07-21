@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       BP Groups Blocks
  * Description:       Example block scaffolded with Create Block tool.
- * Version:           0.1.0
+ * Version:           0.2.0
  * Requires at least: 6.8
  * Requires PHP:      7.4
  * Author:            Automattic Special Projects Team

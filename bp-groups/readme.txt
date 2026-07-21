@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block BuddyPress
 Tested up to:      6.8
-Stable tag:        0.1.0
+Stable tag:        0.2.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,7 @@ Three custom blocks and four block variations for BuddyPress groups.
 ## Custom Blocks:
 
 - Group Contributors
-A list Contributors for the current groups
+A list Contributors for the current group
 
 - Groups list
 A query loop type block that allows viewing of a list of groups.
@@ -104,6 +104,19 @@ wp.domReady( () => {
 2. Screenshot of how this looks in the front end.
 
 == Changelog ==
+
+= 0.2.0 =
+Updates to the BP Groups Contributors block.
+
+- Added block.json supports for:
+  - Background and text colors
+  - Margin and Padding
+  - Font size, Line Height, Text Align
+- Added option to hide the avatar list (showing just the member count)
+- Added option to link to the members home page
+- Added option to hide the members count
+- Added style option for the show more button
+
 
 = 0.1.0 =
 * Release
