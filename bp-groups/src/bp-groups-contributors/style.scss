@@ -6,7 +6,6 @@
  */
 
 .bp-groups-contributors {
-
 	&__view-all {
 		background-color: transparent;
 		border: none;
@@ -28,11 +27,16 @@
 		&.fade-in {
 			animation: fadeIn 0.3s ease-in-out forwards;
 		}
+
+		.bp-groups-contributors__view-all {
+			height: var(--avatar-size);
+			font-size: calc(var(--avatar-size) * 0.35);
+			width: var(--avatar-size);
+		}
 	}
 }
 
 @keyframes fadeIn {
-
 	from {
 		opacity: 0;
 	}

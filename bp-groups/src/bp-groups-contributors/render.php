@@ -82,7 +82,7 @@ $i                 = 1;
 				}
 				if ( $show_avatars && ( $members_count > $members_per_page ) && 'link' === $all_members_style ) {
 					printf(
-						'<li class="bp-groups-contributors__avatar bp-groups-contributors__avatar--more" %s><button data-size="%s" class="bp-groups-contributors__view-all" tabindex="0">%s</button></li>',
+						'<li class="bp-groups-contributors__avatar bp-groups-contributors__avatar--more" %s><button style="--avatar-size: %spx;" class="bp-groups-contributors__view-all" tabindex="0">%s</button></li>',
 						( $members_count > $members_per_page ) ? '' : 'hidden',
 						esc_attr( $size ),
 						esc_html( '+' . ( $members_count - $members_per_page ) )
