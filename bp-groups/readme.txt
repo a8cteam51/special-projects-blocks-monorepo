@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block BuddyPress
 Tested up to:      6.8
-Stable tag:        0.2.0
+Stable tag:        0.2.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,9 @@ wp.domReady( () => {
 2. Screenshot of how this looks in the front end.
 
 == Changelog ==
+
+= 0.2.1 =
+Style update for the inline view all button to add inline style variable for widths and height and font size based on button size.
 
 = 0.2.0 =
 Updates to the BP Groups Contributors block.

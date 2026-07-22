@@ -208,18 +208,21 @@ export default function Edit( { attributes, setAttributes } ) {
 							></li>
 						) ) }
 						{ showAvatars && showAllMembersStyle === 'link' && (
-							<li
-								className="bp-groups-contributors__avatar"
-								style={ {
-									backgroundColor: '#ccc',
-									display: 'inline-flex',
-									justifyContent: 'center',
-									alignItems: 'center',
-									width: avatarSize,
-									height: avatarSize,
-								} }
-							>
-								+{ perPage }
+							<li className="bp-groups-contributors__avatar">
+								<span
+									className="bp-groups-contributors__view-all"
+									style={ {
+										backgroundColor: '#ccc',
+										display: 'inline-flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+										width: avatarSize,
+										height: avatarSize,
+										'--avatar-size': avatarSize + 'px',
+									} }
+								>
+									+{ perPage }
+								</span>
 							</li>
 						) }
 					</ul>
