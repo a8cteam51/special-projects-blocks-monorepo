@@ -439,15 +439,26 @@ function get_dynamic_shape_padding_value( string $value ): ?string {
 		return null;
 	}
 
-	$pixels = get_computed_pixel_value( $value );
+	$is_preset = is_preset_value( $value );
+
+	// Match how view.js derives the clip path from the same value: presets go
+	// through the computed pixel value, everything else is parsed as a float.
+	// PHP writes the final front-end padding and nothing re-computes it on load,
+	// so a plain (int) cast here would inset content less than the shape is
+	// clipped for fractional widths such as "12.5px".
+	$pixels = $is_preset ? get_computed_pixel_value( $value ) : (float) $value;
 
 	if ( $pixels <= 0 ) {
 		return null;
 	}
 
-	return is_preset_value( $value )
-		? preset_to_css_var( $value )
-		: "{$pixels}px";
+	if ( $is_preset ) {
+		return preset_to_css_var( $value );
+	}
+
+	// Preserve the authored fractional value; append a unit only if a bare
+	// number somehow reaches here.
+	return str_ends_with( $value, 'px' ) ? $value : $value . 'px';
 }
 
 /**

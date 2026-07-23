@@ -104,8 +104,11 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 								wrapperRef.current
 							);
 						}
-						// Handle regular pixel values.
-						return parseInt( value ) || 0;
+						// Handle regular pixel values. Use parseFloat, not
+						// parseInt, to keep fractional widths (e.g. 12.5px):
+						// get-path.js parses the clip path the same way, so the
+						// preview padding stays aligned with the clipped shape.
+						return parseFloat( value ) || 0;
 					} );
 
 				if ( values.length === 0 ) {

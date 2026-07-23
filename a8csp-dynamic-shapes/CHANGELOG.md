@@ -9,6 +9,8 @@
 - Custom border colors no longer paint a second, spurious border over the SVG stroke. A custom color is saved as an inline `border-color`, which core's `html :where([style*=border-color])` rule turns into a `border-style: solid`; only the palette equivalent's class was being removed.
 - Border colors now fall back to the default palette when a theme defines an empty palette, instead of resolving every border to black.
 - Editor no longer over-pads bordered blocks. The `--stroke-width` custom property that feeds the padding calc was set to double the authored width (the value the SVG stroke needs), so content was inset by twice the border width; it now matches the single, visible width used on the front end.
+- Editor preview padding no longer drifts below the clipped shape for fractional corner offsets. `getMaxOffset()` truncated custom pixel values with `parseInt` (e.g. `12.5px` became `12`), while the clip path keeps the fractional value; it now uses `parseFloat` to match.
+- Front-end padding no longer drifts below the clipped shape for fractional corner offsets. `get_dynamic_shape_padding_value()` cast custom pixel values to `int` (e.g. `12.5px` became `12`), while `view.js` clips the path from the same value with `parseFloat`; the padding now preserves the fractional value.
 
 ## 0.1.0
 
