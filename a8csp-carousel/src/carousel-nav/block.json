@@ -1,0 +1,70 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/carousel-nav",
+	"version": "0.1.0",
+	"title": "Carousel Navigation",
+	"category": "widgets",
+	"icon": "controls-back",
+	"description": "Display previous and next navigation buttons for a carousel.",
+	"example": {},
+	"attributes": {
+		"layout": {
+			"type": "object"
+		},
+		"buttonColors": {
+			"type": "object",
+			"default": {
+				"background": "",
+				"backgroundHover": "",
+				"icon": "",
+				"iconHover": ""
+			}
+		},
+		"buttonSize": {
+			"type": "number",
+			"default": 48
+		},
+		"customIcon": {
+			"type": "boolean",
+			"default": false
+		},
+		"iconUpload": {
+			"type": "object"
+		}
+	},
+	"supports": {
+		"align": true,
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"default": {
+				"type": "flex"
+			}
+		},
+		"spacing": {
+			"blockGap": [ "horizontal", "vertical" ],
+			"margin": true,
+			"padding": true,
+			"__experimentalDefaultControls": {
+				"blockGap": true
+			}
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"width": true,
+			"__experimentalSkipSerialization": true,
+			"__experimentalDefaultControls": {
+				"color": true,
+				"radius": true,
+				"width": true
+			}
+		}
+	},
+	"ancestor": [ "a8csp/carousel" ],
+	"textdomain": "a8csp-carousel",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

@@ -1,0 +1,89 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/carousel",
+	"version": "0.1.0",
+	"title": "Carousel",
+	"category": "widgets",
+	"icon": "slides",
+	"description": "Display a horizontal series of content.",
+	"example": {},
+	"supports": {
+		"align": true,
+		"anchor": true,
+		"color": {
+			"background": true,
+			"text": false
+		},
+		"html": false,
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"default": {
+				"type": "flex"
+			}
+		},
+		"spacing": {
+			"blockGap": true,
+			"margin": true,
+			"padding": true
+		}
+	},
+	"attributes": {
+		"animate": {
+			"type": "string",
+			"default": "one"
+		},
+		"animateEnd": {
+			"type": "string",
+			"default": "stop",
+			"enum": [ "stop", "jump", "infinite" ]
+		},
+		"animationSpeed": {
+			"type": "number",
+			"default": 0.3
+		},
+		"itemCount": {
+			"type": "number",
+			"default": 0
+		},
+		"overflow": {
+			"type": "string",
+			"default": "hidden",
+			"enum": [ "hidden", "right", "left", "both" ]
+		},
+		"title": {
+			"type": "string"
+		},
+		"trackHeight": {
+			"type": "number"
+		},
+		"trackHeightUnit": {
+			"type": "string",
+			"default": "px"
+		},
+		"type": {
+			"type": "string"
+		}
+	},
+	"allowedBlocks": [
+		"core/query",
+		"core/gallery",
+		"core/group",
+		"core/columns",
+		"core/paragraph",
+		"core/heading",
+		"woocommerce/product-collection",
+		"a8csp/carousel-nav",
+		"a8csp/carousel-pagination"
+	],
+	"providesContext": {
+		"a8csp/item-count": "itemCount"
+	},
+	"textdomain": "a8csp-carousel",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"viewScript": "file:./view.js",
+	"viewStyle": "file:./view.css",
+	"style": "file:./style-index.css"
+}
