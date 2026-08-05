@@ -5,7 +5,7 @@
  * Description:       A block that allows users to organize content into tabs.
  * Requires at least: 6.5
  * Requires PHP:      8.0
- * Version:           0.1.3
+ * Version:           0.2.0
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
  * License:           GPL-2.0-or-later
