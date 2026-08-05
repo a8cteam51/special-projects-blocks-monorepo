@@ -40,17 +40,19 @@ add_action( 'init', 'wpcomsp_tabs_block_init' );
  * Existing content keeps rendering and stays editable, and can be converted
  * to `core/tabs` from the block toolbar.
  *
- * @return void
+ * @param array $metadata Metadata loaded from the `block.json` file.
+ *
+ * @return array
  */
-function wpcomsp_tabs_hide_from_inserter() {
-	$registry = WP_Block_Type_Registry::get_instance();
-	if ( ! $registry->is_registered( 'core/tabs' ) ) {
-		return;
+function wpcomsp_tabs_hide_from_inserter( $metadata ) {
+	if ( 'wpcomsp/tabs' !== $metadata['name'] ) {
+		return $metadata;
 	}
 
-	$block_type = $registry->get_registered( 'wpcomsp/tabs' );
-	if ( $block_type instanceof WP_Block_Type && is_array( $block_type->supports ) ) {
-		$block_type->supports['inserter'] = false;
+	if ( WP_Block_Type_Registry::get_instance()->is_registered( 'core/tabs' ) ) {
+		$metadata['supports']['inserter'] = false;
 	}
+
+	return $metadata;
 }
-add_action( 'wp_loaded', 'wpcomsp_tabs_hide_from_inserter' );
+add_filter( 'block_type_metadata', 'wpcomsp_tabs_hide_from_inserter' );
