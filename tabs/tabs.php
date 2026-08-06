@@ -34,25 +34,3 @@ function wpcomsp_tabs_block_init() {
 	register_block_type( __DIR__ . '/build/tab' );
 }
 add_action( 'init', 'wpcomsp_tabs_block_init' );
-
-/**
- * Removes the block from the inserter on sites that ship the core Tabs block.
- * Existing content keeps rendering and stays editable, and can be converted
- * to `core/tabs` from the block toolbar.
- *
- * @param array $metadata Metadata loaded from the `block.json` file.
- *
- * @return array
- */
-function wpcomsp_tabs_hide_from_inserter( $metadata ) {
-	if ( 'wpcomsp/tabs' !== $metadata['name'] ) {
-		return $metadata;
-	}
-
-	if ( WP_Block_Type_Registry::get_instance()->is_registered( 'core/tabs' ) ) {
-		$metadata['supports']['inserter'] = false;
-	}
-
-	return $metadata;
-}
-add_filter( 'block_type_metadata', 'wpcomsp_tabs_hide_from_inserter' );
