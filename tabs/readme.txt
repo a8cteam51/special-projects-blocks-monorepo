@@ -10,7 +10,7 @@ A block that lets you organize content into accessible, keyboard-navigable tabs 
 
 == Description ==
 
-**Superseded by the core Tabs block.** WordPress ships its own Tabs block from version 7.1. On sites that have it, this block no longer appears in the inserter, and existing blocks can be converted to the core block from the block toolbar. The plugin remains useful on older sites, and keeps rendering and editing content that was created with it.
+**Superseded by the core Tabs block.** WordPress ships its own Tabs block from version 7.1. Prefer the core block for new content. This block stays available in the inserter, and existing blocks can be converted to the core block from the block toolbar. The plugin remains useful on older sites, and keeps rendering and editing content that was created with it.
 
 Tabs is a Gutenberg block plugin that lets you split content into a set of switchable tabbed panels. It is built from two nested blocks — a parent **Tabs** block and one or more child **Tab** blocks — so each tab panel can hold any blocks you like and is edited directly through the standard block editor interface.
 
@@ -32,7 +32,7 @@ The tab interface follows the ARIA Authoring Practices Guide tablist pattern, so
 
 1. Upload the `tabs` folder to the `/wp-content/plugins/` directory, or install through the WordPress Plugins screen via **Plugins > Add New > Upload Plugin**.
 2. Activate the plugin through the **Plugins** screen in WordPress.
-3. Open any post or page in the block editor, click the **+** inserter, and search for **Tabs**. On WordPress 7.1 and later this finds the core Tabs block; on older sites it finds this plugin's block.
+3. Open any post or page in the block editor, click the **+** inserter, and search for **Tabs**. On WordPress 7.1 and later the core Tabs block is listed alongside this plugin's block.
 4. Edit each tab's title inline, add content inside each tab panel, and use the toolbar buttons to reorder tabs.
 
 = Building from source =
@@ -46,15 +46,15 @@ Requirements: Node.js 18+.
 
 == Frequently Asked Questions ==
 
-= Why can't I find the block in the inserter anymore? =
+= There are two Tabs blocks in the inserter. Which one do I use? =
 
-Your site has the core Tabs block, so the inserter offers that one instead. Search for **Tabs** and you will find it. On sites without the core block, this plugin's block stays in the inserter as before.
-
-Note that the block list is built when the editor loads. If you change plugins, reload the editor before you check the inserter.
+From WordPress 7.1 the inserter lists the core **Tabs** block as well as this plugin's block. Use the core block for new content. This plugin's block stays available so that older sites keep working, and so that existing content stays editable.
 
 = How do I convert an existing block to the core Tabs block? =
 
 Select the Tabs block, click the block icon at the left of the block toolbar, and choose **Tabs** under "Transform to". Tab titles, tab order, panel content, the HTML anchor, and the alignment all carry over. The option only appears on sites that have the core Tabs block.
+
+Bold and italic in a tab title are kept. A link in a tab title is reduced to its text, because the core tab list does not accept links inside a tab button. A title with no text becomes **Tab 1**, **Tab 2**, and so on.
 
 = How do I add or remove tabs? =
 
@@ -84,7 +84,7 @@ Yes. Each Tab is an inner-blocks container, so a tab panel can hold any blocks. 
 
 = 0.2.0 =
 * Add a block transform that converts the Tabs block into the core Tabs block, carrying over tab titles, tab order, panel content, anchor, and alignment.
-* Hide the block from the inserter where the core Tabs block is available, so new content uses the core block.
+* Bold and italic in a tab title survive the transform. A link is reduced to its text, because the core tab list does not accept links inside a tab button. A title with no text becomes Tab 1, Tab 2, and so on.
 
 = 0.1.3 =
 * Fix frontend keyboard focus for tab controls by keeping the selected tab in the tab order.
