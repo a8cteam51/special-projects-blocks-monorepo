@@ -34,14 +34,14 @@ body.modal-open {
 
 		svg {
 			path {
-				stroke: currentColor;
+				stroke: currentcolor;
 			}
 		}
 	}
 
 	.wp-block-a8csp-modal-container--inner {
-		max-height: 100%;
-		overflow-y: scroll;
+		max-height: 100vh;
+		overflow-y: auto;
 		width: 100%;
 	}
 }
