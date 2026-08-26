@@ -22,6 +22,7 @@
 		white-space: nowrap;
 		will-change: transform;
 		position: relative;
+		align-items: flex-start; // Default alignment for backward compatibility
 
 		// Only apply animation on frontend by excluding the block editor
 		&:not(.block-editor-block-list__layout *) {
@@ -32,7 +33,22 @@
 		> * {
 			flex: 0 0 auto;
 			display: inline-block;
+			margin-top: 0;
+			margin-bottom: 0;
 		}
+	}
+
+	// Vertical alignment classes
+	&.align-top .marquee-items {
+		align-items: flex-start;
+	}
+
+	&.align-center .marquee-items {
+		align-items: center;
+	}
+
+	&.align-bottom .marquee-items {
+		align-items: flex-end;
 	}
 
 	&.direction-right .marquee-items:not(.block-editor-block-list__layout *) {
@@ -47,33 +63,7 @@
 	}
 
 	&.has-fade {
-		position: relative;
-
-		&::before,
-		&::after {
-			content: "";
-			position: absolute;
-			top: 0;
-			bottom: 0;
-			width: 50px;
-			z-index: 1;
-			pointer-events: none;
-		}
-
-		&::before {
-			left: 0;
-			background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-		}
-
-		&::after {
-			right: 0;
-			background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-		}
-
-		.marquee-content {
-			position: relative;
-			z-index: 0;
-		}
+		mask-image: linear-gradient(90deg, transparent, #000 50px, #000 calc(100% - 50px), transparent);
 	}
 }
 
