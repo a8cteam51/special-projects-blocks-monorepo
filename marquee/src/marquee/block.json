@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "a8csp/marquee",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"title": "Marquee",
 	"category": "widgets",
 	"icon": "controls-repeat",
@@ -46,6 +46,14 @@
 		"verticalAlignment": {
 			"type": "string",
 			"enum": ["top", "center", "bottom"]
+		},
+		"hasMaxHeight": {
+			"type": "boolean",
+			"default": false
+		},
+		"maxHeight": {
+			"type": "number",
+			"default": 200
 		}
 	},
 	"textdomain": "marquee",

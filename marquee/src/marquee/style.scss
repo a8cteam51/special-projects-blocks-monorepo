@@ -51,6 +51,23 @@
 		align-items: flex-end;
 	}
 
+	// Optional height cap, so items of mixed sizes sit inside a consistent band.
+	&.has-max-height {
+
+		.marquee-content,
+		.marquee-items,
+		.marquee-items > * {
+			max-height: var(--marquee-max-height, 200px);
+		}
+
+		svg,
+		video {
+			max-height: var(--marquee-max-height, 200px);
+			width: auto;
+			object-fit: contain;
+		}
+	}
+
 	&.direction-right .marquee-items:not(.block-editor-block-list__layout *) {
 		animation-direction: reverse;
 	}
@@ -58,7 +75,7 @@
 	img {
 		height: auto;
 		width: auto;
-		max-height: 200px;
+		max-height: var(--marquee-max-height, 200px);
 		display: block;
 	}
 

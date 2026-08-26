@@ -108,6 +108,15 @@
 	}
 }
 
+// Mirror the height cap on the editor's own block list wrapper
+.wp-block-a8csp-marquee.has-max-height .block-editor-block-list__layout {
+	max-height: var(--marquee-max-height, 200px);
+
+	> * {
+		max-height: var(--marquee-max-height, 200px);
+	}
+}
+
 // Apply alignment to block list layout
 .wp-block-a8csp-marquee.align-top .block-editor-block-list__layout {
 	align-items: flex-start;

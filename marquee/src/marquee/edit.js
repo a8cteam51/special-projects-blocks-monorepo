@@ -27,6 +27,7 @@ import {
 import './editor.scss';
 
 import {
+	BaseControl,
 	PanelBody,
 	RangeControl,
 	ToggleControl,
@@ -49,7 +50,16 @@ import { useState, useRef, useEffect } from '@wordpress/element';
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
-	const { direction, speed, pauseOnHover, gap, fadeEdges, verticalAlignment } = attributes;
+	const {
+		direction,
+		speed,
+		pauseOnHover,
+		gap,
+		fadeEdges,
+		verticalAlignment,
+		hasMaxHeight,
+		maxHeight,
+	} = attributes;
 	const [ isPreviewingAnimation, setIsPreviewingAnimation ] =
 		useState( false );
 	const [ duration, setDuration ] = useState( 12 );
@@ -72,13 +82,16 @@ export default function Edit( { attributes, setAttributes } ) {
 		ref: blockRef,
 		className: `wp-block-a8csp-marquee direction-${ direction }${
 			isPreviewingAnimation ? ' is-previewing' : ''
-		}${
-			verticalAlignment ? ` align-${ verticalAlignment }` : ''
+		}${ verticalAlignment ? ` align-${ verticalAlignment }` : '' }${
+			hasMaxHeight ? ' has-max-height' : ''
 		}`,
 		style: {
 			'--marquee-gap': `${ gap }px`,
 			'--marquee-speed': speed,
 			'--duration': `${ duration }s`,
+			...( hasMaxHeight && {
+				'--marquee-max-height': `${ maxHeight }px`,
+			} ),
 		},
 	} );
 
@@ -152,17 +165,46 @@ export default function Edit( { attributes, setAttributes } ) {
 							setAttributes( { fadeEdges: value } )
 						}
 					/>
-					<div style={ { marginTop: '16px' } }>
-						<label style={ { display: 'block', marginBottom: '8px' } }>
+					<ToggleControl
+						label={ __( 'Limit Height', 'marquee' ) }
+						help={ __(
+							'Cap the height of the marquee so items of different sizes fit inside a consistent band.',
+							'marquee'
+						) }
+						checked={ hasMaxHeight }
+						onChange={ ( value ) =>
+							setAttributes( { hasMaxHeight: value } )
+						}
+					/>
+					{ hasMaxHeight && (
+						<RangeControl
+							label={ __( 'Max Height (px)', 'marquee' ) }
+							value={ maxHeight }
+							onChange={ ( value ) =>
+								setAttributes( {
+									maxHeight: value ?? 200,
+								} )
+							}
+							min={ 40 }
+							max={ 800 }
+							step={ 5 }
+							allowReset={ true }
+							resetFallbackValue={ 200 }
+						/>
+					) }
+					<BaseControl __nextHasNoMarginBottom>
+						<BaseControl.VisualLabel>
 							{ __( 'Vertical Alignment', 'marquee' ) }
-						</label>
+						</BaseControl.VisualLabel>
 						<BlockVerticalAlignmentControl
 							value={ verticalAlignment }
 							onChange={ ( value ) =>
-								setAttributes( { verticalAlignment: value || undefined } )
+								setAttributes( {
+									verticalAlignment: value || undefined,
+								} )
 							}
 						/>
-					</div>
+					</BaseControl>
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps }>

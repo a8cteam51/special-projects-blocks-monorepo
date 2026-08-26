@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Marquee
  * Description:       Provides a marquee effect for your content.
- * Version:           0.1.1
+ * Version:           0.1.2
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            WordPress Special Projects Team
