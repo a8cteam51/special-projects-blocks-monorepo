@@ -127,7 +127,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							setAttributes( { gap: value } )
 						}
 						min={ 0 }
-						max={ 100 }
+						max={ 200 }
 						allowReset={ true }
 						resetFallbackValue={ 20 }
 					/>
