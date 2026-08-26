@@ -3,7 +3,7 @@ Contributors:      wpspecialprojects
 Tags:              block, modal, dialog, interactivity, accessibility
 Requires at least: 6.6
 Tested up to:      6.8
-Stable tag:        0.1.2
+Stable tag:        0.1.3
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,6 +73,9 @@ Yes. The plugin adds the Modal button to the blocks allowed inside the core Navi
 Yes. A Modal button can be placed inside a modal's content to trigger a second modal. When the second modal closes, focus returns to the button that opened it.
 
 == Changelog ==
+
+= 0.1.3 =
+* Fix: Replace deprecated `data-wp-on-async-document` with `data-wp-on-document` and `withSyncEvent()` for outside-click handling.
 
 = 0.1.2 =
 * Modal block (`a8csp/modal`) built with the Interactivity API: a button that opens an accessible, reusable modal dialog.

@@ -45,7 +45,7 @@ wp_interactivity_state(
 	data-wp-on--click="actions.openModal"
 	data-wp-bind--aria-expanded="state.isModalOpen"
 	data-wp-on--keydown="actions.handleMenuKeydown"
-	data-wp-on-async-document--click="callbacks.handleModalOutsideClick"
+	data-wp-on-document--click="callbacks.handleModalOutsideClick"
 	id="<?php echo esc_attr( $a8csp_blocks_modal_button ); ?>"
 	aria-haspopup="menu"
 >
