@@ -1,0 +1,96 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-a8csp-marquee {
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+	background: transparent;
+
+	.marquee-content {
+		overflow: hidden;
+		width: 100%;
+	}
+
+	.marquee-items {
+		display: inline-flex;
+		gap: var(--marquee-gap, 20px);
+		white-space: nowrap;
+		will-change: transform;
+		position: relative;
+		align-items: flex-start; // Default alignment for backward compatibility
+
+		// Only apply animation on frontend by excluding the block editor
+		&:not(.block-editor-block-list__layout *) {
+			animation: marquee var(--duration, 12s) linear infinite;
+			animation-play-state: var(--play-state, running);
+		}
+
+		> * {
+			flex: 0 0 auto;
+			display: inline-block;
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+	}
+
+	// Vertical alignment classes
+	&.align-top .marquee-items {
+		align-items: flex-start;
+	}
+
+	&.align-center .marquee-items {
+		align-items: center;
+	}
+
+	&.align-bottom .marquee-items {
+		align-items: flex-end;
+	}
+
+	// Optional height cap, so items of mixed sizes sit inside a consistent band.
+	&.has-max-height {
+
+		.marquee-content,
+		.marquee-items,
+		.marquee-items > * {
+			max-height: var(--marquee-max-height, 200px);
+		}
+
+		svg,
+		video {
+			max-height: var(--marquee-max-height, 200px);
+			width: auto;
+			object-fit: contain;
+		}
+	}
+
+	&.direction-right .marquee-items:not(.block-editor-block-list__layout *) {
+		animation-direction: reverse;
+	}
+
+	img {
+		height: auto;
+		width: auto;
+		max-height: var(--marquee-max-height, 200px);
+		display: block;
+	}
+
+	&.has-fade {
+		mask-image: linear-gradient(90deg, transparent, #000 50px, #000 calc(100% - 50px), transparent);
+	}
+}
+
+@keyframes marquee {
+
+	0% {
+		transform: translateX(0);
+	}
+
+	100% {
+		transform: translateX(calc(-1 * var(--marquee-translate, 0px)));
+	}
+}
