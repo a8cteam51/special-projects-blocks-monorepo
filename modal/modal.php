@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Modal
  * Description:       A modal block that can be toggled open and closed.
- * Version:           0.1.2
+ * Version:           0.1.3
  * Requires at least: 6.6
  * Requires PHP:      7.2
  * Author:            Automattic Special Projects Team
