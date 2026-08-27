@@ -1,0 +1,89 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-a8csp-marquee {
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+	background: transparent;
+
+	.marquee-content {
+		overflow: hidden;
+		width: 100%;
+	}
+
+	.marquee-items {
+		display: inline-flex;
+		gap: var(--marquee-gap, 20px);
+		white-space: nowrap;
+		will-change: transform;
+		position: relative;
+
+		// Only apply animation on frontend by excluding the block editor
+		&:not(.block-editor-block-list__layout *) {
+			animation: marquee var(--duration, 12s) linear infinite;
+			animation-play-state: var(--play-state, running);
+		}
+
+		> * {
+			flex: 0 0 auto;
+			display: inline-block;
+		}
+	}
+
+	&.direction-right .marquee-items:not(.block-editor-block-list__layout *) {
+		animation-direction: reverse;
+	}
+
+	img {
+		height: auto;
+		width: auto;
+		max-height: 200px;
+		display: block;
+	}
+
+	&.has-fade {
+		position: relative;
+
+		&::before,
+		&::after {
+			content: "";
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 50px;
+			z-index: 1;
+			pointer-events: none;
+		}
+
+		&::before {
+			left: 0;
+			background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+		}
+
+		&::after {
+			right: 0;
+			background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+		}
+
+		.marquee-content {
+			position: relative;
+			z-index: 0;
+		}
+	}
+}
+
+@keyframes marquee {
+
+	0% {
+		transform: translateX(0);
+	}
+
+	100% {
+		transform: translateX(calc(-1 * var(--marquee-translate, 0px)));
+	}
+}
