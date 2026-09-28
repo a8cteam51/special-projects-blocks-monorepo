@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Jetpack Related Posts Query Loop
  * Description:       Adds a query loop variation to display related posts from Jetpack.
- * Version:           0.2.0
+ * Version:           0.2.1
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
  * Update URI:        https://opsoasis.wpspecialprojects.com/jp-related-posts-query-loop/
@@ -72,10 +72,9 @@ function a8csp_jrpql_register_related_query_block_variation( $variations, $block
 			'attributes'      => array(
 				'align'     => 'wide',
 				'query'     => array(
-					'query_type' => 'related-posts',
-					'perPage'    => 4,
-					'inherit'    => false,
-					'postType'   => 'post',
+					'perPage'  => 4,
+					'inherit'  => false,
+					'postType' => 'post',
 				),
 				'namespace' => 'a8csp-jrpql/related-posts',
 			),
@@ -114,6 +113,26 @@ function a8csp_jrpql_pre_render_block_query_block_related( $block_content, $bloc
 add_filter( 'pre_render_block', 'a8csp_jrpql_pre_render_block_query_block_related', 10, 2 );
 
 /**
+ * Remove the query vars filter once a related posts query block has rendered.
+ * The filter only removes itself when a child block builds a query, so without
+ * this it would leak onto the next query block on the page.
+ *
+ * @param string              $block_content The rendered block content.
+ * @param array<string,mixed> $block         An associative array of the block being rendered. See WP_Block_Parser_Block.
+ *
+ * @return string
+ */
+function a8csp_jrpql_render_block_query_block_related( $block_content, $block ) {
+
+	if ( isset( $block['attrs']['namespace'] ) && 'a8csp-jrpql/related-posts' === $block['attrs']['namespace'] ) {
+		remove_filter( 'query_loop_block_query_vars', 'a8csp_jrpql_query_loop_block_query_vars_related' );
+	}
+
+	return $block_content;
+}
+add_filter( 'render_block_core/query', 'a8csp_jrpql_render_block_query_block_related', 10, 2 );
+
+/**
  * Update query args for frontend query block.
  *
  * @param array<string,mixed> $query_args Array containing parameters for `WP_Query` as parsed by the block context.
@@ -143,7 +162,7 @@ function a8csp_jrpql_get_related_posts_args( array $query_args ): array {
 		return $query_args;
 	}
 
-	$posts_per_page = $query_args['posts_per_page'] ?? 4;
+	$posts_per_page = max( 1, (int) ( $query_args['posts_per_page'] ?? 4 ) );
 	$posts_type     = $query_args['post_type'] ?? 'post';
 	$post_ids       = array();
 
