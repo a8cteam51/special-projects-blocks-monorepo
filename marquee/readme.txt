@@ -1,55 +1,63 @@
 === Marquee ===
-Contributors:      The WordPress Contributors
-Tags:              block
+Contributors:      wpspecialprojects
+Tags:              block, marquee, scrolling, ticker, logos
+Requires at least: 6.7
 Tested up to:      6.7
-Stable tag:        0.1.0
+Stable tag:        0.1.2
+Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-Example block scaffolded with Create Block tool.
+A container block that scrolls its content horizontally in a continuous loop, for logo strips, headlines and announcement tickers.
 
 == Description ==
 
-This is the long description. No limit, and you can use Markdown (as well as in the following sections).
+Marquee is a container block: add any blocks inside it and they scroll across the page in a seamless loop. On the front end, a small script measures the content, duplicates it enough times to fill the track, and a CSS animation scrolls it.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+In the editor the content stays still so it's easy to edit. Use **Preview Animation** in the block settings to see it move.
+
+= Settings =
+
+* **Scroll Direction** — left (default) or right.
+* **Speed** — 10 to 200 (default 50). Higher is faster.
+* **Gap between items** — 0 to 200px (default 20px).
+* **Pause on Hover** — on by default.
+* **Fade Edges** — fades the left and right edges with a mask, so it works over any background. Off by default.
+* **Limit Height** and **Max Height** — caps the marquee and the items inside it, including images, SVGs and videos, at 40 to 800px, so items of mixed sizes sit in a consistent band. Off by default; images are capped at 200px when it's off.
+* **Vertical Alignment** — aligns items to the top, center or bottom of the row.
+
+The block also supports wide and full alignment, background, text and gradient colors, padding, and an HTML anchor.
+
+= Behaviour =
+
+* Marquees hidden when the page loads (for example inside a modal, tab or accordion), or added to the page later, start scrolling once they have a size.
+* Marquees scrolled out of view pause until they're visible again.
+* Several marquees can run on the same page.
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
+1. Upload the `marquee` folder to the `/wp-content/plugins/` directory, or install the release zip through **Plugins > Add New > Upload Plugin**.
+2. Activate **Marquee** through the **Plugins** screen.
+3. In the block editor, insert a **Marquee** block and add blocks inside it.
 
-e.g.
+= Building from source =
 
-1. Upload the plugin files to the `/wp-content/plugins/marquee` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
+Requirements: Node.js 18+.
 
-
-== Frequently Asked Questions ==
-
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
-
-== Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. `cd marquee`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
 
 == Changelog ==
 
+= 0.1.2 =
+* Add: Vertical alignment control (top, center, bottom) for marquee items.
+* Add: "Limit Height" toggle with a max height value, so items of mixed sizes fit inside a consistent band.
+* Fix: The view script could hang the browser when the measured content width was 0 (an empty marquee, or one not laid out yet).
+* Update: Marquees hidden at load (modals, tabs, accordions) or injected later now set themselves up. Multiple instances per page are supported, and off-screen instances pause.
+* Update: Fade Edges uses a mask, so the fade works over any background instead of only white.
+* Update: Gap between items can be set up to 200px.
+
 = 0.1.0 =
-* Release
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above. This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation." Arbitrary sections will be shown below the built-in sections outlined above.
+* Initial release.
