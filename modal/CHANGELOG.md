@@ -1,3 +1,9 @@
+## 0.1.4 (2026-09-26)
+
+### Fixed
+
+-   Modal Description field in the block sidebar now uses `TextareaControl` instead of `PlainText`, giving it the same visible input styling (border/background) as the Modal Title field. Previously it was visually indistinguishable from its own label, so editors couldn't tell it was editable.
+
 ## 0.1.3 (2026-08-26)
 
 ### Fixed

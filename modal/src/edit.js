@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import {
 	InspectorControls,
-	PlainText,
 	RichText,
 	useBlockProps,
 } from '@wordpress/block-editor';
@@ -14,6 +13,7 @@ import { useDispatch } from '@wordpress/data';
 import {
 	ComboboxControl,
 	PanelBody,
+	TextareaControl,
 	TextControl,
 } from '@wordpress/components';
 
@@ -145,13 +145,7 @@ export default function Edit( props ) {
 										'modal'
 									) }
 								/>
-								<h3>
-									{ __(
-										'Modal Description',
-										'modal'
-									) }
-								</h3>
-								<PlainText
+								<TextareaControl
 									label={ __(
 										'Modal Description',
 										'modal'
@@ -163,7 +157,7 @@ export default function Edit( props ) {
 											value
 										)
 									}
-									placeholder={ __(
+									help={ __(
 										'Add modal description for screen readers',
 										'modal'
 									) }
