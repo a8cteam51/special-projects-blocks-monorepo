@@ -18,6 +18,7 @@ jobs:
           files_ignore: |
             .github/**
             .utilities/**
+            .scripts/**
           dir_names_include_files: false
           dir_names_exclude_current_dir: true
           dir_names_max_depth: 1
