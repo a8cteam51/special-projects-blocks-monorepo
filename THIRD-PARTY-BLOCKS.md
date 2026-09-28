@@ -2,11 +2,12 @@
 
 Before proposing a new block, check whether a vetted third-party plugin already covers
 the need. Every plugin listed here has passed the Special Projects plugin review; the
-**Review** column links the decision.
+**Review** column links the decision. Approval covers the plugin, including future
+versions, so entries don't record a reviewed version.
 
 | Need | Plugin | Get it from | Review | Notes |
 | --- | --- | --- | --- | --- |
-| Filter Query Loop results by taxonomy, post type or search, without a page reload | [Query Loop Filters](https://github.com/humanmade/query-filter) by Human Made | [GitHub releases](https://github.com/humanmade/query-filter/releases) (`query-filter-vX.Y.Z.zip`), or Composer: `humanmade/query-filter` | [T51ENG-768](https://linear.app/a8c/issue/T51ENG-768), approved at v0.2.1 (Aug 2025). Replaces the block proposed in [#18](https://github.com/a8cteam51/special-projects-blocks-monorepo/issues/18). | Not on WordPress.org: the `query-filter` plugin there is an unrelated, abandoned plugin. Install the release zip rather than the source, which has a placeholder version. No update URI, so it won't auto-update. Requires WordPress 6.6+ and PHP 8.2+. |
+| Filter Query Loop results by taxonomy, post type or search, without a page reload | [Query Loop Filters](https://github.com/humanmade/query-filter) by Human Made | [GitHub releases](https://github.com/humanmade/query-filter/releases) (`query-filter-vX.Y.Z.zip`), or Composer: `humanmade/query-filter` | [T51ENG-768](https://linear.app/a8c/issue/T51ENG-768). Replaces the block proposed in [#18](https://github.com/a8cteam51/special-projects-blocks-monorepo/issues/18). | Not on WordPress.org: the `query-filter` plugin there is an unrelated, abandoned plugin. Install the release zip rather than the source, which has a placeholder version. No update URI, so it won't auto-update. Requires WordPress 6.6+ and PHP 8.2+. |
 
 ## Adding a plugin
 
