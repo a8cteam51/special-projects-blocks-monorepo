@@ -1,5 +1,5 @@
 0.1.3
-- Add: Respect `prefers-reduced-motion`. The row stays still, shows the content once (no duplicated copies), and content wider than the block can be scrolled horizontally. The editor's Preview Animation is unaffected.
+- Add: Respect `prefers-reduced-motion`. The row stays still, shows the content once (no duplicated copies), and content wider than the block can be scrolled horizontally, including with the keyboard (the row becomes a focusable, labelled region while it can scroll). With Limit Height on, the row grows to fit the scrollbar instead of clipping items. The editor's Preview Animation is unaffected.
 
 0.1.2
 - Add: Vertical alignment control (top, center, bottom) for marquee items.
