@@ -36,6 +36,7 @@ longer-form process docs.
 
 | Directory | Tracked plugin evidence |
 | --- | --- |
+| `a8csp-carousel` | `Carousel`; registers `a8csp/carousel`, `a8csp/carousel-nav`, and `a8csp/carousel-pagination`, with carousel variations for Query Loop posts, Gallery images, free-form cards, and WooCommerce products. See `EXTENDING.md`. |
 | `bp-breadcrumbs` | `BuddyPressBreadcrumbs`; registers `a8csp/breadcrumbs` for BuddyPress, bbPress, archive, and singular breadcrumbs. |
 | `bp-groups` | `BP Groups Blocks`; BuddyPress-gated blocks for group lists, contributors, progress, and variations. Adds `buddypress/v1/group-types`, group block bindings, and a filter-gated group progress extension. |
 | `bp-members` | `BP Members`; BuddyPress-gated member list and variation blocks. Adds `buddypress/v1/member-types` and member block bindings. |
@@ -46,8 +47,9 @@ longer-form process docs.
 | `featured-image-captions` | Extends `core/post-featured-image` with editor caption controls and front-end captions. No `block.json` is tracked. |
 | `featured-video` | Extends `core/post-featured-image`; stores `_wpcomsp_featured_video_id` and `_wpcomsp_featured_video_options` post meta for post types with thumbnail support. |
 | `flowing-column` | Registers the `a8csp/flowing-column` layout block. |
-| `jp-related-posts-query-loop` | Adds a Related Posts variation for `core/query`, using Jetpack related posts when available and falling back to random posts. |
+| `jp-related-posts-query-loop` | Adds a Related Posts variation for `core/query`, using Jetpack related posts when available and falling back to shuffled recent posts. |
 | `light-dark-toggle` | Registers the `wpcomsp/light-dark-toggle` block. |
+| `marquee` | `Marquee`; registers `a8csp/marquee`, which duplicates its inner blocks to fill the track and scrolls them with a CSS animation. |
 | `mega-menu` | Registers `a8csp/mega-menu`, adds a `menu` template part area, and allows the block in Navigation blocks. |
 | `modal` | Registers `a8csp/modal`, adds a `modal` template part area, and stores modal template metadata in the `modal_meta` option exposed through REST settings. |
 | `override-post-links` | Registers `wpcomsp/override-post-links`, stores `wpcomsp_news_data` post meta for filtered post types, rewrites core post links, and registers the `wpcomsp/news-link-source` block binding. |
