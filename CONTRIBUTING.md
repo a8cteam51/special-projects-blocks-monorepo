@@ -19,6 +19,7 @@ The gold standard for block development is **not creating a new block**. Every b
 we add is maintenance we carry forever. Before proposing one, confirm the need can't
 be met with tools that already exist:
 
+- **A vetted third-party plugin** — see [THIRD-PARTY-BLOCKS.md](./THIRD-PARTY-BLOCKS.md).
 - **Patterns** — for reusable layouts of existing blocks.
 - **The Block Bindings API** — for binding block attributes to dynamic data.
 - **The Interactivity API** — for front-end interactivity on existing blocks.

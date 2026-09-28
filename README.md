@@ -63,6 +63,10 @@ longer-form process docs.
 No tracked PHP registers custom post types, taxonomies, shortcodes, or WP-CLI
 commands.
 
+For needs these plugins don't cover, check
+[THIRD-PARTY-BLOCKS.md](./THIRD-PARTY-BLOCKS.md) for vetted third-party plugins
+before proposing a new block.
+
 ## Requirements
 
 - Node.js `>=18.0.0` and npm `>=8.0.0` are declared in the root
