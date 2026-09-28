@@ -3,7 +3,7 @@ Contributors:      wpspecialprojects
 Tags:              block, marquee, scrolling, ticker, logos
 Requires at least: 6.7
 Tested up to:      6.7
-Stable tag:        0.1.2
+Stable tag:        0.1.3
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -33,6 +33,7 @@ The block also supports wide and full alignment, background, text and gradient c
 * Marquees hidden when the page loads (for example inside a modal, tab or accordion), or added to the page later, start scrolling once they have a size.
 * Marquees scrolled out of view pause until they're visible again.
 * Several marquees can run on the same page.
+* Visitors whose system asks for reduced motion (`prefers-reduced-motion`) see a still row instead, with no repeated content; content wider than the block can be scrolled horizontally.
 
 == Installation ==
 
@@ -50,6 +51,9 @@ Requirements: Node.js 18+.
 4. `npm start` — development build with file watching
 
 == Changelog ==
+
+= 0.1.3 =
+* Add: Respect `prefers-reduced-motion`. The row stays still, shows the content once, and content wider than the block can be scrolled horizontally.
 
 = 0.1.2 =
 * Add: Vertical alignment control (top, center, bottom) for marquee items.

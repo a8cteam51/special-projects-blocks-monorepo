@@ -27,6 +27,17 @@ const ITEMS_SELECTOR = '.marquee-items';
  */
 const MAX_COPIES = 60;
 
+/**
+ * Visitors who prefer reduced motion get a still row: the CSS stops the
+ * animation, and the track keeps a single copy of the content so no repeats
+ * are visible.
+ *
+ * @type {MediaQueryList|null}
+ */
+const reducedMotion = window.matchMedia
+	? window.matchMedia( '(prefers-reduced-motion: reduce)' )
+	: null;
+
 /** @type {WeakMap<Element, Object>} Per-instance state, keyed by the block root. */
 const instances = new WeakMap();
 
@@ -174,7 +185,10 @@ function update( marquee ) {
 	state.warnedZeroWidth = false;
 
 	const minTotal = containerWidth * 2;
-	let copies = Math.max( 2, Math.ceil( minTotal / totalWidth ) );
+	let copies =
+		reducedMotion && reducedMotion.matches
+			? 1
+			: Math.max( 2, Math.ceil( minTotal / totalWidth ) );
 
 	if ( copies > MAX_COPIES ) {
 		warn(
@@ -372,6 +386,15 @@ function start() {
 
 	initWithin( document.body );
 	watchForNewMarquees();
+
+	// Re-measure every marquee if the reduced motion preference changes.
+	if ( reducedMotion && reducedMotion.addEventListener ) {
+		reducedMotion.addEventListener( 'change', () =>
+			document
+				.querySelectorAll( MARQUEE_SELECTOR )
+				.forEach( scheduleUpdate )
+		);
+	}
 }
 
 if ( document.readyState === 'loading' ) {

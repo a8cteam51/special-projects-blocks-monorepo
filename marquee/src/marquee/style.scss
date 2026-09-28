@@ -14,6 +14,16 @@
 	.marquee-content {
 		overflow: hidden;
 		width: 100%;
+
+		// With motion reduced the row stays still, so let visitors scroll to
+		// content wider than the block instead.
+		@media (prefers-reduced-motion: reduce) {
+
+			&:not(.block-editor-block-list__layout *) {
+				overflow-x: auto;
+				overflow-y: hidden;
+			}
+		}
 	}
 
 	.marquee-items {
@@ -28,6 +38,11 @@
 		&:not(.block-editor-block-list__layout *) {
 			animation: marquee var(--duration, 12s) linear infinite;
 			animation-play-state: var(--play-state, running);
+
+			// Respect the visitor's reduced motion preference.
+			@media (prefers-reduced-motion: reduce) {
+				animation: none;
+			}
 		}
 
 		> * {
