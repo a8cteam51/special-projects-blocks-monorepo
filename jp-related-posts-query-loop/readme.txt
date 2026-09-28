@@ -1,11 +1,11 @@
 === Jetpack Related Posts Query Loop ===
 Contributors:      wpspecialprojects
 Tags:              query, related posts, jetpack
-Tested up to:      6.8.3
-Stable tag:        0.1.0
+Tested up to:      6.9.0
+Stable tag:        0.2.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
-Requires at least: 6.6
+Requires at least: 6.7
 Requires PHP:      7.4
 
 Display Jetpack's related posts in a query block that can be customized in the editor like any other query block.
