@@ -15,6 +15,8 @@ body:
       label: Have you ruled out the alternatives?
       description: A new block should be the last resort. See [How to extend a WordPress block](https://developer.wordpress.org/news/2024/08/15/how-to-extend-a-wordpress-block/).
       options:
+        - label: No plugin in [THIRD-PARTY-BLOCKS.md](https://github.com/a8cteam51/special-projects-blocks-monorepo/blob/trunk/THIRD-PARTY-BLOCKS.md) covers this.
+          required: true
         - label: This can't be built with a **pattern** of existing blocks.
           required: true
         - label: This can't be built with the **Block Bindings API**.
