@@ -53,7 +53,7 @@ Requirements: Node.js 18+.
 == Changelog ==
 
 = 0.1.3 =
-* Add: Respect `prefers-reduced-motion`. The row stays still, shows the content once, and content wider than the block can be scrolled horizontally, including with the keyboard.
+* Add: Respect `prefers-reduced-motion`. The row stays still, shows the content once, and content wider than the block can be scrolled horizontally, including with the keyboard. Fade Edges is turned off while the row is still.
 
 = 0.1.2 =
 * Add: Vertical alignment control (top, center, bottom) for marquee items.

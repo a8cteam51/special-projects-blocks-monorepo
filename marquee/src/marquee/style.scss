@@ -105,6 +105,14 @@
 
 	&.has-fade {
 		mask-image: linear-gradient(90deg, transparent, #000 50px, #000 calc(100% - 50px), transparent);
+
+		// A still row never moves content out from under the fade, so drop it.
+		@media (prefers-reduced-motion: reduce) {
+
+			&:not(.block-editor-block-list__layout *) {
+				mask-image: none;
+			}
+		}
 	}
 }
 
