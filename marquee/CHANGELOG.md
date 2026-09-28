@@ -1,3 +1,6 @@
+0.1.3
+- Add: Respect `prefers-reduced-motion`. The row stays still, shows the content once (no duplicated copies), and content wider than the block can be scrolled horizontally, including with the keyboard (the row becomes a focusable, labelled region while it can scroll). With Limit Height on, the row grows to fit the scrollbar instead of clipping items. Fade Edges is turned off while the row is still, so edge content isn't hidden. The editor's Preview Animation is unaffected.
+
 0.1.2
 - Add: Vertical alignment control (top, center, bottom) for marquee items.
 - Add: "Limit Height" toggle with a max height value, so items of mixed sizes fit inside a consistent band. Sets the `--marquee-max-height` custom property, which images also respect (defaults to the previous 200px when the toggle is off).

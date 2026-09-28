@@ -14,6 +14,16 @@
 	.marquee-content {
 		overflow: hidden;
 		width: 100%;
+
+		// With motion reduced the row stays still, so let visitors scroll to
+		// content wider than the block instead.
+		@media (prefers-reduced-motion: reduce) {
+
+			&:not(.block-editor-block-list__layout *) {
+				overflow-x: auto;
+				overflow-y: hidden;
+			}
+		}
 	}
 
 	.marquee-items {
@@ -28,6 +38,11 @@
 		&:not(.block-editor-block-list__layout *) {
 			animation: marquee var(--duration, 12s) linear infinite;
 			animation-play-state: var(--play-state, running);
+
+			// Respect the visitor's reduced motion preference.
+			@media (prefers-reduced-motion: reduce) {
+				animation: none;
+			}
 		}
 
 		> * {
@@ -66,6 +81,15 @@
 			width: auto;
 			object-fit: contain;
 		}
+
+		// With motion reduced, a horizontal scrollbar sits inside this box, so
+		// let it grow to fit rather than clip the (still capped) items.
+		@media (prefers-reduced-motion: reduce) {
+
+			.marquee-content:not(.block-editor-block-list__layout *) {
+				max-height: none;
+			}
+		}
 	}
 
 	&.direction-right .marquee-items:not(.block-editor-block-list__layout *) {
@@ -81,6 +105,14 @@
 
 	&.has-fade {
 		mask-image: linear-gradient(90deg, transparent, #000 50px, #000 calc(100% - 50px), transparent);
+
+		// A still row never moves content out from under the fade, so drop it.
+		@media (prefers-reduced-motion: reduce) {
+
+			&:not(.block-editor-block-list__layout *) {
+				mask-image: none;
+			}
+		}
 	}
 }
 

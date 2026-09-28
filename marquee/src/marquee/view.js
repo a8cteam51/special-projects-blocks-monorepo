@@ -13,7 +13,10 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
  */
 
+import { __ } from '@wordpress/i18n';
+
 const MARQUEE_SELECTOR = '.wp-block-a8csp-marquee';
+const CONTENT_SELECTOR = '.marquee-content';
 const ITEMS_SELECTOR = '.marquee-items';
 
 /**
@@ -26,6 +29,17 @@ const ITEMS_SELECTOR = '.marquee-items';
  * @type {number}
  */
 const MAX_COPIES = 60;
+
+/**
+ * Visitors who prefer reduced motion get a still row: the CSS stops the
+ * animation, and the track keeps a single copy of the content so no repeats
+ * are visible.
+ *
+ * @type {MediaQueryList|null}
+ */
+const reducedMotion = window.matchMedia
+	? window.matchMedia( '(prefers-reduced-motion: reduce)' )
+	: null;
 
 /** @type {WeakMap<Element, Object>} Per-instance state, keyed by the block root. */
 const instances = new WeakMap();
@@ -93,6 +107,41 @@ function updatePlayState( state ) {
 		'--play-state',
 		state.visible && ! state.hovered ? 'running' : 'paused'
 	);
+}
+
+/**
+ * With motion reduced, content wider than the block is scrolled by hand.
+ * Safari doesn't make scroll containers keyboard-focusable, so expose the row
+ * as a focusable, labelled region while it can scroll, and remove that again
+ * when motion is allowed or the content fits.
+ *
+ * @param {Object} state The instance state.
+ */
+function updateScrollRegion( state ) {
+	const { content } = state;
+	if ( ! content ) {
+		return;
+	}
+
+	const scrollable =
+		!! reducedMotion &&
+		reducedMotion.matches &&
+		content.scrollWidth > content.clientWidth;
+
+	if ( scrollable === state.scrollable ) {
+		return;
+	}
+	state.scrollable = scrollable;
+
+	if ( scrollable ) {
+		content.setAttribute( 'tabindex', '0' );
+		content.setAttribute( 'role', 'region' );
+		content.setAttribute( 'aria-label', __( 'Marquee', 'marquee' ) );
+	} else {
+		content.removeAttribute( 'tabindex' );
+		content.removeAttribute( 'role' );
+		content.removeAttribute( 'aria-label' );
+	}
 }
 
 /**
@@ -174,7 +223,10 @@ function update( marquee ) {
 	state.warnedZeroWidth = false;
 
 	const minTotal = containerWidth * 2;
-	let copies = Math.max( 2, Math.ceil( minTotal / totalWidth ) );
+	let copies =
+		reducedMotion && reducedMotion.matches
+			? 1
+			: Math.max( 2, Math.ceil( minTotal / totalWidth ) );
 
 	if ( copies > MAX_COPIES ) {
 		warn(
@@ -187,6 +239,7 @@ function update( marquee ) {
 	// Nothing measurable changed, so leave the running animation alone.
 	const signature = `${ totalWidth }:${ copies }`;
 	if ( state.signature === signature ) {
+		updateScrollRegion( state );
 		return;
 	}
 	state.signature = signature;
@@ -200,6 +253,8 @@ function update( marquee ) {
 
 	const duration = ( itemsContainer.scrollWidth / state.speed ) * 0.5;
 	itemsContainer.style.setProperty( '--duration', `${ duration }s` );
+
+	updateScrollRegion( state );
 }
 
 /**
@@ -281,6 +336,7 @@ function initMarquee( marquee ) {
 	} );
 
 	const state = {
+		content: marquee.querySelector( CONTENT_SELECTOR ),
 		itemsContainer,
 		template,
 		originalCount: originalItems.length,
@@ -290,6 +346,7 @@ function initMarquee( marquee ) {
 		visible: true,
 		hovered: false,
 		warnedZeroWidth: false,
+		scrollable: false,
 	};
 
 	instances.set( marquee, state );
@@ -372,6 +429,24 @@ function start() {
 
 	initWithin( document.body );
 	watchForNewMarquees();
+
+	// Re-measure every marquee if the reduced motion preference changes. When
+	// motion is allowed again, drop any manual scroll offset first: the row
+	// keeps it under `overflow: hidden`, which would shift the restarted
+	// animation.
+	if ( reducedMotion && reducedMotion.addEventListener ) {
+		reducedMotion.addEventListener( 'change', () =>
+			document
+				.querySelectorAll( MARQUEE_SELECTOR )
+				.forEach( ( marquee ) => {
+					const content = marquee.querySelector( CONTENT_SELECTOR );
+					if ( content && ! reducedMotion.matches ) {
+						content.scrollLeft = 0;
+					}
+					scheduleUpdate( marquee );
+				} )
+		);
+	}
 }
 
 if ( document.readyState === 'loading' ) {
