@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, typography, svg, responsive, heading
 Tested up to:      6.8
-Stable tag:        0.1.3
+Stable tag:        0.1.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,6 +22,13 @@ Because the size is driven entirely by the available width, there is no font-siz
 * **Inherits Paragraph supports** — the block reuses the block supports of `core/paragraph` (such as color and spacing), with the font-size control intentionally removed because sizing is controlled by the container width.
 * **Block transforms** — convert a core Paragraph or Heading block into Stretchy Type, and convert a Stretchy Type block back into a Paragraph, from the block toolbar.
 * **Self-updating** — ships with an update mechanism (via the plugin `Update URI`) that pulls new releases from the Automattic Special Projects blocks monorepo.
+
+= Settings =
+
+Stretchy Type has no block-specific settings, because the text size is set by the container width.
+
+* **Design controls** — the block reuses the core Paragraph block's supports, so the controls in the block sidebar (such as color, typography, spacing and border) match the Paragraph block in your WordPress version, except that **font size is removed**.
+* **Edit as HTML** — disabled. The front-end resizing depends on the block's exact `svg > foreignObject > span` markup, so hand-editing it would break the stretching.
 
 == Installation ==
 
@@ -61,6 +68,11 @@ Yes. You can transform a core Paragraph or Heading block into Stretchy Type from
 Yes. A `ResizeObserver` watches the container in both the editor and on the frontend and updates the SVG `viewBox` whenever the container is resized, so the text rescales automatically.
 
 == Changelog ==
+
+= 0.1.4 =
+* Fix: disable "Edit as HTML" so the block's markup can't be hand-edited into a shape the front-end resizing no longer recognises.
+* Fix: the front-end script now also initialises when it loads after `DOMContentLoaded` has already fired.
+* Docs: add a Settings section to the readme and a `screenshot.png`.
 
 = 0.1.3 =
 * Single-block plugin providing the **Stretchy Type** block, which scales a single line of rich text to fill the width of its container using an SVG `<foreignObject>` and a `ResizeObserver`-driven `viewBox`.

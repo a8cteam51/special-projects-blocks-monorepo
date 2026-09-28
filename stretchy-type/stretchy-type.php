@@ -4,7 +4,7 @@
  * Description:       A block that expands to fill the width of its container.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           0.1.3
+ * Version:           0.1.4
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
  * License:           GPL-2.0-or-later
