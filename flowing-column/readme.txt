@@ -81,7 +81,7 @@ The Flowing Column block includes the following configurable attributes:
 
 = How many columns can I create? =
 
-You can create between 1 and 6 columns. The block will automatically adjust the layout based on your content and screen size.
+Up to 6. **Maximum columns** sets the most columns to show, and 0 fits as many as the **Minimum column width** allows. The block shows fewer columns when the full number would make them narrower than the minimum width. Clear the minimum width to always show an exact number of columns.
 
 = Can I control how the columns behave on mobile? =
 
