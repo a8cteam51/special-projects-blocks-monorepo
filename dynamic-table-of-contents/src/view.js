@@ -1,10 +1,14 @@
-const $defaultHeadingSelectors = '.wp-block-post-content h1, .wp-block-post-content h2, .wp-block-post-content h3, .wp-block-post-content h4, .wp-block-post-content h5, .wp-block-post-content h6';
+const $defaultHeadingSelectors =
+	'.wp-block-post-content h1, .wp-block-post-content h2, .wp-block-post-content h3, .wp-block-post-content h4, .wp-block-post-content h5, .wp-block-post-content h6';
 const $config = window.wpcomspDynamicTOC || {};
 const $headingSelectors = $config.headingSelectors || $defaultHeadingSelectors;
-const $includeNestedHeadings = Boolean($config.includeNestedHeadings);
+const $includeNestedHeadings = Boolean( $config.includeNestedHeadings );
 const $excludeSelectors = $config.excludeSelectors || '';
-const $headings = document.querySelectorAll($headingSelectors);
-const $headingList = document.querySelector('.wp-block-wpcomsp-dynamic-table-of-contents ul');
+const $headings = document.querySelectorAll( $headingSelectors );
+const $headingList = document.querySelector(
+	'.wp-block-wpcomsp-dynamic-table-of-contents ul'
+);
+const $customTitles = Boolean( $config.customTitles );
 
 /**
  * Get a heading's visible text.
@@ -17,9 +21,11 @@ const $headingList = document.querySelector('.wp-block-wpcomsp-dynamic-table-of-
  * @param {Element} heading The heading element.
  * @return {string} The trimmed, visible heading text.
  */
-function getHeadingText(heading) {
-	const $clone = heading.cloneNode(true);
-	$clone.querySelectorAll('[aria-hidden="true"]').forEach(($el) => $el.remove());
+function getHeadingText( heading ) {
+	const $clone = heading.cloneNode( true );
+	$clone
+		.querySelectorAll( '[aria-hidden="true"]' )
+		.forEach( ( $el ) => $el.remove() );
 	return $clone.textContent.trim();
 }
 
@@ -32,21 +38,21 @@ function getHeadingText(heading) {
  * @param {number} index The heading's position, used as a fallback slug.
  * @return {string} A unique id.
  */
-function toUniqueId(text, index) {
+function toUniqueId( text, index ) {
 	let $base = text
 		.toLowerCase()
-		.replace(/[^\p{L}\p{N}]+/gu, '-')
-		.replace(/^-+|-+$/g, '');
+		.replace( /[^\p{L}\p{N}]+/gu, '-' )
+		.replace( /^-+|-+$/g, '' );
 
-	if (!$base) {
-		$base = `toc-heading-${index}`;
+	if ( ! $base ) {
+		$base = `toc-heading-${ index }`;
 	}
 
 	let $id = $base;
 	let $suffix = 2;
 
-	while (null !== document.getElementById($id)) {
-		$id = `${$base}-${$suffix}`;
+	while ( null !== document.getElementById( $id ) ) {
+		$id = `${ $base }-${ $suffix }`;
 		$suffix += 1;
 	}
 
@@ -54,37 +60,43 @@ function toUniqueId(text, index) {
 }
 
 // This is the observer that will be used to highlight the current heading.
-const $observer = new IntersectionObserver((entries) => {
-	let $links = document.querySelectorAll('.wp-block-wpcomsp-dynamic-table-of-contents a');
+const $observer = new window.IntersectionObserver(
+	( entries ) => {
+		const $links = document.querySelectorAll(
+			'.wp-block-wpcomsp-dynamic-table-of-contents a'
+		);
 
-	entries.forEach((entry) => {
-		const $id = entry.target.id;
-		const $link = document.querySelector(`.wp-block-wpcomsp-dynamic-table-of-contents a[href="#${$id}"]`);
+		entries.forEach( ( entry ) => {
+			const $id = entry.target.id;
+			const $link = document.querySelector(
+				`.wp-block-wpcomsp-dynamic-table-of-contents a[href="#${ $id }"]`
+			);
 
-		if (entry.isIntersecting && $link) {
-			$links.forEach((link) => {
-				link.classList.remove('active');
-			});
+			if ( entry.isIntersecting && $link ) {
+				$links.forEach( ( link ) => {
+					link.classList.remove( 'active' );
+				} );
 
-			$link.classList.add('active');
-		}
-	});
-},
-{
-	rootMargin: '0px 0px -75% 0px',
-});
+				$link.classList.add( 'active' );
+			}
+		} );
+	},
+	{
+		rootMargin: '0px 0px -75% 0px',
+	}
+);
 
 let $isFirstEntry = true;
 
-$headings.forEach((heading, index) => {
+$headings.forEach( ( heading, index ) => {
 	// Never list the table of contents' own title.
-	if (heading.closest('.wp-block-wpcomsp-dynamic-table-of-contents')) {
+	if ( heading.closest( '.wp-block-wpcomsp-dynamic-table-of-contents' ) ) {
 		return;
 	}
 
 	// Let authors opt a heading out by adding the exclude class to the heading
 	// or any block wrapping it.
-	if ($excludeSelectors && heading.closest($excludeSelectors)) {
+	if ( $excludeSelectors && heading.closest( $excludeSelectors ) ) {
 		return;
 	}
 
@@ -93,39 +105,42 @@ $headings.forEach((heading, index) => {
 	// Headings rendered by wrapper blocks (accordions, etc.) never receive a
 	// server-side anchor. Without the toggle we keep the original behaviour of
 	// only listing headings that already have an id.
-	if (!$id) {
-		if (!$includeNestedHeadings) {
+	if ( ! $id ) {
+		if ( ! $includeNestedHeadings ) {
 			return;
 		}
 
-		const $text = getHeadingText(heading);
+		const $text = getHeadingText( heading );
 
-		if (!$text) {
+		if ( ! $text ) {
 			return;
 		}
 
-		$id = toUniqueId($text, index);
+		$id = toUniqueId( $text, index );
 		heading.id = $id;
 	}
 
 	// Create new elements.
-	const $latestListItem = document.createElement('li');
-	const $latestLink = document.createElement('a');
+	const $latestListItem = document.createElement( 'li' );
+	const $latestLink = document.createElement( 'a' );
+	const $customTitle = $customTitles
+		? heading.getAttribute( 'data-toc-title' )
+		: null;
 
 	// Add attributes to new elements.
-	$latestLink.href = `#${$id}`;
-	$latestLink.textContent = getHeadingText(heading);
+	$latestLink.href = `#${ $id }`;
+	$latestLink.textContent = $customTitle || getHeadingText( heading );
 
 	// Setup the first listed element as active.
-	if ($isFirstEntry) {
-		$latestLink.classList.add('active');
+	if ( $isFirstEntry ) {
+		$latestLink.classList.add( 'active' );
 		$isFirstEntry = false;
 	}
 
 	// Add new elements to the markup.
-	$latestListItem.appendChild($latestLink);
-	$headingList.appendChild($latestListItem);
+	$latestListItem.appendChild( $latestLink );
+	$headingList.appendChild( $latestListItem );
 
 	// Setup on scroll highlighting.
-	$observer.observe(heading);
-});
+	$observer.observe( heading );
+} );

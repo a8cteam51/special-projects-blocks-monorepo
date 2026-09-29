@@ -21,13 +21,14 @@ wp_enqueue_script(
 	true
 );
 
-$default_heading_selectors = array(
-	'.wp-block-post-content h1',
-	'.wp-block-post-content h2',
-	'.wp-block-post-content h3',
-	'.wp-block-post-content h4',
-	'.wp-block-post-content h5',
-	'.wp-block-post-content h6',
+// An empty selection falls back to every level, matching the editor.
+$heading_levels = ! empty( $attributes['headingLevels'] ) ? $attributes['headingLevels'] : range( 1, 6 );
+
+$default_heading_selectors = array_map(
+	static function ( $level ) {
+		return sprintf( '.wp-block-post-content h%d', $level );
+	},
+	$heading_levels
 );
 
 /**
@@ -68,13 +69,16 @@ $exclude_selectors = apply_filters(
 	$block
 );
 
+$custom_titles = ! empty( $attributes['customTitles'] ) && wpcomsp_dynamic_table_of_contents_allow_custom_titles();
+
 wp_add_inline_script(
 	'wpcomsp-dynamic-table-of-contents-view',
 	sprintf(
-		'window.wpcomspDynamicTOC=window.wpcomspDynamicTOC||{};window.wpcomspDynamicTOC.headingSelectors=%1$s;window.wpcomspDynamicTOC.includeNestedHeadings=%2$s;window.wpcomspDynamicTOC.excludeSelectors=%3$s;',
+		'window.wpcomspDynamicTOC=window.wpcomspDynamicTOC||{};window.wpcomspDynamicTOC.headingSelectors=%1$s;window.wpcomspDynamicTOC.includeNestedHeadings=%2$s;window.wpcomspDynamicTOC.excludeSelectors=%3$s;window.wpcomspDynamicTOC.customTitles=%4$s;',
 		wp_json_encode( implode( ', ', $heading_selectors ) ),
 		wp_json_encode( $include_nested_headings ),
-		wp_json_encode( implode( ', ', $exclude_selectors ) )
+		wp_json_encode( implode( ', ', $exclude_selectors ) ),
+		wp_json_encode( $custom_titles )
 	),
 	'before'
 );
