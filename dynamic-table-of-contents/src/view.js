@@ -8,10 +8,7 @@ const $headings = document.querySelectorAll( $headingSelectors );
 const $headingList = document.querySelector(
 	'.wp-block-wpcomsp-dynamic-table-of-contents ul'
 );
-const $allowCustomTitles =
-	document
-		.querySelector( '.wp-block-wpcomsp-dynamic-table-of-contents' )
-		.getAttribute( 'data-custom-titles' ) === 'true';
+const $customTitles = Boolean( $config.customTitles );
 
 /**
  * Get a heading's visible text.
@@ -63,9 +60,9 @@ function toUniqueId( text, index ) {
 }
 
 // This is the observer that will be used to highlight the current heading.
-const $observer = new IntersectionObserver(
+const $observer = new window.IntersectionObserver(
 	( entries ) => {
-		let $links = document.querySelectorAll(
+		const $links = document.querySelectorAll(
 			'.wp-block-wpcomsp-dynamic-table-of-contents a'
 		);
 
@@ -126,14 +123,13 @@ $headings.forEach( ( heading, index ) => {
 	// Create new elements.
 	const $latestListItem = document.createElement( 'li' );
 	const $latestLink = document.createElement( 'a' );
-	const customTitle = heading.getAttribute( 'customtitle' );
+	const $customTitle = $customTitles
+		? heading.getAttribute( 'data-toc-title' )
+		: null;
 
 	// Add attributes to new elements.
 	$latestLink.href = `#${ $id }`;
-	$latestLink.textContent =
-		$allowCustomTitles && customTitle
-			? customTitle
-			: getHeadingText( heading );
+	$latestLink.textContent = $customTitle || getHeadingText( heading );
 
 	// Setup the first listed element as active.
 	if ( $isFirstEntry ) {

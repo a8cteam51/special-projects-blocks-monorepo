@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, table of contents, navigation, headings, accessibility
 Tested up to:      6.8
-Stable tag:        0.4.0
+Stable tag:        0.5.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,8 @@ The list is assembled in the browser at render time from the post's live heading
 * **Headings from wrapper blocks** — an optional **Include headings nested in other blocks** toggle lists headings rendered by blocks such as accordions (which wrap their title in extra elements and so never get a server-side anchor). When enabled, the view script generates an anchor for each such heading and ignores decorative, `aria-hidden` icons when building the label.
 * **Scroll-spy highlighting** — an `IntersectionObserver` watches the headings and adds an `active` class to the matching link as each section scrolls into view, so the table tracks the reader's position. The active entry is shown in bold.
 * **Editable title** — the block title is editable inline via RichText and defaults to "Table of Contents". An empty title is omitted from the output.
+* **Heading levels** — choose which heading levels (H1–H6) are listed from the block's **Headings to include** setting. All levels are included by default.
+* **Custom titles** — turn on **Enable Custom titles** to give any heading a shorter label in the table of contents, set from the block's editor preview with **Edit Title**. The `a8csp_dynamic_table_of_contents_allow_custom_titles` filter lets developers turn the feature off site-wide.
 * **Heading selection filter** — by default the table collects all `h1`–`h6` headings inside `.wp-block-post-content`. The `a8csp_dynamic_table_of_contents_heading_selectors` filter lets you change which headings are listed (for example, H2 only).
 * **Per-heading opt-out** — add the `hide-from-toc` CSS class to a heading (via **Advanced > Additional CSS class(es)**) to keep it out of the list. Adding the class to a wrapping block (such as a Group or Column) excludes every heading inside it. The `a8csp_dynamic_table_of_contents_exclude_selectors` filter lets you change the class(es) that trigger the opt-out.
 * **Title filter** — the `wpcomsp_dynamic_table_of_contents_block_title` filter lets you adjust the rendered title.
@@ -55,7 +57,7 @@ No. The plugin adds an `id` to any heading that doesn't already have one, genera
 
 = Which headings appear in the list? =
 
-By default, all heading levels (`h1` through `h6`) inside the post content are included. To change that — for example, to list only H2 headings — use the `a8csp_dynamic_table_of_contents_heading_selectors` filter, which receives the default selectors, the block attributes, and the block object, and must return an array of CSS selectors:
+By default, all heading levels (`h1` through `h6`) inside the post content are included. Use the **Headings to include** setting in the block's sidebar to pick which levels are listed. For full control over which headings are collected, use the `a8csp_dynamic_table_of_contents_heading_selectors` filter, which receives the default selectors, the block attributes, and the block object, and must return an array of CSS selectors:
 
 `
 add_filter(
@@ -85,6 +87,18 @@ add_filter(
 );
 `
 
+= Can a table of contents entry use different text from the heading? =
+
+Yes. In the block's settings, turn on **Enable Custom titles**, then click **Edit Title** next to an entry in the editor preview and enter the label you want. For example, a heading such as "Hey there, I'm Jane, the CEO of ACME" can appear in the table of contents as "Message from our CEO". Use **Reset** to go back to the heading text.
+
+The custom title is stored in the heading block's attributes (in the block comment, not the heading HTML) and is output on the rendered heading as a `data-toc-title` attribute, which the view script uses for the entry label.
+
+To turn custom titles off for the whole site, return `false` from the `a8csp_dynamic_table_of_contents_allow_custom_titles` filter. This hides the controls in the editor and makes every entry use its heading text:
+
+`
+add_filter( 'a8csp_dynamic_table_of_contents_allow_custom_titles', '__return_false' );
+`
+
 = Why doesn't the block show up on a page or in other contexts? =
 
 The block renders only when it has a post context (a `postId`). It is designed for the singular post view, where a table of contents for the post's headings makes sense, and is intentionally skipped elsewhere.
@@ -98,6 +112,12 @@ The view script uses an `IntersectionObserver` to track which heading is in view
 Yes. The title is editable inline in the editor and defaults to "Table of Contents". Leaving it empty removes it from the output. You can also adjust the rendered title programmatically with the `wpcomsp_dynamic_table_of_contents_block_title` filter.
 
 == Changelog ==
+
+= 0.5.0 =
+* Added a **Headings to include** setting to choose which heading levels (H1–H6) are listed. All levels are included by default.
+* Added custom titles: with **Enable Custom titles** on, each heading can have its own table of contents label, set from the editor preview.
+* New `a8csp_dynamic_table_of_contents_allow_custom_titles` filter to turn custom titles off site-wide.
+* The editor now previews the post's real headings instead of placeholder entries.
 
 = 0.4.0 =
 * Added a per-heading opt-out: adding the `hide-from-toc` CSS class to a heading (or a block wrapping it) keeps it out of the table of contents.

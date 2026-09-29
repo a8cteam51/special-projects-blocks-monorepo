@@ -20,7 +20,7 @@ import './style.scss';
  */
 import Edit from './edit';
 import metadata from './block.json';
-import { addCustomTitleAttribute, saveCustomTitleAttribute } from './filters';
+import { addCustomTitleAttribute } from './filters';
 
 const icon = (
 	<svg
@@ -57,10 +57,4 @@ addFilter(
 	'blocks.registerBlockType',
 	'dynamic-table-of-contents/heading-block-attr',
 	addCustomTitleAttribute
-);
-
-addFilter(
-	'blocks.getSaveContent.extraProps',
-	'dynamic-table-of-contents/add-heading-block-attr',
-	saveCustomTitleAttribute
 );

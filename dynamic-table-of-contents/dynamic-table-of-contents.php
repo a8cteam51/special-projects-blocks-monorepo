@@ -4,7 +4,7 @@
  * Description:       Creates a table of contents that's dynamically (PHP) rendered.
  * Requires at least: 6.1
  * Requires PHP:      8.0
- * Version:           0.4.0
+ * Version:           0.5.0
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
  * Update URI:        https://opsoasis.wpspecialprojects.com/dynamic-table-of-contents/
@@ -57,11 +57,49 @@ add_filter(
  * through the block editor in the corresponding context.
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
+ *
+ * @return void
  */
 function wpcomsp_dynamic_table_of_contents_block_init() {
 	register_block_type( __DIR__ . '/build' );
 }
 add_action( 'init', 'wpcomsp_dynamic_table_of_contents_block_init' );
+
+/**
+ * Whether editors may give headings a custom table of contents title.
+ *
+ * @return boolean
+ */
+function wpcomsp_dynamic_table_of_contents_allow_custom_titles() {
+	/**
+	 * Filters whether headings may have a custom table of contents title.
+	 *
+	 * Returning false hides the custom title controls in the editor and makes the
+	 * table of contents use the heading text on the frontend.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @param bool $allow_custom_titles Whether custom titles are allowed. Default true.
+	 */
+	return (bool) apply_filters( 'a8csp_dynamic_table_of_contents_allow_custom_titles', true );
+}
+
+/**
+ * Pass the custom titles setting to the editor script.
+ *
+ * @return void
+ */
+function wpcomsp_dynamic_table_of_contents_editor_settings() {
+	wp_add_inline_script(
+		generate_block_asset_handle( 'wpcomsp/dynamic-table-of-contents', 'editorScript' ),
+		sprintf(
+			'window.wpcomspDynamicTOCEditor=%s;',
+			wp_json_encode( array( 'allowCustomTitles' => wpcomsp_dynamic_table_of_contents_allow_custom_titles() ) )
+		),
+		'before'
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'wpcomsp_dynamic_table_of_contents_editor_settings' );
 
 /**
  * Filter the render block output of heading blocks.
@@ -80,12 +118,13 @@ function wpcomsp_dynamic_table_of_contents_block_render( $block_content, $block 
 	$processor = new WP_HTML_Tag_Processor( $block_content );
 	$processor->next_tag();
 
-	if ( isset( $block['attrs']['customTitle'] ) && ! empty( $block['attrs']['customTitle'] ) ) {
-		$processor->set_attribute( 'customtitle', $block['attrs']['customTitle'] );
+	// Custom table of contents title, stored in the block comment only.
+	if ( ! empty( $block['attrs']['customTitle'] ) && is_string( $block['attrs']['customTitle'] ) ) {
+		$processor->set_attribute( 'data-toc-title', $block['attrs']['customTitle'] );
 	}
 
 	// If the heading already has an ID, don't add one.
-	if ( null === $processor->get_attribute( 'ID' ) ) {
+	if ( null === $processor->get_attribute( 'id' ) ) {
 		// If the heading doesn't have an ID, add one.
 		$content = wp_strip_all_tags( $block_content );
 		$processor->set_attribute( 'id', esc_attr( sanitize_title( $content ) ) );

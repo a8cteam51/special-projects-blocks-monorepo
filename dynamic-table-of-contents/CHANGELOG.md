@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.5.0 - Unreleased
+
+### Added
+
+- **Headings to include** setting: choose which heading levels (H1–H6) the table of contents lists. All levels are selected by default, so existing blocks are unchanged. The editor now previews the real list of headings instead of placeholder entries.
+- **Custom titles**: with **Enable Custom titles** turned on, each entry in the editor preview gets an **Edit Title** link for a shorter table of contents label. The title is stored as a `customTitle` attribute in the heading's block comment and added to the rendered heading as `data-toc-title`; it is never saved into the heading's HTML, so headings stay valid if the plugin is deactivated.
+- New `a8csp_dynamic_table_of_contents_allow_custom_titles` filter. Returning `false` hides the custom title controls in the editor and makes the table of contents use the heading text on the frontend.
+
 ## 0.4.0 - 2026-07-01
 
 ### Added

@@ -21,11 +21,14 @@ wp_enqueue_script(
 	true
 );
 
+// An empty selection falls back to every level, matching the editor.
+$heading_levels = ! empty( $attributes['headingLevels'] ) ? $attributes['headingLevels'] : range( 1, 6 );
+
 $default_heading_selectors = array_map(
-	function ( $level ) {
+	static function ( $level ) {
 		return sprintf( '.wp-block-post-content h%d', $level );
 	},
-	$attributes['headingLevels'] ? $attributes['headingLevels'] : range( 1, 6 )
+	$heading_levels
 );
 
 /**
@@ -66,35 +69,22 @@ $exclude_selectors = apply_filters(
 	$block
 );
 
-/**
- * Filters the value used by the view script to determine if custom titles are allowed for the table of contents.
- *
- * @since 0.3.0
- *
- * @param string[] $default_heading_selectors Array of selectors for table of contents headings.
- * @param array    $attributes                Block attributes.
- * @param WP_Block $block                     The block object.
- */
-$allow_custom_titles = apply_filters(
-	'wpcomsp_dynamic_table_of_contents_allow_custom_titles',
-	$attributes['customTitles'] ? 'true' : 'false',
-	$attributes,
-	$block
-);
+$custom_titles = ! empty( $attributes['customTitles'] ) && wpcomsp_dynamic_table_of_contents_allow_custom_titles();
 
 wp_add_inline_script(
 	'wpcomsp-dynamic-table-of-contents-view',
 	sprintf(
-		'window.wpcomspDynamicTOC=window.wpcomspDynamicTOC||{};window.wpcomspDynamicTOC.headingSelectors=%1$s;window.wpcomspDynamicTOC.includeNestedHeadings=%2$s;window.wpcomspDynamicTOC.excludeSelectors=%3$s;',
+		'window.wpcomspDynamicTOC=window.wpcomspDynamicTOC||{};window.wpcomspDynamicTOC.headingSelectors=%1$s;window.wpcomspDynamicTOC.includeNestedHeadings=%2$s;window.wpcomspDynamicTOC.excludeSelectors=%3$s;window.wpcomspDynamicTOC.customTitles=%4$s;',
 		wp_json_encode( implode( ', ', $heading_selectors ) ),
 		wp_json_encode( $include_nested_headings ),
-		wp_json_encode( implode( ', ', $exclude_selectors ) )
+		wp_json_encode( implode( ', ', $exclude_selectors ) ),
+		wp_json_encode( $custom_titles )
 	),
 	'before'
 );
 ?>
 
-<div <?php echo wp_kses_post( get_block_wrapper_attributes( array( 'data-custom-titles' => $allow_custom_titles ) ) ); ?>>
+<div <?php echo wp_kses_post( get_block_wrapper_attributes() ); ?>>
 	<?php
 	$block_title = $attributes['title'] ?? '';
 	$block_title = apply_filters( 'wpcomsp_dynamic_table_of_contents_block_title', $block_title, $attributes );

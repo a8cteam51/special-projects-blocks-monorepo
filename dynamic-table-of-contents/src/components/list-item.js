@@ -4,13 +4,24 @@ import { Button, TextControl } from '@wordpress/components';
 import { useDispatch } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 
-const ListItem = ( { title, id, customTitles, customTitle } ) => {
+const ListItem = ( { title, id, showCustomTitles, customTitle } ) => {
 	const [ isEditing, setIsEditing ] = useState( false );
-	const [ updatedText, setUpdatedText ] = useState( title );
+	const [ updatedText, setUpdatedText ] = useState( '' );
 	const { updateBlockAttributes } = useDispatch( blockEditorStore );
 
+	const startEditing = () => {
+		setUpdatedText( customTitle || title );
+		setIsEditing( true );
+	};
+
+	// An empty value removes the custom title.
+	const saveCustomTitle = ( value ) => {
+		updateBlockAttributes( id, { customTitle: value || undefined } );
+		setIsEditing( false );
+	};
+
 	return (
-		<li key={ id }>
+		<li>
 			{ isEditing ? (
 				<>
 					<TextControl
@@ -28,30 +39,22 @@ const ListItem = ( { title, id, customTitles, customTitle } ) => {
 						} }
 					>
 						<Button
-							isPrimary
-							onClick={ () => {
-								updateBlockAttributes( id, {
-									customTitle: updatedText,
-								} );
-							} }
+							variant="primary"
+							onClick={ () =>
+								saveCustomTitle( updatedText.trim() )
+							}
 						>
 							{ __( 'Update', 'dynamic-table-of-contents' ) }
 						</Button>
 						<Button
-							isSecondary
-							onClick={ () => {
-								updateBlockAttributes( id, {
-									customTitle: null,
-								} );
-							} }
+							variant="secondary"
+							onClick={ () => saveCustomTitle( '' ) }
 						>
 							{ __( 'Reset', 'dynamic-table-of-contents' ) }
 						</Button>
 						<Button
-							isLink
-							onClick={ () => {
-								setIsEditing( ! isEditing );
-							} }
+							variant="link"
+							onClick={ () => setIsEditing( false ) }
 						>
 							{ __( 'Close', 'dynamic-table-of-contents' ) }
 						</Button>
@@ -59,16 +62,14 @@ const ListItem = ( { title, id, customTitles, customTitle } ) => {
 				</>
 			) : (
 				<a href={ `#block-${ id }` }>
-					{ ( customTitles && customTitle ) || title }
+					{ ( showCustomTitles && customTitle ) || title }
 				</a>
 			) }
-			{ ! isEditing && customTitles && (
+			{ ! isEditing && showCustomTitles && (
 				<Button
-					isLink
+					variant="link"
 					className="edit-heading-title"
-					onClick={ () => {
-						setIsEditing( ! isEditing );
-					} }
+					onClick={ startEditing }
 					style={ { marginLeft: '0.5ch' } }
 				>
 					{ __( 'Edit Title', 'dynamic-table-of-contents' ) }

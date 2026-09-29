@@ -8,7 +8,6 @@ import {
 
 import {
 	Button,
-	ButtonGroup,
 	PanelBody,
 	ToggleControl,
 	PanelRow,
@@ -20,6 +19,22 @@ import { useMemo } from '@wordpress/element';
 
 /* Internal dependencies */
 import ListItem from './components/list-item';
+
+const ALL_HEADING_LEVELS = [ 1, 2, 3, 4, 5, 6 ];
+
+// Mirrors the frontend's default opt-out class. Selectors changed through the
+// `a8csp_dynamic_table_of_contents_exclude_selectors` filter are not reflected
+// in the editor.
+const EXCLUDE_CLASS = 'hide-from-toc';
+
+// Set by `wpcomsp_dynamic_table_of_contents_editor_settings()`.
+const allowCustomTitles =
+	window.wpcomspDynamicTOCEditor?.allowCustomTitles !== false;
+
+const stripHTML = ( html ) => {
+	const doc = new window.DOMParser().parseFromString( html, 'text/html' );
+	return doc.body.textContent ?? '';
+};
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -36,49 +51,70 @@ import ListItem from './components/list-item';
 export default function Edit( { attributes, setAttributes } ) {
 	const { headingLevels, title, customTitles } = attributes;
 
-	const headings = [ 1, 2, 3, 4, 5, 6 ];
+	// An empty selection falls back to every level, matching render.php.
+	const levels = headingLevels?.length ? headingLevels : ALL_HEADING_LEVELS;
+	const showCustomTitles = allowCustomTitles && customTitles;
 
-	const allBlocks = useSelect( ( select ) => {
-		const { getClientIdsWithDescendants, getBlock } =
-			select( blockEditorStore );
-		return getClientIdsWithDescendants().map( ( clientId ) =>
-			getBlock( clientId )
-		);
+	// Heading blocks the frontend would list: skip headings in template parts
+	// (outside the post content) and any opted out with the exclude class.
+	const allHeadingBlocks = useSelect( ( select ) => {
+		const {
+			getClientIdsWithDescendants,
+			getBlockName,
+			getBlockAttributes,
+			getBlockParents,
+			getBlock,
+		} = select( blockEditorStore );
+
+		const hasExcludeClass = ( clientId ) =>
+			( getBlockAttributes( clientId )?.className ?? '' )
+				.split( /\s+/ )
+				.includes( EXCLUDE_CLASS );
+
+		return getClientIdsWithDescendants()
+			.filter( ( clientId ) => {
+				if ( getBlockName( clientId ) !== 'core/heading' ) {
+					return false;
+				}
+
+				const parents = getBlockParents( clientId );
+
+				return (
+					! parents.some(
+						( id ) => getBlockName( id ) === 'core/template-part'
+					) && ! [ clientId, ...parents ].some( hasExcludeClass )
+				);
+			} )
+			.map( ( clientId ) => getBlock( clientId ) );
 	}, [] );
 
-	const headingBlocks = useMemo( () => {
-		const stripHTML = ( html ) => {
-			// eslint-disable-next-line no-undef
-			const doc = new DOMParser().parseFromString( html, 'text/html' );
-			return doc.body.textContent ?? '';
-		};
-
-		const getHeadingContent = ( block ) => {
-			if ( block.attributes.content.originalHTML ) {
-				return stripHTML( block.attributes.content.originalHTML );
-			}
-			return stripHTML( block.attributes.content );
-		};
-
-		return allBlocks
-			.filter(
-				( block ) =>
-					block?.name === 'core/heading' &&
-					headingLevels.includes( block.attributes.level )
-			)
-			.map( ( block ) => {
-				// Add plain text content to each heading block
-				return {
-					...block,
-					plainTextContent: getHeadingContent( block ),
-				};
-			} );
-	}, [ allBlocks, headingLevels ] );
+	const headingBlocks = useMemo(
+		() =>
+			allHeadingBlocks
+				.filter( ( block ) =>
+					levels.includes( block.attributes.level )
+				)
+				.map( ( block ) => ( {
+					clientId: block.clientId,
+					// `content` is RichTextData (WP 6.5+), a string, or undefined.
+					plainTextContent: stripHTML(
+						String( block.attributes.content ?? '' )
+					),
+					customTitle: block.attributes.customTitle,
+				} ) ),
+		[ allHeadingBlocks, levels ]
+	);
 
 	const updateHeadingLevels = ( level ) => {
-		const newHeadingLevels = headingLevels.includes( level )
-			? headingLevels.filter( ( l ) => l !== level )
-			: [ ...headingLevels, level ];
+		const newHeadingLevels = levels.includes( level )
+			? levels.filter( ( l ) => l !== level )
+			: [ ...levels, level ];
+
+		// Keep at least one level selected.
+		if ( ! newHeadingLevels.length ) {
+			return;
+		}
+
 		setAttributes( { headingLevels: newHeadingLevels } );
 	};
 
@@ -109,51 +145,63 @@ export default function Edit( { attributes, setAttributes } ) {
 							'dynamic-table-of-contents'
 						) }
 					</h3>
-					<PanelRow>
-						<ButtonGroup>
-							{ headings.map( ( level ) => (
-								<Button
-									key={ level }
-									variant={
-										headingLevels.includes( level )
-											? 'primary'
-											: 'secondary'
+					<div
+						style={ {
+							display: 'flex',
+							flexWrap: 'wrap',
+							gap: '4px',
+						} }
+					>
+						{ ALL_HEADING_LEVELS.map( ( level ) => (
+							<Button
+								key={ level }
+								size="compact"
+								variant="secondary"
+								isPressed={ levels.includes( level ) }
+								onClick={ () => {
+									updateHeadingLevels( level );
+								} }
+							>
+								H{ level }
+							</Button>
+						) ) }
+					</div>
+					{ allowCustomTitles && (
+						<>
+							<h3 style={ { marginTop: '2em' } }>
+								{ __(
+									'Custom Titles',
+									'dynamic-table-of-contents'
+								) }
+							</h3>
+							<PanelRow>
+								<ToggleControl
+									__nextHasNoMarginBottom
+									label={ __(
+										'Enable Custom titles',
+										'dynamic-table-of-contents'
+									) }
+									help={
+										customTitles
+											? __(
+													'Custom titles enabled.',
+													'dynamic-table-of-contents'
+											  )
+											: __(
+													'Custom titles disabled.',
+													'dynamic-table-of-contents'
+											  )
 									}
-									onClick={ () => {
-										updateHeadingLevels( level );
+									checked={ customTitles }
+									onChange={ ( newValue ) => {
+										setAttributes( {
+											customTitles: newValue,
+										} );
 									} }
-								>
-									H{ level }
-								</Button>
-							) ) }
-						</ButtonGroup>
-					</PanelRow>
-					<h3 style={ { marginTop: '2em' } }>
-						{ __( 'Custom Titles', 'dynamic-table-of-contents' ) }
-					</h3>
-					<PanelRow>
-						<ToggleControl
-							label={ __(
-								'Enable Custom titles',
-								'dynamic-table-of-contents'
-							) }
-							help={
-								customTitles
-									? __(
-											'Custom titles enabled.',
-											'dynamic-table-of-contents'
-									  )
-									: __(
-											'Custom titles disabled.',
-											'dynamic-table-of-contents'
-									  )
-							}
-							checked={ customTitles }
-							onChange={ ( newValue ) => {
-								setAttributes( { customTitles: newValue } );
-							} }
-						/>
-					</PanelRow>
+								/>
+							</PanelRow>
+						</>
+					) }
 				</PanelBody>
 			</InspectorControls>
 			<div { ...useBlockProps() }>
@@ -183,8 +231,8 @@ export default function Edit( { attributes, setAttributes } ) {
 											'dynamic-table-of-contents'
 										)
 									}
-									customTitles={ customTitles }
-									customTitle={ block.attributes.customTitle }
+									showCustomTitles={ showCustomTitles }
+									customTitle={ block.customTitle }
 								/>
 							);
 						} )
