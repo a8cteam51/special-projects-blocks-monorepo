@@ -12,9 +12,11 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import {
-	InnerBlocks,
-	useBlockProps,
+	ColorPalette,
 	InspectorControls,
+	useBlockProps,
+	useInnerBlocksProps,
+	withColors,
 } from '@wordpress/block-editor';
 
 /**
@@ -23,11 +25,22 @@ import {
  * @see https://developer.wordpress.org/block-editor/packages/packages-components/
  */
 import {
+	BaseControl,
 	PanelBody,
 	RangeControl,
 	SelectControl,
-	ColorPicker,
+	__experimentalUnitControl as UnitControl, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 } from '@wordpress/components';
+
+/**
+ * Internal dependencies
+ */
+import getColumnStyle from './get-column-style';
+
+const UNITS = [ 'px', 'em', 'rem' ].map( ( value ) => ( {
+	value,
+	label: value,
+} ) );
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -35,162 +48,80 @@ import {
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
- * @param {Object}   props               Block props.
- * @param {Object}   props.attributes    Block attributes.
- * @param {Function} props.setAttributes Function to set block attributes.
+ * @param {Object}   props                    Block props.
+ * @param {Object}   props.attributes         Block attributes.
+ * @param {Function} props.setAttributes      Function to set block attributes.
+ * @param {Object}   props.columnRuleColor    Rule color object from withColors.
+ * @param {Function} props.setColumnRuleColor Rule color setter from withColors.
  * @return {Element} Element to render.
  */
-export default function Edit( { attributes, setAttributes } ) {
-	const {
-		columnCount,
-		columnMinWidth,
-		columnMinWidthUnit,
-		columnGap,
-		columnGapUnit,
-		columnRuleStyle,
-		columnRuleWidth,
-		columnRuleWidthUnit,
-		columnRuleColor,
-		minColumns,
-	} = attributes;
+function Edit( {
+	attributes,
+	setAttributes,
+	columnRuleColor,
+	setColumnRuleColor,
+} ) {
+	const { columnCount, columnMinWidth, columnRuleStyle, columnRuleWidth } =
+		attributes;
+	const hasMinWidth = parseFloat( columnMinWidth ) > 0;
 
 	const blockProps = useBlockProps( {
-		style: {
-			'--a8csp-flowing-column-column-count': String( columnCount ),
-			'--a8csp-flowing-column-column-min-width':
-				columnMinWidth === 0 || columnMinWidth === null
-					? 'auto'
-					: `${ columnMinWidth }${ columnMinWidthUnit }`,
-			'--a8csp-flowing-column-column-gap': `${ columnGap }${ columnGapUnit }`,
-			'--a8csp-flowing-column-column-rule-style': String(
-				columnRuleStyle || 'none'
-			),
-			'--a8csp-flowing-column-column-rule-width': `${ columnRuleWidth }${ columnRuleWidthUnit }`,
-			'--a8csp-flowing-column-column-rule-color': String(
-				columnRuleColor || '#000000'
-			),
-			'--a8csp-flowing-column-min-columns': String( minColumns ),
-		},
+		style: getColumnStyle( attributes ),
+	} );
+	const innerBlocksProps = useInnerBlocksProps( blockProps, {
+		template: [ [ 'core/paragraph' ] ],
 	} );
 
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody
-					title={ __( 'Column Settings', 'flowing-column' ) }
-					initialOpen={ true }
-				>
+				<PanelBody title={ __( 'Columns', 'flowing-column' ) }>
 					<RangeControl
-						label={ __( 'Number of Columns', 'flowing-column' ) }
+						label={
+							hasMinWidth
+								? __( 'Maximum columns', 'flowing-column' )
+								: __( 'Columns', 'flowing-column' )
+						}
+						help={
+							hasMinWidth
+								? __(
+										'0 fits as many columns as the minimum width allows.',
+										'flowing-column'
+								  )
+								: undefined
+						}
 						value={ columnCount }
 						onChange={ ( value ) =>
 							setAttributes( { columnCount: value } )
 						}
-						min={ 1 }
+						min={ hasMinWidth ? 0 : 1 }
 						max={ 6 }
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 
-					<RangeControl
-						label={ __(
-							'Minimum Number of Columns',
+					<UnitControl
+						label={ __( 'Minimum column width', 'flowing-column' ) }
+						help={ __(
+							'Columns narrower than this reflow into fewer columns. Leave empty for a fixed number of columns.',
 							'flowing-column'
 						) }
-						value={ minColumns }
-						onChange={ ( value ) =>
-							setAttributes( { minColumns: value } )
-						}
-						min={ 1 }
-						max={ columnCount }
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-					/>
-
-					<RangeControl
-						label={ __( 'Column Minimum Width', 'flowing-column' ) }
 						value={ columnMinWidth }
 						onChange={ ( value ) =>
 							setAttributes( { columnMinWidth: value } )
 						}
+						units={ UNITS }
 						min={ 0 }
-						max={ 800 }
-						step={ 10 }
-						help={ __(
-							'Set to 0 to use auto width.',
-							'flowing-column'
-						) }
 						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-					/>
-
-					<SelectControl
-						label={ __(
-							'Column Minimum Width Unit',
-							'flowing-column'
-						) }
-						value={ columnMinWidthUnit }
-						onChange={ ( value ) =>
-							setAttributes( { columnMinWidthUnit: value } )
-						}
-						options={ [
-							{
-								label: __( 'Pixels (px)', 'flowing-column' ),
-								value: 'px',
-							},
-							{
-								label: __( 'Ems (em)', 'flowing-column' ),
-								value: 'em',
-							},
-							{
-								label: __( 'Rems (rem)', 'flowing-column' ),
-								value: 'rem',
-							},
-						] }
-					/>
-
-					<RangeControl
-						label={ __( 'Column Gap', 'flowing-column' ) }
-						value={ columnGap }
-						onChange={ ( value ) =>
-							setAttributes( { columnGap: value } )
-						}
-						min={ 0 }
-						max={ 5 }
-						step={ 0.1 }
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-					/>
-
-					<SelectControl
-						label={ __( 'Column Gap Unit', 'flowing-column' ) }
-						value={ columnGapUnit }
-						onChange={ ( value ) =>
-							setAttributes( { columnGapUnit: value } )
-						}
-						options={ [
-							{
-								label: __( 'Pixels (px)', 'flowing-column' ),
-								value: 'px',
-							},
-							{
-								label: __( 'Ems (em)', 'flowing-column' ),
-								value: 'em',
-							},
-							{
-								label: __( 'Rems (rem)', 'flowing-column' ),
-								value: 'rem',
-							},
-						] }
 					/>
 				</PanelBody>
 
 				<PanelBody
-					title={ __( 'Column Rule Settings', 'flowing-column' ) }
+					title={ __( 'Column rule', 'flowing-column' ) }
 					initialOpen={ false }
 				>
 					<SelectControl
-						label={ __( 'Rule Style', 'flowing-column' ) }
+						label={ __( 'Style', 'flowing-column' ) }
 						value={ columnRuleStyle }
 						onChange={ ( value ) =>
 							setAttributes( { columnRuleStyle: value } )
@@ -233,57 +164,37 @@ export default function Edit( { attributes, setAttributes } ) {
 								value: 'outset',
 							},
 						] }
-					/>
-
-					<RangeControl
-						label={ __( 'Rule Width', 'flowing-column' ) }
-						value={ columnRuleWidth }
-						onChange={ ( value ) =>
-							setAttributes( { columnRuleWidth: value } )
-						}
-						min={ 0 }
-						max={ 10 }
-						step={ 1 }
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
 
-					<SelectControl
-						label={ __( 'Rule Width Unit', 'flowing-column' ) }
-						value={ columnRuleWidthUnit }
+					<UnitControl
+						label={ __( 'Width', 'flowing-column' ) }
+						value={ columnRuleWidth }
 						onChange={ ( value ) =>
-							setAttributes( { columnRuleWidthUnit: value } )
+							setAttributes( { columnRuleWidth: value } )
 						}
-						options={ [
-							{
-								label: __( 'Pixels (px)', 'flowing-column' ),
-								value: 'px',
-							},
-							{
-								label: __( 'Ems (em)', 'flowing-column' ),
-								value: 'em',
-							},
-							{
-								label: __( 'Rems (rem)', 'flowing-column' ),
-								value: 'rem',
-							},
-						] }
+						units={ UNITS }
+						min={ 0 }
+						__next40pxDefaultSize
 					/>
 
-					<ColorPicker
-						label={ __( 'Rule Color', 'flowing-column' ) }
-						color={ columnRuleColor }
-						onChangeComplete={ ( color ) =>
-							setAttributes( { columnRuleColor: color.hex } )
-						}
-						enableAlpha={ false }
-					/>
+					<BaseControl __nextHasNoMarginBottom>
+						<BaseControl.VisualLabel>
+							{ __( 'Color', 'flowing-column' ) }
+						</BaseControl.VisualLabel>
+						<ColorPalette
+							aria-label={ __( 'Rule color', 'flowing-column' ) }
+							value={ columnRuleColor.color }
+							onChange={ setColumnRuleColor }
+						/>
+					</BaseControl>
 				</PanelBody>
 			</InspectorControls>
 
-			<div { ...blockProps }>
-				<InnerBlocks template={ [ [ 'core/paragraph' ] ] } />
-			</div>
+			<div { ...innerBlocksProps } />
 		</>
 	);
 }
+
+export default withColors( 'columnRuleColor' )( Edit );

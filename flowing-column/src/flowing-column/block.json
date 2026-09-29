@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "a8csp/flowing-column",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"title": "Flowing Column",
 	"category": "design",
 	"icon": "columns",
@@ -17,8 +17,7 @@
 		],
 		"spacing": {
 			"blockGap": [
-				"horizontal",
-				"vertical"
+				"horizontal"
 			],
 			"margin": true,
 			"padding": true,
@@ -60,36 +59,12 @@
 	"attributes": {
 		"columnCount": {
 			"type": "number",
-			"minimum": 1,
-			"default": 2
-		},
-		"columnMinWidth": {
-			"type": "number",
-			"minimum": 1,
-			"default": 200
-		},
-		"columnMinWidthUnit": {
-			"type": "string",
-			"enum": [
-				"px",
-				"em",
-				"rem"
-			],
-			"default": "px"
-		},
-		"columnGap": {
-			"type": "number",
 			"minimum": 0,
 			"default": 2
 		},
-		"columnGapUnit": {
+		"columnMinWidth": {
 			"type": "string",
-			"enum": [
-				"px",
-				"em",
-				"rem"
-			],
-			"default": "em"
+			"default": "200px"
 		},
 		"columnRuleStyle": {
 			"type": "string",
@@ -98,32 +73,23 @@
 				"solid",
 				"dashed",
 				"dotted",
-				"double"
+				"double",
+				"groove",
+				"ridge",
+				"inset",
+				"outset"
 			],
 			"default": "solid"
 		},
 		"columnRuleWidth": {
-			"type": "number",
-			"minimum": 0,
-			"default": 1
-		},
-		"columnRuleWidthUnit": {
 			"type": "string",
-			"enum": [
-				"px",
-				"em",
-				"rem"
-			],
-			"default": "px"
+			"default": "1px"
 		},
 		"columnRuleColor": {
-			"type": "string",
-			"default": "#000"
+			"type": "string"
 		},
-		"minColumns": {
-			"type": "number",
-			"minimum": 1,
-			"default": 1
+		"customColumnRuleColor": {
+			"type": "string"
 		}
 	},
 	"textdomain": "flowing-column",
