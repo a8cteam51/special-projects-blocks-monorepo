@@ -1,0 +1,69 @@
+name: ✨ Feature request / enhancement
+description: Suggest an improvement to an existing block or plugin.
+title: "<Block>: <short description of the enhancement>"
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a brand-new block, use the **New block proposal** template instead.
+        Remember: enhancements must benefit **all** sites using the block, not just one
+        project. Project-specific needs are usually better met with filters, block
+        styles, or variations — see the
+        [re-using a block guide](https://github.com/a8cteam51/special-projects-blocks-monorepo/wiki/Re%E2%80%90Using-an-Existing-Block-in-Your-Project).
+  - type: dropdown
+    id: plugin
+    attributes:
+      label: Affected plugin
+      options:
+        - bp-breadcrumbs
+        - bp-groups
+        - bp-members
+        - counter
+        - cover-bg-crossfade
+        - dynamic-table-of-contents
+        - exclude-duplicates-from-query-loops
+        - featured-image-captions
+        - featured-video
+        - flowing-column
+        - jp-related-posts-query-loop
+        - light-dark-toggle
+        - mega-menu
+        - modal
+        - override-post-links
+        - reactions
+        - scroll-progress-bar
+        - scroll-to-top
+        - sibling-pages-list
+        - stretchy-type
+        - table-plus
+        - tabs
+        - videopress-download
+        - General / tooling
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What's the user problem or limitation this solves?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Could a filter, block style, variation, or pattern achieve this without a code change to the block?
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: This change benefits all sites using the block, not just one project.
+          required: true

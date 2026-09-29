@@ -6,13 +6,15 @@
  */
 
 .bp-groups-contributors {
+
 	&__view-all {
 		background-color: transparent;
 		border: none;
-		color: currentColor;
+		color: currentcolor;
 		font-size: inherit;
 		text-decoration: underline;
 	}
+
 	&__avatars {
 		list-style: none;
 		padding: 0;
@@ -26,13 +28,21 @@
 		&.fade-in {
 			animation: fadeIn 0.3s ease-in-out forwards;
 		}
+
+		.bp-groups-contributors__view-all {
+			height: var(--avatar-size);
+			font-size: calc(var(--avatar-size) * 0.35);
+			width: var(--avatar-size);
+		}
 	}
 }
 
 @keyframes fadeIn {
+
 	from {
 		opacity: 0;
 	}
+
 	to {
 		opacity: 1;
 	}

@@ -1,8 +1,8 @@
 {
 	"name": "videopress-download",
 	"version": "0.1.0",
-	"description": "Example block scaffolded with Create Block tool.",
-	"author": "The WordPress Contributors",
+	"description": "Adds a download button to VideoPress videos in a post.",
+	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {

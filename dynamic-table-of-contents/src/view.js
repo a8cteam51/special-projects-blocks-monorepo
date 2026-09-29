@@ -1,8 +1,9 @@
 const $defaultHeadingSelectors =
 	'.wp-block-post-content h1, .wp-block-post-content h2, .wp-block-post-content h3, .wp-block-post-content h4, .wp-block-post-content h5, .wp-block-post-content h6';
-const $headingSelectors =
-	( window.wpcomspDynamicTOC && window.wpcomspDynamicTOC.headingSelectors ) ||
-	$defaultHeadingSelectors;
+const $config = window.wpcomspDynamicTOC || {};
+const $headingSelectors = $config.headingSelectors || $defaultHeadingSelectors;
+const $includeNestedHeadings = Boolean( $config.includeNestedHeadings );
+const $excludeSelectors = $config.excludeSelectors || '';
 const $headings = document.querySelectorAll( $headingSelectors );
 const $headingList = document.querySelector(
 	'.wp-block-wpcomsp-dynamic-table-of-contents ul'
@@ -11,6 +12,55 @@ const $allowCustomTitles =
 	document
 		.querySelector( '.wp-block-wpcomsp-dynamic-table-of-contents' )
 		.getAttribute( 'data-custom-titles' ) === 'true';
+
+/**
+ * Get a heading's visible text.
+ *
+ * Headings rendered by wrapper blocks (e.g. accordions) split their title
+ * across child elements and add decorative, aria-hidden icons. Cloning the node
+ * and dropping aria-hidden children keeps toggle markers like "+"/"-" out of the
+ * table of contents label.
+ *
+ * @param {Element} heading The heading element.
+ * @return {string} The trimmed, visible heading text.
+ */
+function getHeadingText( heading ) {
+	const $clone = heading.cloneNode( true );
+	$clone
+		.querySelectorAll( '[aria-hidden="true"]' )
+		.forEach( ( $el ) => $el.remove() );
+	return $clone.textContent.trim();
+}
+
+/**
+ * Turn heading text into an anchor-friendly id that is not already used on the
+ * page. Mirrors the server-side `sanitize_title()` slug closely enough for
+ * headings that core never anchored.
+ *
+ * @param {string} text  The heading text.
+ * @param {number} index The heading's position, used as a fallback slug.
+ * @return {string} A unique id.
+ */
+function toUniqueId( text, index ) {
+	let $base = text
+		.toLowerCase()
+		.replace( /[^\p{L}\p{N}]+/gu, '-' )
+		.replace( /^-+|-+$/g, '' );
+
+	if ( ! $base ) {
+		$base = `toc-heading-${ index }`;
+	}
+
+	let $id = $base;
+	let $suffix = 2;
+
+	while ( null !== document.getElementById( $id ) ) {
+		$id = `${ $base }-${ $suffix }`;
+		$suffix += 1;
+	}
+
+	return $id;
+}
 
 // This is the observer that will be used to highlight the current heading.
 const $observer = new IntersectionObserver(
@@ -25,7 +75,7 @@ const $observer = new IntersectionObserver(
 				`.wp-block-wpcomsp-dynamic-table-of-contents a[href="#${ $id }"]`
 			);
 
-			if ( entry.isIntersecting ) {
+			if ( entry.isIntersecting && $link ) {
 				$links.forEach( ( link ) => {
 					link.classList.remove( 'active' );
 				} );
@@ -39,32 +89,62 @@ const $observer = new IntersectionObserver(
 	}
 );
 
+let $isFirstEntry = true;
+
 $headings.forEach( ( heading, index ) => {
-	const $id = heading.id;
+	// Never list the table of contents' own title.
+	if ( heading.closest( '.wp-block-wpcomsp-dynamic-table-of-contents' ) ) {
+		return;
+	}
 
-	if ( $id.length ) {
-		// Create new elements.
-		const $latestListItem = document.createElement( 'li' );
-		const $latestLink = document.createElement( 'a' );
-		const customTitle = heading.getAttribute( 'customtitle' );
+	// Let authors opt a heading out by adding the exclude class to the heading
+	// or any block wrapping it.
+	if ( $excludeSelectors && heading.closest( $excludeSelectors ) ) {
+		return;
+	}
 
-		// Add attributes to new elements.
-		$latestLink.href = `#${ $id }`;
-		$latestLink.textContent =
-			$allowCustomTitles && customTitle
-				? customTitle
-				: heading.textContent;
+	let $id = heading.id;
 
-		// Setup the first element as active.
-		if ( 0 === index ) {
-			$latestLink.classList.add( 'active' );
+	// Headings rendered by wrapper blocks (accordions, etc.) never receive a
+	// server-side anchor. Without the toggle we keep the original behaviour of
+	// only listing headings that already have an id.
+	if ( ! $id ) {
+		if ( ! $includeNestedHeadings ) {
+			return;
 		}
 
-		// Add new elements to the markup.
-		$latestListItem.appendChild( $latestLink );
-		$headingList.appendChild( $latestListItem );
+		const $text = getHeadingText( heading );
 
-		// Setup on scroll highlighting.
-		$observer.observe( heading );
+		if ( ! $text ) {
+			return;
+		}
+
+		$id = toUniqueId( $text, index );
+		heading.id = $id;
 	}
+
+	// Create new elements.
+	const $latestListItem = document.createElement( 'li' );
+	const $latestLink = document.createElement( 'a' );
+	const customTitle = heading.getAttribute( 'customtitle' );
+
+	// Add attributes to new elements.
+	$latestLink.href = `#${ $id }`;
+	$latestLink.textContent =
+		$allowCustomTitles && customTitle
+			? customTitle
+			: getHeadingText( heading );
+
+	// Setup the first listed element as active.
+	if ( $isFirstEntry ) {
+		$latestLink.classList.add( 'active' );
+		$isFirstEntry = false;
+	}
+
+	// Add new elements to the markup.
+	$latestListItem.appendChild( $latestLink );
+	$headingList.appendChild( $latestListItem );
+
+	// Setup on scroll highlighting.
+	$observer.observe( heading );
 } );

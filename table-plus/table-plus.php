@@ -5,8 +5,8 @@
  * Requires at least: 6.8
  * Requires PHP:      7.4
  * Version:           0.1.0
- * Author:            WordPress Special Projects Team
- * Author URI:        https://wpspecialprojects.wordpress.com/
+ * Author:            Automattic Special Projects Team
+ * Author URI:        https://specialprojects.automattic.com/
  * Update URI:        https://opsoasis.wpspecialprojects.com/table-plus/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html

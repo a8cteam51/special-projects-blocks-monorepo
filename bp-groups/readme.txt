@@ -1,8 +1,8 @@
 === Bp Groups Gutenberg ===
-Contributors:      The WordPress Contributors
+Contributors:      wpspecialprojects
 Tags:              block BuddyPress
 Tested up to:      6.8
-Stable tag:        0.1.0
+Stable tag:        0.2.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,7 @@ Three custom blocks and four block variations for BuddyPress groups.
 ## Custom Blocks:
 
 - Group Contributors
-A list Contributors for the current groups
+A list Contributors for the current group
 
 - Groups list
 A query loop type block that allows viewing of a list of groups.
@@ -57,13 +57,17 @@ add_filter( 'bp_groups_progress_bar', function() {
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
-
 1. Upload the plugin files to the `/wp-content/plugins/bp-groups` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the 'Plugins' screen in WordPress
 
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd bp-groups`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
 
 == Frequently Asked Questions ==
 
@@ -100,6 +104,22 @@ wp.domReady( () => {
 2. Screenshot of how this looks in the front end.
 
 == Changelog ==
+
+= 0.2.1 =
+Style update for the inline view all button to add inline style variable for widths and height and font size based on button size.
+
+= 0.2.0 =
+Updates to the BP Groups Contributors block.
+
+- Added block.json supports for:
+  - Background and text colors
+  - Margin and Padding
+  - Font size, Line Height, Text Align
+- Added option to hide the avatar list (showing just the member count)
+- Added option to link to the members home page
+- Added option to hide the members count
+- Added style option for the show more button
+
 
 = 0.1.0 =
 * Release

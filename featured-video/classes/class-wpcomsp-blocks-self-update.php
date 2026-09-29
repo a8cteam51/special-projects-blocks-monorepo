@@ -32,6 +32,8 @@ class WPCOMSP_Blocks_Self_Update {
 
 	/**
 	 * Initialize WordPress hooks
+	 *
+	 * @return void
 	 */
 	public function hooks() {
 		add_filter( 'update_plugins_opsoasis.wpspecialprojects.com', array( $this, 'self_update' ), 10, 3 );

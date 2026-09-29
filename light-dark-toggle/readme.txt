@@ -1,5 +1,5 @@
 === Light Dark Toggle ===
-Contributors:      The WordPress Contributors
+Contributors:      wpspecialprojects
 Tags:              block
 Tested up to:      6.7
 Stable tag:        1.0.0
@@ -16,6 +16,14 @@ This is a simple block that adds a toggle which will add a class to the sites HT
 
 Install the plugin and activate, you should then have access to the block.
 
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd light-dark-toggle`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
 
 == Frequently Asked Questions ==
 

@@ -1,5 +1,5 @@
 === Scroll to Top ===
-Contributors:      WordPress.com Special Projects Team
+Contributors:      wpspecialprojects
 Tags:              block, scroll, button
 Tested up to:      6.1
 Stable tag:        0.1.1
@@ -25,6 +25,15 @@ Features:
 1. Upload the plugin files to the `/wp-content/plugins/scroll-to-top` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Add the Scroll to Top block to any page or post using the block editor.
+
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd scroll-to-top`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
 
 == Frequently Asked Questions ==
 

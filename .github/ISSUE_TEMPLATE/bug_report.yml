@@ -1,0 +1,99 @@
+name: 🐛 Bug report
+description: Report a problem with an existing block or plugin.
+title: "<Block>: <short description of the bug>"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Please title it like the examples in this repo, e.g.
+        `Mega Menu Block: Front-end rendering does not match editor preview`.
+  - type: dropdown
+    id: plugin
+    attributes:
+      label: Affected plugin
+      description: Which top-level plugin directory does this affect?
+      options:
+        - bp-breadcrumbs
+        - bp-groups
+        - bp-members
+        - counter
+        - cover-bg-crossfade
+        - dynamic-table-of-contents
+        - exclude-duplicates-from-query-loops
+        - featured-image-captions
+        - featured-video
+        - flowing-column
+        - jp-related-posts-query-loop
+        - light-dark-toggle
+        - mega-menu
+        - modal
+        - override-post-links
+        - reactions
+        - scroll-progress-bar
+        - scroll-to-top
+        - sibling-pages-list
+        - stretchy-type
+        - table-plus
+        - tabs
+        - videopress-download
+        - Other / not sure
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear description of the bug.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+  - type: input
+    id: wp-version
+    attributes:
+      label: WordPress version
+      placeholder: "e.g. 6.8"
+  - type: input
+    id: theme
+    attributes:
+      label: Theme
+      placeholder: "e.g. Twenty Twenty-Five"
+  - type: input
+    id: php-version
+    attributes:
+      label: PHP version
+      placeholder: "e.g. 8.2"
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots / screencast
+      description: Editor and front-end, where relevant.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and this isn't a duplicate.
+          required: true
+        - label: I reproduced this in the latest `twenty-*` theme (to rule out project styling).

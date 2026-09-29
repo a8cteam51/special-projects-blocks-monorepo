@@ -20,6 +20,8 @@ const unsubscribe = subscribe( () => {
 			supports: {
 				...paragraphBlockType.supports,
 				className: true,
+				// view.js depends on the exact svg > foreignObject > span markup.
+				html: false,
 				typography: {
 					...paragraphBlockType.supports.typography,
 					fontSize: false,

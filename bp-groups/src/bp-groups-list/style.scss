@@ -11,6 +11,7 @@
 	padding-left: 0;
 
 	&.is-layout-grid {
+
 		@media screen and (max-width: 960px) {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}

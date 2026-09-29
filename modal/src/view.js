@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { store, getContext, getElement } from '@wordpress/interactivity';
+import { store, getContext, getElement, withSyncEvent } from '@wordpress/interactivity';
 
 const { actions, state, helpers } = store( 'a8csp/modal', {
 	state: {
@@ -102,7 +102,7 @@ const { actions, state, helpers } = store( 'a8csp/modal', {
 		},
 	},
 	callbacks: {
-		handleModalOutsideClick( event ) {
+		handleModalOutsideClick: withSyncEvent( ( event ) => {
 			const { id } = getContext();
 
 			if ( state.selected !== id ) {
@@ -112,14 +112,14 @@ const { actions, state, helpers } = store( 'a8csp/modal', {
 			if ( 'wp-block-a8csp-modal' === event.target.className ) {
 				return;
 			}
-			
+
 			const modal = helpers.getModal( id );
 			const modalInner = modal.querySelector( '.wp-block-a8csp-modal-container--inner' );
 
 			if ( ! modalInner.contains( event.target ) ) {
 				actions.closeModal();
 			}
-		},
+		} ),
 	},
 	helpers: {
 		getButton: ( button ) => {

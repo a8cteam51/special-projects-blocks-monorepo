@@ -1,5 +1,5 @@
 === Table Plus ===
-Contributors:      The WordPress Contributors
+Contributors:      wpspecialprojects
 Tags:              block, table, gutenberg
 Requires at least: 6.8
 Tested up to:      6.8

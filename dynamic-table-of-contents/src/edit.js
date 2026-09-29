@@ -88,6 +88,21 @@ export default function Edit( { attributes, setAttributes } ) {
 				<PanelBody
 					title={ __( 'Settings', 'dynamic-table-of-contents' ) }
 				>
+					<ToggleControl
+						__nextHasNoMarginBottom
+						label={ __(
+							'Include headings nested in other blocks',
+							'dynamic-table-of-contents'
+						) }
+						help={ __(
+							'List headings that come from wrapper blocks such as accordions, which split their title across extra elements. These headings have no anchor of their own, so one is generated from the heading text on the frontend.',
+							'dynamic-table-of-contents'
+						) }
+						checked={ !! attributes.includeNestedHeadings }
+						onChange={ ( includeNestedHeadings ) =>
+							setAttributes( { includeNestedHeadings } )
+						}
+					/>
 					<h3>
 						{ __(
 							'Headings to include',

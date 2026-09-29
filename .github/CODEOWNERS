@@ -1,0 +1,5 @@
+# Code owners for the Special Projects Blocks Monorepo.
+# https://docs.github.com/en/repositories/managing-your-repositories-permissions/about-code-owners
+#
+# The internal devs team owns everything and is requested for review on every PR.
+* @a8cteam51/team51-internal-devs

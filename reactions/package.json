@@ -2,7 +2,7 @@
 	"name": "reactions",
 	"version": "0.1.1",
 	"description": "A plugin to add reactions to your posts.",
-	"author": "WordPress Special Projects Team",
+	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",
 	"scripts": {
 		"build": "wp-scripts build --webpack-copy-php --experimental-modules",

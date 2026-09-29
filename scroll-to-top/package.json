@@ -2,7 +2,7 @@
 	"name": "scroll-to-top",
 	"version": "0.1.1",
 	"description": "A block to add a scroll to top button to the page.",
-	"author": "WordPress Special Projects Team",
+	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
@@ -17,8 +17,7 @@
 	"files": [
 		"[^.]*"
 	],
-	"dependencies": {
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@wordpress/scripts": "^30.1.0"
 	}

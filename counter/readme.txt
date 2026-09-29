@@ -1,5 +1,5 @@
 === Counter Block ===
-Contributors:      The WordPress Contributors
+Contributors:      wpspecialprojects
 Tags:              block, counter, animation, numbers
 Tested up to:      6.7
 Stable tag:        1.0.0
@@ -21,6 +21,15 @@ This block also supports WordPress' **typography and spacing controls**, allowin
 2. Add the Counter Block to any post or page.
 3. Configure the start/end values, duration, and optional pre/post text.
 4. Customize spacing and typography to match your design.
+
+= Building from source =
+
+Requirements: Node.js 18+.
+
+1. `cd counter`
+2. `npm install`
+3. `npm run build` — production build
+4. `npm start` — development build with file watching
 
 == Frequently Asked Questions ==
 

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 Documentation & process (wiki)
+    url: https://github.com/a8cteam51/special-projects-blocks-monorepo/wiki
+    about: Creating, re-using, and updating blocks, plus the process for site build engineers.
+  - name: 🧱 Contributing guide
+    url: https://github.com/a8cteam51/special-projects-blocks-monorepo/blob/trunk/CONTRIBUTING.md
+    about: How to set up, build, and submit changes.

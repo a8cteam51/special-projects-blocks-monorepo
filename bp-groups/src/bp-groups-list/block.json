@@ -6,7 +6,7 @@
 	"title": "BP Groups List",
 	"category": "widgets",
 	"icon": "buddicons-groups",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Display a list of BuddyPress groups.",
 	"example": {},
 	"supports": {
 		"align": [ "wide", "full" ],

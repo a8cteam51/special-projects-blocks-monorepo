@@ -50,14 +50,28 @@ function TabButton( { clientId, isActiveTab, tabNumber, setActiveTab } ) {
 		updateBlockAttributes( clientId, { title: newTitle } );
 	};
 
+	const handleKeyDown = ( event ) => {
+		// Ignore keystrokes bubbling up from the RichText title so typing
+		// (e.g. spaces) is not intercepted.
+		if ( event.target !== event.currentTarget ) {
+			return;
+		}
+		if ( event.key === 'Enter' || event.key === ' ' ) {
+			event.preventDefault();
+			setActiveTab();
+		}
+	};
+
 	return (
 		<div
 			id={ `tab-${ tabNumber }` }
 			role="tab"
-			className='tab'
+			className="tab"
 			aria-selected={ isTabBlockSelected || isActiveTab }
 			aria-controls={ `tabpanel-${ tabNumber }` }
+			tabIndex={ isTabBlockSelected || isActiveTab ? 0 : -1 }
 			onClick={ setActiveTab }
+			onKeyDown={ handleKeyDown }
 		>
 			<RichText
 				tagName="span"
@@ -104,7 +118,9 @@ function TabsEdit( {
 		}
 		if (
 			tabBlocks.length !== tabs.length ||
-			tabBlocks.some( ( block, index ) => ! isEqual( block.attributes, tabs[ index ] ) )
+			tabBlocks.some(
+				( block, index ) => ! isEqual( block.attributes, tabs[ index ] )
+			)
 		) {
 			__unstableMarkNextChangeAsNotPersistent();
 			setAttributes( {
@@ -192,7 +208,8 @@ function TabsEdit( {
 									key={ tabBlock.clientId }
 									clientId={ tabBlock.clientId }
 									isActiveTab={
-										! hasTabSelected && activeTab === tabNumber
+										! hasTabSelected &&
+										activeTab === tabNumber
 									}
 									tabNumber={ tabNumber }
 									setActiveTab={ setAttributes.bind( null, {

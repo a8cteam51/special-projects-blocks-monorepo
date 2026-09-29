@@ -19,6 +19,8 @@ import './style.scss';
 import Edit from './edit';
 import save from './save';
 import metadata from './block.json';
+import deprecated from './deprecated';
+import transforms from './transforms';
 
 const TabsIcon = (
 	<SVG width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -35,4 +37,6 @@ registerBlockType( metadata.name, {
 	icon: TabsIcon,
 	edit: Edit,
 	save,
+	deprecated,
+	transforms,
 } );

@@ -1,0 +1,78 @@
+
+.wp-block-a8csp-carousel {
+
+	.wp-block-group-placeholder__variations.wp-block-carousel-placeholder__variations {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(10%, 1fr));
+		gap: 8px;
+	}
+
+	.components-button.is-tertiary.wp-block-carousel-placeholder__variation-button {
+		align-items: center;
+		aspect-ratio: 1.5 / 1;
+		background-color: #d9d9d9;
+		color: #1e1e1e;
+		display: flex;
+		height: auto;
+		justify-content: center;
+		padding: 12px;
+		width: 100%;
+
+		&:hover {
+			background-color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9)) !important;
+			color: #fff;
+		}
+	}
+
+	.wp-block-gallery.wp-block-a8csp-carousel-track.has-nested-images figure.wp-block-image {
+		flex-direction: unset;
+	}
+
+	.wp-block-a8csp-carousel-track:not(.has-child-selected):not(.is-selected) {
+		width: 100%;
+	}
+
+	.wp-block-a8csp-carousel-track:not(.has-child-selected):not(.is-child-selected) {
+		container-name: carousel-track;
+		container-type: inline-size;
+		display: flex;
+		flex-wrap: nowrap;
+		margin: 0;
+		position: relative;
+		--wp--style--block-gap: var(--item-gap);
+	}
+
+	.wp-block-a8csp-carousel-track.has-child-selected > *:not(.is-selected):not(.has-child-selected) {
+		opacity: 0.5;
+	}
+
+	.wp-block-gallery.wp-block-a8csp-carousel-track.has-nested-images[class*="columns-"]:not(.is-selected):not(.has-child-selected) {
+
+		&.is-cropped figure.wp-block-image:not(#individual-image) {
+			height: var(--track-height);
+			width: var(--track-height);
+		}
+
+		&:not(.is-cropped) figure.wp-block-image:not(#individual-image) {
+			height: var(--track-height);
+			width: auto;
+			display: flex;
+
+			img {
+				height: 100%;
+				object-fit: cover;
+			}
+		}
+	}
+}
+
+.block-editor-block-inspector .a8csp-carousel-track-height-input {
+	align-items: flex-end;
+	display: flex;
+	gap: 8px;
+	grid-column: 1 / -1;
+
+	.components-base-control:where(:not(:last-child)) {
+		margin-bottom: 0;
+	}
+}
