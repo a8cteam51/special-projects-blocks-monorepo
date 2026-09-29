@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, columns, layout, responsive
 Tested up to:      6.7
-Stable tag:        0.1.0
+Stable tag:        0.2.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,11 +13,10 @@ A flexible block that creates flowing column layouts similar to newspaper column
 The Flowing Column block allows you to create multi-column layouts that automatically flow content from one column to the next, similar to traditional newspaper layouts. This block is perfect for creating readable, organized content sections with customizable column settings.
 
 **Key Features:**
-- Configurable number of columns (1-6)
-- Customizable column minimum width with multiple unit options (px, em, rem)
-- Adjustable column gaps with flexible units
-- Optional column rules (dividers) with customizable style, width, and color
-- Responsive behavior with minimum column settings
+- Maximum number of columns (1-6), or 0 to fit as many as the minimum width allows
+- Minimum column width with px, em, or rem units, so columns reflow on narrow screens
+- Column gap set from the core Block spacing control, including theme spacing presets
+- Optional column rules (dividers) with customizable style, width, and a theme palette color
 - Support for WordPress block editor spacing, colors, typography, and border controls
 
 **Use Cases:**
@@ -50,54 +49,51 @@ Requirements: Node.js 18+.
 3. Select the block to add it to your content
 
 **Configuring Columns:**
-- **Number of Columns**: Set how many columns to display (1-6)
-- **Minimum Number of Columns**: Define the minimum columns on small screens
-- **Column Minimum Width**: Set the minimum width each column should have
-- **Column Gap**: Adjust the space between columns
-- **Column Rule**: Add optional dividers between columns with customizable style, width, and color
+- **Maximum columns**: The most columns to show (1-6). Set to 0 to fit as many columns as the minimum width allows. When the minimum width is empty this becomes **Columns** and sets an exact count.
+- **Minimum column width**: Columns narrower than this reflow into fewer columns. Leave empty for a fixed number of columns.
+- **Column gap**: Set with **Block spacing** under Styles > Dimensions. Pick a theme spacing preset or enter a custom value. Defaults to 2em.
+- **Column rule**: Add optional dividers between columns with a style, width, and color.
 
 **Responsive Behavior:**
-The block automatically adapts to different screen sizes while respecting your minimum column settings. On mobile devices, it will stack to the minimum number of columns you've specified.
+Columns never get narrower than the minimum column width, so the block drops to fewer columns on smaller screens and to a single column when only one fits.
+
+**Column Balancing:**
+The browser balances content so each column ends at roughly the same height. Content that cannot be split across columns, such as images, can leave columns uneven.
 
 == Block Attributes ==
 
 The Flowing Column block includes the following configurable attributes:
 
 **Column Layout:**
-- `columnCount` - Number of columns (1-6, default: 2)
-- `minColumns` - Minimum number of columns on small screens (1+, default: 1)
-
-**Column Dimensions:**
-- `columnMinWidth` - Minimum width of each column (100-800, default: 200)
-- `columnMinWidthUnit` - Unit for minimum width (px, em, rem, default: px)
+- `columnCount` - Maximum number of columns (0-6, default: 2). 0 means as many as fit.
+- `columnMinWidth` - Minimum width of each column as a CSS length (default: `200px`). Empty means no minimum.
 
 **Column Spacing:**
-- `columnGap` - Gap between columns (0-5, default: 2)
-- `columnGapUnit` - Unit for column gap (px, em, rem, default: em)
+- `style.spacing.blockGap.left` - Column gap from the core Block spacing control (default: 2em)
 
 **Column Rules (Dividers):**
-- `columnRuleStyle` - Style of column dividers (none, solid, dashed, dotted, double, groove, ridge, inset, outset, default: none)
-- `columnRuleWidth` - Width of column dividers (0-10, default: 1)
-- `columnRuleWidthUnit` - Unit for rule width (px, em, rem, default: px)
-- `columnRuleColor` - Color of column dividers (hex color, default: #000000)
+- `columnRuleStyle` - Style of column dividers (none, solid, dashed, dotted, double, groove, ridge, inset, outset, default: solid)
+- `columnRuleWidth` - Width of column dividers as a CSS length (default: `1px`)
+- `columnRuleColor` - Theme palette color slug for column dividers
+- `customColumnRuleColor` - Custom color for column dividers (default: the text color)
 
 == Frequently Asked Questions ==
 
 = How many columns can I create? =
 
-You can create between 1 and 6 columns. The block will automatically adjust the layout based on your content and screen size.
+Up to 6. **Maximum columns** sets the most columns to show, and 0 fits as many as the **Minimum column width** allows. The block shows fewer columns when the full number would make them narrower than the minimum width. Clear the minimum width to always show an exact number of columns.
 
 = Can I control how the columns behave on mobile? =
 
-Yes! Use the "Minimum Number of Columns" setting to control how many columns are displayed on small screens. This ensures your content remains readable on all devices.
+Yes. Set a **Minimum column width**. The block shows fewer columns whenever the full number would make columns narrower than that width, down to a single column on small screens.
 
 = What units can I use for measurements? =
 
-The block supports pixels (px), ems (em), and rems (rem) for column widths, gaps, and rule widths. This gives you flexibility to create responsive layouts that scale with your site's typography.
+Column widths and rule widths accept pixels (px), ems (em), and rems (rem). The column gap uses the core Block spacing control, which offers your theme's spacing presets and the units your theme allows.
 
 = How do I add dividers between columns? =
 
-Use the "Column Rule" settings in the block inspector. You can choose from various styles (solid, dashed, dotted, etc.), set the width, and pick a color that matches your design.
+Use the "Column rule" settings in the block inspector. You can choose from various styles (solid, dashed, dotted, etc.), set the width, and pick a color from your theme's palette or a custom color.
 
 == Screenshots ==
 
@@ -105,6 +101,16 @@ Use the "Column Rule" settings in the block inspector. You can choose from vario
 2. Example of a three-column layout with custom styling and dividers
 
 == Changelog ==
+
+= 0.2.0 =
+* Number of Columns is now Maximum columns, and 0 fits as many columns as the minimum width allows
+* Minimum column width and rule width are single fields with a unit selector
+* Column gap now uses the core Block spacing control, so theme spacing presets are available
+* Rule color uses the theme palette and defaults to the text color
+* Removed the Minimum Number of Columns setting, which had no effect
+* Fixed: blocks using the Groove, Ridge, Inset, or Outset rule style became invalid after reloading the editor
+* Fixed: the first-child margin reset applied to nested elements instead of only direct children
+* Editor markup now matches the front end, so inner blocks are direct children of the block
 
 = 0.1.0 =
 * Initial release with basic column functionality
