@@ -1,0 +1,12 @@
+includes:
+    - %currentWorkingDirectory%/vendor/a8cteam51/team51-configs/quality-assurance/phpstan.dist.neon
+
+parameters:
+    paths:
+        - %currentWorkingDirectory%/a8csp-dynamic-shapes.php
+        - %currentWorkingDirectory%/classes/
+        - %currentWorkingDirectory%/includes/
+    excludePaths:
+        - %currentWorkingDirectory%/classes/class-wpcomsp-blocks-self-update.php
+    WPCompat:
+        pluginFile: %currentWorkingDirectory%/a8csp-dynamic-shapes.php

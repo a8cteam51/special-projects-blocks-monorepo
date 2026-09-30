@@ -1,0 +1,38 @@
+{
+	"name": "a8csp-dynamic-shapes",
+	"version": "0.1.1",
+	"description": "Extends the core Group, Cover, Image, and Featured Image blocks with controls for adjusting corners to create unique shapes.",
+	"author": "Automattic Special Projects",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "npm run build:scripts && npm run build:styles",
+		"build:scripts": "wp-scripts build src/js/*.js --output-path=build/js",
+		"build:styles": "postcss src/css/*.css --dir build/css --ext css --env production",
+		"format": "npm run format:scripts && npm run format:styles",
+		"format:scripts": "wp-scripts format src/js/ --no-error-on-unmatched-pattern",
+		"format:styles": "wp-scripts format src/css/ --no-error-on-unmatched-pattern",
+		"lint": "npm run lint:scripts && npm run lint:styles",
+		"lint:scripts": "wp-scripts lint-js src/js/",
+		"lint:styles": "wp-scripts lint-style src/css/",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip"
+	},
+	"files": [
+		"a8csp-dynamic-shapes.php",
+		"build/",
+		"classes/",
+		"includes/",
+		"readme.txt",
+		"CHANGELOG.md"
+	],
+	"devDependencies": {
+		"@wordpress/icons": "^11.8.0",
+		"@wordpress/postcss-plugins-preset": "^5.41.0",
+		"@wordpress/scripts": "^31.6.0",
+		"clsx": "^2.1.1",
+		"postcss-cli": "^11.0.0",
+		"postcss-nested": "^7.0.2",
+		"postcss-preset-env": "^11.2.0"
+	}
+}
