@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
+	<!-- Extend the RAL ruleset. -->
+	<rule ref="vendor/a8cteam51/team51-configs/quality-assurance/phpcs.dist.xml"/>
+
+	<!-- Check that the proper text domain(s) is used everywhere. -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="a8csp-dynamic-shapes"/> <!-- Change this value to your plugin slug. -->
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Check that the proper prefix is used everywhere. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="a8csp_dynamic_shapes"/>
+				<element value="A8CSPDynamicShapes"/>
+			</property>
+		</properties>
+	</rule>
+</ruleset>
