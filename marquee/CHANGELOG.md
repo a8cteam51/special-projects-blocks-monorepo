@@ -1,4 +1,7 @@
 0.1.4
+- Fix: Images past the edge of the row could stay blank, and in Safari never load, because WordPress lazy-loads them and the row clips them. Every image in the row now loads as soon as the row is near the viewport. On 0.1.1 and earlier this left the marquee frozen.
+- Fix: The loop distance could be measured before every image had loaded and never corrected, so the row jumped back partway through a loop. Each item is now watched for size changes.
+- Fix: A full-width marquee inside a container with root padding stopped short of the right edge.
 - Remove: The self-update mechanism. Updates are now installed manually from GitHub releases.
 
 0.1.3

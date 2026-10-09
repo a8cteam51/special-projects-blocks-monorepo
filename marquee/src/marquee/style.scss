@@ -11,6 +11,13 @@
 	width: 100%;
 	background: transparent;
 
+	// A full-width block is pulled out of a padded container by negative
+	// margins, and only reaches both edges when its width is left to the
+	// browser. `:where()` keeps the specificity of the rule above.
+	&:where(.alignfull) {
+		width: auto;
+	}
+
 	.marquee-content {
 		overflow: hidden;
 		width: 100%;
