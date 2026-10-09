@@ -4,9 +4,6 @@ includes:
 parameters:
     paths:
         - %currentWorkingDirectory%/a8csp-dynamic-shapes.php
-        - %currentWorkingDirectory%/classes/
         - %currentWorkingDirectory%/includes/
-    excludePaths:
-        - %currentWorkingDirectory%/classes/class-wpcomsp-blocks-self-update.php
     WPCompat:
         pluginFile: %currentWorkingDirectory%/a8csp-dynamic-shapes.php

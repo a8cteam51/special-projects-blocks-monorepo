@@ -18,16 +18,7 @@
 			<property name="prefixes" type="array">
 				<element value="a8csp_dynamic_shapes"/>
 				<element value="A8CSPDynamicShapes"/>
-				<element value="wpcomsp_blocks"/>
 			</property>
 		</properties>
-	</rule>
-
-	<!-- Exclude shared self-update class from commenting rules. -->
-	<rule ref="Squiz.Commenting.ClassComment.Missing">
-		<exclude-pattern>classes/class-wpcomsp-blocks-self-update.php</exclude-pattern>
-	</rule>
-	<rule ref="Squiz.Commenting.VariableComment.Missing">
-		<exclude-pattern>classes/class-wpcomsp-blocks-self-update.php</exclude-pattern>
 	</rule>
 </ruleset>

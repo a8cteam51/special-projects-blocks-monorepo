@@ -21,7 +21,6 @@
 	"files": [
 		"a8csp-dynamic-shapes.php",
 		"build/",
-		"classes/",
 		"includes/",
 		"readme.txt",
 		"CHANGELOG.md"
