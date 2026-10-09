@@ -2,12 +2,12 @@
 /**
  * Plugin Name:       Mega Menu
  * Description:       Add a menu item that opens a template part area to display as a mega menu.
- * Version:           0.2.2
+ * Version:           0.2.3
  * Requires at least: 6.6
  * Requires PHP:      7.2
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
- * Update URI:        https://opsoasis.wpspecialprojects.com/mega-menu/
+ * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       mega-menu
@@ -17,14 +17,6 @@
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
-}
-
-// If no other WPCOMSP Block Plugin added the self update class, add it.
-if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
-	require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
-
-	$wpcomsp_blocks_self_update = WPCOMSP_Blocks_Self_Update::get_instance();
-	$wpcomsp_blocks_self_update->hooks();
 }
 
 /**

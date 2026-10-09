@@ -1,6 +1,6 @@
 {
 	"name": "featured-image-captions",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Adds caption support to the Featured Image block.",
 	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",

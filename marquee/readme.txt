@@ -3,7 +3,7 @@ Contributors:      wpspecialprojects
 Tags:              block, marquee, scrolling, ticker, logos
 Requires at least: 6.7
 Tested up to:      6.7
-Stable tag:        0.1.3
+Stable tag:        0.1.4
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,9 @@ Requirements: Node.js 18+.
 4. `npm start` — development build with file watching
 
 == Changelog ==
+
+= 0.1.4 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
 
 = 0.1.3 =
 * Add: Respect `prefers-reduced-motion`. The row stays still, shows the content once, and content wider than the block can be scrolled horizontally, including with the keyboard. Fade Edges is turned off while the row is still.

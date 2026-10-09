@@ -1,3 +1,9 @@
+## 0.1.5 (2026-10-09)
+
+### Removed
+
+-   Self-update mechanism. Updates are now installed manually from GitHub releases.
+
 ## 0.1.4 (2026-09-26)
 
 ### Fixed

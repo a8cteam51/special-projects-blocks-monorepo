@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.2.2
+
+### Removed
+
+- Self-update mechanism. Updates are now installed manually from GitHub releases.
+
 ## 0.1.0
 
 ### Added

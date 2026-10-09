@@ -1,6 +1,6 @@
 {
 	"name": "scroll-progress-bar",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Progress bar that updates as you scroll down the page.",
 	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",

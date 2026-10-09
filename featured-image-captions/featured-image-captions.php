@@ -4,10 +4,10 @@
  * Description:       Adds caption support to the core/post-featured-image block.
  * Requires at least: 6.1
  * Requires PHP:      8.0
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
- * Update URI:        https://opsoasis.wpspecialprojects.com/featured-image-captions/
+ * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       featured-image-captions
@@ -16,16 +16,6 @@
  */
 
 defined( 'ABSPATH' ) || exit;
-
-// If no other WPCOMSP Block Plugin added the self update class, add it.
-if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
-	$self_update_file = __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
-
-	if ( file_exists( $self_update_file ) ) {
-		require $self_update_file;
-		WPCOMSP_Blocks_Self_Update::get_instance()->hooks();
-	}
-}
 
 /**
  * Enqueues the editor script for the Featured Image caption extension.
@@ -107,18 +97,3 @@ function featured_image_captions_render_caption( string $block_content, array $b
 	return $block_content;
 }
 add_filter( 'render_block_core/post-featured-image', 'featured_image_captions_render_caption', 10, 3 );
-
-/**
- * Setup auto-updates for this plugin from our monorepo.
- *
- * @param array $blocks Array of plugin slugs.
- *
- * @return array
- */
-add_filter(
-	'wpcomsp_installed_blocks',
-	function ( $blocks ) {
-		$blocks[] = 'featured-image-captions';
-		return $blocks;
-	}
-);

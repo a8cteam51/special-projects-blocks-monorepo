@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "wpcomsp/table-plus-cell",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"title": "Cell",
 	"category": "text",
 	"icon": "table-col-after",

@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, navigation, menu, mega-menu, interactivity
 Tested up to:      6.8
-Stable tag:        0.2.2
+Stable tag:        0.2.3
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,9 @@ A menu closes when the visitor clicks its button again, presses the **Escape** k
 No. The frontend behaviour is built on the WordPress Interactivity API and ships with the plugin. You only need the block editor and Site Editor to configure menus.
 
 == Changelog ==
+
+= 0.2.3 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
 
 = 0.2.2 =
 * Mega Menu block (`a8csp/mega-menu`) registered as a child of the core Navigation block, with **Label** and **Menu Template** controls.

@@ -1,6 +1,6 @@
 {
 	"name": "videopress-download",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Adds a download button to VideoPress videos in a post.",
 	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",

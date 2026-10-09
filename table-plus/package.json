@@ -1,6 +1,6 @@
 {
 	"name": "table-plus",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "A structured, flexible table block with per-cell editing, header/footer rows, and customisable borders.",
 	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",

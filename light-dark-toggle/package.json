@@ -1,6 +1,6 @@
 {
 	"name": "light-dark-toggle",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"description": "Allows a site to have a light and dark mode toggle.",
 	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",

@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, table of contents, navigation, headings, accessibility
 Tested up to:      6.8
-Stable tag:        0.4.0
+Stable tag:        0.4.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -98,6 +98,9 @@ The view script uses an `IntersectionObserver` to track which heading is in view
 Yes. The title is editable inline in the editor and defaults to "Table of Contents". Leaving it empty removes it from the output. You can also adjust the rendered title programmatically with the `wpcomsp_dynamic_table_of_contents_block_title` filter.
 
 == Changelog ==
+
+= 0.4.1 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
 
 = 0.4.0 =
 * Added a per-heading opt-out: adding the `hide-from-toc` CSS class to a heading (or a block wrapping it) keeps it out of the table of contents.

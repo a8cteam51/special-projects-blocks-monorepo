@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, typography, svg, responsive, heading
 Tested up to:      6.8
-Stable tag:        0.1.4
+Stable tag:        0.1.5
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +21,6 @@ Because the size is driven entirely by the available width, there is no font-siz
 * **Single-line by design** — line breaks are disabled and whitespace is preserved, keeping the text on one continuous line so it can stretch edge to edge.
 * **Inherits Paragraph supports** — the block reuses the block supports of `core/paragraph` (such as color and spacing), with the font-size control intentionally removed because sizing is controlled by the container width.
 * **Block transforms** — convert a core Paragraph or Heading block into Stretchy Type, and convert a Stretchy Type block back into a Paragraph, from the block toolbar.
-* **Self-updating** — ships with an update mechanism (via the plugin `Update URI`) that pulls new releases from the Automattic Special Projects blocks monorepo.
 
 = Settings =
 
@@ -68,6 +67,9 @@ Yes. You can transform a core Paragraph or Heading block into Stretchy Type from
 Yes. A `ResizeObserver` watches the container in both the editor and on the frontend and updates the SVG `viewBox` whenever the container is resized, so the text rescales automatically.
 
 == Changelog ==
+
+= 0.1.5 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
 
 = 0.1.4 =
 * Fix: disable "Edit as HTML" so the block's markup can't be hand-edited into a shape the front-end resizing no longer recognises.

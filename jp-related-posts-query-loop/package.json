@@ -1,6 +1,6 @@
 {
 	"name": "jp-related-posts-query-loop",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"description": "Adds a query loop variation to display related posts from Jetpack.",
 	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",

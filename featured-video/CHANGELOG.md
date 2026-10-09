@@ -1,3 +1,9 @@
+## 0.3.1
+
+### Removed
+
+-   Self-update mechanism. Updates are now installed manually from GitHub releases.
+
 ## 0.3.0
 
 ### Added

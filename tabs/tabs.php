@@ -5,13 +5,13 @@
  * Description:       A block that allows users to organize content into tabs.
  * Requires at least: 6.5
  * Requires PHP:      8.0
- * Version:           0.2.0
+ * Version:           0.2.1
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       tabs
- * Update URI:        https://opsoasis.wpspecialprojects.com/tabs/
+ * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/
  *
  * @package wpcomsp
  */

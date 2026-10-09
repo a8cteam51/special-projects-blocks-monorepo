@@ -1,6 +1,6 @@
 {
 	"name": "reactions",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "A plugin to add reactions to your posts.",
 	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",

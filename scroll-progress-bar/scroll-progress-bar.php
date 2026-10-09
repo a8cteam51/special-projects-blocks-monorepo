@@ -2,11 +2,12 @@
 /**
  * Plugin Name:       Scroll Progress Bar
  * Description:       Progress bar that reflects the user's scroll position within the document.
- * Version:           0.1.1
+ * Version:           0.1.2
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
+ * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       scroll-progress-bar
@@ -17,32 +18,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
-// If no other WPCOMSP Block Plugin added the self update class, add it.
-if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
-	require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
-
-	$wpcomsp_blocks_self_update = WPCOMSP_Blocks_Self_Update::get_instance();
-	$wpcomsp_blocks_self_update->hooks();
-}
-
-/**
- * Setup auto-updates for this plugin from our monorepo.
- * Done in an anonymous function for simplicity in making this a drop-in snippet.
- *
- * @param array $blocks Array of plugin files.
- *
- * @return array
- */
-add_filter(
-	'wpcomsp_installed_blocks',
-	function ( $blocks ) {
-		// Add the plugin slug here to enable autoupdates.
-		$blocks[] = 'scroll-progress-bar';
-
-		return $blocks;
-	}
-);
 
 /**
  * Registers the block using the metadata loaded from the `block.json` file.

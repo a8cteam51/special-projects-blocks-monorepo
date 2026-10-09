@@ -29,8 +29,6 @@ longer-form process docs.
   changed top-level plugin directories on pushes to `trunk`.
 - `.github/workflows/pr-lint.yml` and `pr-build.yml` lint and build each changed
   plugin on pull requests, before it can merge and auto-release.
-- `.utilities/class-wpcomsp-blocks-self-update.php` is the shared self-update
-  class copied into plugin directories.
 
 ## Plugin inventory
 
@@ -140,10 +138,11 @@ plugin folder, and creates a GitHub release tagged as
 `<directory>@<plugin-header-version>`. The release body comes from that plugin's
 `readme.txt`.
 
-Most plugin directories include the `WPCOMSP_Blocks_Self_Update` class and add
-their slug to the `wpcomsp_installed_blocks` filter. The self-update class checks
-`https://opsoasis.wpspecialprojects.com/wp-json/opsoasis-blocks-version-manager/v1/update-check`
-through the `update_plugins_opsoasis.wpspecialprojects.com` update filter.
+Plugins do not update themselves. To update an installed plugin, download the
+newer zip from the [releases page](https://github.com/a8cteam51/special-projects-blocks-monorepo/releases)
+and install it over the existing copy. Each plugin's `Update URI` header points
+at this repository so WordPress never offers an unrelated WordPress.org plugin
+with the same slug as an update.
 
 ## Maintenance notes
 

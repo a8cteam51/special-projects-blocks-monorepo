@@ -2,11 +2,12 @@
 /**
  * Plugin Name:       BP Groups Blocks
  * Description:       Example block scaffolded with Create Block tool.
- * Version:           0.2.1
+ * Version:           0.2.2
  * Requires at least: 6.8
  * Requires PHP:      7.4
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
+ * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       bp-groups-blocks
@@ -73,31 +74,3 @@ function a8csp_bp_groups_include_classes() {
 }
 
 add_action( 'bp_init', 'a8csp_bp_groups_include_classes' );
-
-// If no other WPCOMSP Block Plugin added the self update class, add it.
-if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
-	require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
-
-	$wpcomsp_blocks_self_update = WPCOMSP_Blocks_Self_Update::get_instance();
-	$wpcomsp_blocks_self_update->hooks();
-}
-
-/**
- * Setup auto-updates for this plugin from our monorepo.
- * Done in an anonymous function for simplicity in making this a drop-in snippet.
- *
- * @param array $blocks Array of plugin files.
- *
- * @return array
- */
-add_filter(
-	'wpcomsp_installed_blocks',
-	function ( $blocks ) {
-		$plugin_data = get_plugin_data( __FILE__ );
-
-		// Add the plugin slug here to enable autoupdates.
-		$blocks[] = 'bp-groups';
-
-		return $blocks;
-	}
-);

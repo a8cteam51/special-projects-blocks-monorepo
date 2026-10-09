@@ -2,10 +2,10 @@
 /**
  * Plugin Name: Featured Video
  * Description: Add the ability to use Featured Video inplace of Featured Image. <strong>Supported Block:</strong> core/post-featured-image
- * Version: 0.3.0
+ * Version: 0.3.1
  * Author: Automattic Special Projects Team
  * Author URI: https://specialprojects.automattic.com/
- * Update URI: https://opsoasis.wpspecialprojects.com/featured-video/
+ * Update URI: https://github.com/a8cteam51/special-projects-blocks-monorepo/
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: featured-video
@@ -19,13 +19,6 @@
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
-}
-
-// If no other WPCOMSP Block Plugin added the self update class, add it.
-if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
-	require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
-
-	WPCOMSP_Blocks_Self_Update::get_instance()->hooks();
 }
 
 /**
