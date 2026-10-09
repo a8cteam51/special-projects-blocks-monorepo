@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, pages, navigation, sibling, menu
 Tested up to:      6.8
-Stable tag:        0.1.1
+Stable tag:        0.1.2
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,9 @@ Every sibling other than the page being viewed is rendered as a link to its perm
 No. The block has no settings to configure — it derives the list entirely from the page hierarchy at render time. Just insert it on a child page or page template.
 
 == Changelog ==
+
+= 0.1.2 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
 
 = 0.1.1 =
 * Added an Update URI so the plugin can receive automatic updates from the WordPress.com Special Projects blocks monorepo.

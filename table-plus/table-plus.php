@@ -4,10 +4,10 @@
  * Description:       A structured, flexible table block with per-cell editing, header/footer rows, and customisable borders.
  * Requires at least: 6.8
  * Requires PHP:      7.4
- * Version:           0.1.0
+ * Version:           0.1.1
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
- * Update URI:        https://opsoasis.wpspecialprojects.com/table-plus/
+ * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       table-plus
@@ -19,31 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// If no other WPCOMSP Block Plugin added the self update class, add it.
-if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
-	require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
-
-	WPCOMSP_Blocks_Self_Update::get_instance()->hooks();
-}
-
 require __DIR__ . '/classes/class-wpcomsp-table-plus-renderer.php';
-
-/**
- * Setup auto-updates for this plugin from our monorepo.
- * Done in an anonymous function for simplicity in making this a drop-in snippet.
- *
- * @param array $blocks Array of plugin files.
- *
- * @return array
- */
-add_filter(
-	'wpcomsp_installed_blocks',
-	function ( $blocks ) {
-		$blocks[] = 'table-plus';
-
-		return $blocks;
-	}
-);
 
 /**
  * Registers the block(s) metadata from the `blocks-manifest.php` and registers the block type(s)

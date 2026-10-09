@@ -3,9 +3,8 @@
 This repository is a monorepo of **independently releasable, independently
 installable** WordPress plugins. Each top-level directory is its own plugin: it has
 its own plugin header (`<dir>/<dir>.php`), its own `package.json` +
-`package-lock.json`, builds to its own `build/` directory, ships as its own GitHub
-release zip, and self-updates on installed sites via
-`opsoasis.wpspecialprojects.com` (see `.utilities/class-wpcomsp-blocks-self-update.php`).
+`package-lock.json`, builds to its own `build/` directory, and ships as its own
+GitHub release zip. Installed sites are updated manually from those releases.
 
 The root `special-projects-blocks-monorepo.php` autoloader is an optional
 convenience for local development: on `plugins_loaded` it includes

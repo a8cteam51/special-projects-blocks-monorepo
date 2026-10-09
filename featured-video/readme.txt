@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, video, featured-image, media, post-thumbnail
 Tested up to:      6.8.2
-Stable tag:        0.3.0
+Stable tag:        0.3.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 6.6
@@ -98,6 +98,9 @@ The plugin uses WordPress's post meta system to store the featured video ID. The
 - The `intrinsic-ignore` class is added for proper responsive behavior
 
 == Changelog ==
+
+= 0.3.1 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
 
 = 0.3.0 =
 * Add support for any post type that supports thumbnails (previously posts only)

@@ -145,6 +145,28 @@ function updateScrollRegion( state ) {
 }
 
 /**
+ * Core lazy-loads images, and a browser only loads a lazy image once it is
+ * close to the viewport and, in Safari, inside the row's clip. Images past the
+ * edge of the row would stay blank until the animation dragged them in, so
+ * load every image in the row as soon as the row itself is near the viewport.
+ *
+ * @param {Object} state The instance state.
+ */
+function loadImages( state ) {
+	if ( state.imagesRequested ) {
+		return;
+	}
+	state.imagesRequested = true;
+
+	// The template too, so copies added later are not lazy either.
+	[ state.itemsContainer, state.template ].forEach( ( root ) =>
+		root.querySelectorAll( 'img[loading="lazy"]' ).forEach( ( img ) => {
+			img.loading = 'eager';
+		} )
+	);
+}
+
+/**
  * Grows or shrinks the track to the requested number of copies of the original
  * content. The original nodes are never re-parsed: copies are cloned from a
  * template captured at init, so images stay cached and item identity is kept.
@@ -289,6 +311,9 @@ const visibilityObserver = window.IntersectionObserver
 						return;
 					}
 					state.visible = entry.isIntersecting;
+					if ( state.visible ) {
+						loadImages( state );
+					}
 					updatePlayState( state );
 				} );
 			},
@@ -347,6 +372,7 @@ function initMarquee( marquee ) {
 		hovered: false,
 		warnedZeroWidth: false,
 		scrollable: false,
+		imagesRequested: false,
 	};
 
 	instances.set( marquee, state );
@@ -369,6 +395,14 @@ function initMarquee( marquee ) {
 		// content width (late-loading images, web fonts, injected items).
 		resizeObserver.observe( marquee );
 		resizeObserver.observe( itemsContainer );
+
+		// The track's own box stops growing once it is wider than the row, so
+		// watch the measured items too. Otherwise an image that loads after
+		// the first measurement leaves the loop distance too short.
+		originalItems.forEach( ( item ) => {
+			marqueeOf.set( item, marquee );
+			resizeObserver.observe( item );
+		} );
 	} else {
 		window.addEventListener( 'resize', () => scheduleUpdate( marquee ) );
 		window.addEventListener( 'load', () => scheduleUpdate( marquee ) );
@@ -376,6 +410,8 @@ function initMarquee( marquee ) {
 
 	if ( visibilityObserver ) {
 		visibilityObserver.observe( marquee );
+	} else {
+		loadImages( state );
 	}
 
 	scheduleUpdate( marquee );

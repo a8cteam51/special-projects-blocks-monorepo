@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.4.1 - 2026-10-09
+
+### Removed
+
+- Self-update mechanism. Updates are now installed manually from GitHub releases.
+
 ## 0.4.0 - 2026-07-01
 
 ### Added

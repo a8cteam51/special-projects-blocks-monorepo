@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, columns, layout, responsive
 Tested up to:      6.7
-Stable tag:        0.2.0
+Stable tag:        0.2.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -101,6 +101,9 @@ Use the "Column rule" settings in the block inspector. You can choose from vario
 2. Example of a three-column layout with custom styling and dividers
 
 == Changelog ==
+
+= 0.2.1 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
 
 = 0.2.0 =
 * Number of Columns is now Maximum columns, and 0 fits as many columns as the minimum width allows

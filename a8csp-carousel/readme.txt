@@ -34,5 +34,8 @@ Both the Carousel Navigation and Pagination blocks offer customizable colors, si
 
 == Changelog ==
 
+= 1.1.2 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
+
 = 0.1.0 =
 * Release

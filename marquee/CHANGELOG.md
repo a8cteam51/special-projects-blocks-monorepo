@@ -1,3 +1,9 @@
+0.1.4
+- Fix: Images past the edge of the row could stay blank, and in Safari never load, because WordPress lazy-loads them and the row clips them. Every image in the row now loads as soon as the row is near the viewport. On 0.1.1 and earlier this left the marquee frozen.
+- Fix: The loop distance could be measured before every image had loaded and never corrected, so the row jumped back partway through a loop. Each item is now watched for size changes.
+- Fix: A full-width marquee inside a container with root padding stopped short of the right edge.
+- Remove: The self-update mechanism. Updates are now installed manually from GitHub releases.
+
 0.1.3
 - Add: Respect `prefers-reduced-motion`. The row stays still, shows the content once (no duplicated copies), and content wider than the block can be scrolled horizontally, including with the keyboard (the row becomes a focusable, labelled region while it can scroll). With Limit Height on, the row grows to fit the scrollbar instead of clipping items. Fade Edges is turned off while the row is still, so edge content isn't hidden. The editor's Preview Animation is unaffected.
 

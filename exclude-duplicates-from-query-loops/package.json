@@ -1,6 +1,6 @@
 {
 	"name": "exclude-duplicates-from-query-loops",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Exclude posts from query loops that have already been displayed on the current page.",
 	"author": "Automattic Special Projects Team",
 	"license": "GPL-2.0-or-later",

@@ -3,7 +3,7 @@ Contributors:      wpspecialprojects
 Tags:              block, featured-image, caption, image
 Requires at least: 6.1
 Tested up to:      6.7
-Stable tag:        1.0.0
+Stable tag:        1.0.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,9 @@ Requirements: Node.js 18+.
 4. `npm start` — development build with file watching
 
 == Changelog ==
+
+= 1.0.1 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
 
 = 1.0.0 =
 * Initial release.

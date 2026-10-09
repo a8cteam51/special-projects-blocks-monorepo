@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, scroll, button
 Tested up to:      6.1
-Stable tag:        0.1.1
+Stable tag:        0.1.2
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,9 @@ Yes, the Scroll to Top block is fully responsive and works on all devices.
 
 == Changelog ==
 
+= 0.1.2 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
+
 = 0.1.1 =
 * Add Update URI
 
@@ -67,6 +70,9 @@ Yes, the Scroll to Top block is fully responsive and works on all devices.
 * Added support for custom icons
 
 == Upgrade Notice ==
+
+= 0.1.2 =
+Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
 
 = 0.1.1 =
 Add Update URI

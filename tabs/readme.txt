@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, tabs, accordion, accessibility, gutenberg
 Tested up to:      6.8
-Stable tag:        0.2.0
+Stable tag:        0.2.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,6 +81,9 @@ When the tab list overflows its container, left and right scroll arrows appear s
 Yes. Each Tab is an inner-blocks container, so a tab panel can hold any blocks. New tabs start with an empty paragraph that you can replace or build on.
 
 == Changelog ==
+
+= 0.2.1 =
+* The `Update URI` header no longer points at the self-update server. Updates are installed manually from GitHub releases.
 
 = 0.2.0 =
 * Add a block transform that converts the Tabs block into the core Tabs block, carrying over tab titles, tab order, panel content, anchor, and alignment.

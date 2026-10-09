@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.2 (2026-10-09)
+
+### Removed
+
+- Self-update mechanism. Updates are now installed manually from GitHub releases.
+
 ## 1.1.1 (2026-02-25)
 
 ### Breaking

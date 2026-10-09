@@ -11,7 +11,7 @@ guide is the canonical, repo-level reference. Longer-form background lives in th
 - [Updating an existing block](#updating-an-existing-block)
 - [Coding standards](#coding-standards)
 - [Submitting a pull request](#submitting-a-pull-request)
-- [Releases and auto-updates](#releases-and-auto-updates)
+- [Releases](#releases)
 
 ## Before you start: do you actually need a new block?
 
@@ -39,8 +39,6 @@ engineering lead can sign off before development starts.
 - `.github/workflows/make-plugin-release.yml` cuts a GitHub release for each changed
   top-level directory on pushes to `trunk`. The release tag is
   `<dir>@<plugin-header-version>` and the release body is that plugin's `readme.txt`.
-- `.utilities/class-wpcomsp-blocks-self-update.php` is the shared self-update class
-  copied into each plugin.
 
 See the [README](./README.md) for the full plugin inventory.
 
@@ -80,7 +78,6 @@ hand-patched. It sets up:
 - the `a8csp` namespace and a matching `<plugin-slug>/<plugin-slug>.php` entry file;
 - the canonical plugin header (Author, Author URI, `Update URI`, GPL-2.0-or-later,
   Text Domain);
-- the shared self-update class in `classes/` plus the `wpcomsp_installed_blocks` wiring;
 - a non-boilerplate `readme.txt` (with a "Building from source" section) and a
   `CHANGELOG.md`.
 
@@ -151,34 +148,11 @@ engineering lead.
 5. Bump the plugin header `Version:` and add a `CHANGELOG.md`/`readme.txt` changelog
    entry when releasing changes — the release workflow reads the **PHP header version**.
 
-## Releases and auto-updates
+## Releases
 
 Releases are automatic on merge to `trunk` (see [How the monorepo works](#how-the-monorepo-works)).
-To make a plugin self-update on installed sites:
+Plugins do not update themselves: to update an installed plugin, install the newer zip
+from the [releases page](https://github.com/a8cteam51/special-projects-blocks-monorepo/releases).
 
-1. Add the update URI to the plugin header so its hostname matches the update filter:
-   ```
-   Update URI: https://opsoasis.wpspecialprojects.com/<plugin-slug>/
-   ```
-2. Copy `.utilities/class-wpcomsp-blocks-self-update.php` into the plugin's `classes/`
-   directory and wire it up in the entry PHP file:
-   ```php
-   // If no other WPCOMSP block plugin already loaded the self-update class, load it.
-   if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
-       require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
-
-       $wpcomsp_blocks_self_update = WPCOMSP_Blocks_Self_Update::get_instance();
-       $wpcomsp_blocks_self_update->hooks();
-   }
-
-   add_filter(
-       'wpcomsp_installed_blocks',
-       function ( $blocks ) {
-           $blocks[] = '<plugin-slug>'; // enables auto-updates for this plugin.
-           return $blocks;
-       }
-   );
-   ```
-
-Registering the slug on the `wpcomsp_installed_blocks` filter keeps auto-updates working
-even when a site has several monorepo plugins installed.
+Keep the `Update URI` header pointing at this repository. It stops WordPress from
+offering an unrelated WordPress.org plugin with the same slug as an update.

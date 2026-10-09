@@ -4,10 +4,10 @@
  * Description:       A block that allows users to react to a post.
  * Requires at least: 6.6
  * Requires PHP:      8.0
- * Version:           0.1.1
+ * Version:           0.1.2
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
- * Update URI:        https://opsoasis.wpspecialprojects.com/reactions/
+ * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       reactions
@@ -25,31 +25,6 @@ define( 'WPCOMSP_REACTIONS_TABLE_NAME', 'wpcomsp_reactions' );
 
 // Setup the reactions table on plugin activation.
 register_activation_hook( __FILE__, 'wpcomsp_reactions_setup_table' );
-
-// If no other WPCOMSP Block Plugin added the self update class, add it.
-if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
-	require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
-
-	$wpcomsp_blocks_self_update = WPCOMSP_Blocks_Self_Update::get_instance();
-	$wpcomsp_blocks_self_update->hooks();
-}
-
-/**
- * Setup auto-updates for this plugin from our monorepo.
- * Done in an anonymous function for simplicity in making this a drop-in snippet.
- *
- * @param array $blocks Array of plugin files.
- *
- * @return array
- */
-add_filter(
-	'wpcomsp_installed_blocks',
-	function ( $blocks ) {
-		$blocks[] = 'reactions';
-
-		return $blocks;
-	}
-);
 
 /**
  * Registers the block using the metadata loaded from the `block.json` file.

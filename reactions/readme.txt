@@ -3,7 +3,7 @@ Contributors:      wpspecialprojects
 Tags:              block, reactions, emoji, engagement, interactivity
 Requires at least: 6.6
 Tested up to:      6.8
-Stable tag:        0.1.1
+Stable tag:        0.1.2
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,9 @@ Each post's total appears in the **Reactions Count** column on the Posts list sc
 Click the **Create Table** button in that notice. The plugin will recreate the `wpcomsp_reactions` database table. This table is normally created automatically when the plugin is activated.
 
 == Changelog ==
+
+= 0.1.2 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
 
 = 0.1.1 =
 * Added an Update URI for self-managed plugin updates.

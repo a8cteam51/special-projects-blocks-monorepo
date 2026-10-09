@@ -3,7 +3,7 @@ Contributors:      wpspecialprojects
 Tags:              block, modal, dialog, interactivity, accessibility
 Requires at least: 6.6
 Tested up to:      6.8
-Stable tag:        0.1.4
+Stable tag:        0.1.5
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,7 +28,6 @@ The block is powered by the WordPress Interactivity API, so opening, closing, fo
 * **Screen-reader title & description fields** — the block sidebar provides Modal Title and Modal Description controls; values are saved to the `modal_meta` site option (via the REST/Options API) so they apply to every instance of that modal.
 * **Navigation block support** — the Modal button is added to the list of blocks allowed inside the core Navigation block. This can be disabled with the `a8csp_modal_navigation` filter.
 * **Password-protected posts respected** — modal templates are not output on posts that require a password.
-* **Self-updating** — the plugin registers itself with the WordPress Special Projects blocks self-update mechanism for updates from the monorepo.
 
 == Installation ==
 
@@ -73,6 +72,9 @@ Yes. The plugin adds the Modal button to the blocks allowed inside the core Navi
 Yes. A Modal button can be placed inside a modal's content to trigger a second modal. When the second modal closes, focus returns to the button that opened it.
 
 == Changelog ==
+
+= 0.1.5 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
 
 = 0.1.4 =
 * Fix: Modal Description field in the block sidebar now uses `TextareaControl` instead of `PlainText`, matching the Modal Title field's visible input styling. It was previously indistinguishable from its own label.

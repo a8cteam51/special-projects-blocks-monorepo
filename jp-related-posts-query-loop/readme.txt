@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              query, related posts, jetpack
 Tested up to:      6.9.0
-Stable tag:        0.2.1
+Stable tag:        0.2.2
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 6.7
@@ -51,6 +51,9 @@ Requirements: Node.js 18+.
 4. `npm start` — development build with file watching
 
 == Changelog ==
+
+= 0.2.2 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
 
 = 0.2.1 =
 * Fix: the related posts query filter could leak onto the next Query Loop block on the page when the related posts block rendered without a post template.

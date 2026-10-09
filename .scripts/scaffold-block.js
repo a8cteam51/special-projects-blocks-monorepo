@@ -6,9 +6,9 @@
  *   npm run new-block -- <slug> ["Title"] [--dynamic] [--description "Short description."]
  *
  * It runs @wordpress/create-block to generate the working block, then overlays our
- * conventions: canonical plugin header (author, Update URI, license), the shared
- * self-update class + wiring, a non-boilerplate readme.txt, a CHANGELOG.md, and
- * normalized package.json / block.json metadata.
+ * conventions: canonical plugin header (author, Update URI, license), a
+ * non-boilerplate readme.txt, a CHANGELOG.md, and normalized package.json /
+ * block.json metadata.
  *
  * Block registration code is left to create-block (it already emits the right pattern).
  */
@@ -27,7 +27,7 @@ const AUTHOR_URI = 'https://specialprojects.automattic.com/';
 const CONTRIBUTOR = 'wpspecialprojects';
 const LICENSE = 'GPL-2.0-or-later';
 const LICENSE_URI = 'https://www.gnu.org/licenses/gpl-2.0.html';
-const UPDATE_HOST = 'https://opsoasis.wpspecialprojects.com';
+const UPDATE_URI = 'https://github.com/a8cteam51/special-projects-blocks-monorepo/';
 
 const repoRoot = path.resolve(__dirname, '..');
 
@@ -107,7 +107,7 @@ const header = `<?php
  * Version:           0.1.0
  * Author:            ${AUTHOR}
  * Author URI:        ${AUTHOR_URI}
- * Update URI:        ${UPDATE_HOST}/${slug}/
+ * Update URI:        ${UPDATE_URI}
  * License:           ${LICENSE}
  * License URI:       ${LICENSE_URI}
  * Text Domain:       ${slug}
@@ -117,38 +117,9 @@ const header = `<?php
 
 let php = fs.readFileSync(entryPhp, 'utf8');
 php = php.replace(/^<\?php\s*\n\/\*\*[\s\S]*?\*\//, header);
-
-// 2b. Self-update wiring appended at EOF.
-const selfUpdate = `
-
-// If no other WPCOMSP block plugin already loaded the self-update class, load it.
-if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
-\trequire __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
-
-\t$wpcomsp_blocks_self_update = WPCOMSP_Blocks_Self_Update::get_instance();
-\t$wpcomsp_blocks_self_update->hooks();
-}
-
-add_filter(
-\t'wpcomsp_installed_blocks',
-\tfunction ( $blocks ) {
-\t\t$blocks[] = '${slug}'; // Enables auto-updates for this plugin.
-\t\treturn $blocks;
-\t}
-);
-`;
-php = php.replace(/\s*$/, '\n') + selfUpdate;
 fs.writeFileSync(entryPhp, php);
 
-// 2c. Copy the shared self-update class.
-const classesDir = path.join(targetDir, 'classes');
-fs.mkdirSync(classesDir, { recursive: true });
-fs.copyFileSync(
-  path.join(repoRoot, '.utilities', 'class-wpcomsp-blocks-self-update.php'),
-  path.join(classesDir, 'class-wpcomsp-blocks-self-update.php')
-);
-
-// 2d. Non-boilerplate readme.txt.
+// 2b. Non-boilerplate readme.txt.
 const readme = `=== ${title} ===
 Contributors:      ${CONTRIBUTOR}
 Tags:              block
@@ -185,7 +156,7 @@ Requirements: Node.js 18+.
 `;
 fs.writeFileSync(path.join(targetDir, 'readme.txt'), readme);
 
-// 2e. CHANGELOG.md.
+// 2c. CHANGELOG.md.
 fs.writeFileSync(
   path.join(targetDir, 'CHANGELOG.md'),
   `# Changelog
@@ -200,7 +171,7 @@ All notable changes to this project will be documented in this file.
 `
 );
 
-// 2f. Normalize package.json metadata (create-block already provides the scripts).
+// 2d. Normalize package.json metadata (create-block already provides the scripts).
 {
   const p = path.join(targetDir, 'package.json');
   const raw = fs.readFileSync(p, 'utf8');
@@ -213,7 +184,7 @@ All notable changes to this project will be documented in this file.
   fs.writeFileSync(p, JSON.stringify(j, null, indent) + '\n');
 }
 
-// 2g. Ensure block.json description + textdomain. create-block nests the block
+// 2e. Ensure block.json description + textdomain. create-block nests the block
 // under src/<slug>/, and multi-block plugins have several, so search recursively.
 {
   const srcDir = path.join(targetDir, 'src');
@@ -240,7 +211,7 @@ All notable changes to this project will be documented in this file.
   }
 }
 
-// 2h. Remove any src/**/README.md boilerplate create-block emits (the interactive
+// 2f. Remove any src/**/README.md boilerplate create-block emits (the interactive
 // template ships one); our plugins document themselves via readme.txt.
 {
   const srcDir = path.join(targetDir, 'src');

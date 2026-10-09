@@ -45,6 +45,9 @@ The inner of the toggle is controlled by `wp-block-wpcomsp-light-dark-toggle:bef
 
 == Changelog ==
 
+= 0.2.2 =
+* Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
+
 = 1.0.0 =
 * Inital release
 

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.2.1
+
+### Changed
+
+- The `Update URI` header no longer points at the self-update server. Updates are installed manually from GitHub releases.
+
 ## 0.2.0
 
 ### Added

@@ -4,13 +4,13 @@
  * Description:       A block that expands to fill the width of its container.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           0.1.4
+ * Version:           0.1.5
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       stretchy-type
- * Update URI:        https://opsoasis.wpspecialprojects.com/
+ * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/
  *
  * @package Wpsp
  */
@@ -18,33 +18,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
-if ( ! class_exists( 'WPSP_Blocks_Self_Update' ) ) {
-	require __DIR__ . '/classes/class-wpsp-blocks-self-update.php';
-
-	$wpsp_blocks_self_update = WPSP_Blocks_Self_Update::get_instance();
-	$wpsp_blocks_self_update->hooks();
-}
-
-/**
- * Setup auto-updates for this plugin from our monorepo.
- * Done in an anonymous function for simplicity in making this a drop-in snippet.
- *
- * @param array $blocks Array of plugin files.
- *
- * @return array
- */
-add_filter(
-	'wpsp_installed_blocks',
-	function ( $blocks ) {
-		$plugin_data = get_plugin_data( __FILE__ );
-
-		// Add the plugin slug here to enable autoupdates.
-		$blocks[] = 'stretchy-type';
-
-		return $blocks;
-	}
-);
 
 /**
  * Registers the block using the metadata loaded from the `block.json` file.

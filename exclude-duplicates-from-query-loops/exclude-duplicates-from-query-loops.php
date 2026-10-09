@@ -2,10 +2,10 @@
 /**
  * Plugin Name:       Exclude Duplicate Posts from Query Loops
  * Description:       Exclude posts from query loops that have already been displayed on the current page.
- * Version:           0.1.0
+ * Version:           0.1.1
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
- * Update URI:        https://opsoasis.wpspecialprojects.com/exclude-duplicates-from-query-loops/
+ * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       a8csp-exclude-duplicates
@@ -19,31 +19,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
-// If no other WPCOMSP Block Plugin added the self update class, add it.
-if ( ! class_exists( 'WPCOMSP_Blocks_Self_Update' ) ) {
-	require __DIR__ . '/classes/class-wpcomsp-blocks-self-update.php';
-
-	WPCOMSP_Blocks_Self_Update::get_instance()->hooks();
-}
-
-/**
- * Setup auto-updates for this plugin from our monorepo.
- * Done in an anonymous function for simplicity in making this a drop-in snippet.
- *
- * @param array $blocks Array of plugin files.
- *
- * @return array
- */
-add_filter(
-	'wpcomsp_installed_blocks',
-	function ( $blocks ) {
-		// Add the plugin slug here to enable autoupdates.
-		$blocks[] = 'exclude-duplicates-from-query-loops';
-
-		return $blocks;
-	}
-);
 
 /**
  * Enqueues the editor script for the block editor.
