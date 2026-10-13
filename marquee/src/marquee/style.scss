@@ -57,6 +57,15 @@
 			display: inline-block;
 			margin-top: 0;
 			margin-bottom: 0;
+
+			// Safari backs a layer wider than ~2000 device pixels with tiles,
+			// and while the track's transform animation runs on the compositor
+			// those tiles can blank for a frame, which shows as a flash of the
+			// whole row. Giving every item its own small layer leaves the wide
+			// moving track with nothing of its own to paint, so there is
+			// nothing to re-tile. Verified in Safari 26 (COOL-13).
+			will-change: transform;
+			transform: translateZ(0);
 		}
 	}
 
