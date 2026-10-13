@@ -6,6 +6,8 @@
  */
 
 .wp-block-a8csp-marquee {
+	// Padding and border must not push the block past its column.
+	box-sizing: border-box;
 	overflow: hidden;
 	position: relative;
 	width: 100%;
