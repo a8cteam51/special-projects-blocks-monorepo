@@ -1,3 +1,6 @@
+0.1.6
+- Fix: In Safari, the whole row could blank for a single frame now and then while scrolling, which looked like a flash (COOL-13). Safari tiles the backing store of the wide animated track and could drop those tiles for a frame; each item now sits on its own compositing layer, so the track itself has nothing to paint. Lazy image loading was ruled out as the cause: it reproduced with eager images on 0.1.5.
+
 0.1.5
 - Fix: The editor's Preview Animation ran at a different speed than the front end (slower whenever the content was wider than the block). Speed now means the same thing in both places: pixels per second.
 - Fix: The front-end speed depended on how many copies of the content were needed to fill the row, so narrow content moved slower than the Speed setting. It now moves at the set speed regardless of content width.

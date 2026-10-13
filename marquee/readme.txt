@@ -3,7 +3,7 @@ Contributors:      wpspecialprojects
 Tags:              block, marquee, scrolling, ticker, logos
 Requires at least: 6.7
 Tested up to:      6.7
-Stable tag:        0.1.5
+Stable tag:        0.1.6
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,9 @@ Requirements: Node.js 18+.
 4. `npm start` — development build with file watching
 
 == Changelog ==
+
+= 0.1.6 =
+* Fix: In Safari, the whole row could blank for a single frame now and then while scrolling, which looked like a flash. Each item now sits on its own compositing layer, so the wide moving track has nothing to repaint.
 
 = 0.1.5 =
 * Fix: The editor's Preview Animation ran at a different speed than the front end. Speed now means pixels per second in both places.
