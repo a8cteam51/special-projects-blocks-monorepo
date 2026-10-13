@@ -15,6 +15,7 @@ import {
 	useBlockProps,
 	InnerBlocks,
 	InspectorControls,
+	BlockControls,
 	BlockVerticalAlignmentControl,
 } from '@wordpress/block-editor';
 
@@ -113,6 +114,17 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<>
+			{ /* Same control as the Row block's toolbar; the sidebar copy below writes the same attribute. */ }
+			<BlockControls group="block">
+				<BlockVerticalAlignmentControl
+					value={ verticalAlignment }
+					onChange={ ( value ) =>
+						setAttributes( {
+							verticalAlignment: value || undefined,
+						} )
+					}
+				/>
+			</BlockControls>
 			<InspectorControls>
 				<PanelBody title={ __( 'Marquee Settings', 'marquee' ) }>
 					<div style={ { marginBottom: '16px' } }>
