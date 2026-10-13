@@ -1,3 +1,8 @@
+0.1.8
+- Add: Margin (top and bottom) and Border (color, width, style, radius) block supports, so both appear in the Styles panel like they do for Group (COOL-4).
+- Update: Fade Edges masks the scrolling content instead of the whole block, so a background colour or border is no longer faded at the edges along with the items.
+- Update: The editor's dashed placeholder border is drawn as an outline, so it no longer collides with a border set through the new control.
+
 0.1.7
 - Add: Vertical alignment (top, center, bottom) is now also in the block toolbar, matching the Row block (COOL-17). The sidebar control is kept, so both write the same attribute.
 

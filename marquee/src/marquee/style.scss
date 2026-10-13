@@ -112,7 +112,9 @@
 		display: block;
 	}
 
-	&.has-fade {
+	// The mask sits on the content wrapper rather than the block, so a
+	// background or border set on the block stays solid at the edges.
+	&.has-fade .marquee-content {
 		mask-image: linear-gradient(90deg, transparent, #000 50px, #000 calc(100% - 50px), transparent);
 
 		// A still row never moves content out from under the fade, so drop it.
