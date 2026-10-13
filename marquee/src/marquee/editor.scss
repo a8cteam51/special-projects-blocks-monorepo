@@ -5,7 +5,10 @@
  */
 
 .wp-block-a8csp-marquee {
-	border: 1px dashed #ccc;
+	// An outline rather than a border, so it never mixes with a border set
+	// through the block's Border control.
+	outline: 1px dashed #ccc;
+	outline-offset: -1px;
 	padding: 20px;
 	background: transparent;
 

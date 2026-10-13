@@ -3,7 +3,7 @@ Contributors:      wpspecialprojects
 Tags:              block, marquee, scrolling, ticker, logos
 Requires at least: 6.7
 Tested up to:      6.7
-Stable tag:        0.1.7
+Stable tag:        0.1.8
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,10 @@ Requirements: Node.js 18+.
 4. `npm start` — development build with file watching
 
 == Changelog ==
+
+= 0.1.8 =
+* Add: Margin (top and bottom) and Border controls (color, width, style, radius) in the block's Styles panel.
+* Update: Fade Edges now fades only the scrolling content. The block's background and border stay solid at the edges.
 
 = 0.1.7 =
 * Add: Vertical alignment is now also in the block toolbar, like the Row block. The sidebar control stays.
