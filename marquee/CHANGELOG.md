@@ -1,3 +1,6 @@
+0.1.7
+- Add: Vertical alignment (top, center, bottom) is now also in the block toolbar, matching the Row block (COOL-17). The sidebar control is kept, so both write the same attribute.
+
 0.1.6
 - Fix: In Safari, the whole row could blank for a single frame now and then while scrolling, which looked like a flash (COOL-13). Safari tiles the backing store of the wide animated track and could drop those tiles for a frame; each item now sits on its own compositing layer, so the track itself has nothing to paint. Lazy image loading was ruled out as the cause: it reproduced with eager images on 0.1.5.
 
