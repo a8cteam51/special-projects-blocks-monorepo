@@ -55,7 +55,7 @@
 
 	// Enable animation only when preview is toggled
 	&.is-previewing .marquee-items {
-		animation: marquee var(--duration) linear infinite !important;
+		animation: marquee-preview var(--duration) linear infinite !important;
 	}
 
 	&.is-previewing.direction-right .marquee-items {
@@ -83,7 +83,9 @@
 	}
 }
 
-@keyframes marquee {
+// Named apart from the front-end `marquee` keyframes in style.scss: both
+// stylesheets load in the editor, and whichever comes last would win.
+@keyframes marquee-preview {
 
 	0% {
 		transform: translateX(0);

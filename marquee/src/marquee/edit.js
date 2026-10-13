@@ -65,17 +65,33 @@ export default function Edit( { attributes, setAttributes } ) {
 	const [ duration, setDuration ] = useState( 12 );
 	const blockRef = useRef();
 
-	// Calculate duration for preview
-	//const itemsContainer = document.querySelector('.wp-block-a8csp-marquee .marquee-items');
-	//const duration = itemsContainer ? (itemsContainer.scrollWidth / speed) * 0.5 : 12;
+	// Speed is pixels per second, the same definition the view script uses.
+	// The preview keyframe (editor.scss) moves the row by half of its own
+	// width, so the duration is that distance divided by the speed. The row's
+	// width can change after mount (sidebar, zoom, resize), so keep measuring
+	// while the preview runs.
 	useEffect( () => {
-		if ( blockRef.current ) {
-			const itemsContainer =
-				blockRef.current.querySelector( '.marquee-items' );
-			if ( itemsContainer && itemsContainer.scrollWidth > 0 ) {
-				setDuration( ( itemsContainer.scrollWidth / speed ) * 0.5 );
-			}
+		const itemsContainer =
+			blockRef.current?.querySelector( '.marquee-items' );
+		if ( ! itemsContainer || ! isPreviewingAnimation || ! ( speed > 0 ) ) {
+			return;
 		}
+
+		const measure = () => {
+			const width = itemsContainer.offsetWidth;
+			if ( width > 0 ) {
+				setDuration( ( width * 0.5 ) / speed );
+			}
+		};
+		measure();
+
+		const view = itemsContainer.ownerDocument.defaultView;
+		if ( ! view || ! view.ResizeObserver ) {
+			return;
+		}
+		const observer = new view.ResizeObserver( measure );
+		observer.observe( itemsContainer );
+		return () => observer.disconnect();
 	}, [ speed, isPreviewingAnimation ] );
 
 	const blockProps = useBlockProps( {

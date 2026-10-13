@@ -1,3 +1,8 @@
+0.1.5
+- Fix: The editor's Preview Animation ran at a different speed than the front end (slower whenever the content was wider than the block). Speed now means the same thing in both places: pixels per second.
+- Fix: The front-end speed depended on how many copies of the content were needed to fill the row, so narrow content moved slower than the Speed setting. It now moves at the set speed regardless of content width.
+- Fix: The editor preview could fail to move at all depending on stylesheet load order, because the preview and the front end shared a keyframe name.
+
 0.1.4
 - Fix: Images past the edge of the row could stay blank, and in Safari never load, because WordPress lazy-loads them and the row clips them. Every image in the row now loads as soon as the row is near the viewport. On 0.1.1 and earlier this left the marquee frozen.
 - Fix: The loop distance could be measured before every image had loaded and never corrected, so the row jumped back partway through a loop. Each item is now watched for size changes.

@@ -273,7 +273,11 @@ function update( marquee ) {
 		`${ totalWidth }px`
 	);
 
-	const duration = ( itemsContainer.scrollWidth / state.speed ) * 0.5;
+	// Speed is pixels per second. One loop moves the track by one copy of the
+	// content, so the duration depends only on that copy, never on how many
+	// copies were needed to fill the track. The editor preview uses the same
+	// definition, so the two run at the same speed.
+	const duration = totalWidth / state.speed;
 	itemsContainer.style.setProperty( '--duration', `${ duration }s` );
 
 	updateScrollRegion( state );

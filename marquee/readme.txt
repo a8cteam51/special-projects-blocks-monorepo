@@ -3,7 +3,7 @@ Contributors:      wpspecialprojects
 Tags:              block, marquee, scrolling, ticker, logos
 Requires at least: 6.7
 Tested up to:      6.7
-Stable tag:        0.1.4
+Stable tag:        0.1.5
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -19,7 +19,7 @@ In the editor the content stays still so it's easy to edit. Use **Preview Animat
 = Settings =
 
 * **Scroll Direction** — left (default) or right.
-* **Speed** — 10 to 200 (default 50). Higher is faster.
+* **Speed** — 10 to 200 pixels per second (default 50).
 * **Gap between items** — 0 to 200px (default 20px).
 * **Pause on Hover** — on by default.
 * **Fade Edges** — fades the left and right edges with a mask, so it works over any background. Off by default.
@@ -51,6 +51,11 @@ Requirements: Node.js 18+.
 4. `npm start` — development build with file watching
 
 == Changelog ==
+
+= 0.1.5 =
+* Fix: The editor's Preview Animation ran at a different speed than the front end. Speed now means pixels per second in both places.
+* Fix: Narrow content moved slower than the Speed setting on the front end, because the speed depended on how many copies filled the row.
+* Fix: The editor preview could fail to move at all depending on stylesheet load order.
 
 = 0.1.4 =
 * Fix: Images past the edge of the row could stay blank, and in Safari never load, because WordPress lazy-loads them and the row clips them. Every image in the row now loads as soon as the row is near the viewport. On 0.1.1 and earlier this left the marquee frozen.
