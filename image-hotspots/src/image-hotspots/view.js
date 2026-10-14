@@ -26,11 +26,28 @@ import { placeCard, resetCard } from '../shared/placement';
 
 let closeTimer = null;
 
-const getMarker = ( id ) =>
-	id ? document.getElementById( `${ id }-marker` ) : null;
+/**
+ * The open hotspot of this block, if the open one is this block's. Found by
+ * its class rather than by an id, which the marker attributes filter may
+ * change.
+ *
+ * @param {HTMLElement} ref The block's element.
+ * @return {HTMLElement|null} The open hotspot's item, or null.
+ */
+const getOpenItem = ( ref ) =>
+	ref.querySelector(
+		':scope > .wp-block-a8csp-image-hotspots__canvas > .wp-block-a8csp-image-hotspots__markers > .wp-block-a8csp-image-hotspot.is-open'
+	);
 
-const getItem = ( id ) =>
-	getMarker( id )?.closest( '.wp-block-a8csp-image-hotspot' ) || null;
+/**
+ * A hotspot's marker button.
+ *
+ * @param {HTMLElement} item The hotspot's item.
+ * @return {HTMLElement|null} The marker.
+ */
+const getMarker = ( item ) =>
+	item.querySelector( ':scope > .wp-block-a8csp-image-hotspots__marker' ) ||
+	item.querySelector( ':scope > button' );
 
 const prefersReducedMotion = () =>
 	window.matchMedia?.( '(prefers-reduced-motion: reduce)' ).matches;
@@ -147,8 +164,8 @@ const { state } = store( 'a8csp/image-hotspots', {
 				return;
 			}
 			const { ref } = getElement();
-			const item = getItem( state.openId );
-			if ( ! item || ! ref.contains( item ) ) {
+			const item = getOpenItem( ref );
+			if ( ! item ) {
 				// The open card belongs to another block.
 				return;
 			}
@@ -175,11 +192,11 @@ const { state } = store( 'a8csp/image-hotspots', {
 				return;
 			}
 			const { ref } = getElement();
-			const item = getItem( state.openId );
-			if ( ! item || ! ref.contains( item ) ) {
+			const item = getOpenItem( ref );
+			if ( ! item ) {
 				return;
 			}
-			const marker = getMarker( state.openId );
+			const marker = getMarker( item );
 			const focusWasInside = item.contains(
 				item.ownerDocument.activeElement
 			);
@@ -206,8 +223,10 @@ const { state } = store( 'a8csp/image-hotspots', {
 			}
 
 			const placement = placeCard( ref );
-			if ( 'stacked' === placement ) {
-				// Below the image, the card may be off screen.
+			// Below the image, the card may be off screen. Not for a card that
+			// hover opened: scrolling would move the marker from under the
+			// mouse, and the card would close as the pointer leaves.
+			if ( 'stacked' === placement && 'hover' !== state.openedBy ) {
 				ref.scrollIntoView( {
 					block: 'nearest',
 					behavior: prefersReducedMotion() ? 'auto' : 'smooth',

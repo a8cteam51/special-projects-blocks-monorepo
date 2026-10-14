@@ -27,7 +27,7 @@ import {
 } from '@wordpress/components';
 import { store as coreStore } from '@wordpress/core-data';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { useEffect, useRef, useState } from '@wordpress/element';
+import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { mapMarker, seen, unseen } from '@wordpress/icons';
 import { isAppleOS } from '@wordpress/keycodes';
@@ -75,11 +75,21 @@ export default function Edit( {
 	const [ showAllCards, setShowAllCards ] = useState( false );
 	const imageRef = useRef();
 
-	const { hotspots, imageSizes, media } = useSelect(
+	// Only the hotspots' order and labels: the whole inner-block tree would
+	// re-render this block on every keystroke in a card.
+	const { hotspotIds, hotspotLabels, imageSizes, media } = useSelect(
 		( select ) => {
-			const { getBlocks, getSettings } = select( blockEditorStore );
+			const { getBlockOrder, getBlockAttributes, getSettings } =
+				select( blockEditorStore );
+			const order = getBlockOrder( clientId );
 			return {
-				hotspots: getBlocks( clientId ),
+				hotspotIds: order,
+				// A string, so that an unchanged list compares equal.
+				hotspotLabels: order
+					.map( ( hotspotId ) =>
+						String( getBlockAttributes( hotspotId )?.label || '' )
+					)
+					.join( '\u0000' ),
 				imageSizes: getSettings().imageSizes,
 				media: id
 					? select( coreStore ).getEntityRecord(
@@ -93,6 +103,13 @@ export default function Edit( {
 		},
 		[ clientId, id ]
 	);
+	const hotspots = useMemo( () => {
+		const labels = hotspotLabels.split( '\u0000' );
+		return hotspotIds.map( ( hotspotId, index ) => ( {
+			clientId: hotspotId,
+			label: labels[ index ] || '',
+		} ) );
+	}, [ hotspotIds, hotspotLabels ] );
 	const { insertBlock, selectBlock } = useDispatch( blockEditorStore );
 
 	const blockProps = useBlockProps( {
@@ -411,7 +428,7 @@ export default function Edit( {
 											selectBlock( hotspot.clientId )
 										}
 									>
-										{ hotspot.attributes.label ||
+										{ hotspot.label ||
 											__(
 												'(no label)',
 												'image-hotspots'
