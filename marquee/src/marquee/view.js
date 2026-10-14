@@ -9,15 +9,26 @@
  * - Publish `--marquee-translate` and `--duration` for the `marquee` keyframes.
  * - Support any number of instances per page, including instances that are
  *   hidden at load time (modals, tabs, accordions) or injected later.
+ * - Accessibility (WCAG 2.2.2 Pause, Stop, Hide): inject a visible pause/play
+ *   button when the block opts in, stop the animation while keyboard focus
+ *   is inside the track, and hide the cloned copies from assistive technology
+ *   so the content is announced (and tabbed through) only once.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
  */
 
 import { __ } from '@wordpress/i18n';
 
+import { PAUSE_ICON_PATH, PLAY_ICON_PATH } from './icons';
+
 const MARQUEE_SELECTOR = '.wp-block-a8csp-marquee';
 const CONTENT_SELECTOR = '.marquee-content';
 const ITEMS_SELECTOR = '.marquee-items';
+const TOGGLE_CLASS = 'marquee-toggle';
+const TOGGLE_ENABLED_CLASS = 'has-pause-button';
+const FOCUSED_CLASS = 'is-focused';
+const PAUSED_CLASS = 'is-paused';
+const STOPPED_CLASS = 'is-stopped';
 
 /**
  * Hard ceiling on the number of copies of the original content.
@@ -103,9 +114,17 @@ function scheduleUpdate( marquee ) {
  * @param {Object} state The instance state.
  */
 function updatePlayState( state ) {
+	// Stopped by the visitor (hover, keyboard focus or the button), as opposed
+	// to merely scrolled off-screen. Themes can style this state, e.g. dim it.
+	// With motion reduced the row never moves, so there is nothing to stop.
+	const motion = ! ( reducedMotion && reducedMotion.matches );
+	const stopped =
+		motion && ( state.hovered || state.focused || state.paused );
+
+	state.marquee.classList.toggle( STOPPED_CLASS, stopped );
 	state.itemsContainer.style.setProperty(
 		'--play-state',
-		state.visible && ! state.hovered ? 'running' : 'paused'
+		state.visible && ! stopped ? 'running' : 'paused'
 	);
 }
 
@@ -167,6 +186,55 @@ function loadImages( state ) {
 }
 
 /**
+ * Builds the pause/play button. It is the first child of the block so it comes
+ * before the scrolling items in tab order. The visible part is an icon; the
+ * text is visually hidden and swapped with the state so screen readers announce
+ * what the button will do.
+ *
+ * @param {Object} state The instance state.
+ *
+ * @return {HTMLButtonElement} The button.
+ */
+function createToggle( state ) {
+	const button = document.createElement( 'button' );
+	button.type = 'button';
+	button.className = TOGGLE_CLASS;
+	button.innerHTML =
+		`<svg class="marquee-toggle__icon marquee-toggle__icon--pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="${ PAUSE_ICON_PATH }"/></svg>` +
+		`<svg class="marquee-toggle__icon marquee-toggle__icon--play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="${ PLAY_ICON_PATH }"/></svg>` +
+		'<span class="marquee-toggle__label"></span>';
+
+	button.addEventListener( 'click', () => {
+		state.paused = ! state.paused;
+		syncToggle( state );
+		updatePlayState( state );
+	} );
+
+	state.toggle = button;
+	syncToggle( state );
+
+	return button;
+}
+
+/**
+ * Reflects the paused state on the block and the button label.
+ *
+ * @param {Object} state The instance state.
+ */
+function syncToggle( state ) {
+	state.marquee.classList.toggle( PAUSED_CLASS, state.paused );
+
+	if ( ! state.toggle ) {
+		return;
+	}
+
+	state.toggle.querySelector( '.marquee-toggle__label' ).textContent =
+		state.paused
+			? __( 'Play animation', 'marquee' )
+			: __( 'Pause animation', 'marquee' );
+}
+
+/**
  * Grows or shrinks the track to the requested number of copies of the original
  * content. The original nodes are never re-parsed: copies are cloned from a
  * template captured at init, so images stay cached and item identity is kept.
@@ -180,7 +248,14 @@ function applyCopies( state, copies ) {
 	if ( copies > state.copies ) {
 		const fragment = document.createDocumentFragment();
 		for ( let i = state.copies; i < copies; i++ ) {
-			fragment.appendChild( template.cloneNode( true ) );
+			const copy = template.cloneNode( true );
+			// Copies only exist to fill the track visually: keep them out of
+			// the accessibility tree and out of the tab order.
+			Array.from( copy.children ).forEach( ( node ) => {
+				node.setAttribute( 'aria-hidden', 'true' );
+				node.setAttribute( 'inert', '' );
+			} );
+			fragment.appendChild( copy );
 		}
 		itemsContainer.appendChild( fragment );
 	} else if ( copies < state.copies ) {
@@ -335,6 +410,7 @@ function initMarquee( marquee ) {
 		return;
 	}
 
+	const content = marquee.querySelector( CONTENT_SELECTOR ) || marquee;
 	const itemsContainer = marquee.querySelector( ITEMS_SELECTOR );
 	if ( ! itemsContainer ) {
 		warn( `Could not find ${ ITEMS_SELECTOR } container.`, marquee );
@@ -365,8 +441,10 @@ function initMarquee( marquee ) {
 	} );
 
 	const state = {
+		marquee,
 		content: marquee.querySelector( CONTENT_SELECTOR ),
 		itemsContainer,
+		toggle: null,
 		template,
 		originalCount: originalItems.length,
 		copies: 1,
@@ -374,6 +452,8 @@ function initMarquee( marquee ) {
 		signature: '',
 		visible: true,
 		hovered: false,
+		focused: false,
+		paused: false,
 		warnedZeroWidth: false,
 		scrollable: false,
 		imagesRequested: false,
@@ -382,6 +462,12 @@ function initMarquee( marquee ) {
 	instances.set( marquee, state );
 	marqueeOf.set( itemsContainer, marquee );
 
+	if ( marquee.classList.contains( TOGGLE_ENABLED_CLASS ) ) {
+		marquee.insertBefore( createToggle( state ), marquee.firstChild );
+	}
+
+	// Hover covers the whole block, button included, so moving the pointer
+	// onto the button to use it does not restart the animation.
 	if ( marquee.classList.contains( 'has-pause-on-hover' ) ) {
 		marquee.addEventListener( 'mouseenter', () => {
 			state.hovered = true;
@@ -393,6 +479,29 @@ function initMarquee( marquee ) {
 			updatePlayState( state );
 		} );
 	}
+
+	// Focus is tracked on the track only, so tabbing to the button does not
+	// hold the animation. Keyboard focus on a link inside the track stops the
+	// animation and parks the track at its start, so the focused item cannot
+	// scroll out of view.
+	content.addEventListener( 'focusin', () => {
+		state.focused = true;
+		marquee.classList.add( FOCUSED_CLASS );
+		updatePlayState( state );
+	} );
+
+	content.addEventListener( 'focusout', ( event ) => {
+		if ( content.contains( event.relatedTarget ) ) {
+			return;
+		}
+		state.focused = false;
+		marquee.classList.remove( FOCUSED_CLASS );
+		// With motion reduced the row is scrolled by hand; keep the position.
+		if ( ! ( reducedMotion && reducedMotion.matches ) ) {
+			content.scrollLeft = 0;
+		}
+		updatePlayState( state );
+	} );
 
 	if ( resizeObserver ) {
 		// The block root tracks the available width; the items track tracks
@@ -482,6 +591,10 @@ function start() {
 					const content = marquee.querySelector( CONTENT_SELECTOR );
 					if ( content && ! reducedMotion.matches ) {
 						content.scrollLeft = 0;
+					}
+					const state = instances.get( marquee );
+					if ( state ) {
+						updatePlayState( state );
 					}
 					scheduleUpdate( marquee );
 				} )

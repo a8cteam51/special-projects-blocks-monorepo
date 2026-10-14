@@ -1,3 +1,12 @@
+0.1.9
+- Add: "Show pause button" setting (off by default). When on, the view script adds a visible pause/play `<button>` before the row, with a visually hidden label that switches between "Pause animation" and "Play animation" (WCAG 2.2.2 Pause, Stop, Hide). Per-block colour settings for the button background and icon (palette colours are saved as preset variables, with a contrast check) and an "Opacity when paused" level, saved as `--marquee-toggle-background`, `--marquee-toggle-color` and `--marquee-stopped-opacity`. The button's position, size and colours are all custom properties, so a theme can restyle it without overriding rules. Default look: #eee ring and bars on a black disc.
+- Add: The block gets `is-stopped` while the visitor has stopped it (hover with Pause on Hover on, keyboard focus in the row, or the button) and `is-paused` while paused by the button; the content's opacity follows `--marquee-stopped-opacity` in that state. Hover now covers the button too, so reaching for it does not restart the row.
+- Add: The pause button's colours and "Opacity when paused" live in a "Pause button" panel in the block's Styles tab, shown when the button is on. The editor previews the button with those colours, and hovering the preview shows the dimmed state.
+- Add: With the pause button on, hovering the row dims it on pointer devices whether or not Pause on Hover is set, so the button is easier to see. The row only stops on hover when Pause on Hover is on.
+- Add: Keyboard focus inside the row stops the animation and parks the row at its start so the focused item is visible.
+- Fix: The copies that fill the row are marked `aria-hidden` and `inert`, so screen readers announce the content once and the copies are not in the tab order.
+- Update: With motion reduced the pause button is hidden, hover and focus no longer dim the row, and leaving the row keeps its manual scroll position.
+
 0.1.8
 - Add: Margin (top and bottom) and Border (color, width, style, radius) block supports, so both appear in the Styles panel like they do for Group (COOL-4).
 - Update: Fade Edges masks the scrolling content instead of the whole block, so a background colour or border is no longer faded at the edges along with the items.

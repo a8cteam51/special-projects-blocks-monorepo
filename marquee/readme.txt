@@ -3,7 +3,7 @@ Contributors:      wpspecialprojects
 Tags:              block, marquee, scrolling, ticker, logos
 Requires at least: 6.7
 Tested up to:      6.7
-Stable tag:        0.1.8
+Stable tag:        0.1.9
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,13 @@ Requirements: Node.js 18+.
 4. `npm start` — development build with file watching
 
 == Changelog ==
+
+= 0.1.9 =
+* Add: "Show pause button" setting (off by default). Adds a visible pause/play button so visitors can stop the animation (WCAG 2.2.2). Colours for the button and an "Opacity when paused" level can be set per block; themes can restyle it through `--marquee-toggle-*` custom properties.
+* Add: The button's colours and opacity are in the Styles tab, and the editor previews the button. Hovering the row dims it while the button is on, so the button is easier to see.
+* Add: The animation also stops while keyboard focus is inside the row, and the row returns to its start so the focused item is in view.
+* Fix: The copies that fill the row are hidden from screen readers and the tab order, so content is announced once.
+* Update: With motion reduced, the pause button is hidden and hover or focus no longer dim the row, since nothing moves.
 
 = 0.1.8 =
 * Add: Margin (top and bottom) and Border controls (color, width, style, radius) in the block's Styles panel.

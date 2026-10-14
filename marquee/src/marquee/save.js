@@ -23,22 +23,41 @@ export default function save( { attributes } ) {
 		direction,
 		speed,
 		pauseOnHover,
+		showPauseButton,
+		pauseButtonBackground,
+		pauseButtonColor,
+		pausedOpacity,
 		gap,
 		fadeEdges,
 		verticalAlignment,
 		hasMaxHeight,
 		maxHeight,
 	} = attributes;
+	// The pause button is off by default and adds no markup of its own (view.js
+	// injects it), so only the opt-in adds a class. Existing content saved
+	// before this attribute existed therefore still validates unchanged.
 	const blockProps = useBlockProps.save( {
 		className: `wp-block-a8csp-marquee direction-${ direction }${
 			fadeEdges ? ' has-fade' : ''
 		} speed-${ speed } ${ pauseOnHover ? ' has-pause-on-hover' : '' }${
 			verticalAlignment ? ` align-${ verticalAlignment }` : ''
-		}${ hasMaxHeight ? ' has-max-height' : '' }`,
+		}${ hasMaxHeight ? ' has-max-height' : '' }${
+			showPauseButton ? ' has-pause-button' : ''
+		}`,
 		style: {
 			'--marquee-gap': `${ gap }px`,
 			...( hasMaxHeight && {
 				'--marquee-max-height': `${ maxHeight }px`,
+			} ),
+			// Only set when chosen, so the theme's or plugin's defaults apply otherwise.
+			...( pauseButtonBackground && {
+				'--marquee-toggle-background': pauseButtonBackground,
+			} ),
+			...( pauseButtonColor && {
+				'--marquee-toggle-color': pauseButtonColor,
+			} ),
+			...( Number.isFinite( pausedOpacity ) && {
+				'--marquee-stopped-opacity': pausedOpacity / 100,
 			} ),
 		},
 	} );

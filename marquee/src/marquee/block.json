@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "a8csp/marquee",
-	"version": "0.1.8",
+	"version": "0.1.9",
 	"title": "Marquee",
 	"category": "widgets",
 	"icon": "controls-repeat",
@@ -47,6 +47,19 @@
 		"pauseOnHover": {
 			"type": "boolean",
 			"default": true
+		},
+		"showPauseButton": {
+			"type": "boolean",
+			"default": false
+		},
+		"pauseButtonBackground": {
+			"type": "string"
+		},
+		"pauseButtonColor": {
+			"type": "string"
+		},
+		"pausedOpacity": {
+			"type": "number"
 		},
 		"gap": {
 			"type": "number",

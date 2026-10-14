@@ -23,6 +23,7 @@
 	.marquee-content {
 		overflow: hidden;
 		width: 100%;
+		transition: opacity 0.2s ease;
 
 		// With motion reduced the row stays still, so let visitors scroll to
 		// content wider than the block instead.
@@ -115,7 +116,8 @@
 	}
 
 	// The mask sits on the content wrapper rather than the block, so a
-	// background or border set on the block stays solid at the edges.
+	// background or border set on the block stays solid at the edges, and the
+	// pause button, which sits on top of the track, is never faded out.
 	&.has-fade .marquee-content {
 		mask-image: linear-gradient(90deg, transparent, #000 50px, #000 calc(100% - 50px), transparent);
 
@@ -126,6 +128,101 @@
 				mask-image: none;
 			}
 		}
+	}
+
+	// Keyboard focus inside the track: stop and reset the animation so the
+	// focused item is in view (view.js toggles the class).
+	&.is-focused .marquee-items:not(.block-editor-block-list__layout *) {
+		animation: none;
+	}
+
+	// Stopped by the visitor (hover, focus or the pause button). Neutral by
+	// default; a theme can dim the band with --marquee-stopped-opacity.
+	// With the pause button on, hovering the band dims it on pointer devices,
+	// whether or not Pause on Hover is set, so the button is easier to see.
+	@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+
+		&.has-pause-button:not(.block-editor-block-list__layout *):hover .marquee-content {
+			opacity: var(--marquee-stopped-opacity, 1);
+		}
+	}
+
+	&.is-stopped .marquee-content {
+		opacity: var(--marquee-stopped-opacity, 1);
+	}
+
+	// Pause/play button injected by view.js. Neutral, accessible defaults:
+	// always visible, at the end of the band, vertically centred. Everything a
+	// theme may want to change is a custom property, so overrides never need to
+	// out-specify these rules:
+	//   --marquee-toggle-size / -offset-start / -offset-end / -transform
+	//   --marquee-toggle-background / -color / -border / -radius / -focus
+	//   --marquee-toggle-opacity / -pointer-events (e.g. reveal on hover)
+	.marquee-toggle {
+		position: absolute;
+		z-index: 1;
+		inset-block-start: 50%;
+		inset-inline-start: var(--marquee-toggle-offset-start, auto);
+		inset-inline-end: var(--marquee-toggle-offset-end, 0.5rem);
+		transform: var(--marquee-toggle-transform, translateY(-50%));
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		box-sizing: border-box;
+		width: var(--marquee-toggle-size, 2.5rem);
+		height: var(--marquee-toggle-size, 2.5rem);
+		min-width: 24px;
+		min-height: 24px;
+		margin: 0;
+		padding: 0;
+		border: var(--marquee-toggle-border, 0);
+		border-radius: var(--marquee-toggle-radius, 50%);
+		background: var(--marquee-toggle-background, #eee);
+		color: var(--marquee-toggle-color, #000);
+		opacity: var(--marquee-toggle-opacity, 1);
+		pointer-events: var(--marquee-toggle-pointer-events, auto);
+		cursor: pointer;
+		transition: opacity 0.2s ease;
+
+		&:focus-visible {
+			outline: 2px solid var(--marquee-toggle-focus, currentColor);
+			outline-offset: 2px;
+		}
+	}
+
+	.marquee-toggle__icon {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	// With motion reduced nothing moves, so there is nothing to pause.
+	@media (prefers-reduced-motion: reduce) {
+
+		.marquee-toggle {
+			display: none;
+		}
+	}
+
+	.marquee-toggle__icon--play,
+	&.is-paused .marquee-toggle__icon--pause {
+		display: none;
+	}
+
+	&.is-paused .marquee-toggle__icon--play {
+		display: block;
+	}
+
+	.marquee-toggle__label {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
 	}
 }
 

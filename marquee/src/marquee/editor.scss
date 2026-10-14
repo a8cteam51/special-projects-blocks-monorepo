@@ -134,3 +134,13 @@
 .wp-block-a8csp-marquee.align-bottom .block-editor-block-list__layout {
 	align-items: flex-end;
 }
+
+// Pause button preview (the front-end button is added by view.js). Hovering it
+// previews the dimmed state without dimming the band while editing.
+.wp-block-a8csp-marquee .marquee-toggle.is-preview {
+	cursor: default;
+}
+
+.wp-block-a8csp-marquee.has-pause-button:has(.marquee-toggle.is-preview:hover) .marquee-content {
+	opacity: var(--marquee-stopped-opacity, 1);
+}
