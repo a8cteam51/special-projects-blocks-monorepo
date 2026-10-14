@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Image Hotspots
- * Description:       Places hotspot markers on an image from the media library. Each marker is a button at a point on the image, stored as a percentage so it stays put at every width, and it opens a card of any blocks, such as an image, a heading with a link and a button. In the editor, markers are added by clicking the image, moved by dragging or with the arrow keys, and listed by name in List View. On the front end, built with the Interactivity API, cards open on click, tap or hover, close with Escape, an outside click or when focus leaves, and stay inside the image where they fit.
+ * Description:       Places hotspot markers on an image from the media library. Each marker is a button at a point on the image, stored as a percentage so it stays put at every width, and it opens a card of any blocks, such as an image, a heading with a link and a button. In the editor, markers are added by clicking the image, moved by dragging or with the arrow keys, and listed by name in List View. On the front end, built with the Interactivity API, cards open on click, tap or hover, close with Escape, an outside click or when focus leaves, and stay inside the image where they fit, or extend past it into the content around it when allowed.
  * Requires at least: 6.8
  * Requires PHP:      7.4
  * Version:           0.1.0

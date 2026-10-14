@@ -70,7 +70,7 @@ export default function Edit( {
 	clientId,
 	isSelected,
 } ) {
-	const { id, url, alt, sizeSlug, openOn } = attributes;
+	const { id, url, alt, sizeSlug, openOn, cardBounds } = attributes;
 	const [ isAdding, setIsAdding ] = useState( false );
 	const [ showAllCards, setShowAllCards ] = useState( false );
 	const imageRef = useRef();
@@ -97,6 +97,7 @@ export default function Edit( {
 
 	const blockProps = useBlockProps( {
 		className: [
+			`is-card-bounds-${ 'page' === cardBounds ? 'page' : 'image' }`,
 			isAdding && 'is-adding-hotspot',
 			showAllCards && 'is-showing-all-cards',
 		]
@@ -344,6 +345,24 @@ export default function Edit( {
 									'image-hotspots'
 								)
 					}
+				/>
+				<div className="wp-block-a8csp-image-hotspots__inspector-gap" />
+				<ToggleControl
+					__nextHasNoMarginBottom
+					label={ __(
+						'Keep cards inside the image',
+						'image-hotspots'
+					) }
+					checked={ 'page' !== cardBounds }
+					onChange={ ( value ) =>
+						setAttributes( {
+							cardBounds: value ? 'image' : 'page',
+						} )
+					}
+					help={ __(
+						'Off: a card may extend past the image into the content around it, up to the nearest container that clips it, or the page.',
+						'image-hotspots'
+					) }
 				/>
 				<div className="wp-block-a8csp-image-hotspots__inspector-gap" />
 				<ToggleControl

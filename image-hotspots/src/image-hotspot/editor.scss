@@ -64,41 +64,63 @@ $ui-font: -apple-system, system-ui, "Segoe UI", sans-serif;
 	pointer-events: none;
 }
 
-// The position, shown while dragging or nudging.
-.wp-block-a8csp-image-hotspot__position {
+// The tag beside the marker, on the side away from the card (placed by the
+// editor script): the label field, or the position while the marker moves.
+// It sits outside the card so that the card is placed as on the page.
+.wp-block-a8csp-image-hotspot__tag {
 	position: absolute;
-	top: calc(var(--a8csp-image-hotspots-editor-origin-y, 0px) + var(--a8csp-image-hotspots-marker-size, 1.75rem) / 2 + 8px);
-	left: var(--a8csp-image-hotspots-editor-origin-x, 0);
+	top: 0;
+	left: 0;
 	z-index: 4;
-	padding: 2px 6px;
-	border-radius: 2px;
-	background: #1e1e1e;
-	color: #fff;
-	font-family: $ui-font;
-	font-size: 12px;
-	font-variant-numeric: tabular-nums;
-	line-height: 1.5;
-	white-space: nowrap;
-	pointer-events: none;
-	transform: translateX(-50%);
-}
-
-// The label field at the top of the card.
-.wp-block-a8csp-image-hotspots__card-label {
-	margin: 0 0 12px;
-	padding: 8px;
-	border: 1px dashed #949494;
+	display: flex;
+	gap: 6px;
+	align-items: center;
+	box-sizing: border-box;
+	padding: 4px 6px;
+	border: 1px solid #1e1e1e;
 	border-radius: 2px;
 	background: #fff;
+	box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
 	color: #1e1e1e;
 	font-family: $ui-font;
-	font-size: 13px;
+	font-size: 12px;
+	line-height: 1.4;
+	white-space: nowrap;
+	pointer-events: auto;
+
+	label {
+		margin: 0;
+		font-size: 11px;
+		font-weight: 600;
+		text-transform: uppercase;
+	}
+
+	input {
+		box-sizing: border-box;
+		width: 13em;
+		min-height: 28px;
+		margin: 0;
+		padding: 2px 6px;
+		border: 1px solid #949494;
+		border-radius: 2px;
+		background: #fff;
+		color: #1e1e1e;
+		font-family: inherit;
+		font-size: 13px;
+
+		&:focus {
+			border-color: $admin-color;
+			outline: 1px solid $admin-color;
+		}
+	}
+
+	&.is-missing-label input {
+		border-color: #cc1818;
+	}
 }
 
-.wp-block-a8csp-image-hotspot__warning {
-	margin: 6px 0 0;
-	color: #cc1818;
-	font-size: 12px;
+.wp-block-a8csp-image-hotspot__position {
+	font-variant-numeric: tabular-nums;
 }
 
 .wp-block-a8csp-image-hotspots__card-content {
@@ -107,7 +129,10 @@ $ui-font: -apple-system, system-ui, "Segoe UI", sans-serif;
 		margin-block-start: 0;
 	}
 
-	> :last-child {
+	// The last block, whether or not the block appender follows it, so that
+	// the card is as tall as on the page.
+	> :last-child,
+	> :has(+ .block-list-appender:last-child) {
 		margin-block-end: 0;
 	}
 }

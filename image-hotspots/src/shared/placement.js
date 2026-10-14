@@ -2,10 +2,16 @@
  * Card placement, shared by the editor and the front end.
  *
  * A hotspot's card is positioned next to its marker, on the side the editor
- * chose (or the side with the most room for "auto"), and kept inside the
- * image's box. When it cannot fit on any side, it is "stacked": shown below
- * the image at the image's full width, and the image's canvas gains a bottom
- * margin as tall as the card so that it does not cover what follows.
+ * chose (or the side with the most room for "auto"), and kept inside its
+ * bounds: the image's box, or with "page" bounds the nearest ancestor that
+ * clips overflow (else the document), narrowed to the viewport's width.
+ * When it cannot fit on any side, it is "stacked": shown below the image at
+ * the image's full width, and the image's canvas gains a bottom margin as
+ * tall as the card so that it does not cover what follows.
+ *
+ * A placed card carries `data-placement` and, for a callout tail, the
+ * marker's center relative to its top-left corner as
+ * `--a8csp-image-hotspots-card-marker-x` and `-y`.
  *
  * The DOM contract, the same in the editor and on the front end:
  *
@@ -64,6 +70,8 @@ export function roundPercentage( value ) {
  * @param {number} args.cardHeight The card's height.
  * @param {number} args.gap        Space between the marker and the card.
  * @param {string} args.preference One of CARD_POSITIONS.
+ * @param {Object} [args.bounds]   Where the card may go: { left, top, right,
+ *                                 bottom } in the box. Defaults to the box.
  * @return {{placement: string, left: number, top: number}} The side used
  *         (or "stacked") and the card's top-left corner in the box.
  */
@@ -76,6 +84,7 @@ export function computePlacement( {
 	cardHeight,
 	gap,
 	preference,
+	bounds = { left: 0, top: 0, right: boxWidth, bottom: boxHeight },
 } ) {
 	// The marker's box, stretched to include its point (a pin's tip hangs
 	// below the button).
@@ -86,39 +95,39 @@ export function computePlacement( {
 		bottom: Math.max( marker.bottom, point.y ),
 	};
 	const middleY = ( markerBox.top + markerBox.bottom ) / 2;
-	const maxLeft = boxWidth - cardWidth;
-	const maxTop = boxHeight - cardHeight;
+	const maxLeft = bounds.right - cardWidth;
+	const maxTop = bounds.bottom - cardHeight;
 
 	const candidates = {
 		above: {
-			left: clamp( point.x - cardWidth / 2, 0, maxLeft ),
+			left: clamp( point.x - cardWidth / 2, bounds.left, maxLeft ),
 			top: markerBox.top - gap - cardHeight,
 		},
 		below: {
-			left: clamp( point.x - cardWidth / 2, 0, maxLeft ),
+			left: clamp( point.x - cardWidth / 2, bounds.left, maxLeft ),
 			top: markerBox.bottom + gap,
 		},
 		left: {
 			left: markerBox.left - gap - cardWidth,
-			top: clamp( middleY - cardHeight / 2, 0, maxTop ),
+			top: clamp( middleY - cardHeight / 2, bounds.top, maxTop ),
 		},
 		right: {
 			left: markerBox.right + gap,
-			top: clamp( middleY - cardHeight / 2, 0, maxTop ),
+			top: clamp( middleY - cardHeight / 2, bounds.top, maxTop ),
 		},
 	};
 
 	const fits = ( { left, top } ) =>
-		left >= 0 &&
-		top >= 0 &&
-		left + cardWidth <= boxWidth + 0.5 &&
-		top + cardHeight <= boxHeight + 0.5;
+		left >= bounds.left - 0.5 &&
+		top >= bounds.top - 0.5 &&
+		left + cardWidth <= bounds.right + 0.5 &&
+		top + cardHeight <= bounds.bottom + 0.5;
 
 	const room = {
-		above: markerBox.top,
-		below: boxHeight - markerBox.bottom,
-		left: markerBox.left,
-		right: boxWidth - markerBox.right,
+		above: markerBox.top - bounds.top,
+		below: bounds.bottom - markerBox.bottom,
+		left: markerBox.left - bounds.left,
+		right: bounds.right - markerBox.right,
 	};
 	const vertical =
 		room.above > room.below ? [ 'above', 'below' ] : [ 'below', 'above' ];
@@ -236,6 +245,70 @@ export function measureHotspot( item, canvas ) {
 }
 
 /**
+ * Which bounds a card is kept inside: "image" (the image's box) or "page".
+ *
+ * Read from the card's `--a8csp-image-hotspots-card-bounds` custom
+ * property, which the block sets from its "Keep cards inside the image"
+ * setting and a theme may override, at a breakpoint for example.
+ *
+ * @param {HTMLElement} card The card element.
+ * @return {string} "image" or "page".
+ */
+export function getCardBounds( card ) {
+	const view = card.ownerDocument.defaultView || window;
+	const value = view
+		.getComputedStyle( card )
+		.getPropertyValue( '--a8csp-image-hotspots-card-bounds' )
+		.trim();
+	return 'page' === value ? 'page' : 'image';
+}
+
+/**
+ * The client rect a card may use with "page" bounds: the nearest ancestor of
+ * the image that clips its overflow (a cover block, for instance), or else
+ * the whole document, narrowed to the viewport's width.
+ *
+ * @param {HTMLElement} canvas The image's box.
+ * @return {{left: number, top: number, right: number, bottom: number}} The
+ *         bounds, in client coordinates.
+ */
+function getPageRect( canvas ) {
+	const doc = canvas.ownerDocument;
+	const view = doc.defaultView || window;
+	const root = doc.documentElement;
+	let rect = null;
+
+	for (
+		let element = canvas.parentElement;
+		element && element !== root && element !== doc.body;
+		element = element.parentElement
+	) {
+		const { overflowX, overflowY } = view.getComputedStyle( element );
+		if ( 'visible' !== overflowX || 'visible' !== overflowY ) {
+			rect = element.getBoundingClientRect();
+			break;
+		}
+	}
+
+	if ( ! rect ) {
+		const rootRect = root.getBoundingClientRect();
+		rect = {
+			left: rootRect.left,
+			top: rootRect.top,
+			right: rootRect.left + root.scrollWidth,
+			bottom: rootRect.top + root.scrollHeight,
+		};
+	}
+
+	return {
+		left: Math.max( rect.left, 0 ),
+		top: rect.top,
+		right: Math.min( rect.right, root.clientWidth ),
+		bottom: rect.bottom,
+	};
+}
+
+/**
  * Places a visible card: measures the image, the marker and the card, picks
  * the side, and writes `data-placement` and the card's `left` and `top`
  * (relative to the item, the card's containing block).
@@ -259,21 +332,37 @@ export function placeCard( card ) {
 	const view = card.ownerDocument.defaultView || window;
 	const gap =
 		parseFloat( view.getComputedStyle( card ).scrollMarginTop ) || 0;
+	const markerBox = toBox( marker.getBoundingClientRect() );
 
 	const result = computePlacement( {
 		boxWidth: canvas.offsetWidth,
 		boxHeight: canvas.offsetHeight,
 		point,
-		marker: toBox( marker.getBoundingClientRect() ),
+		marker: markerBox,
 		cardWidth: card.offsetWidth,
 		cardHeight: card.offsetHeight,
 		gap,
 		preference: item.dataset.cardPosition || 'auto',
+		bounds:
+			'page' === getCardBounds( card )
+				? toBox( getPageRect( canvas ) )
+				: undefined,
 	} );
 
 	card.dataset.placement = result.placement;
 	card.style.left = `${ Math.round( result.left - origin.x ) }px`;
 	card.style.top = `${ Math.round( result.top - origin.y ) }px`;
+
+	// Where the marker's center is from the card's top-left corner, for a
+	// theme's callout tail on the side `data-placement` names.
+	card.style.setProperty(
+		'--a8csp-image-hotspots-card-marker-x',
+		`${ Math.round( ( markerBox.left + markerBox.right ) / 2 - result.left ) }px`
+	);
+	card.style.setProperty(
+		'--a8csp-image-hotspots-card-marker-y',
+		`${ Math.round( ( markerBox.top + markerBox.bottom ) / 2 - result.top ) }px`
+	);
 
 	reserveSpace(
 		canvas,
@@ -296,6 +385,8 @@ export function resetCard( card ) {
 	card.removeAttribute( 'data-placement' );
 	card.style.removeProperty( 'left' );
 	card.style.removeProperty( 'top' );
+	card.style.removeProperty( '--a8csp-image-hotspots-card-marker-x' );
+	card.style.removeProperty( '--a8csp-image-hotspots-card-marker-y' );
 	const canvas = card.closest( '.wp-block-a8csp-image-hotspots__canvas' );
 	if ( canvas ) {
 		reserveSpace( canvas, card, 0 );

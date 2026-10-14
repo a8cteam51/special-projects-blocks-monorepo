@@ -23,6 +23,19 @@
  * --a8csp-image-hotspots-card-shadow          Card shadow.
  * --a8csp-image-hotspots-gap                  Space between a marker and its
  *                                             card (0.5rem).
+ * --a8csp-image-hotspots-card-bounds          Where cards are kept: `image`
+ *                                             (inside the image) or `page`
+ *                                             (the nearest ancestor that
+ *                                             clips, else the page). Set from
+ *                                             the block's "Keep cards inside
+ *                                             the image" setting; a theme may
+ *                                             set it, at a breakpoint say.
+ *
+ * Set by the script on a placed card, for a callout tail on the side its
+ * `data-placement` names (above, below, left, right or stacked):
+ *
+ * --a8csp-image-hotspots-card-marker-x        The marker's center, from the
+ * --a8csp-image-hotspots-card-marker-y        card's top-left corner (px).
  */
 
 .wp-block-a8csp-image-hotspots {
@@ -30,6 +43,16 @@
 	// it does not collapse into the next block's margin.
 	display: flow-root;
 	box-sizing: border-box;
+}
+
+// The block's "Keep cards inside the image" setting. No specificity, so that
+// a theme's own value wins.
+:where(.wp-block-a8csp-image-hotspots.is-card-bounds-image) {
+	--a8csp-image-hotspots-card-bounds: image;
+}
+
+:where(.wp-block-a8csp-image-hotspots.is-card-bounds-page) {
+	--a8csp-image-hotspots-card-bounds: page;
 }
 
 // The image's box: markers and cards are positioned in it.

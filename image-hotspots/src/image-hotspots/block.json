@@ -6,7 +6,7 @@
 	"title": "Image Hotspots",
 	"category": "media",
 	"icon": "location-alt",
-	"description": "An image with hotspots: markers placed on it, such as places on a map, each a button that opens a card of any blocks. Add hotspots by clicking the image, place them by dragging or with the arrow keys, and find them by label in List View. Cards open on click, tap or hover, one at a time, and close with Escape, a click outside or when focus leaves.",
+	"description": "An image with hotspot markers that open cards of blocks.",
 	"keywords": [ "hotspot", "map", "marker", "pin", "image map", "tooltip" ],
 	"textdomain": "image-hotspots",
 	"attributes": {
@@ -31,7 +31,15 @@
 			"type": "string",
 			"enum": [ "click", "hover" ],
 			"default": "click"
+		},
+		"cardBounds": {
+			"type": "string",
+			"enum": [ "image", "page" ],
+			"default": "image"
 		}
+	},
+	"providesContext": {
+		"a8csp-image-hotspots/cardBounds": "cardBounds"
 	},
 	"allowedBlocks": [ "a8csp/image-hotspot" ],
 	"supports": {

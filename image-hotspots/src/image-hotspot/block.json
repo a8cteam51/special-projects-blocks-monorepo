@@ -6,9 +6,10 @@
 	"title": "Hotspot",
 	"category": "media",
 	"icon": "location",
-	"description": "One hotspot on an Image Hotspots image: a marker button at a point, stored as x and y percentages of the image, and the card of blocks it opens beside it. The label names the marker for screen readers and in List View. Visitors reach hotspots with the Tab key in their List View order.",
+	"description": "One marker on an Image Hotspots image, and the card of blocks it opens.",
 	"textdomain": "image-hotspots",
 	"parent": [ "a8csp/image-hotspots" ],
+	"usesContext": [ "a8csp-image-hotspots/cardBounds" ],
 	"attributes": {
 		"x": {
 			"type": "number",

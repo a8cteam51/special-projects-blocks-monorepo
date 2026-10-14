@@ -22,6 +22,7 @@ $a8csp_ih_url      = isset( $attributes['url'] ) ? (string) $attributes['url'] :
 $a8csp_ih_alt      = isset( $attributes['alt'] ) ? (string) $attributes['alt'] : '';
 $a8csp_ih_size     = ! empty( $attributes['sizeSlug'] ) ? sanitize_key( $attributes['sizeSlug'] ) : 'large';
 $a8csp_ih_open_on  = ( isset( $attributes['openOn'] ) && 'hover' === $attributes['openOn'] ) ? 'hover' : 'click';
+$a8csp_ih_bounds   = ( isset( $attributes['cardBounds'] ) && 'page' === $attributes['cardBounds'] ) ? 'page' : 'image';
 
 /**
  * Filters the attributes of the Image Hotspots image.
@@ -110,7 +111,7 @@ wp_interactivity_state(
 
 $a8csp_ih_wrapper = get_block_wrapper_attributes(
 	array(
-		'class' => 'is-open-on-' . $a8csp_ih_open_on,
+		'class' => 'is-open-on-' . $a8csp_ih_open_on . ' is-card-bounds-' . $a8csp_ih_bounds,
 	)
 );
 
