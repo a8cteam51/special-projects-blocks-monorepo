@@ -117,11 +117,13 @@ export function computePlacement( {
 		},
 	};
 
+	// A pixel of slack: layout widths are fractional (a scrollbar, a
+	// percentage), and a card that misses by less than a pixel still fits.
 	const fits = ( { left, top } ) =>
-		left >= bounds.left - 0.5 &&
-		top >= bounds.top - 0.5 &&
-		left + cardWidth <= bounds.right + 0.5 &&
-		top + cardHeight <= bounds.bottom + 0.5;
+		left >= bounds.left - 1 &&
+		top >= bounds.top - 1 &&
+		left + cardWidth <= bounds.right + 1 &&
+		top + cardHeight <= bounds.bottom + 1;
 
 	const room = {
 		above: markerBox.top - bounds.top,
@@ -264,6 +266,31 @@ export function getCardBounds( card ) {
 }
 
 /**
+ * The space a card keeps from the edges of its bounds, in pixels.
+ *
+ * Read from the card's `--a8csp-image-hotspots-card-inset`: one length for
+ * every side, or two, as in `margin`, for the top and bottom and then the
+ * left and right. The property is registered with `@property` as lengths, so
+ * the computed value is in pixels whatever unit the theme used.
+ *
+ * @param {HTMLElement} card The card element.
+ * @return {{block: number, inline: number}} The insets, 0 or more.
+ */
+export function getCardInset( card ) {
+	const view = card.ownerDocument.defaultView || window;
+	const values = view
+		.getComputedStyle( card )
+		.getPropertyValue( '--a8csp-image-hotspots-card-inset' )
+		.trim()
+		.split( /\s+/ )
+		.map( ( value ) => Math.max( 0, parseFloat( value ) || 0 ) );
+	return {
+		block: values[ 0 ] || 0,
+		inline: ( values.length > 1 ? values[ 1 ] : values[ 0 ] ) || 0,
+	};
+}
+
+/**
  * The client rect a card may use with "page" bounds: the nearest ancestor of
  * the image that clips its overflow (a cover block, for instance), or else
  * the whole document, narrowed to the viewport's width.
@@ -334,6 +361,17 @@ export function placeCard( card ) {
 		parseFloat( view.getComputedStyle( card ).scrollMarginTop ) || 0;
 	const markerBox = toBox( marker.getBoundingClientRect() );
 
+	const outer =
+		'page' === getCardBounds( card )
+			? toBox( getPageRect( canvas ) )
+			: {
+					left: 0,
+					top: 0,
+					right: canvas.offsetWidth,
+					bottom: canvas.offsetHeight,
+				};
+	const inset = getCardInset( card );
+
 	const result = computePlacement( {
 		boxWidth: canvas.offsetWidth,
 		boxHeight: canvas.offsetHeight,
@@ -343,10 +381,12 @@ export function placeCard( card ) {
 		cardHeight: card.offsetHeight,
 		gap,
 		preference: item.dataset.cardPosition || 'auto',
-		bounds:
-			'page' === getCardBounds( card )
-				? toBox( getPageRect( canvas ) )
-				: undefined,
+		bounds: {
+			left: outer.left + inset.inline,
+			top: outer.top + inset.block,
+			right: outer.right - inset.inline,
+			bottom: outer.bottom - inset.block,
+		},
 	} );
 
 	card.dataset.placement = result.placement;

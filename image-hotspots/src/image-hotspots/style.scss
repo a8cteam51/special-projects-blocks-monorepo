@@ -30,6 +30,13 @@
  *                                             the block's "Keep cards inside
  *                                             the image" setting; a theme may
  *                                             set it, at a breakpoint say.
+ * --a8csp-image-hotspots-card-inset           Space a card keeps from the
+ *                                             edges of its bounds (0): one
+ *                                             length, or two as in `margin`
+ *                                             (top and bottom, then left and
+ *                                             right), so that a card keeps
+ *                                             its shadow at the window's
+ *                                             edge, say.
  *
  * Set by the script on a placed card, for a callout tail on the side its
  * `data-placement` names (above, below, left, right or stacked):
@@ -43,6 +50,13 @@
 	// it does not collapse into the next block's margin.
 	display: flow-root;
 	box-sizing: border-box;
+}
+
+// Registered as lengths, so that the script reads them in pixels.
+@property --a8csp-image-hotspots-card-inset {
+	syntax: "<length>+";
+	inherits: true;
+	initial-value: 0;
 }
 
 // The block's "Keep cards inside the image" setting. No specificity, so that

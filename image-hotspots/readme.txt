@@ -47,6 +47,7 @@ The block ships wireframe styling only: a white marker with a dark ring, and a w
 * `--a8csp-image-hotspots-marker-size`, `-marker-background`, `-marker-color`, `-marker-border-width`, `-pin-tip`, `-focus-color`
 * `--a8csp-image-hotspots-card-width`, `-card-padding`, `-card-background`, `-card-color`, `-card-border`, `-card-radius`, `-card-shadow`
 * `--a8csp-image-hotspots-gap` (between a marker and its card)
+* `--a8csp-image-hotspots-card-inset`: the space a card keeps from the edges of its bounds (0). One length for every side, or two as in `margin`: top and bottom, then left and right. For example `0 8px`, so that a card near the browser window's side keeps its shadow.
 * `--a8csp-image-hotspots-card-bounds`: `image` or `page`, where cards are kept. The block sets it from **Keep cards inside the image**; a rule of the theme's, on `.wp-block-a8csp-image-hotspots` or the card, wins over it, so a theme can change it at a breakpoint. For example, `@media (max-width: 600px) { .wp-block-a8csp-image-hotspots { --a8csp-image-hotspots-card-bounds: image; } }`.
 
 For a callout tail, the script sets two properties on a placed card: `--a8csp-image-hotspots-card-marker-x` and `--a8csp-image-hotspots-card-marker-y`, the marker's center measured from the card's top-left corner, in pixels. They follow the card when it is slid sideways to stay in its bounds, so a tail drawn from them still points at the marker. Draw it on the side the card's `data-placement` names. For a card above its marker:

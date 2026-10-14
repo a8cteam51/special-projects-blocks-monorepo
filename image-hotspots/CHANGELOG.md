@@ -13,4 +13,5 @@ All notable changes to this project will be documented in this file.
 -   Filters for the image, the context, the marker's attributes and content, the card's attributes and each hotspot's markup.
 -   Card bounds: **Keep cards inside the image** (the `cardBounds` attribute, `image` or `page`). With `page`, cards may extend past the image up to the nearest ancestor that clips overflow, or the document, within the viewport's width. A theme can override it with `--a8csp-image-hotspots-card-bounds`.
 -   Callout tail offsets: a placed card carries `--a8csp-image-hotspots-card-marker-x` and `-y`, the marker's center from the card's top-left corner.
+-   Card inset: `--a8csp-image-hotspots-card-inset`, the space a card keeps from the edges of its bounds (one length, or two as in `margin`). The fit test allows a pixel of slack, so a card that misses its side by a fraction of a pixel no longer flips.
 -   Editor: the label field sits in a tag beside the marker, outside the card, so that the editor places cards exactly as the page does.
