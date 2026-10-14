@@ -1,0 +1,58 @@
+/**
+ * Image Hotspots: editor-only styles.
+ */
+
+// The editor's block list styles its layouts; keep the markers' layer over
+// the image.
+.wp-block-a8csp-image-hotspots .wp-block-a8csp-image-hotspots__markers {
+	position: absolute;
+	inset: 0;
+	margin: 0;
+}
+
+.wp-block-a8csp-image-hotspots.is-adding-hotspot .wp-block-a8csp-image-hotspots__canvas {
+	cursor: crosshair;
+}
+
+// "Show all cards": every card, not only the selected hotspot's.
+.wp-block-a8csp-image-hotspots.is-showing-all-cards .wp-block-a8csp-image-hotspots__card[hidden] {
+	display: block;
+}
+
+.wp-block-a8csp-image-hotspots__hint {
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	z-index: 3;
+	max-width: calc(100% - 16px);
+	margin: 0;
+	padding: 6px 10px;
+	border-radius: 2px;
+	background: #1e1e1e;
+	color: #fff;
+	font-family: -apple-system, system-ui, "Segoe UI", sans-serif;
+	font-size: 13px;
+	line-height: 1.4;
+	pointer-events: none;
+}
+
+// Sidebar.
+.wp-block-a8csp-image-hotspots__inspector-gap {
+	height: 16px;
+}
+
+.wp-block-a8csp-image-hotspots__inspector-heading {
+	margin: 16px 0 8px;
+	font-size: 11px;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+
+.wp-block-a8csp-image-hotspots__hotspot-list {
+	margin: 0 0 8px 1.5em;
+	padding: 0;
+
+	li {
+		margin: 0 0 4px;
+	}
+}

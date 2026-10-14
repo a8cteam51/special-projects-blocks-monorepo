@@ -1,0 +1,56 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/image-hotspot",
+	"version": "0.1.0",
+	"title": "Hotspot",
+	"category": "media",
+	"icon": "location",
+	"description": "One marker on an Image Hotspots image, and the card of blocks it opens.",
+	"textdomain": "image-hotspots",
+	"parent": [ "a8csp/image-hotspots" ],
+	"usesContext": [ "a8csp-image-hotspots/cardBounds" ],
+	"attributes": {
+		"x": {
+			"type": "number",
+			"role": "content",
+			"default": 50
+		},
+		"y": {
+			"type": "number",
+			"role": "content",
+			"default": 50
+		},
+		"label": {
+			"type": "string",
+			"role": "content",
+			"default": ""
+		},
+		"anchorPoint": {
+			"type": "string",
+			"enum": [ "center", "bottom" ],
+			"default": "center"
+		},
+		"cardPosition": {
+			"type": "string",
+			"enum": [ "auto", "above", "below", "left", "right" ],
+			"default": "auto"
+		}
+	},
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"color": {
+			"background": true,
+			"text": true,
+			"link": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"render": "file:./render.php"
+}
