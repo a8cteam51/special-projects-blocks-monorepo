@@ -1,0 +1,55 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/image-hotspot",
+	"version": "0.1.0",
+	"title": "Hotspot",
+	"category": "media",
+	"icon": "location",
+	"description": "One hotspot on an Image Hotspots image: a marker button at a point, stored as x and y percentages of the image, and the card of blocks it opens beside it. The label names the marker for screen readers and in List View. Visitors reach hotspots with the Tab key in their List View order.",
+	"textdomain": "image-hotspots",
+	"parent": [ "a8csp/image-hotspots" ],
+	"attributes": {
+		"x": {
+			"type": "number",
+			"role": "content",
+			"default": 50
+		},
+		"y": {
+			"type": "number",
+			"role": "content",
+			"default": 50
+		},
+		"label": {
+			"type": "string",
+			"role": "content",
+			"default": ""
+		},
+		"anchorPoint": {
+			"type": "string",
+			"enum": [ "center", "bottom" ],
+			"default": "center"
+		},
+		"cardPosition": {
+			"type": "string",
+			"enum": [ "auto", "above", "below", "left", "right" ],
+			"default": "auto"
+		}
+	},
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"color": {
+			"background": true,
+			"text": true,
+			"link": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"render": "file:./render.php"
+}

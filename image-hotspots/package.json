@@ -1,0 +1,40 @@
+{
+	"name": "image-hotspots",
+	"version": "0.1.0",
+	"description": "Places hotspot markers on an image from the media library. Each marker is a button at a point on the image, stored as a percentage so it stays put at every width, and it opens a card of any blocks, such as an image, a heading with a link and a button. In the editor, markers are added by clicking the image, moved by dragging or with the arrow keys, and listed by name in List View. On the front end, built with the Interactivity API, cards open on click, tap or hover, close with Escape, an outside click or when focus leaves, and stay inside the image where they fit.",
+	"author": "Automattic Special Projects Team",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build --webpack-copy-php --blocks-manifest --experimental-modules",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start --webpack-copy-php --blocks-manifest --experimental-modules"
+	},
+	"dependencies": {
+		"@wordpress/a11y": "^4.57.0",
+		"@wordpress/block-editor": "^18.1.0",
+		"@wordpress/blocks": "^16.2.0",
+		"@wordpress/components": "^42.0.0",
+		"@wordpress/compose": "^8.10.0",
+		"@wordpress/core-data": "^8.2.0",
+		"@wordpress/data": "^10.57.0",
+		"@wordpress/element": "^9.0.0",
+		"@wordpress/i18n": "^6.30.0",
+		"@wordpress/icons": "^18.0.0",
+		"@wordpress/interactivity": "^7.0.0",
+		"@wordpress/keycodes": "^4.57.0"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^36.1.0"
+	},
+	"files": [
+		"build/",
+		"image-hotspots.php",
+		"readme.txt",
+		"CHANGELOG.md"
+	]
+}

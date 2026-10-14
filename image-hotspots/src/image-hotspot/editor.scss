@@ -1,0 +1,118 @@
+/**
+ * Hotspot: editor-only styles.
+ */
+
+$admin-color: var(--wp-admin-theme-color, #3858e9);
+$ui-font: -apple-system, system-ui, "Segoe UI", sans-serif;
+
+// The editor's block wrapper starts at the hotspot's point, whatever the
+// block list's own rules say. The editor script then widens it around the
+// marker and the visible card (so the block toolbar does not cover the
+// card), and hands the point's offset to the marker.
+.wp-block-a8csp-image-hotspots .wp-block-a8csp-image-hotspots__markers > .wp-block-a8csp-image-hotspot {
+	position: absolute;
+	max-width: none;
+	margin: 0;
+	// Its box may be wider than what it shows: let clicks reach the image.
+	pointer-events: none;
+
+	> .wp-block-a8csp-image-hotspots__marker {
+		top: var(--a8csp-image-hotspots-editor-origin-y, 0);
+		left: var(--a8csp-image-hotspots-editor-origin-x, 0);
+		cursor: grab;
+		pointer-events: auto;
+		touch-action: none;
+		user-select: none;
+	}
+
+	> .wp-block-a8csp-image-hotspots__card {
+		pointer-events: auto;
+	}
+}
+
+.wp-block-a8csp-image-hotspots .wp-block-a8csp-image-hotspots__markers > .wp-block-a8csp-image-hotspot.is-moving > .wp-block-a8csp-image-hotspots__marker {
+	cursor: grabbing;
+}
+
+// The selected hotspot (or the one whose card is being edited).
+.wp-block-a8csp-image-hotspot.is-card-visible > .wp-block-a8csp-image-hotspots__marker {
+	outline: 2px solid $admin-color;
+	outline-offset: 3px;
+}
+
+.wp-block-a8csp-image-hotspot.is-card-visible {
+	z-index: 3;
+}
+
+// The hotspot's number, in the editor only: its keyboard order.
+.wp-block-a8csp-image-hotspot__number {
+	position: absolute;
+	top: -0.6em;
+	right: -0.75em;
+	box-sizing: border-box;
+	min-width: 1.6em;
+	height: 1.6em;
+	padding: 0 0.35em;
+	border-radius: 0.8em;
+	background: $admin-color;
+	color: #fff;
+	font-family: $ui-font;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1.6;
+	text-align: center;
+	pointer-events: none;
+}
+
+// The position, shown while dragging or nudging.
+.wp-block-a8csp-image-hotspot__position {
+	position: absolute;
+	top: calc(var(--a8csp-image-hotspots-editor-origin-y, 0px) + var(--a8csp-image-hotspots-marker-size, 1.75rem) / 2 + 8px);
+	left: var(--a8csp-image-hotspots-editor-origin-x, 0);
+	z-index: 4;
+	padding: 2px 6px;
+	border-radius: 2px;
+	background: #1e1e1e;
+	color: #fff;
+	font-family: $ui-font;
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+	line-height: 1.5;
+	white-space: nowrap;
+	pointer-events: none;
+	transform: translateX(-50%);
+}
+
+// The label field at the top of the card.
+.wp-block-a8csp-image-hotspots__card-label {
+	margin: 0 0 12px;
+	padding: 8px;
+	border: 1px dashed #949494;
+	border-radius: 2px;
+	background: #fff;
+	color: #1e1e1e;
+	font-family: $ui-font;
+	font-size: 13px;
+}
+
+.wp-block-a8csp-image-hotspot__warning {
+	margin: 6px 0 0;
+	color: #cc1818;
+	font-size: 12px;
+}
+
+.wp-block-a8csp-image-hotspots__card-content {
+
+	> :first-child {
+		margin-block-start: 0;
+	}
+
+	> :last-child {
+		margin-block-end: 0;
+	}
+}
+
+// Sidebar.
+.wp-block-a8csp-image-hotspot__inspector-gap {
+	height: 16px;
+}

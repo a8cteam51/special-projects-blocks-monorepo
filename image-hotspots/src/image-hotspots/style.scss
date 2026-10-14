@@ -1,0 +1,227 @@
+/**
+ * Image Hotspots: wireframe styles for the front end and the editor.
+ *
+ * Only what the block needs to work and to read on any image. Restyle it
+ * from the theme with these custom properties, set on the block or on any
+ * element above it, or with the class names below.
+ *
+ * --a8csp-image-hotspots-marker-size          Marker diameter (1.75rem).
+ * --a8csp-image-hotspots-marker-background    Marker fill (#fff).
+ * --a8csp-image-hotspots-marker-color         Marker ring and dot (#1e1e1e).
+ * --a8csp-image-hotspots-marker-border-width  Marker ring width (2px).
+ * --a8csp-image-hotspots-pin-tip              Pin tip length, for markers
+ *                                             whose bottom sits on the point
+ *                                             (0.5rem).
+ * --a8csp-image-hotspots-focus-color          Focus outline (marker color).
+ * --a8csp-image-hotspots-card-width           Card width (18rem), never wider
+ *                                             than the image.
+ * --a8csp-image-hotspots-card-padding         Card padding (1rem).
+ * --a8csp-image-hotspots-card-background      Card background (#fff).
+ * --a8csp-image-hotspots-card-color           Card text (#1e1e1e).
+ * --a8csp-image-hotspots-card-border          Card border (1px solid).
+ * --a8csp-image-hotspots-card-radius          Card corner radius (0).
+ * --a8csp-image-hotspots-card-shadow          Card shadow.
+ * --a8csp-image-hotspots-gap                  Space between a marker and its
+ *                                             card (0.5rem).
+ */
+
+.wp-block-a8csp-image-hotspots {
+	// Contain the room reserved below the image for a stacked card, so that
+	// it does not collapse into the next block's margin.
+	display: flow-root;
+	box-sizing: border-box;
+}
+
+// The image's box: markers and cards are positioned in it.
+.wp-block-a8csp-image-hotspots__canvas {
+	position: relative;
+	container-type: inline-size;
+	// Room for a card shown below the image (set by the script).
+	margin-block-end: var(--a8csp-image-hotspots-stack-space, 0);
+}
+
+.wp-block-a8csp-image-hotspots__image {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+}
+
+.wp-block-a8csp-image-hotspots__markers {
+	position: absolute;
+	inset: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	// Let presses on the image through; markers and cards take them back.
+	pointer-events: none;
+}
+
+// One hotspot: a point with no size, at x% and y% of the image.
+.wp-block-a8csp-image-hotspot {
+	position: absolute;
+	top: var(--a8csp-image-hotspots-y, 50%);
+	left: var(--a8csp-image-hotspots-x, 50%);
+	z-index: 1;
+	width: 0;
+	height: 0;
+	margin: 0;
+	padding: 0;
+
+	&.is-open {
+		z-index: 2;
+	}
+
+	&::marker {
+		content: none;
+	}
+}
+
+.wp-block-a8csp-image-hotspots__marker {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: var(--a8csp-image-hotspots-marker-size, 1.75rem);
+	min-width: 0;
+	height: var(--a8csp-image-hotspots-marker-size, 1.75rem);
+	min-height: 0;
+	margin: 0;
+	padding: 0;
+	border: var(--a8csp-image-hotspots-marker-border-width, 2px) solid var(--a8csp-image-hotspots-marker-color, #1e1e1e);
+	border-radius: 50%;
+	background: var(--a8csp-image-hotspots-marker-background, #fff);
+	box-shadow: 0 0 0 2px var(--a8csp-image-hotspots-marker-background, #fff);
+	color: var(--a8csp-image-hotspots-marker-color, #1e1e1e);
+	font: inherit;
+	line-height: 1;
+	text-decoration: none;
+	cursor: pointer;
+	pointer-events: auto;
+	transform: translate(-50%, -50%);
+
+	&:focus-visible {
+		outline: 2px solid var(--a8csp-image-hotspots-focus-color, var(--a8csp-image-hotspots-marker-color, #1e1e1e));
+		outline-offset: 3px;
+	}
+
+	&[aria-expanded="true"] {
+		background: var(--a8csp-image-hotspots-marker-color, #1e1e1e);
+		color: var(--a8csp-image-hotspots-marker-background, #fff);
+	}
+}
+
+// A pin: the marker's bottom tip sits on the point.
+.wp-block-a8csp-image-hotspot.is-anchor-bottom > .wp-block-a8csp-image-hotspots__marker {
+	transform: translate(-50%, calc(-100% - var(--a8csp-image-hotspots-pin-tip, 0.5rem)));
+
+	&::after {
+		content: "";
+		position: absolute;
+		top: calc(100% + var(--a8csp-image-hotspots-marker-border-width, 2px));
+		left: 50%;
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: var(--a8csp-image-hotspots-pin-tip, 0.5rem) calc(var(--a8csp-image-hotspots-pin-tip, 0.5rem) * 0.6) 0;
+		border-color: var(--a8csp-image-hotspots-marker-color, #1e1e1e) transparent transparent;
+		transform: translateX(-50%);
+	}
+}
+
+.wp-block-a8csp-image-hotspots__marker-icon {
+	display: block;
+	width: 36%;
+	height: 36%;
+	border-radius: 50%;
+	background: currentcolor;
+}
+
+// The label names the button for assistive technology; a theme may show it.
+.wp-block-a8csp-image-hotspots__marker-label {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+.wp-block-a8csp-image-hotspots__card {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	box-sizing: border-box;
+	width: min(var(--a8csp-image-hotspots-card-width, 18rem), 100cqw);
+	// The script reads the gap from here, resolved to pixels.
+	scroll-margin: var(--a8csp-image-hotspots-gap, 0.5rem);
+	padding: var(--a8csp-image-hotspots-card-padding, 1rem);
+	border: var(--a8csp-image-hotspots-card-border, 1px solid rgb(0 0 0 / 20%));
+	border-radius: var(--a8csp-image-hotspots-card-radius, 0);
+	background: var(--a8csp-image-hotspots-card-background, #fff);
+	box-shadow: var(--a8csp-image-hotspots-card-shadow, 0 2px 8px rgb(0 0 0 / 20%));
+	color: var(--a8csp-image-hotspots-card-color, #1e1e1e);
+	text-align: start;
+	pointer-events: auto;
+
+	&[hidden] {
+		display: none;
+	}
+
+	// Not yet placed next to its marker.
+	&:not([data-placement]) {
+		visibility: hidden;
+	}
+
+	// Below the image, across its width.
+	&[data-placement="stacked"] {
+		width: 100cqw;
+	}
+
+	> :first-child {
+		margin-block-start: 0;
+	}
+
+	> :last-child {
+		margin-block-end: 0;
+	}
+}
+
+// The Hotspot block's color and typography settings are for its card.
+.wp-block-a8csp-image-hotspot.has-background > .wp-block-a8csp-image-hotspots__card {
+	background: inherit;
+}
+
+.wp-block-a8csp-image-hotspot.has-text-color > .wp-block-a8csp-image-hotspots__card {
+	color: inherit;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+	.wp-block-a8csp-image-hotspot.is-open > .wp-block-a8csp-image-hotspots__card {
+		animation: a8csp-image-hotspots-card-in 0.15s ease-out;
+	}
+
+	.wp-block-a8csp-image-hotspots__marker {
+		transition: background-color 0.15s ease-out, color 0.15s ease-out;
+	}
+}
+
+@keyframes a8csp-image-hotspots-card-in {
+
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}

@@ -1,0 +1,76 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a8csp/image-hotspots",
+	"version": "0.1.0",
+	"title": "Image Hotspots",
+	"category": "media",
+	"icon": "location-alt",
+	"description": "An image with hotspots: markers placed on it, such as places on a map, each a button that opens a card of any blocks. Add hotspots by clicking the image, place them by dragging or with the arrow keys, and find them by label in List View. Cards open on click, tap or hover, one at a time, and close with Escape, a click outside or when focus leaves.",
+	"keywords": [ "hotspot", "map", "marker", "pin", "image map", "tooltip" ],
+	"textdomain": "image-hotspots",
+	"attributes": {
+		"id": {
+			"type": "number",
+			"role": "content"
+		},
+		"url": {
+			"type": "string",
+			"role": "content"
+		},
+		"alt": {
+			"type": "string",
+			"role": "content",
+			"default": ""
+		},
+		"sizeSlug": {
+			"type": "string",
+			"default": "large"
+		},
+		"openOn": {
+			"type": "string",
+			"enum": [ "click", "hover" ],
+			"default": "click"
+		}
+	},
+	"allowedBlocks": [ "a8csp/image-hotspot" ],
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [ "wide", "full" ],
+		"spacing": {
+			"margin": true
+		},
+		"interactivity": true
+	},
+	"example": {
+		"attributes": {
+			"url": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 360'%3E%3Crect width='600' height='360' fill='%23e0e0e0'/%3E%3Cpath d='M0 300 L150 170 L260 260 L380 120 L600 300 L600 360 L0 360 Z' fill='%23bdbdbd'/%3E%3Ccircle cx='470' cy='80' r='34' fill='%23cfcfcf'/%3E%3C/svg%3E",
+			"alt": ""
+		},
+		"innerBlocks": [
+			{
+				"name": "a8csp/image-hotspot",
+				"attributes": {
+					"x": 25,
+					"y": 47,
+					"label": "First hotspot"
+				}
+			},
+			{
+				"name": "a8csp/image-hotspot",
+				"attributes": {
+					"x": 63,
+					"y": 33,
+					"label": "Second hotspot",
+					"anchorPoint": "bottom"
+				}
+			}
+		]
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"viewScriptModule": "file:./view.js"
+}
