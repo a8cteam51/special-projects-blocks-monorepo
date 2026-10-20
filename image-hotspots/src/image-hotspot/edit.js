@@ -1,0 +1,748 @@
+/**
+ * WordPress dependencies
+ */
+import { speak } from '@wordpress/a11y';
+import {
+	InspectorControls,
+	store as blockEditorStore,
+	useBlockProps,
+	useInnerBlocksProps,
+} from '@wordpress/block-editor';
+import {
+	PanelBody,
+	RadioControl,
+	RangeControl,
+	SelectControl,
+	TextControl,
+	VisuallyHidden,
+} from '@wordpress/components';
+import {
+	useDebounce,
+	useInstanceId,
+	useMergeRefs,
+	useRefEffect,
+} from '@wordpress/compose';
+import { useDispatch, useSelect } from '@wordpress/data';
+import {
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from '@wordpress/element';
+import { __, sprintf } from '@wordpress/i18n';
+
+/**
+ * Internal dependencies
+ */
+import {
+	measureHotspot,
+	placeCard,
+	resetCard,
+	roundPercentage,
+} from '../shared/placement';
+import './editor.scss';
+
+const ARROW_STEPS = {
+	ArrowLeft: [ -1, 0 ],
+	ArrowRight: [ 1, 0 ],
+	ArrowUp: [ 0, -1 ],
+	ArrowDown: [ 0, 1 ],
+};
+
+/**
+ * The side of the marker the editor's tag (the label field, or the position
+ * while moving) goes on first: away from the card. It moves to another side
+ * when it would leave the image or cover the card.
+ */
+const TAG_SIDE = {
+	above: 'below',
+	below: 'above',
+	left: 'right',
+	right: 'left',
+};
+
+/**
+ * Places a hotspot's card the way the front end does, puts the editor's tag
+ * beside the marker, away from the card, then fits the block's wrapper
+ * around the marker, the tag and the visible card. The editor's block
+ * toolbar sits above the wrapper, so it then covers neither.
+ *
+ * The card holds only what the page shows, so that it is placed exactly as
+ * on the page; the label field lives in the tag.
+ *
+ * The marker stays on its point: the wrapper's offset from the point is
+ * handed to it as `--a8csp-image-hotspots-editor-origin-*`.
+ *
+ * @param {HTMLElement} card The hotspot's card element.
+ */
+function layoutHotspot( card ) {
+	const item = card?.parentElement;
+	const marker = item?.querySelector(
+		':scope > .wp-block-a8csp-image-hotspots__marker'
+	);
+	const canvas = item?.closest( '.wp-block-a8csp-image-hotspots__canvas' );
+	if ( ! item || ! marker || ! canvas ) {
+		return;
+	}
+
+	const isVisible = !! card.offsetParent;
+	if ( isVisible ) {
+		placeCard( card );
+	} else {
+		resetCard( card );
+	}
+
+	const { toBox, point } = measureHotspot( item, canvas );
+	const markerBox = toBox( marker.getBoundingClientRect() );
+	const cardBox = isVisible ? toBox( card.getBoundingClientRect() ) : null;
+
+	const tag = item.querySelector(
+		':scope > .wp-block-a8csp-image-hotspot__tag'
+	);
+	let tagBox = null;
+	if ( tag ) {
+		const placement = isVisible ? card.dataset.placement : '';
+		let preferred = TAG_SIDE[ placement ];
+		if ( ! preferred ) {
+			preferred = point.y > canvas.offsetHeight / 2 ? 'above' : 'below';
+		}
+		const width = tag.offsetWidth;
+		const height = tag.offsetHeight;
+		const boxWidth = canvas.offsetWidth;
+		const boxHeight = canvas.offsetHeight;
+		const space = 6;
+		const middleX = ( markerBox.left + markerBox.right ) / 2;
+		const middleY = ( markerBox.top + markerBox.bottom ) / 2;
+		const clampTo = ( value, max ) => Math.max( 0, Math.min( value, max ) );
+		// Each side's top-left corner, slid along the side to stay in the image.
+		const corners = {
+			above: [
+				clampTo( middleX - width / 2, boxWidth - width ),
+				markerBox.top - space - height,
+			],
+			below: [
+				clampTo( middleX - width / 2, boxWidth - width ),
+				Math.max( markerBox.bottom, point.y ) + space,
+			],
+			left: [
+				markerBox.left - space - width,
+				clampTo( middleY - height / 2, boxHeight - height ),
+			],
+			right: [
+				markerBox.right + space,
+				clampTo( middleY - height / 2, boxHeight - height ),
+			],
+		};
+		const toRect = ( [ left, top ] ) => ( {
+			left,
+			top,
+			right: left + width,
+			bottom: top + height,
+		} );
+		const inImage = ( rect ) =>
+			rect.left >= -0.5 &&
+			rect.top >= -0.5 &&
+			rect.right <= boxWidth + 0.5 &&
+			rect.bottom <= boxHeight + 0.5;
+		const overlapsCard = ( rect ) =>
+			!! cardBox &&
+			rect.left < cardBox.right &&
+			rect.right > cardBox.left &&
+			rect.top < cardBox.bottom &&
+			rect.bottom > cardBox.top;
+		const side =
+			[ preferred, 'below', 'above', 'right', 'left' ].find( ( name ) => {
+				const rect = toRect( corners[ name ] );
+				return inImage( rect ) && ! overlapsCard( rect );
+			} ) || preferred;
+		tag.dataset.side = side;
+		tagBox = toRect( corners[ side ] );
+	}
+
+	const boxes = [
+		markerBox,
+		{ left: point.x, top: point.y, right: point.x, bottom: point.y },
+		...( cardBox ? [ cardBox ] : [] ),
+		...( tagBox ? [ tagBox ] : [] ),
+	];
+	const union = {
+		left: Math.round( Math.min( ...boxes.map( ( box ) => box.left ) ) ),
+		top: Math.round( Math.min( ...boxes.map( ( box ) => box.top ) ) ),
+		right: Math.round( Math.max( ...boxes.map( ( box ) => box.right ) ) ),
+		bottom: Math.round( Math.max( ...boxes.map( ( box ) => box.bottom ) ) ),
+	};
+	const originX = Math.round( point.x ) - union.left;
+	const originY = Math.round( point.y ) - union.top;
+
+	item.style.marginLeft = `${ -originX }px`;
+	item.style.marginTop = `${ -originY }px`;
+	item.style.width = `${ union.right - union.left }px`;
+	item.style.height = `${ union.bottom - union.top }px`;
+	item.style.setProperty(
+		'--a8csp-image-hotspots-editor-origin-x',
+		`${ originX }px`
+	);
+	item.style.setProperty(
+		'--a8csp-image-hotspots-editor-origin-y',
+		`${ originY }px`
+	);
+	if ( cardBox ) {
+		card.style.left = `${ Math.round( cardBox.left ) - union.left }px`;
+		card.style.top = `${ Math.round( cardBox.top ) - union.top }px`;
+	}
+	if ( tagBox ) {
+		tag.style.left = `${ Math.round( tagBox.left ) - union.left }px`;
+		tag.style.top = `${ Math.round( tagBox.top ) - union.top }px`;
+	}
+}
+
+const formatPosition = ( { x, y } ) =>
+	sprintf(
+		/* translators: 1: Percent across the image. 2: Percent down the image. */
+		__( 'X %1$s%%, Y %2$s%%', 'image-hotspots' ),
+		Number( x ).toFixed( 1 ),
+		Number( y ).toFixed( 1 )
+	);
+
+/**
+ * The editor for one Hotspot: its marker, which can be dragged and nudged,
+ * and its card, shown in place while the hotspot (or a block in its card)
+ * is selected.
+ *
+ * @param {Object}                       props
+ * @param {Object}                       props.attributes    Block attributes.
+ * @param {(attributes: Object) => void} props.setAttributes Updates attributes.
+ * @param {string}                       props.clientId      The block's client ID.
+ * @param {boolean}                      props.isSelected    Whether the block is selected.
+ * @return {Element} The editor.
+ */
+export default function Edit( {
+	attributes,
+	setAttributes,
+	clientId,
+	isSelected,
+} ) {
+	const { x, y, label, anchorPoint, cardPosition } = attributes;
+	const [ drag, setDrag ] = useState( null );
+	const [ isNudging, setIsNudging ] = useState( false );
+	const markerRef = useRef();
+	const cardRef = useRef();
+	const dragRef = useRef( null );
+	const nudgeTimer = useRef();
+	const latest = useRef( {} );
+	latest.current = { x, y, setAttributes };
+	const instructionsId = useInstanceId(
+		Edit,
+		'a8csp-image-hotspot-instructions'
+	);
+	const labelInputId = useInstanceId( Edit, 'a8csp-image-hotspot-label' );
+
+	const { index, count, hasSelectedInner } = useSelect(
+		( select ) => {
+			const {
+				getBlockIndex,
+				getBlockCount,
+				getBlockRootClientId,
+				hasSelectedInnerBlock,
+			} = select( blockEditorStore );
+			return {
+				index: getBlockIndex( clientId ),
+				count: getBlockCount( getBlockRootClientId( clientId ) ),
+				hasSelectedInner: hasSelectedInnerBlock( clientId, true ),
+			};
+		},
+		[ clientId ]
+	);
+	const { selectBlock, __unstableMarkNextChangeAsNotPersistent } =
+		useDispatch( blockEditorStore );
+
+	const number = index + 1;
+	const isCardVisible = isSelected || hasSelectedInner;
+	const position = drag || { x, y };
+
+	const announce = useDebounce(
+		( next ) => speak( formatPosition( next ) ),
+		500
+	);
+	useEffect( () => () => announce.cancel(), [ announce ] );
+	useEffect( () => () => clearTimeout( nudgeTimer.current ), [] );
+
+	// Arrow keys move the marker while the marker button has focus. Native
+	// listener: it runs before the editor's own arrow-key navigation.
+	const markerKeyboardRef = useRefEffect( ( node ) => {
+		const onKeyDown = ( event ) => {
+			if ( 'Escape' === event.key && dragRef.current ) {
+				event.preventDefault();
+				event.stopPropagation();
+				dragRef.current = null;
+				setDrag( null );
+				return;
+			}
+			const direction = ARROW_STEPS[ event.key ];
+			if (
+				! direction ||
+				event.altKey ||
+				event.metaKey ||
+				event.ctrlKey ||
+				dragRef.current
+			) {
+				return;
+			}
+			event.preventDefault();
+			event.stopPropagation();
+			const step = event.shiftKey ? 5 : 0.5;
+			const current = latest.current;
+			const next = {
+				x: roundPercentage( current.x + direction[ 0 ] * step ),
+				y: roundPercentage( current.y + direction[ 1 ] * step ),
+			};
+			// Repeated keys may come before the next render.
+			current.x = next.x;
+			current.y = next.y;
+			current.setAttributes( next );
+			announce( next );
+			setIsNudging( true );
+			clearTimeout( nudgeTimer.current );
+			nudgeTimer.current = setTimeout(
+				() => setIsNudging( false ),
+				1200
+			);
+		};
+		node.addEventListener( 'keydown', onKeyDown );
+		return () => node.removeEventListener( 'keydown', onKeyDown );
+	}, [] );
+
+	const getCanvas = () =>
+		markerRef.current?.closest( '.wp-block-a8csp-image-hotspots__canvas' );
+
+	const onPointerDown = ( event ) => {
+		if ( 0 !== event.button || ! event.isPrimary ) {
+			return;
+		}
+		const canvas = getCanvas();
+		if ( ! canvas ) {
+			return;
+		}
+		const rect = canvas.getBoundingClientRect();
+		dragRef.current = {
+			pointerId: event.pointerId,
+			startX: event.clientX,
+			startY: event.clientY,
+			// Keep the pointer where it grabbed the marker, so it does not jump.
+			offsetX: event.clientX - ( rect.left + ( x / 100 ) * rect.width ),
+			offsetY: event.clientY - ( rect.top + ( y / 100 ) * rect.height ),
+			moved: false,
+			position: null,
+		};
+		try {
+			// Keep receiving moves when the pointer leaves the marker.
+			event.currentTarget.setPointerCapture( event.pointerId );
+		} catch {
+			// A pointer that is no longer active cannot be captured.
+		}
+		// No text selection, native image drag or editor drag-selection.
+		event.preventDefault();
+		event.currentTarget.focus( { preventScroll: true } );
+		if ( ! isSelected ) {
+			// Select without moving focus to the label field.
+			selectBlock( clientId, null );
+		}
+	};
+
+	const onPointerMove = ( event ) => {
+		const current = dragRef.current;
+		if ( ! current || current.pointerId !== event.pointerId ) {
+			return;
+		}
+		if (
+			! current.moved &&
+			Math.hypot(
+				event.clientX - current.startX,
+				event.clientY - current.startY
+			) < 4
+		) {
+			return;
+		}
+		const canvas = getCanvas();
+		const rect = canvas?.getBoundingClientRect();
+		if ( ! rect?.width || ! rect?.height ) {
+			return;
+		}
+		current.moved = true;
+		current.position = {
+			x: roundPercentage(
+				( ( event.clientX - current.offsetX - rect.left ) /
+					rect.width ) *
+					100
+			),
+			y: roundPercentage(
+				( ( event.clientY - current.offsetY - rect.top ) /
+					rect.height ) *
+					100
+			),
+		};
+		setDrag( current.position );
+	};
+
+	const endDrag = ( event, commit ) => {
+		const current = dragRef.current;
+		if ( ! current || current.pointerId !== event.pointerId ) {
+			return;
+		}
+		dragRef.current = null;
+		if ( event.currentTarget.hasPointerCapture?.( event.pointerId ) ) {
+			event.currentTarget.releasePointerCapture( event.pointerId );
+		}
+		if ( commit && current.moved && current.position ) {
+			setAttributes( current.position );
+			speak(
+				sprintf(
+					/* translators: %s: The new position, such as "X 12.5%, Y 40.0%". */
+					__( 'Hotspot moved to %s.', 'image-hotspots' ),
+					formatPosition( current.position )
+				)
+			);
+		}
+		setDrag( null );
+	};
+
+	// Place the card next to the marker, the way the front end will, after
+	// every render: the tag's content and size change with dragging, nudging
+	// and typing. The container's "Keep cards inside the image" setting
+	// arrives as block context, which re-renders this block when it changes.
+	useLayoutEffect( () => {
+		layoutHotspot( cardRef.current );
+	} );
+
+	// Again when the card or the image changes size.
+	useEffect( () => {
+		const card = cardRef.current;
+		const view = card?.ownerDocument?.defaultView;
+		if ( ! card || ! view?.ResizeObserver ) {
+			return undefined;
+		}
+		let frame = 0;
+		const observer = new view.ResizeObserver( () => {
+			view.cancelAnimationFrame( frame );
+			frame = view.requestAnimationFrame( () => layoutHotspot( card ) );
+		} );
+		observer.observe( card );
+		const marker = card.parentElement?.querySelector(
+			':scope > .wp-block-a8csp-image-hotspots__marker'
+		);
+		if ( marker ) {
+			observer.observe( marker );
+		}
+		const canvas = card.closest( '.wp-block-a8csp-image-hotspots__canvas' );
+		if ( canvas ) {
+			observer.observe( canvas );
+		}
+		return () => {
+			view.cancelAnimationFrame( frame );
+			observer.disconnect();
+			resetCard( card );
+		};
+	}, [] );
+
+	// A new hotspot needs a label: one inserted without one (from the
+	// block toolbar's sibling inserter, say) gets "Hotspot N" to edit. Only
+	// for a hotspot that is selected as it mounts, which is how the editor
+	// inserts blocks, so that opening saved content never changes it.
+	useEffect( () => {
+		if ( isSelected && ! label.trim() ) {
+			__unstableMarkNextChangeAsNotPersistent();
+			setAttributes( {
+				label: sprintf(
+					/* translators: %d: The hotspot's number. */
+					__( 'Hotspot %d', 'image-hotspots' ),
+					number
+				),
+			} );
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [] );
+
+	// A hotspot added while selected (by a click on the image, or from the
+	// sidebar) gets its label field focused and selected, ready to type.
+	useEffect( () => {
+		if ( ! isSelected ) {
+			return undefined;
+		}
+		const card = cardRef.current;
+		const view = card?.ownerDocument?.defaultView;
+		if ( ! view ) {
+			return undefined;
+		}
+		const frame = view.requestAnimationFrame( () => {
+			const input = card.parentElement?.querySelector(
+				'.wp-block-a8csp-image-hotspot__tag input'
+			);
+			if ( input ) {
+				input.focus( { preventScroll: true } );
+				input.select();
+			}
+		} );
+		return () => view.cancelAnimationFrame( frame );
+		// Only on mount: later selections keep focus where the editor puts it.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [] );
+
+	const blockProps = useBlockProps( {
+		className: [
+			`is-anchor-${ 'bottom' === anchorPoint ? 'bottom' : 'center' }`,
+			isCardVisible && 'is-card-visible',
+			drag && 'is-moving',
+		]
+			.filter( Boolean )
+			.join( ' ' ),
+		style: {
+			'--a8csp-image-hotspots-x': `${ position.x }%`,
+			'--a8csp-image-hotspots-y': `${ position.y }%`,
+		},
+		'data-card-position': cardPosition,
+	} );
+
+	const innerBlocksProps = useInnerBlocksProps( {
+		className: 'wp-block-a8csp-image-hotspots__card-content',
+	} );
+
+	const markerRefs = useMergeRefs( [ markerRef, markerKeyboardRef ] );
+
+	const markerName = sprintf(
+		/* translators: 1: The hotspot's number. 2: Its label. */
+		__( 'Hotspot %1$d: %2$s', 'image-hotspots' ),
+		number,
+		label || __( 'no label', 'image-hotspots' )
+	);
+
+	const setPosition = ( axis, value ) => {
+		const parsed = parseFloat( value );
+		if ( Number.isFinite( parsed ) ) {
+			setAttributes( { [ axis ]: roundPercentage( parsed ) } );
+		}
+	};
+
+	return (
+		<>
+			<InspectorControls>
+				<PanelBody
+					title={ sprintf(
+						/* translators: %d: The hotspot's number. */
+						__( 'Hotspot %d', 'image-hotspots' ),
+						number
+					) }
+				>
+					<TextControl
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+						label={ __( 'Label', 'image-hotspots' ) }
+						value={ label }
+						onChange={ ( value ) =>
+							setAttributes( { label: value } )
+						}
+						help={ __(
+							'Required. Screen readers announce the marker by this name, and List View lists it by this name. Keep it short and specific, such as a place.',
+							'image-hotspots'
+						) }
+					/>
+					<div className="wp-block-a8csp-image-hotspot__inspector-gap" />
+					<RangeControl
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+						label={ __(
+							'X: across, from the left (%)',
+							'image-hotspots'
+						) }
+						value={ x }
+						min={ 0 }
+						max={ 100 }
+						step={ 0.1 }
+						onChange={ ( value ) => setPosition( 'x', value ) }
+					/>
+					<div className="wp-block-a8csp-image-hotspot__inspector-gap" />
+					<RangeControl
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+						label={ __(
+							'Y: down, from the top (%)',
+							'image-hotspots'
+						) }
+						value={ y }
+						min={ 0 }
+						max={ 100 }
+						step={ 0.1 }
+						onChange={ ( value ) => setPosition( 'y', value ) }
+					/>
+					<p className="components-base-control__help">
+						{ __(
+							'Where the marker’s point is on the image, to 0.1%. You can also drag the marker, or focus it and use the arrow keys (0.5% a step, 5% with Shift).',
+							'image-hotspots'
+						) }
+					</p>
+					<RadioControl
+						label={ __( 'Marker point', 'image-hotspots' ) }
+						selected={ anchorPoint }
+						options={ [
+							{
+								value: 'center',
+								label: __( 'Center', 'image-hotspots' ),
+							},
+							{
+								value: 'bottom',
+								label: __(
+									'Bottom tip (pin)',
+									'image-hotspots'
+								),
+							},
+						] }
+						onChange={ ( value ) =>
+							setAttributes( { anchorPoint: value } )
+						}
+						help={ __(
+							'Which point of the marker sits on X and Y: its center, or the tip at its bottom, as for a pin.',
+							'image-hotspots'
+						) }
+					/>
+					<div className="wp-block-a8csp-image-hotspot__inspector-gap" />
+					<SelectControl
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+						label={ __( 'Card position', 'image-hotspots' ) }
+						value={ cardPosition }
+						options={ [
+							{
+								value: 'auto',
+								label: __(
+									'Auto: the side with room',
+									'image-hotspots'
+								),
+							},
+							{
+								value: 'above',
+								label: __( 'Above', 'image-hotspots' ),
+							},
+							{
+								value: 'below',
+								label: __( 'Below', 'image-hotspots' ),
+							},
+							{
+								value: 'left',
+								label: __( 'Left', 'image-hotspots' ),
+							},
+							{
+								value: 'right',
+								label: __( 'Right', 'image-hotspots' ),
+							},
+						] }
+						onChange={ ( value ) =>
+							setAttributes( { cardPosition: value } )
+						}
+						help={ __(
+							'The card stays inside the image: a chosen side flips to the opposite side when the card does not fit there. On narrow screens, a card that fits on no side shows below the image.',
+							'image-hotspots'
+						) }
+					/>
+					<p className="components-base-control__help">
+						{ sprintf(
+							/* translators: 1: The hotspot's number. 2: How many hotspots the image has. */
+							__(
+								'Keyboard order: %1$d of %2$d. Visitors reach the hotspots with the Tab key in their List View order, not by their place on the image. Drag them in List View to change it.',
+								'image-hotspots'
+							),
+							number,
+							count
+						) }
+					</p>
+				</PanelBody>
+			</InspectorControls>
+			<div { ...blockProps }>
+				<button
+					type="button"
+					ref={ markerRefs }
+					className="wp-block-a8csp-image-hotspots__marker"
+					aria-label={ markerName }
+					aria-describedby={ instructionsId }
+					onPointerDown={ onPointerDown }
+					onPointerMove={ onPointerMove }
+					onPointerUp={ ( event ) => endDrag( event, true ) }
+					onPointerCancel={ ( event ) => endDrag( event, false ) }
+				>
+					<span
+						className="wp-block-a8csp-image-hotspots__marker-icon"
+						aria-hidden="true"
+					/>
+					<span
+						className="wp-block-a8csp-image-hotspot__number"
+						aria-hidden="true"
+					>
+						{ number }
+					</span>
+				</button>
+				<VisuallyHidden id={ instructionsId }>
+					{ __(
+						'Drag to move it, or use the arrow keys: 0.5% a step, 5% with Shift.',
+						'image-hotspots'
+					) }
+				</VisuallyHidden>
+				{ ( isCardVisible || drag || isNudging ) && (
+					<div
+						className={ [
+							'wp-block-a8csp-image-hotspot__tag',
+							! label.trim() && 'is-missing-label',
+						]
+							.filter( Boolean )
+							.join( ' ' ) }
+					>
+						{ drag || isNudging ? (
+							<span
+								className="wp-block-a8csp-image-hotspot__position"
+								aria-hidden="true"
+							>
+								{ formatPosition( position ) }
+							</span>
+						) : (
+							<>
+								<label htmlFor={ labelInputId }>
+									{ __( 'Label', 'image-hotspots' ) }
+								</label>
+								<input
+									id={ labelInputId }
+									type="text"
+									value={ label }
+									placeholder={ __(
+										'Required',
+										'image-hotspots'
+									) }
+									aria-invalid={ ! label.trim() }
+									aria-describedby={ `${ labelInputId }-help` }
+									onChange={ ( event ) =>
+										setAttributes( {
+											label: event.target.value,
+										} )
+									}
+								/>
+								<VisuallyHidden id={ `${ labelInputId }-help` }>
+									{ sprintf(
+										/* translators: %d: The hotspot's number. */
+										__(
+											'Hotspot %d’s name, read by screen readers and shown in List View.',
+											'image-hotspots'
+										),
+										number
+									) }
+								</VisuallyHidden>
+							</>
+						) }
+					</div>
+				) }
+				<div
+					ref={ cardRef }
+					className="wp-block-a8csp-image-hotspots__card"
+					hidden={ ! isCardVisible }
+				>
+					<div { ...innerBlocksProps } />
+				</div>
+			</div>
+		</>
+	);
+}

@@ -45,6 +45,7 @@ longer-form process docs.
 | `featured-image-captions` | Extends `core/post-featured-image` with editor caption controls and front-end captions. No `block.json` is tracked. |
 | `featured-video` | Extends `core/post-featured-image`; stores `_wpcomsp_featured_video_id` and `_wpcomsp_featured_video_options` post meta for post types with thumbnail support. |
 | `flowing-column` | Registers the `a8csp/flowing-column` layout block. |
+| `image-hotspots` | `Image Hotspots`; registers `a8csp/image-hotspots` (an image with hotspots) and its child `a8csp/image-hotspot` (a marker button at x/y percentages that opens a card of inner blocks). Editor: click the image to add, drag or arrow-key to move, labels in List View. Front end: Interactivity API, click or hover, one card open, Escape and outside click close; cards kept inside the image or, with `cardBounds: page`, inside the nearest clipping container; tail offsets as CSS custom properties. Filters in both `render.php` files. |
 | `jp-related-posts-query-loop` | Adds a Related Posts variation for `core/query`, using Jetpack related posts when available and falling back to shuffled recent posts. |
 | `light-dark-toggle` | Registers the `wpcomsp/light-dark-toggle` block. |
 | `marquee` | `Marquee`; registers `a8csp/marquee`, which duplicates its inner blocks to fill the track and scrolls them with a CSS animation. |
