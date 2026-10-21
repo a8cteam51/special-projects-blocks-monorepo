@@ -24,6 +24,13 @@
 		overflow: hidden;
 		width: 100%;
 
+		// The track is inline-flex, so in a block box it would sit on a line
+		// box and gain the line's descent below it. A flex box has no line box.
+		// The editor lays the track out as a block, so this is front end only.
+		&:not(.block-editor-block-list__layout *) {
+			display: flex;
+		}
+
 		// With motion reduced the row stays still, so let visitors scroll to
 		// content wider than the block instead.
 		@media (prefers-reduced-motion: reduce) {
@@ -54,9 +61,10 @@
 			}
 		}
 
+		// Items keep their own display: a Row or Grid group stays a flex or
+		// grid container.
 		> * {
 			flex: 0 0 auto;
-			display: inline-block;
 			margin-top: 0;
 			margin-bottom: 0;
 			will-change: transform;
