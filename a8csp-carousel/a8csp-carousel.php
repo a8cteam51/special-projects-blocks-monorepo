@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Carousel
  * Description:       Display a horizontal series of content.
- * Version:           1.1.2
+ * Version:           1.2.0
  * Requires at least: 6.7
  * Requires PHP:      8.0
  * Author:            The WordPress Contributors

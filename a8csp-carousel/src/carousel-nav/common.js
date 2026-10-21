@@ -13,7 +13,13 @@ import { __ } from '@wordpress/i18n';
  * @return {Object} The HTML attributes.
  */
 export function getHTMLAttributes( attributes ) {
-	const { borderColor, buttonColors, buttonSize, style = {} } = attributes;
+	const {
+		borderColor,
+		buttonColors,
+		buttonSize,
+		iconSize,
+		style = {},
+	} = attributes;
 	const { background, backgroundHover, icon, iconHover } = buttonColors || {};
 	const { border = {} } = style;
 	const { color, radius, width } = border;
@@ -23,6 +29,7 @@ export function getHTMLAttributes( attributes ) {
 		: color;
 
 	const sizePx = buttonSize ? `${ buttonSize }px` : null;
+	const iconSizePx = iconSize ? `${ iconSize }px` : null;
 
 	const styles = Object.fromEntries(
 		Object.entries( {
@@ -34,6 +41,7 @@ export function getHTMLAttributes( attributes ) {
 			'--button-border-radius': radius,
 			'--button-border-width': width,
 			'--button-size': sizePx,
+			'--button-icon-size': iconSizePx,
 		} ).filter( ( [ , value ] ) => value )
 	);
 
