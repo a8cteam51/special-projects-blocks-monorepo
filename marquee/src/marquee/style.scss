@@ -70,6 +70,13 @@
 			will-change: transform;
 			transform: translateZ(0);
 		}
+
+		// Core makes an Auto-mode Grid group a size container, which ignores
+		// its content's width and would collapse it to nothing in this row.
+		// With no width to fill, it stacks its children in one column.
+		> .is-layout-grid {
+			container-type: normal;
+		}
 	}
 
 	// Vertical alignment classes

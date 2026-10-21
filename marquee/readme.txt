@@ -54,7 +54,8 @@ Requirements: Node.js 18+.
 
 = 0.1.9 =
 * Fix: The empty band of about 8px below the row is gone.
-* Fix: Row and Grid groups used as items keep their layout.
+* Fix: Row groups, and Grid groups with a set column count, used as items keep their layout.
+* Fix: A Grid group in Auto mode no longer collapses to zero width. It stacks its children; set a column count to lay them out side by side.
 * Fix: Screen readers no longer read the looping copies, and keyboard users no longer tab through them. Links in the copies still work with a click.
 * Fix: Padding and a border set on the block no longer push it wider than its column.
 

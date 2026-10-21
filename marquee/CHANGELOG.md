@@ -1,6 +1,7 @@
 0.1.9
 - Fix: The marquee was about 8px taller than its items, with an empty band below the row. The scrolling track sat on a line of text and took the line's descent; it no longer does (#227).
-- Fix: A Row or Grid group used as an item lost its layout and stacked its children, because every item was forced to `display: inline-block`. Items now keep their own display (#228).
+- Fix: A Row group, or a Grid group with a set column count, used as an item lost its layout and stacked its children, because every item was forced to `display: inline-block`. Items now keep their own display (#228).
+- Fix: A Grid group in Auto mode collapsed to zero width, in the editor and on the front end, and its content ran into the next item. Core makes an Auto grid a size container, which ignores its content's width; the marquee now turns that off for grid items. With no width to fit columns into, an Auto grid stacks its children in one column; set a column count to lay them out side by side.
 - Fix: The copies that make the row loop were read out by screen readers and reachable with Tab, so the content was announced and focused several times. Copies are now `aria-hidden`, and links or buttons in them are out of the tab order. They still respond to a click (#229).
 - Fix: Padding and a border set on the block no longer push it wider than its column.
 

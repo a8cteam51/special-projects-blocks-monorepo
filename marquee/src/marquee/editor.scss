@@ -111,6 +111,12 @@
 		margin-top: 0;
 		margin-bottom: 0;
 	}
+
+	// As on the front end: an Auto-mode Grid group is a size container and
+	// would collapse to nothing in this row.
+	> .is-layout-grid {
+		container-type: normal;
+	}
 }
 
 // Mirror the height cap on the editor's own block list wrapper
