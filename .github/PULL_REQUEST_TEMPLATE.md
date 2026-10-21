@@ -25,6 +25,7 @@ Closes #
 - [ ] Tested in the latest **`twenty-*` theme**, including the `trunk` → branch upgrade path.
 - [ ] Static-block `edit`/`save` changes include a **block deprecation**.
 - [ ] Plugin header **`Version:` bumped** and `CHANGELOG.md` / `readme.txt` changelog updated (for releasable changes).
+- [ ] `playground/blueprint.json` installs the new version, and its demo still works.
 - [ ] No project-specific styling or data added to the block.
 
 ## Screenshots / screencast

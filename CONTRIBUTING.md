@@ -11,6 +11,7 @@ guide is the canonical, repo-level reference. Longer-form background lives in th
 - [Updating an existing block](#updating-an-existing-block)
 - [Coding standards](#coding-standards)
 - [Submitting a pull request](#submitting-a-pull-request)
+- [Playground demos](#playground-demos)
 - [Releases](#releases)
 
 ## Before you start: do you actually need a new block?
@@ -39,6 +40,8 @@ engineering lead can sign off before development starts.
 - `.github/workflows/make-plugin-release.yml` cuts a GitHub release for each changed
   top-level directory on pushes to `trunk`. The release tag is
   `<dir>@<plugin-header-version>` and the release body is that plugin's `readme.txt`.
+  Changes under `<dir>/playground/` don't cut a release, and the release zip leaves
+  that directory out.
 
 See the [README](./README.md) for the full plugin inventory.
 
@@ -101,6 +104,8 @@ You still own the block itself — fill in the source and follow these rules:
 - **Add a `screenshot.png`** (1200×800) at the plugin root showing the block's purpose.
   This is used in automated tooling.
 - **Use `counter` and `table-plus` as reference plugins** for structure and `readme.txt`.
+- **Add a Playground demo** in `<plugin-slug>/playground/` once the first release
+  exists. See [Playground demos](#playground-demos).
 
 ## Updating an existing block
 
@@ -147,6 +152,44 @@ engineering lead.
    static-block `edit`/`save` changes.
 5. Bump the plugin header `Version:` and add a `CHANGELOG.md`/`readme.txt` changelog
    entry when releasing changes — the release workflow reads the **PHP header version**.
+6. When you bump the version, update the release URL in
+   `<plugin>/playground/blueprint.json` to the new version, and update the demo
+   content if the block's markup changed.
+
+## Playground demos
+
+Every plugin has a one-click demo in [WordPress Playground](https://playground.wordpress.net/):
+
+```
+https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/<plugin>/playground/blueprint.json
+```
+
+`<plugin>/playground/` holds:
+
+- `blueprint.json`: installs the plugin's GitHub release zip (pinned to the current
+  version), activates Twenty Twenty-Five, imports the sample content, and sets page
+  `1001` as the front page.
+- `sample-content.xml`: a WXR file with the demo page (ID `1001`) and anything else the
+  demo needs, such as posts, or a header or footer template part (a `wp_template_part`
+  item with `wp_theme` and `wp_template_part_area` categories) for blocks that belong
+  in one.
+- `media.php` (when images are needed): adds Twenty Twenty-Five's bundled images to
+  the media library with fixed IDs from `2001`, so the demo needs no image hosting.
+
+Conventions:
+
+- Use `https://example.com` as the WXR site URL. The importer rewrites it to the
+  Playground site's URL, so `https://example.com/wp-content/uploads/playground/<file>`
+  points at an image from `media.php`. It does not rewrite URLs inside the comment
+  attributes of non-core blocks (`<!-- wp:a8csp/... -->`); `image-hotspots` fixes those
+  with a `runPHP` step after the import.
+- Generate block markup in the editor (`wp.blocks.serialize()`), against the released
+  version the blueprint installs. Never hand-write a static block's markup.
+- Files next to `blueprint.json` load relative to it, so a link to a branch's
+  blueprint previews that branch's demo content. The blueprint still installs the
+  pinned release, not the branch's code.
+- To test locally, run
+  `npx @wp-playground/cli server --blueprint=<plugin>/playground/blueprint.json --blueprint-may-read-adjacent-files`.
 
 ## Releases
 

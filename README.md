@@ -57,12 +57,46 @@ longer-form process docs.
 | `scroll-to-top` | Registers `wpcomsp/scroll-to-top`. |
 | `sibling-pages-list` | Registers `wpcomsp/sibling-pages-list`. |
 | `stretchy-type` | Registers `wpsp/stretchy-type`. |
-| `table-plus` | Registers `wpcomsp/table-plus`, `wpcomsp/table-plus-row`, and `wpcomsp/table-plus-cell`; includes a PHP renderer, PHPUnit tests, and a WordPress Playground blueprint. |
+| `table-plus` | Registers `wpcomsp/table-plus`, `wpcomsp/table-plus-row`, and `wpcomsp/table-plus-cell`; includes a PHP renderer and PHPUnit tests. |
 | `tabs` | Registers `wpcomsp/tabs` and `wpcomsp/tab`. |
 | `videopress-download` | Registers `wpcomsp/videopress-download` for adding a download button near VideoPress videos. |
 
 No tracked PHP registers custom post types, taxonomies, shortcodes, or WP-CLI
 commands.
+
+## Try a plugin in WordPress Playground
+
+Each plugin has a demo in its `playground/` directory. These links open it in
+[WordPress Playground](https://playground.wordpress.net/), which installs the
+plugin's latest release on Twenty Twenty-Five with sample content. See
+[CONTRIBUTING.md](./CONTRIBUTING.md#playground-demos) for how the demos are built.
+
+- [`a8csp-carousel`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/a8csp-carousel/playground/blueprint.json)
+- [`bp-breadcrumbs`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/bp-breadcrumbs/playground/blueprint.json)
+- [`bp-groups`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/bp-groups/playground/blueprint.json)
+- [`bp-members`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/bp-members/playground/blueprint.json)
+- [`counter`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/counter/playground/blueprint.json)
+- [`cover-bg-crossfade`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/cover-bg-crossfade/playground/blueprint.json)
+- [`dynamic-table-of-contents`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/dynamic-table-of-contents/playground/blueprint.json)
+- [`exclude-duplicates-from-query-loops`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/exclude-duplicates-from-query-loops/playground/blueprint.json)
+- [`featured-image-captions`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/featured-image-captions/playground/blueprint.json)
+- [`featured-video`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/featured-video/playground/blueprint.json)
+- [`flowing-column`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/flowing-column/playground/blueprint.json)
+- [`image-hotspots`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/image-hotspots/playground/blueprint.json)
+- [`jp-related-posts-query-loop`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/jp-related-posts-query-loop/playground/blueprint.json)
+- [`light-dark-toggle`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/light-dark-toggle/playground/blueprint.json)
+- [`marquee`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/marquee/playground/blueprint.json)
+- [`mega-menu`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/mega-menu/playground/blueprint.json)
+- [`modal`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/modal/playground/blueprint.json)
+- [`override-post-links`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/override-post-links/playground/blueprint.json)
+- [`reactions`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/reactions/playground/blueprint.json)
+- [`scroll-progress-bar`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/scroll-progress-bar/playground/blueprint.json)
+- [`scroll-to-top`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/scroll-to-top/playground/blueprint.json)
+- [`sibling-pages-list`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/sibling-pages-list/playground/blueprint.json)
+- [`stretchy-type`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/stretchy-type/playground/blueprint.json)
+- [`table-plus`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/table-plus/playground/blueprint.json)
+- [`tabs`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/tabs/playground/blueprint.json)
+- [`videopress-download`](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/videopress-download/playground/blueprint.json)
 
 For needs these plugins don't cover, check
 [THIRD-PARTY-BLOCKS.md](./THIRD-PARTY-BLOCKS.md) for vetted third-party plugins

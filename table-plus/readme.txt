@@ -11,7 +11,7 @@ A structured, flexible table block for the WordPress block editor with per-cell 
 
 == Try it in WordPress Playground ==
 
-[Open the Table Plus demo in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/table-plus/blueprint.json) — spins up a fresh WordPress, installs the latest release, and lands you in the editor on a populated demo post. No install required.
+[Open the Table Plus demo in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/a8cteam51/special-projects-blocks-monorepo/trunk/table-plus/playground/blueprint.json) — spins up a fresh WordPress, installs the latest release, and opens a page with two demo tables. No install required.
 
 == Description ==
 
