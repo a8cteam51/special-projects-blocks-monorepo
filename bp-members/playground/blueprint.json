@@ -1,0 +1,78 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "BP Members",
+		"description": "Demo BuddyPress members shown by the BP Members List block in grid and list views, using the member avatar, cover image, heading and X Profile field variations, with the X Profile variation also placed on each member's BuddyPress profile page.",
+		"author": "WordPress Special Projects Team",
+		"categories": [ "Block" ]
+	},
+	"landingPage": "/",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "buddypress"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "url",
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/bp-members%400.1.1/bp-members.zip"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "wordpress.org/themes",
+				"slug": "twentytwentyfive"
+			},
+			"ifAlreadyInstalled": "skip",
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/wordpress/wp-load.php'; bp_version_updater(); delete_transient( '_bp_activation_redirect' ); delete_transient( '_bp_is_new_install' );"
+		},
+		{
+			"step": "writeFile",
+			"path": "/tmp/playground-buddypress.php",
+			"data": {
+				"resource": "bundled",
+				"path": "buddypress.php"
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/tmp/playground-buddypress.php';"
+		},
+		{
+			"step": "importWxr",
+			"file": {
+				"resource": "bundled",
+				"path": "sample-content.xml"
+			}
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"show_on_front": "page",
+				"page_on_front": "1001"
+			}
+		}
+	]
+}

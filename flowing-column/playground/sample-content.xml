@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:wp="http://wordpress.org/export/1.2/">
+<channel>
+	<title>Flowing Column demo</title>
+	<link>https://example.com</link>
+	<language>en-US</language>
+	<wp:wxr_version>1.2</wp:wxr_version>
+	<wp:base_site_url>https://example.com</wp:base_site_url>
+	<wp:base_blog_url>https://example.com</wp:base_blog_url>
+	<wp:author><wp:author_id>1</wp:author_id><wp:author_login><![CDATA[admin]]></wp:author_login><wp:author_email><![CDATA[admin@example.com]]></wp:author_email><wp:author_display_name><![CDATA[admin]]></wp:author_display_name></wp:author>
+
+	<item>
+		<title><![CDATA[Flowing Column]]></title>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>Flowing Column pours its content into newspaper-style columns: text fills one column and continues in the next. Resize the window to see the columns reflow, or open the page in the editor to change the column count, minimum width and divider.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Three columns with a divider</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Up to three columns, each at least 200px wide, separated by a solid rule.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:a8csp/flowing-column {"columnCount":3,"align":"wide"} -->
+<div style="--a8csp-flowing-column-column-count:3;--a8csp-flowing-column-column-min-width:200px;--a8csp-flowing-column-column-rule-style:solid;--a8csp-flowing-column-column-rule-width:1px" class="wp-block-a8csp-flowing-column alignwide"><!-- wp:paragraph -->
+<p>Long before printed timetables, harbour towns kept time by the water. Fishing crews read the tide from marks cut into the quay walls, and the market opened when the first boats came in rather than at a fixed hour.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Every morning the quay filled with crates, rope and the sound of gulls. Traders called out prices from the backs of carts, and buyers walked the length of the harbour comparing the catch before they settled on a stall.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>By midday the boats were washed down and the nets hung out to dry along the sea wall. Children ran between the drying lines while older hands mended tears with wooden needles, a job that could take the rest of the afternoon.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>When the weather turned, the whole town knew it first from the harbour. Flags went up on the pier, boats stayed tied two and three deep, and the cafés along the front filled with crews waiting for the wind to drop.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Today the market still opens early, though most of the boats now carry radios and the timetable is printed on a board by the gate. The marks on the quay walls are still there, worn smooth, and visitors stop to read them.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:a8csp/flowing-column -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">As many columns as fit</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Maximum columns set to 0 and a minimum width of 14em: the block fits as many columns as the width allows, with a dashed accent-coloured rule and a wider gap.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:a8csp/flowing-column {"columnCount":0,"columnMinWidth":"14em","columnRuleStyle":"dashed","columnRuleWidth":"2px","columnRuleColor":"accent-3","align":"wide","style":{"spacing":{"blockGap":{"left":"var:preset|spacing|60"}}}} -->
+<div style="--a8csp-flowing-column-column-count:auto;--a8csp-flowing-column-column-min-width:14em;--a8csp-flowing-column-column-gap:var(--wp--preset--spacing--60);--a8csp-flowing-column-column-rule-style:dashed;--a8csp-flowing-column-column-rule-width:2px;--a8csp-flowing-column-column-rule-color:var(--wp--preset--color--accent-3)" class="wp-block-a8csp-flowing-column alignwide"><!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">A day at the harbour</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Long before printed timetables, harbour towns kept time by the water. Fishing crews read the tide from marks cut into the quay walls, and the market opened when the first boats came in rather than at a fixed hour.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Every morning the quay filled with crates, rope and the sound of gulls. Traders called out prices from the backs of carts, and buyers walked the length of the harbour comparing the catch before they settled on a stall.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>By midday the boats were washed down and the nets hung out to dry along the sea wall. Children ran between the drying lines while older hands mended tears with wooden needles, a job that could take the rest of the afternoon.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>When the weather turned, the whole town knew it first from the harbour. Flags went up on the pier, boats stayed tied two and three deep, and the cafés along the front filled with crews waiting for the wind to drop.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:a8csp/flowing-column -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Two columns on a background</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A fixed two-column layout with no rule, using the block’s own background colour and padding settings.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:a8csp/flowing-column {"columnMinWidth":"","columnRuleStyle":"none","align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}}},"backgroundColor":"accent-5"} -->
+<div style="padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40);--a8csp-flowing-column-column-count:2;--a8csp-flowing-column-column-min-width:auto;--a8csp-flowing-column-column-rule-style:none;--a8csp-flowing-column-column-rule-width:1px" class="wp-block-a8csp-flowing-column alignwide has-accent-5-background-color has-background"><!-- wp:paragraph -->
+<p>Every morning the quay filled with crates, rope and the sound of gulls. Traders called out prices from the backs of carts, and buyers walked the length of the harbour comparing the catch before they settled on a stall.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>By midday the boats were washed down and the nets hung out to dry along the sea wall. Children ran between the drying lines while older hands mended tears with wooden needles, a job that could take the rest of the afternoon.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>When the weather turned, the whole town knew it first from the harbour. Flags went up on the pier, boats stayed tied two and three deep, and the cafés along the front filled with crews waiting for the wind to drop.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Today the market still opens early, though most of the boats now carry radios and the timetable is printed on a board by the gate. The marks on the quay walls are still there, worn smooth, and visitors stop to read them.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:a8csp/flowing-column -->]]></content:encoded>
+		<wp:post_id>1001</wp:post_id>
+		<wp:post_date><![CDATA[2026-01-01 00:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-01-01 00:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[flowing-column]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+	</item>
+</channel>
+</rss>

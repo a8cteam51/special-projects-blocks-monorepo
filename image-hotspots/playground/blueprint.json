@@ -1,0 +1,68 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Image Hotspots",
+		"description": "A photo of the Parthenon with four hotspot markers; each opens a card that names and explains a part of the building.",
+		"author": "WordPress Special Projects Team",
+		"categories": [ "Block" ]
+	},
+	"landingPage": "/",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "url",
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/image-hotspots%400.1.0/image-hotspots.zip"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "wordpress.org/themes",
+				"slug": "twentytwentyfive"
+			},
+			"ifAlreadyInstalled": "skip",
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "writeFile",
+			"path": "/tmp/playground-media.php",
+			"data": {
+				"resource": "bundled",
+				"path": "media.php"
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/tmp/playground-media.php';"
+		},
+		{
+			"step": "importWxr",
+			"file": {
+				"resource": "bundled",
+				"path": "sample-content.xml"
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/wordpress/wp-load.php'; $content = get_post_field( 'post_content', 1001 ); $wpdb->update( $wpdb->posts, array( 'post_content' => str_replace( 'https://example.com/', trailingslashit( site_url() ), $content ) ), array( 'ID' => 1001 ) ); clean_post_cache( 1001 );"
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"show_on_front": "page",
+				"page_on_front": "1001"
+			}
+		}
+	]
+}

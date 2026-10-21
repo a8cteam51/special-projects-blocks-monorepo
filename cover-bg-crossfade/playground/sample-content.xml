@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:wp="http://wordpress.org/export/1.2/">
+<channel>
+	<title>Cover Background Crossfade demo</title>
+	<link>https://example.com</link>
+	<language>en-US</language>
+	<wp:wxr_version>1.2</wp:wxr_version>
+	<wp:base_site_url>https://example.com</wp:base_site_url>
+	<wp:base_blog_url>https://example.com</wp:base_blog_url>
+	<wp:author><wp:author_id>1</wp:author_id><wp:author_login><![CDATA[admin]]></wp:author_login><wp:author_email><![CDATA[admin@example.com]]></wp:author_email><wp:author_display_name><![CDATA[admin]]></wp:author_display_name></wp:author>
+
+	<item>
+		<title><![CDATA[Cover Background Crossfade]]></title>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<content:encoded><![CDATA[<!-- wp:cover {"url":"https://example.com/wp-content/themes/twentytwentyfive/assets/images/coming-soon-bg-image.webp","dimRatio":40,"overlayColor":"contrast","minHeight":100,"minHeightUnit":"vh","align":"full","className":"is-style-a8csp-cover-bg-crossfade","layout":{"type":"constrained"}} -->
+<div class="wp-block-cover alignfull is-style-a8csp-cover-bg-crossfade" style="min-height:100vh"><img class="wp-block-cover__image-background" alt="" src="https://example.com/wp-content/themes/twentytwentyfive/assets/images/coming-soon-bg-image.webp" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-contrast-background-color has-background-dim-40 has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:heading {"level":1,"style":{"typography":{"textAlign":"center"}}} -->
+<h1 class="wp-block-heading has-text-align-center">Cover Background Crossfade</h1>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"style":{"typography":{"textAlign":"center"}}} -->
+<p class="has-text-align-center">Each Cover block on this page uses the Crossfade Background style. Scroll down.</p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:cover -->
+
+<!-- wp:cover {"url":"https://example.com/wp-content/themes/twentytwentyfive/assets/images/northern-buttercups-flowers.webp","dimRatio":40,"overlayColor":"contrast","minHeight":100,"minHeightUnit":"vh","align":"full","className":"is-style-a8csp-cover-bg-crossfade","layout":{"type":"constrained"}} -->
+<div class="wp-block-cover alignfull is-style-a8csp-cover-bg-crossfade" style="min-height:100vh"><img class="wp-block-cover__image-background" alt="" src="https://example.com/wp-content/themes/twentytwentyfive/assets/images/northern-buttercups-flowers.webp" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-contrast-background-color has-background-dim-40 has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:heading {"style":{"typography":{"textAlign":"center"}}} -->
+<h2 class="wp-block-heading has-text-align-center">Backgrounds fill the screen</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"style":{"typography":{"textAlign":"center"}}} -->
+<p class="has-text-align-center">The background of the cover nearest the top of the window is shown behind the page.</p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:cover -->
+
+<!-- wp:cover {"url":"https://example.com/wp-content/themes/twentytwentyfive/assets/images/grid-flower-1.webp","dimRatio":40,"overlayColor":"contrast","minHeight":100,"minHeightUnit":"vh","align":"full","className":"is-style-a8csp-cover-bg-crossfade","layout":{"type":"constrained"}} -->
+<div class="wp-block-cover alignfull is-style-a8csp-cover-bg-crossfade" style="min-height:100vh"><img class="wp-block-cover__image-background" alt="" src="https://example.com/wp-content/themes/twentytwentyfive/assets/images/grid-flower-1.webp" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-contrast-background-color has-background-dim-40 has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:heading {"style":{"typography":{"textAlign":"center"}}} -->
+<h2 class="wp-block-heading has-text-align-center">They crossfade as you scroll</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"style":{"typography":{"textAlign":"center"}}} -->
+<p class="has-text-align-center">When the next cover reaches the top of the window, its background fades in.</p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:cover -->
+
+<!-- wp:cover {"url":"https://example.com/wp-content/themes/twentytwentyfive/assets/images/botany-flowers.webp","dimRatio":40,"overlayColor":"contrast","minHeight":100,"minHeightUnit":"vh","align":"full","className":"is-style-a8csp-cover-bg-crossfade","layout":{"type":"constrained"}} -->
+<div class="wp-block-cover alignfull is-style-a8csp-cover-bg-crossfade" style="min-height:100vh"><img class="wp-block-cover__image-background" alt="" src="https://example.com/wp-content/themes/twentytwentyfive/assets/images/botany-flowers.webp" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-contrast-background-color has-background-dim-40 has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:heading {"style":{"typography":{"textAlign":"center"}}} -->
+<h2 class="wp-block-heading has-text-align-center">Scroll back up</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"style":{"typography":{"textAlign":"center"}}} -->
+<p class="has-text-align-center">The earlier backgrounds fade back in.</p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:cover -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>1001</wp:post_id>
+		<wp:post_date><![CDATA[2026-01-01 00:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-01-01 00:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[cover-background-crossfade]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:postmeta><wp:meta_key><![CDATA[_wp_page_template]]></wp:meta_key><wp:meta_value><![CDATA[page-no-title]]></wp:meta_value></wp:postmeta>
+	</item>
+
+	<item>
+		<title><![CDATA[Header]]></title>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<content:encoded><![CDATA[<!-- wp:group {"backgroundColor":"base","layout":{"type":"default"}} -->
+<div class="wp-block-group has-base-background-color has-background"><!-- wp:pattern {"slug":"twentytwentyfive/header"} /--></div>
+<!-- /wp:group -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>1100</wp:post_id>
+		<wp:post_date><![CDATA[2026-01-01 00:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-01-01 00:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[header]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[wp_template_part]]></wp:post_type>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<category domain="wp_theme" nicename="twentytwentyfive"><![CDATA[twentytwentyfive]]></category>
+		<category domain="wp_template_part_area" nicename="header"><![CDATA[header]]></category>
+	</item>
+
+	<item>
+		<title><![CDATA[Footer]]></title>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<content:encoded><![CDATA[<!-- wp:group {"backgroundColor":"base","layout":{"type":"default"}} -->
+<div class="wp-block-group has-base-background-color has-background"><!-- wp:pattern {"slug":"twentytwentyfive/footer"} /--></div>
+<!-- /wp:group -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>1101</wp:post_id>
+		<wp:post_date><![CDATA[2026-01-01 00:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-01-01 00:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[footer]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[wp_template_part]]></wp:post_type>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<category domain="wp_theme" nicename="twentytwentyfive"><![CDATA[twentytwentyfive]]></category>
+		<category domain="wp_template_part_area" nicename="footer"><![CDATA[footer]]></category>
+	</item>
+</channel>
+</rss>

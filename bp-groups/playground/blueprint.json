@@ -1,0 +1,78 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "BP Groups Blocks",
+		"description": "Demo BuddyPress groups shown by the BP Groups List block in grid and list views, using the group cover image, avatar, heading and description variations plus the Group Contributors and Progress Bar blocks, which also appear on each group's BuddyPress page.",
+		"author": "WordPress Special Projects Team",
+		"categories": [ "Block" ]
+	},
+	"landingPage": "/",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "buddypress"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "url",
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/bp-groups%400.2.2/bp-groups.zip"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "wordpress.org/themes",
+				"slug": "twentytwentyfive"
+			},
+			"ifAlreadyInstalled": "skip",
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/wordpress/wp-load.php'; add_filter( 'bp_new_install_default_components', function ( $components ) { return $components + array( 'groups' => 1 ); } ); bp_version_updater(); delete_transient( '_bp_activation_redirect' ); delete_transient( '_bp_is_new_install' );"
+		},
+		{
+			"step": "writeFile",
+			"path": "/tmp/playground-buddypress.php",
+			"data": {
+				"resource": "bundled",
+				"path": "buddypress.php"
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/tmp/playground-buddypress.php';"
+		},
+		{
+			"step": "importWxr",
+			"file": {
+				"resource": "bundled",
+				"path": "sample-content.xml"
+			}
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"show_on_front": "page",
+				"page_on_front": "1001"
+			}
+		}
+	]
+}

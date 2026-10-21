@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+  xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:wp="http://wordpress.org/export/1.2/">
+<channel>
+  <title>Featured Image Captions demo</title>
+  <link>https://example.com</link>
+  <language>en-US</language>
+  <wp:wxr_version>1.2</wp:wxr_version>
+  <wp:base_site_url>https://example.com</wp:base_site_url>
+  <wp:base_blog_url>https://example.com</wp:base_blog_url>
+  <wp:author><wp:author_id>1</wp:author_id><wp:author_login><![CDATA[admin]]></wp:author_login><wp:author_email><![CDATA[admin@example.com]]></wp:author_email><wp:author_display_name><![CDATA[admin]]></wp:author_display_name></wp:author>
+
+  <item>
+    <title><![CDATA[Featured Image Captions]]></title>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>Each Featured Image block below has its caption turned on with the caption button in the block toolbar. The caption field is left blank, so each image shows the caption saved in the media library.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:query {"query":{"perPage":3,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false,"taxQuery":null,"parents":[],"format":[]},"align":"wide"} -->
+<div class="wp-block-query alignwide"><!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
+<!-- wp:post-featured-image {"isCaptionEnabled":true} /-->
+
+<!-- wp:post-title {"level":3,"isLink":true,"fontSize":"large"} /-->
+<!-- /wp:post-template --></div>
+<!-- /wp:query -->
+
+<!-- wp:heading {"align":"wide"} -->
+<h2 class="wp-block-heading alignwide">Custom caption</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"align":"wide"} -->
+<p class="alignwide">This Featured Image block has text typed into its caption field, which replaces the media library caption.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:query {"query":{"perPage":1,"pages":0,"offset":3,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false,"taxQuery":null,"parents":[],"format":[]},"align":"wide"} -->
+<div class="wp-block-query alignwide"><!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
+<!-- wp:post-featured-image {"isCaptionEnabled":true,"caption":"A custom caption typed into the Featured Image block."} /-->
+
+<!-- wp:post-title {"level":3,"isLink":true,"fontSize":"large"} /-->
+<!-- /wp:post-template --></div>
+<!-- /wp:query -->]]></content:encoded>
+    <excerpt:encoded><![CDATA[]]></excerpt:encoded>
+    <wp:post_id>1001</wp:post_id>
+    <wp:post_date><![CDATA[2026-04-10 09:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-04-10 09:00:00]]></wp:post_date_gmt>
+    <wp:post_name><![CDATA[featured-image-captions-demo]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[page]]></wp:post_type>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+  </item>
+  <item>
+    <title><![CDATA[Coral in shallow water]]></title>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>A sample post for the Featured Image Captions demo.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+    <excerpt:encoded><![CDATA[]]></excerpt:encoded>
+    <wp:post_id>1002</wp:post_id>
+    <wp:post_date><![CDATA[2026-04-04 09:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-04-04 09:00:00]]></wp:post_date_gmt>
+    <wp:post_name><![CDATA[coral-in-shallow-water]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:postmeta>
+      <wp:meta_key><![CDATA[_thumbnail_id]]></wp:meta_key>
+      <wp:meta_value><![CDATA[2001]]></wp:meta_value>
+    </wp:postmeta>
+  </item>
+  <item>
+    <title><![CDATA[A meadow in full bloom]]></title>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>A sample post for the Featured Image Captions demo.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+    <excerpt:encoded><![CDATA[]]></excerpt:encoded>
+    <wp:post_id>1003</wp:post_id>
+    <wp:post_date><![CDATA[2026-04-03 09:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-04-03 09:00:00]]></wp:post_date_gmt>
+    <wp:post_name><![CDATA[a-meadow-in-full-bloom]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:postmeta>
+      <wp:meta_key><![CDATA[_thumbnail_id]]></wp:meta_key>
+      <wp:meta_value><![CDATA[2002]]></wp:meta_value>
+    </wp:postmeta>
+  </item>
+  <item>
+    <title><![CDATA[Birds of the marshland]]></title>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>A sample post for the Featured Image Captions demo.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+    <excerpt:encoded><![CDATA[]]></excerpt:encoded>
+    <wp:post_id>1004</wp:post_id>
+    <wp:post_date><![CDATA[2026-04-02 09:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-04-02 09:00:00]]></wp:post_date_gmt>
+    <wp:post_name><![CDATA[birds-of-the-marshland]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:postmeta>
+      <wp:meta_key><![CDATA[_thumbnail_id]]></wp:meta_key>
+      <wp:meta_value><![CDATA[2003]]></wp:meta_value>
+    </wp:postmeta>
+  </item>
+  <item>
+    <title><![CDATA[Columns of the Parthenon]]></title>
+    <dc:creator><![CDATA[admin]]></dc:creator>
+    <content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>A sample post for the Featured Image Captions demo.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+    <excerpt:encoded><![CDATA[]]></excerpt:encoded>
+    <wp:post_id>1005</wp:post_id>
+    <wp:post_date><![CDATA[2026-04-01 09:00:00]]></wp:post_date>
+    <wp:post_date_gmt><![CDATA[2026-04-01 09:00:00]]></wp:post_date_gmt>
+    <wp:post_name><![CDATA[columns-of-the-parthenon]]></wp:post_name>
+    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:post_parent>0</wp:post_parent>
+    <wp:menu_order>0</wp:menu_order>
+    <wp:post_type><![CDATA[post]]></wp:post_type>
+    <wp:comment_status><![CDATA[closed]]></wp:comment_status>
+    <wp:ping_status><![CDATA[closed]]></wp:ping_status>
+    <wp:postmeta>
+      <wp:meta_key><![CDATA[_thumbnail_id]]></wp:meta_key>
+      <wp:meta_value><![CDATA[2004]]></wp:meta_value>
+    </wp:postmeta>
+  </item>
+</channel>
+</rss>
