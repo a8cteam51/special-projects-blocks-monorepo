@@ -1,0 +1,52 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Dynamic Table of Contents",
+		"description": "A long page with headings at three levels and a sticky table of contents that lists them, highlights the current section, skips a hidden heading and includes Accordion headings.",
+		"author": "WordPress Special Projects Team",
+		"categories": [ "Block" ]
+	},
+	"landingPage": "/",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "url",
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/dynamic-table-of-contents%400.4.1/dynamic-table-of-contents.zip"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "wordpress.org/themes",
+				"slug": "twentytwentyfive"
+			},
+			"ifAlreadyInstalled": "skip",
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "importWxr",
+			"file": {
+				"resource": "bundled",
+				"path": "sample-content.xml"
+			}
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"show_on_front": "page",
+				"page_on_front": "1001"
+			}
+		}
+	]
+}

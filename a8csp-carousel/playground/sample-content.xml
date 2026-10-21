@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:wp="http://wordpress.org/export/1.2/">
+<channel>
+	<title>Carousel demo</title>
+	<link>https://example.com</link>
+	<language>en-US</language>
+	<wp:wxr_version>1.2</wp:wxr_version>
+	<wp:base_site_url>https://example.com</wp:base_site_url>
+	<wp:base_blog_url>https://example.com</wp:base_blog_url>
+	<wp:author><wp:author_id>1</wp:author_id><wp:author_login><![CDATA[admin]]></wp:author_login><wp:author_email><![CDATA[admin@example.com]]></wp:author_email><wp:author_display_name><![CDATA[admin]]></wp:author_display_name></wp:author>
+
+	<item>
+		<title><![CDATA[Carousel]]></title>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>Three carousels built with the Carousel block: images from a Gallery, cards made of Groups, and posts from a Query Loop. Use the arrow buttons or the dots, drag or swipe, or focus a carousel and press the arrow keys.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Images</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A Gallery track that loops: after the last image it starts again from the first.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:a8csp/carousel {"animateEnd":"infinite","itemCount":5,"title":"Photo gallery","trackHeight":320,"type":"gallery","align":"wide"} -->
+<div aria-label="Photo gallery" data-animate-end="infinite" role="region" class="wp-block-a8csp-carousel alignwide has-overflow-hidden" style="--animation-speed:0.3s;--item-count:5;--track-height:320px" aria-roledescription="carousel"><!-- wp:a8csp/carousel-nav {"layout":{"type":"flex","justifyContent":"right"}} -->
+<div aria-label="Previous/next slide controls" role="group" style="--button-size:48px" class="wp-block-a8csp-carousel-nav"><button class="wp-block-a8csp-carousel-nav--button wp-block-a8csp-carousel-nav--button_prev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true"><path d="M14.6 7l-1.2-1L8 12l5.4 6 1.2-1-4.6-5z"></path></svg><span class="screen-reader-text">Previous slide</span></button><button class="wp-block-a8csp-carousel-nav--button wp-block-a8csp-carousel-nav--button_next"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true"><path d="M10.6 6L9.4 7l4.6 5-4.6 5 1.2 1 5.4-6z"></path></svg><span class="screen-reader-text">Next slide</span></button></div>
+<!-- /wp:a8csp/carousel-nav -->
+
+<!-- wp:gallery {"columns":1,"imageCrop":false,"linkTo":"none","metadata":{"name":"Carousel Track"},"className":"wp-block-a8csp-carousel-track"} -->
+<figure class="wp-block-gallery has-nested-images columns-1 wp-block-a8csp-carousel-track"><!-- wp:image {"id":2001,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://example.com/wp-content/uploads/playground/flower-meadow-square.webp" alt="A meadow of red and yellow wildflowers under a tree" class="wp-image-2001"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":2002,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://example.com/wp-content/uploads/playground/coral-square.webp" alt="Coral on the sea floor" class="wp-image-2002"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":2003,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://example.com/wp-content/uploads/playground/marshland-birds-square.webp" alt="Two wading birds against an orange sky" class="wp-image-2003"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":2004,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://example.com/wp-content/uploads/playground/dallas-creek-square.webp" alt="A red flower on a dark background" class="wp-image-2004"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":2005,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://example.com/wp-content/uploads/playground/parthenon-square.webp" alt="The ruins of the Parthenon" class="wp-image-2005"/></figure>
+<!-- /wp:image --></figure>
+<!-- /wp:gallery -->
+
+<!-- wp:a8csp/carousel-pagination {"layout":{"type":"flex","justifyContent":"center"},"count":5} -->
+<div aria-label="Slide controls" role="group" style="--button-size:24px" class="wp-block-a8csp-carousel-pagination"><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 1 of 5</span></button><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 2 of 5</span></button><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 3 of 5</span></button><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 4 of 5</span></button><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 5 of 5</span></button></div>
+<!-- /wp:a8csp/carousel-pagination --></div>
+<!-- /wp:a8csp/carousel -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Cards</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A Group track: each card is a Group block with a heading and a line of text.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:a8csp/carousel {"itemCount":5,"title":"Steps","type":"group"} -->
+<div aria-label="Steps" data-animate-end="stop" role="region" class="wp-block-a8csp-carousel has-overflow-hidden" style="--animation-speed:0.3s;--item-count:5" aria-roledescription="carousel"><!-- wp:a8csp/carousel-nav {"layout":{"type":"flex","justifyContent":"right"}} -->
+<div aria-label="Previous/next slide controls" role="group" style="--button-size:48px" class="wp-block-a8csp-carousel-nav"><button class="wp-block-a8csp-carousel-nav--button wp-block-a8csp-carousel-nav--button_prev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true"><path d="M14.6 7l-1.2-1L8 12l5.4 6 1.2-1-4.6-5z"></path></svg><span class="screen-reader-text">Previous slide</span></button><button class="wp-block-a8csp-carousel-nav--button wp-block-a8csp-carousel-nav--button_next"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true"><path d="M10.6 6L9.4 7l4.6 5-4.6 5 1.2 1 5.4-6z"></path></svg><span class="screen-reader-text">Next slide</span></button></div>
+<!-- /wp:a8csp/carousel-nav -->
+
+<!-- wp:group {"metadata":{"name":"Carousel Track"},"className":"wp-block-a8csp-carousel-track"} -->
+<div class="wp-block-group wp-block-a8csp-carousel-track"><!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}}},"backgroundColor":"accent-1"} -->
+<div class="wp-block-group has-accent-1-background-color has-background" style="padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Plan</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Decide what to show.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}}},"backgroundColor":"accent-2"} -->
+<div class="wp-block-group has-accent-2-background-color has-background" style="padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Build</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Add a slide per item.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}}},"backgroundColor":"accent-5"} -->
+<div class="wp-block-group has-accent-5-background-color has-background" style="padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Review</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Check every slide.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}}},"backgroundColor":"accent-1"} -->
+<div class="wp-block-group has-accent-1-background-color has-background" style="padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Publish</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Share it with readers.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}}},"backgroundColor":"accent-2"} -->
+<div class="wp-block-group has-accent-2-background-color has-background" style="padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)"><!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Iterate</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Add more slides later.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group --></div>
+<!-- /wp:group -->
+
+<!-- wp:a8csp/carousel-pagination {"layout":{"type":"flex","justifyContent":"center"},"count":5} -->
+<div aria-label="Slide controls" role="group" style="--button-size:24px" class="wp-block-a8csp-carousel-pagination"><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 1 of 5</span></button><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 2 of 5</span></button><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 3 of 5</span></button><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 4 of 5</span></button><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 5 of 5</span></button></div>
+<!-- /wp:a8csp/carousel-pagination --></div>
+<!-- /wp:a8csp/carousel -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Posts</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A Query Loop track showing the four latest posts with their featured images.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:a8csp/carousel {"itemCount":4,"title":"Latest posts","type":"query"} -->
+<div aria-label="Latest posts" data-animate-end="stop" role="region" class="wp-block-a8csp-carousel has-overflow-hidden" style="--animation-speed:0.3s;--item-count:4" aria-roledescription="carousel"><!-- wp:a8csp/carousel-nav {"layout":{"type":"flex","justifyContent":"right"}} -->
+<div aria-label="Previous/next slide controls" role="group" style="--button-size:48px" class="wp-block-a8csp-carousel-nav"><button class="wp-block-a8csp-carousel-nav--button wp-block-a8csp-carousel-nav--button_prev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true"><path d="M14.6 7l-1.2-1L8 12l5.4 6 1.2-1-4.6-5z"></path></svg><span class="screen-reader-text">Previous slide</span></button><button class="wp-block-a8csp-carousel-nav--button wp-block-a8csp-carousel-nav--button_next"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true"><path d="M10.6 6L9.4 7l4.6 5-4.6 5 1.2 1 5.4-6z"></path></svg><span class="screen-reader-text">Next slide</span></button></div>
+<!-- /wp:a8csp/carousel-nav -->
+
+<!-- wp:query {"queryId":1,"query":{"perPage":4,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false,"excludeCurrent":null}} -->
+<div class="wp-block-query"><!-- wp:post-template {"metadata":{"name":"Carousel Track"},"className":"wp-block-a8csp-carousel-track"} -->
+<!-- wp:post-featured-image {"isLink":true,"aspectRatio":"1","width":"260px","style":{"spacing":{"margin":{"right":"var:preset|spacing|30"}}}} /-->
+
+<!-- wp:post-title {"level":3,"isLink":true,"fontSize":"medium"} /-->
+<!-- /wp:post-template --></div>
+<!-- /wp:query -->
+
+<!-- wp:a8csp/carousel-pagination {"layout":{"type":"flex","justifyContent":"center"},"count":4} -->
+<div aria-label="Slide controls" role="group" style="--button-size:24px" class="wp-block-a8csp-carousel-pagination"><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 1 of 4</span></button><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 2 of 4</span></button><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 3 of 4</span></button><button class="wp-block-a8csp-carousel-pagination--button"><span class="screen-reader-text">Slide 4 of 4</span></button></div>
+<!-- /wp:a8csp/carousel-pagination --></div>
+<!-- /wp:a8csp/carousel -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>1001</wp:post_id>
+		<wp:post_date><![CDATA[2026-01-01 00:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-01-01 00:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[carousel]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+	</item>
+
+	<item>
+		<title><![CDATA[Red hibiscus]]></title>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>A red hibiscus flower, close up.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>1002</wp:post_id>
+		<wp:post_date><![CDATA[2026-01-01 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-01-01 09:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[red-hibiscus]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:postmeta><wp:meta_key><![CDATA[_thumbnail_id]]></wp:meta_key><wp:meta_value><![CDATA[2006]]></wp:meta_value></wp:postmeta>
+	</item>
+
+	<item>
+		<title><![CDATA[White blooms]]></title>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>White flowers against a grey background.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>1003</wp:post_id>
+		<wp:post_date><![CDATA[2026-01-02 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-01-02 09:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[white-blooms]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:postmeta><wp:meta_key><![CDATA[_thumbnail_id]]></wp:meta_key><wp:meta_value><![CDATA[2007]]></wp:meta_value></wp:postmeta>
+	</item>
+
+	<item>
+		<title><![CDATA[Buttercups]]></title>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>A yellow buttercup in soft light.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>1004</wp:post_id>
+		<wp:post_date><![CDATA[2026-01-03 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-01-03 09:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[buttercups]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:postmeta><wp:meta_key><![CDATA[_thumbnail_id]]></wp:meta_key><wp:meta_value><![CDATA[2008]]></wp:meta_value></wp:postmeta>
+	</item>
+
+	<item>
+		<title><![CDATA[Purple bloom]]></title>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>A purple flower, close up.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>1005</wp:post_id>
+		<wp:post_date><![CDATA[2026-01-04 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-01-04 09:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[purple-bloom]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:postmeta><wp:meta_key><![CDATA[_thumbnail_id]]></wp:meta_key><wp:meta_value><![CDATA[2009]]></wp:meta_value></wp:postmeta>
+	</item>
+</channel>
+</rss>

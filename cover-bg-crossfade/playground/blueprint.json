@@ -1,0 +1,52 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Cover Background Crossfade",
+		"description": "Four full-height Cover blocks with the Crossfade Background style: each background fills the screen and fades into the next as you scroll.",
+		"author": "WordPress Special Projects Team",
+		"categories": [ "Block" ]
+	},
+	"landingPage": "/",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "url",
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/cover-bg-crossfade%400.1.1/cover-bg-crossfade.zip"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "wordpress.org/themes",
+				"slug": "twentytwentyfive"
+			},
+			"ifAlreadyInstalled": "skip",
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "importWxr",
+			"file": {
+				"resource": "bundled",
+				"path": "sample-content.xml"
+			}
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"show_on_front": "page",
+				"page_on_front": "1001"
+			}
+		}
+	]
+}

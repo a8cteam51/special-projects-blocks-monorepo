@@ -1,0 +1,56 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Exclude Duplicate Posts from Query Loops",
+		"description": "Three Query Loops over the same posts on one page: the second has Exclude Duplicate Posts turned on and skips the posts the first loop already shows.",
+		"author": "WordPress Special Projects Team",
+		"categories": [ "Block" ]
+	},
+	"landingPage": "/",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "url",
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/exclude-duplicates-from-query-loops%400.1.1/exclude-duplicates-from-query-loops.zip"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "wordpress.org/themes",
+				"slug": "twentytwentyfive"
+			},
+			"ifAlreadyInstalled": "skip",
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/wordpress/wp-load.php'; wp_delete_post( 1, true );"
+		},
+		{
+			"step": "importWxr",
+			"file": {
+				"resource": "bundled",
+				"path": "sample-content.xml"
+			}
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"show_on_front": "page",
+				"page_on_front": "1001"
+			}
+		}
+	]
+}

@@ -1,0 +1,38 @@
+name: Check Playground blueprints
+
+# Each <plugin>/playground/blueprint.json installs a pinned GitHub release of its
+# plugin. This fails when a plugin's header Version is not the release its
+# blueprint installs, so a version bump can't merge without updating the demo.
+# The version is read the same way make-plugin-release.yml reads it for the tag.
+
+on:
+  pull_request:
+    branches:
+      - trunk
+
+permissions:
+  contents: read
+
+jobs:
+  release-versions:
+    name: Blueprint release versions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compare each blueprint's release with its plugin version
+        run: |
+          status=0
+          for blueprint in */playground/blueprint.json; do
+            [ -e "$blueprint" ] || continue
+            dir="${blueprint%%/*}"
+            version=$(grep "Version:" "$dir/$dir.php" | awk '{print $3}')
+            release="releases/download/${dir}%40${version}/${dir}.zip"
+            if grep -q "$release" "$blueprint"; then
+              echo "$dir: installs $version"
+            else
+              echo "::error file=$blueprint::$dir is at version $version, but $blueprint doesn't install that release. Point its installPlugin URL at .../$release"
+              status=1
+            fi
+          done
+          exit $status

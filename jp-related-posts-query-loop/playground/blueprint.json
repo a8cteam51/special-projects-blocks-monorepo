@@ -1,0 +1,68 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Jetpack Related Posts Query Loop",
+		"description": "A Related Posts Query block in the single post template lists other posts with its own post template, using the recent-posts fallback because Jetpack is not installed.",
+		"author": "WordPress Special Projects Team",
+		"categories": [ "Block" ]
+	},
+	"landingPage": "/?p=1002",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "url",
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/jp-related-posts-query-loop%400.2.2/jp-related-posts-query-loop.zip"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "wordpress.org/themes",
+				"slug": "twentytwentyfive"
+			},
+			"ifAlreadyInstalled": "skip",
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "writeFile",
+			"path": "/tmp/playground-media.php",
+			"data": {
+				"resource": "bundled",
+				"path": "media.php"
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/tmp/playground-media.php';"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/wordpress/wp-load.php'; wp_delete_post( 1, true );"
+		},
+		{
+			"step": "importWxr",
+			"file": {
+				"resource": "bundled",
+				"path": "sample-content.xml"
+			}
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"show_on_front": "page",
+				"page_on_front": "1001"
+			}
+		}
+	]
+}
