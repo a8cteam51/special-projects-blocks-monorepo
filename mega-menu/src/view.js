@@ -33,8 +33,6 @@ const { state, actions, helpers } = store( 'a8csp/mega-menu', {
 	},
 	actions: {
 		toggleMenu() {
-			const context = getContext();
-
 			// A click on a panel opened on hover keeps it open, rather than
 			// closing what the visitor has just reached for.
 			if ( state.isOpen && state.openedOnHover ) {
