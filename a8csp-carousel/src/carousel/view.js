@@ -7,7 +7,6 @@ import './view.css';
 	const SELECTORS = {
 		CAROUSEL: '.wp-block-a8csp-carousel',
 		TRACK: '.wp-block-a8csp-carousel-track',
-		SLIDES: '.wp-block-a8csp-carousel-track > *',
 		PREV_BUTTON: '.wp-block-a8csp-carousel-nav--button_prev',
 		NEXT_BUTTON: '.wp-block-a8csp-carousel-nav--button_next',
 		PAGINATION: '.wp-block-a8csp-carousel-pagination',
@@ -188,7 +187,7 @@ import './view.css';
 	class CarouselInstance {
 		constructor( carousel ) {
 			this.carousel = carousel;
-			this.track = carousel.querySelector( SELECTORS.TRACK );
+			this.track = getTrack( carousel );
 			this.slides = [];
 			this.slideList = null;
 			this.currentNode = null;
@@ -243,6 +242,33 @@ import './view.css';
 	}
 
 	/**
+	 * Returns the carousel's track: the innermost track element it holds.
+	 *
+	 * Posts carousels made with 1.1.1 and 1.1.2 carry the track class on both
+	 * the Query Loop and its Post Template. The slides are the posts.
+	 *
+	 * @param {HTMLElement} carousel The carousel element.
+	 *
+	 * @return {HTMLElement|null} The track element.
+	 */
+	function getTrack( carousel ) {
+		const tracks = Array.from(
+			carousel.querySelectorAll( SELECTORS.TRACK )
+		).filter(
+			( track ) => track.closest( SELECTORS.CAROUSEL ) === carousel
+		);
+
+		return (
+			tracks.find(
+				( track ) =>
+					! tracks.some(
+						( other ) => other !== track && track.contains( other )
+					)
+			) || null
+		);
+	}
+
+	/**
 	 * Initialize the carousel.
 	 *
 	 * @param {HTMLElement} carousel The carousel element.
@@ -254,7 +280,7 @@ import './view.css';
 			return;
 		}
 
-		instance.slides = carousel.querySelectorAll( SELECTORS.SLIDES );
+		instance.slides = instance.track.querySelectorAll( ':scope > *' );
 
 		if ( ! instance.hasTrackAndSlides() ) {
 			return;
@@ -272,6 +298,7 @@ import './view.css';
 		setupControlNavigationHandlers( instance );
 		setupKeyboardNavigation( instance );
 		setupDragNavigation( instance );
+		setupFocusNavigation( instance );
 	}
 
 	/**
@@ -369,8 +396,10 @@ import './view.css';
 	/**
 	 * Manages accessibility attributes for slides based on visibility.
 	 *
-	 * Slides outside of the track boundary are marked as `inert` and `aria-hidden`,
-	 * preventing screen reader access and keyboard navigation.
+	 * Slides outside of the track boundary are marked as `aria-hidden` and their
+	 * focusable elements are taken out of the tab order, preventing screen reader
+	 * access and keyboard navigation. They are not `inert`, so that focus moved
+	 * into them by a script can land (see `setupFocusNavigation()`).
 	 * The attributes are removed from slides when they enter the track boundary.
 	 *
 	 * @param {Element} slide     The slide element to toggle accessibility for.
@@ -378,10 +407,8 @@ import './view.css';
 	 */
 	function setSlideAccessibility( slide, isVisible ) {
 		if ( isVisible ) {
-			slide.removeAttribute( 'inert' );
 			slide.removeAttribute( 'aria-hidden' );
 		} else {
-			slide.setAttribute( 'inert', '' );
 			slide.setAttribute( 'aria-hidden', 'true' );
 		}
 
@@ -441,9 +468,11 @@ import './view.css';
 
 		if ( paginationButtons?.length ) {
 			paginationButtons.forEach( ( button, index ) => {
-				const isActive =
-					! slides[ index ].getAttribute( 'aria-hidden' );
-				setButtonState( button, isActive );
+				if ( ! slides[ index ].getAttribute( 'aria-hidden' ) ) {
+					button.setAttribute( 'aria-current', 'true' );
+				} else {
+					button.removeAttribute( 'aria-current' );
+				}
 			} );
 		}
 	}
@@ -478,12 +507,17 @@ import './view.css';
 	}
 
 	/**
-	 * Ensures the number of pagination buttons matches the number of slides.
+	 * Ensures there is one pagination button per slide, labelled with the
+	 * actual number of slides.
+	 *
+	 * The saved buttons follow the count the editor expects, which can differ
+	 * from the slides on the page: a query may return fewer posts than its
+	 * per-page setting, for example.
 	 *
 	 * @param {CarouselInstance} instance The carousel instance.
 	 */
 	function ensurePaginationButtons( instance ) {
-		const { carousel, paginationButtons, slides } = instance;
+		const { carousel, slides } = instance;
 
 		const paginationContainer = carousel.querySelector(
 			SELECTORS.PAGINATION
@@ -492,28 +526,34 @@ import './view.css';
 			return;
 		}
 
-		const currentCount = paginationButtons?.length || 0;
-		if ( slides.length <= currentCount ) {
-			return;
-		}
+		const buttons = Array.from(
+			paginationContainer.querySelectorAll( SELECTORS.PAGINATION_BUTTONS )
+		);
+
+		// Remove buttons for slides that are not there.
+		buttons
+			.splice( slides.length )
+			.forEach( ( button ) => button.remove() );
 
 		// Create missing pagination buttons.
-		for ( let i = currentCount; i < slides.length; i++ ) {
+		for ( let i = buttons.length; i < slides.length; i++ ) {
 			const button = document.createElement( 'button' );
 			button.className = 'wp-block-a8csp-carousel-pagination--button';
-			button.innerHTML = `<span class="screen-reader-text">${ sprintf(
+			button.innerHTML = '<span class="screen-reader-text"></span>';
+			paginationContainer.appendChild( button );
+			buttons.push( button );
+		}
+
+		buttons.forEach( ( button, i ) => {
+			button.querySelector( '.screen-reader-text' ).textContent = sprintf(
 				/* translators: 1: current slide number, 2: total slides */
 				__( 'Slide %1$d of %2$d', 'a8csp-carousel' ),
 				i + 1,
 				slides.length
-			) }</span>`;
-			paginationContainer.appendChild( button );
-		}
+			);
+		} );
 
-		// Update the reference.
-		instance.paginationButtons = paginationContainer.querySelectorAll(
-			SELECTORS.PAGINATION_BUTTONS
-		);
+		instance.paginationButtons = buttons;
 	}
 
 	/**
@@ -537,25 +577,13 @@ import './view.css';
 		}
 
 		if (
-			button.getAttribute( 'aria-disabled' ) === 'true' ||
+			button.getAttribute( 'aria-current' ) === 'true' ||
 			targetNode === instance.currentNode
 		) {
 			return;
 		}
 
-		// Animate to the target slide's current offset.
-		if ( instance.isInfinite() ) {
-			const onComplete = () =>
-				commitInfiniteRotation( instance, targetNode, false );
-
-			updateCarousel( instance, targetSlide.offsetLeft * -1, {
-				onComplete,
-			} );
-		} else {
-			updateCarousel( instance, targetSlide.offsetLeft * -1 );
-
-			instance.currentNode = targetNode;
-		}
+		goToNode( instance, targetNode );
 	}
 
 	/**
@@ -645,6 +673,33 @@ import './view.css';
 	}
 
 	/**
+	 * Set up navigation to a slide that receives focus while out of view.
+	 *
+	 * Scripts can move focus into such a slide: core's image lightbox, for
+	 * one, returns focus to the last image it showed when it closes.
+	 *
+	 * @param {CarouselInstance} instance The carousel instance.
+	 */
+	function setupFocusNavigation( instance ) {
+		const { slides, track } = instance;
+
+		track.addEventListener( 'focusin', ( e ) => {
+			const slide = Array.from( slides ).find( ( s ) =>
+				s.contains( e.target )
+			);
+
+			if (
+				! slide?.getAttribute( 'aria-hidden' ) ||
+				instance.isAnimating()
+			) {
+				return;
+			}
+
+			goToNode( instance, getNodeForSlide( instance, slide ) );
+		} );
+	}
+
+	/**
 	 * Recalculate the slide positions during resize.
 	 *
 	 * @param {CarouselInstance} instance The carousel instance.
@@ -652,14 +707,17 @@ import './view.css';
 	function realignToFirstVisibleSlide( instance ) {
 		const { currentNode } = instance;
 
-		if ( ! currentNode?.slide ) {
+		if ( ! currentNode?.slide || instance.isAnimating() ) {
 			return;
 		}
 
 		// Use the current logical leftmost slide's offset after resize.
-		const newOffset = Math.round( currentNode.slide.offsetLeft * -1 );
-		if ( newOffset === 0 ) {
-			// Already aligned (e.g., infinite mode where head === currentNode).
+		const { node, offset } = getPosition( instance, currentNode );
+		instance.currentNode = node;
+
+		const newOffset = Math.round( offset * -1 );
+		if ( newOffset === 0 && ! instance.slides[ 0 ].style.transform ) {
+			// Nothing has moved yet.
 			return;
 		}
 
@@ -706,20 +764,7 @@ import './view.css';
 
 		const updateFocus = track.contains( track.ownerDocument.activeElement );
 
-		if ( instance.isInfinite() ) {
-			const onComplete = () =>
-				commitInfiniteRotation( instance, targetNode, updateFocus );
-
-			updateCarousel( instance, targetNode.slide.offsetLeft * -1, {
-				onComplete,
-			} );
-		} else {
-			updateCarousel( instance, targetNode.slide.offsetLeft * -1, {
-				updateFocus,
-			} );
-
-			instance.currentNode = targetNode;
-		}
+		goToNode( instance, targetNode, { updateFocus } );
 	}
 
 	/**
@@ -762,11 +807,74 @@ import './view.css';
 
 		const updateFocus = track.contains( track.ownerDocument.activeElement );
 
-		updateCarousel( instance, newCurrentNode.slide.offsetLeft * -1, {
-			updateFocus,
-		} );
+		goToNode( instance, newCurrentNode, { updateFocus } );
+	}
 
-		instance.currentNode = newCurrentNode;
+	/**
+	 * Moves the carousel so that the given node is its first slide in view.
+	 *
+	 * @param {CarouselInstance} instance            The carousel instance.
+	 * @param {SlideNode}        targetNode          The node to move to.
+	 * @param {Object}           options             Behavior flags.
+	 * @param {boolean}          options.updateFocus After movement, move focus into the current slide (default: false).
+	 */
+	function goToNode( instance, targetNode, { updateFocus = false } = {} ) {
+		if ( instance.isInfinite() ) {
+			const onComplete = () =>
+				commitInfiniteRotation( instance, targetNode, updateFocus );
+
+			updateCarousel( instance, targetNode.slide.offsetLeft * -1, {
+				onComplete,
+			} );
+			return;
+		}
+
+		const { node, offset } = getPosition( instance, targetNode );
+		instance.currentNode = node;
+
+		updateCarousel( instance, offset * -1, { updateFocus } );
+	}
+
+	/**
+	 * Returns the offset that puts the given node first in view, and the node
+	 * that is then first.
+	 *
+	 * Outside infinite mode the track never moves past its last slide: when the
+	 * slides from the given node on do not fill the track, they line up with
+	 * its end instead, and the first slide then in view is returned.
+	 *
+	 * @param {CarouselInstance} instance The carousel instance.
+	 * @param {SlideNode}        node     The node to put first.
+	 *
+	 * @return {{node: SlideNode, offset: number}} The node first in view and its offset.
+	 */
+	function getPosition( instance, node ) {
+		const { slideList, track } = instance;
+		const offset = node.slide.offsetLeft;
+
+		if ( instance.isInfinite() ) {
+			return { node, offset };
+		}
+
+		const lastSlide = slideList.head.prev.slide;
+		const maxOffset = Math.max(
+			0,
+			lastSlide.offsetLeft + lastSlide.offsetWidth - track.clientWidth
+		);
+
+		if ( offset <= maxOffset ) {
+			return { node, offset };
+		}
+
+		let first = node;
+		while (
+			first !== slideList.head &&
+			first.prev.slide.offsetLeft >= maxOffset
+		) {
+			first = first.prev;
+		}
+
+		return { node: first, offset: maxOffset };
 	}
 
 	/**
@@ -998,6 +1106,8 @@ import './view.css';
 		{ animate = true, updateFocus = false, onComplete = null } = {}
 	) {
 		const { carousel, slides } = instance;
+		const previousTransform =
+			slides[ 0 ].style.transform || 'translate3d(0px, 0px, 0px)';
 
 		if ( animate ) {
 			carousel.classList.add( CLASSES.ANIMATING );
@@ -1006,6 +1116,14 @@ import './view.css';
 		slides.forEach( ( slide ) => {
 			slide.style.transform = `translate3d(${ offset }px, 0, 0)`;
 		} );
+
+		// No `transitionend` event comes when the offset is unchanged or there
+		// is no transition to run (reduced motion), so complete at once then.
+		const transitions =
+			animate &&
+			slides[ 0 ].style.transform !== previousTransform &&
+			parseFloat( getComputedStyle( slides[ 0 ] ).transitionDuration ) >
+				0;
 
 		const handleCompletion = () => {
 			if ( onComplete ) {
@@ -1031,12 +1149,12 @@ import './view.css';
 			handleCompletion();
 		};
 
-		if ( animate ) {
+		if ( transitions ) {
 			slides[ 0 ].addEventListener( 'transitionend', onTransitionEnd, {
 				once: true,
 			} );
 		} else {
-			handleCompletion();
+			onTransitionEnd();
 		}
 	}
 

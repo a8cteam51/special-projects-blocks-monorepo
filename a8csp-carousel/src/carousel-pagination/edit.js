@@ -3,10 +3,12 @@ import {
 	InspectorControls,
 	useBlockProps,
 	useInnerBlocksProps,
+	store as blockEditorStore,
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 } from '@wordpress/block-editor';
 import { RangeControl, PanelBody } from '@wordpress/components';
+import { useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
@@ -30,11 +32,21 @@ export default function Edit( props ) {
 		}
 	);
 
+	const { __unstableMarkNextChangeAsNotPersistent } =
+		useDispatch( blockEditorStore );
+
 	useEffect( () => {
 		if ( count !== itemCountContext ) {
+			// Keeping the count in step is not an edit of its own.
+			__unstableMarkNextChangeAsNotPersistent();
 			setAttributes( { count: itemCountContext } );
 		}
-	}, [ itemCountContext, setAttributes, count ] );
+	}, [
+		itemCountContext,
+		setAttributes,
+		count,
+		__unstableMarkNextChangeAsNotPersistent,
+	] );
 
 	return (
 		<>

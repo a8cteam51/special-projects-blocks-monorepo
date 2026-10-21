@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "a8csp/carousel-nav",
-	"version": "0.1.0",
+	"version": "1.2.0",
 	"title": "Carousel Navigation",
 	"category": "widgets",
 	"icon": "controls-back",
@@ -31,8 +31,16 @@
 		},
 		"iconUpload": {
 			"type": "object"
+		},
+		"iconSize": {
+			"type": "number"
 		}
 	},
+	"styles": [
+		{ "name": "default", "label": "Default", "isDefault": true },
+		{ "name": "sides", "label": "Either side" },
+		{ "name": "column", "label": "Left column" }
+	],
 	"supports": {
 		"align": true,
 		"layout": {

@@ -6,7 +6,12 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
+import {
+	PanelBody,
+	RangeControl,
+	SelectControl,
+	TextControl,
+} from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
@@ -92,6 +97,8 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 		animateEnd,
 		animationSpeed,
 		overflow,
+		slidesPerView,
+		slidesPerViewSmall,
 		title,
 		trackHeight,
 		trackHeightUnit,
@@ -134,11 +141,27 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 		useBlockProps( getHTMLAttributes( attributes ) )
 	);
 
-	useEffect( () => {
-		setAttributes( { itemCount: Number( itemCount ) } );
-	}, [ itemCount, setAttributes ] );
+	const {
+		selectBlock,
+		insertBlock,
+		__unstableMarkNextChangeAsNotPersistent,
+	} = useDispatch( blockEditorStore );
 
-	const { selectBlock, insertBlock } = useDispatch( blockEditorStore );
+	useEffect( () => {
+		if ( Number( itemCount ) === attributes.itemCount ) {
+			return;
+		}
+
+		// Keeping the count in step is not an edit: opening a post whose
+		// stored count differs must not leave it with unsaved changes.
+		__unstableMarkNextChangeAsNotPersistent();
+		setAttributes( { itemCount: Number( itemCount ) } );
+	}, [
+		itemCount,
+		attributes.itemCount,
+		setAttributes,
+		__unstableMarkNextChangeAsNotPersistent,
+	] );
 
 	const selectVariation = ( nextVariation ) => {
 		insertBlock(
@@ -199,6 +222,41 @@ export default function Edit( { attributes, clientId, name, setAttributes } ) {
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 				/>
+				<RangeControl
+					label={ __( 'Slides per view', 'a8csp-carousel' ) }
+					help={ __(
+						'Leave empty to size slides by their content.',
+						'a8csp-carousel'
+					) }
+					onChange={ ( v ) => setAttributes( { slidesPerView: v } ) }
+					value={ slidesPerView }
+					min={ 1 }
+					max={ 8 }
+					allowReset
+					__nextHasNoMarginBottom
+					__next40pxDefaultSize
+				/>
+				{ !! slidesPerView && (
+					<RangeControl
+						label={ __(
+							'Slides per view on small screens',
+							'a8csp-carousel'
+						) }
+						help={ __(
+							'Used when the carousel is narrower than 600px. Leave empty to use the number above.',
+							'a8csp-carousel'
+						) }
+						onChange={ ( v ) =>
+							setAttributes( { slidesPerViewSmall: v } )
+						}
+						value={ slidesPerViewSmall }
+						min={ 1 }
+						max={ 8 }
+						allowReset
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
+					/>
+				) }
 				<SelectControl
 					label={ __( 'Animate', 'a8csp-carousel' ) }
 					onChange={ ( v ) => setAttributes( { animate: v } ) }
