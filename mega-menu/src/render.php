@@ -32,29 +32,42 @@ wp_interactivity_state(
 	)
 );
 
-/*
+/**
+ * Filters the loading attributes given to every image in the panel.
+ *
  * The panel is hidden until it is opened, so its images must not use up the
- * page's eager-loading slots or take its high fetch priority. They are marked
- * as core marks the Navigation overlay's images, with fetchpriority="low". The
- * filter covers images rendered while the panel renders; the attribute covers
- * images that the enclosing template part's content filter processes later.
+ * page's eager-loading slots or take its high fetch priority. By default they
+ * get fetchpriority="low", as core gives images in the Navigation overlay:
+ * they still load with the page, after everything else, so the panel opens
+ * with its images ready. Return array( 'loading' => 'lazy' ) to load them only
+ * when the panel opens instead, which saves the download on pages where no
+ * panel is opened. Either value keeps them out of the eager-loading count.
+ *
+ * @param array $mega_menu_image_attributes Attribute names and values to set on each panel image.
+ * @param array $attributes                 The block attributes.
  */
-$mega_menu_low_priority_images = static function ( $loading_attrs, $tag_name ) {
-	return 'img' === $tag_name ? array(
-		'decoding'      => 'async',
-		'fetchpriority' => 'low',
-	) : $loading_attrs;
+$mega_menu_image_attributes = apply_filters( 'a8csp_mega_menu_panel_image_attributes', array( 'fetchpriority' => 'low' ), $attributes );
+if ( ! is_array( $mega_menu_image_attributes ) ) {
+	$mega_menu_image_attributes = array( 'fetchpriority' => 'low' );
+}
+
+// Images rendered while the panel renders, such as featured images in a query.
+$mega_menu_panel_image_loading = static function ( $loading_attrs, $tag_name ) use ( $mega_menu_image_attributes ) {
+	return 'img' === $tag_name ? array_merge( array( 'decoding' => 'async' ), $mega_menu_image_attributes ) : $loading_attrs;
 };
 
-add_filter( 'pre_wp_get_loading_optimization_attributes', $mega_menu_low_priority_images, 10, 2 );
+add_filter( 'pre_wp_get_loading_optimization_attributes', $mega_menu_panel_image_loading, 10, 2 );
 ob_start();
 block_template_part( $mega_menu_blocks_menu_slug );
 $mega_menu_panel = ob_get_clean();
-remove_filter( 'pre_wp_get_loading_optimization_attributes', $mega_menu_low_priority_images, 10 );
+remove_filter( 'pre_wp_get_loading_optimization_attributes', $mega_menu_panel_image_loading, 10 );
 
+// Images that the enclosing template part's content filter processes later.
 $mega_menu_panel_tags = new WP_HTML_Tag_Processor( $mega_menu_panel );
 while ( $mega_menu_panel_tags->next_tag( 'IMG' ) ) {
-	$mega_menu_panel_tags->set_attribute( 'fetchpriority', 'low' );
+	foreach ( $mega_menu_image_attributes as $mega_menu_attribute_name => $mega_menu_attribute_value ) {
+		$mega_menu_panel_tags->set_attribute( $mega_menu_attribute_name, $mega_menu_attribute_value );
+	}
 }
 $mega_menu_panel = $mega_menu_panel_tags->get_updated_html();
 
