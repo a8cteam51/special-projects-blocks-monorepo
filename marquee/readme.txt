@@ -3,7 +3,7 @@ Contributors:      wpspecialprojects
 Tags:              block, marquee, scrolling, ticker, logos
 Requires at least: 6.7
 Tested up to:      6.7
-Stable tag:        0.1.8
+Stable tag:        0.1.9
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,13 @@ Requirements: Node.js 18+.
 4. `npm start` — development build with file watching
 
 == Changelog ==
+
+= 0.1.9 =
+* Fix: The empty band of about 8px below the row is gone.
+* Fix: Row groups, and Grid groups with a set column count, used as items keep their layout.
+* Fix: A Grid group in Auto mode no longer collapses to zero width. It stacks its children; set a column count to lay them out side by side.
+* Fix: Screen readers no longer read the looping copies, and keyboard users no longer tab through them. Links in the copies still work with a click.
+* Fix: Padding and a border set on the block no longer push it wider than its column.
 
 = 0.1.8 =
 * Add: Margin (top and bottom) and Border controls (color, width, style, radius) in the block's Styles panel.

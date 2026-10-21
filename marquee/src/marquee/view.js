@@ -31,6 +31,26 @@ const ITEMS_SELECTOR = '.marquee-items';
 const MAX_COPIES = 60;
 
 /**
+ * Elements a keyboard can reach. Copies take these out of the tab order.
+ *
+ * @type {string}
+ */
+const FOCUSABLE_SELECTOR = [
+	'a[href]',
+	'area[href]',
+	'button',
+	'input',
+	'select',
+	'textarea',
+	'iframe',
+	'summary',
+	'audio[controls]',
+	'video[controls]',
+	'[contenteditable]',
+	'[tabindex]',
+].join( ',' );
+
+/**
  * Visitors who prefer reduced motion get a still row: the CSS stops the
  * animation, and the track keeps a single copy of the content so no repeats
  * are visible.
@@ -164,6 +184,29 @@ function loadImages( state ) {
 			img.loading = 'eager';
 		} )
 	);
+}
+
+/**
+ * Prepares an item for use as a copy. A copy repeats what the original already
+ * says, so it is hidden from assistive technology and taken out of the tab
+ * order. It is not made inert: most of the visible row is copies, and a link
+ * in a copy must still respond to a click.
+ *
+ * @param {Element} item A clone of an original item.
+ *
+ * @return {Element} The same item.
+ */
+function hideCopy( item ) {
+	item.setAttribute( 'aria-hidden', 'true' );
+
+	if ( item.matches( FOCUSABLE_SELECTOR ) ) {
+		item.setAttribute( 'tabindex', '-1' );
+	}
+	item.querySelectorAll( FOCUSABLE_SELECTOR ).forEach( ( element ) => {
+		element.setAttribute( 'tabindex', '-1' );
+	} );
+
+	return item;
 }
 
 /**
@@ -359,9 +402,10 @@ function initMarquee( marquee ) {
 		speed = 50;
 	}
 
+	// The template only ever produces copies, so hide its items once here.
 	const template = document.createDocumentFragment();
 	originalItems.forEach( ( item ) => {
-		template.appendChild( item.cloneNode( true ) );
+		template.appendChild( hideCopy( item.cloneNode( true ) ) );
 	} );
 
 	const state = {
