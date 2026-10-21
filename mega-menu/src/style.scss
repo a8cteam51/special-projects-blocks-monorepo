@@ -9,18 +9,17 @@
 	list-style: none;
 	text-align: right;
 
-	button {
+	// The toggle takes the navigation's typography, like the other items.
+	// Buttons inside the panel keep their own styles.
+	> button {
 		background: transparent;
 		border: none;
 		color: inherit;
 		cursor: pointer;
-		font-size: inherit;
-		font-weight: revert;
+		font: inherit;
+		letter-spacing: inherit;
+		text-transform: inherit;
 		padding: 0.1em;
-
-		&.active {
-			background: #ccc;
-		}
 	}
 
 	.wp-block-a8csp-mega-menu__menu-container {
@@ -53,10 +52,21 @@
 		opacity: 1;
 		visibility: visible;
 	}
+
+	// In the open Navigation overlay the panel opens in the flow of the menu,
+	// as it does on small screens, rather than over the items below it.
+	.wp-block-navigation__responsive-container.is-menu-open & .wp-block-a8csp-mega-menu__menu-container {
+		position: relative;
+		right: unset;
+		transform: unset;
+	}
 }
 
+// Lets the open panel span the header rather than the navigation. Core adds
+// `has-modal-open` to the root while the Navigation overlay is open, and the
+// overlay must keep its own fixed position.
 @media screen and (min-width: 600px) {
-	body.mega-menu-open {
+	html:not(.has-modal-open) body.mega-menu-open {
 		.wp-block-navigation,
 		.wp-block-navigation__container,
 		.wp-block-navigation__responsive-container,

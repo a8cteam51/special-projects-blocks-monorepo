@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, navigation, menu, mega-menu, interactivity
 Tested up to:      6.8
-Stable tag:        0.2.3
+Stable tag:        0.3.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +22,9 @@ The plugin registers a dedicated "Mega Menu" template part area (the **Menu** ar
 * **Editor controls** — a Settings panel in the block sidebar provides a **Label** field and a **Menu Template** combobox listing every template part in the Menu area. The label can also be edited inline. If no Menu-area template parts exist yet, the editor shows a prompt to create one.
 * **Accessible toggle button** — on the frontend the menu renders as an `<li>` with a `<button>` carrying `aria-haspopup`, `aria-expanded`, and `aria-controls`, plus a labelled container `<div>`.
 * **Interactivity API behaviour** — clicking the button toggles the panel, opening it moves focus to the first link inside, **Escape** closes the menu and returns focus to the button, and clicking outside the panel closes it. A `mega-menu-open` class is toggled on the page `<body>` while a menu is open.
-* **Theming filters** — `a8csp_mega_menu_area_args`, `a8csp_mega_menu_extra_block_wrapper_attributes`, `a8csp_mega_menu_button_classes`, and `a8csp_mega_menu_container_classes` let you adjust the template part area definition and the markup classes/attributes.
+* **Open on hover** — an optional setting that opens the panel when a mouse pointer moves onto its item and closes it shortly after the pointer leaves. Clicking a panel opened on hover keeps it open. Hover is ignored on touch screens and inside the Navigation block's open overlay.
+* **Low-priority panel images** — images in a closed panel get `fetchpriority="low"`, as core gives images in the Navigation overlay, so they never take the eager-loading slots or high priority that belong to the page's first-screen image. They still load with the page, so a panel opens with its images ready. The `a8csp_mega_menu_panel_image_attributes` filter can lazy-load them instead.
+* **Theming filters** — `a8csp_mega_menu_area_args`, `a8csp_mega_menu_extra_block_wrapper_attributes`, `a8csp_mega_menu_button_classes`, and `a8csp_mega_menu_container_classes` let you adjust the template part area definition and the markup classes/attributes. `a8csp_mega_menu_panel_image_attributes` sets the loading attributes of the panel's images.
 
 == Installation ==
 
@@ -58,11 +60,26 @@ It is a child of the core Navigation block. Add or edit a Navigation block, then
 
 A menu closes when the visitor clicks its button again, presses the **Escape** key, or clicks anywhere outside the open panel. When closed via Escape, focus returns to the menu button.
 
+= Can panel images load only when a panel opens? =
+
+Yes. By default they load with the page at low priority, so a panel opens with its images ready. To load them only when a panel opens, return lazy-loading attributes from the filter:
+
+`add_filter( 'a8csp_mega_menu_panel_image_attributes', fn() => array( 'loading' => 'lazy' ) );`
+
+The filter also receives the block attributes, so this can be set per panel (by `menuSlug`, for example).
+
 = Does this require any custom JavaScript or page builder? =
 
 No. The frontend behaviour is built on the WordPress Interactivity API and ships with the plugin. You only need the block editor and Site Editor to configure menus.
 
 == Changelog ==
+
+= 0.3.0 =
+* Added: "Open on hover" setting for opening the panel with a mouse pointer.
+* Fixed: Opening a panel inside the open Navigation overlay at 600px and wider no longer collapses the overlay; the panel opens below its button in the overlay.
+* Fixed: The toggle button takes the navigation's typography and no longer turns grey when open.
+* Fixed: Images in a closed panel no longer cause the page's first-screen image to be lazy-loaded.
+* Added: `a8csp_mega_menu_panel_image_attributes` filter, to lazy-load panel images instead of loading them at low priority.
 
 = 0.2.3 =
 * Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
