@@ -154,7 +154,8 @@ engineering lead.
    entry when releasing changes — the release workflow reads the **PHP header version**.
 6. When you bump the version, update the release URL in
    `<plugin>/playground/blueprint.json` to the new version, and update the demo
-   content if the block's markup changed.
+   content if the block's markup changed. The "Check Playground blueprints"
+   workflow fails until the two match.
 
 ## Playground demos
 
