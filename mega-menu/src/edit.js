@@ -8,7 +8,12 @@ import {
 	useBlockProps,
 } from '@wordpress/block-editor';
 
-import { ComboboxControl, PanelBody, TextControl } from '@wordpress/components';
+import {
+	ComboboxControl,
+	PanelBody,
+	TextControl,
+	ToggleControl,
+} from '@wordpress/components';
 
 import { useEntityRecords } from '@wordpress/core-data';
 
@@ -25,7 +30,7 @@ import './editor.scss';
  */
 export default function Edit( props ) {
 	const { attributes, setAttributes } = props;
-	const { label, menuSlug } = attributes;
+	const { label, menuSlug, openOnHover } = attributes;
 
 	// Fetch all template parts.
 	const { hasResolved, records } = useEntityRecords(
@@ -81,7 +86,18 @@ export default function Edit( props ) {
 							/>
 						)
 					}
-					
+					<ToggleControl
+						__nextHasNoMarginBottom
+						label={ __( 'Open on hover', 'mega-menu' ) }
+						help={ __(
+							'Opens the panel when a mouse pointer moves onto the item. Click and keyboard still work. In the navigation overlay, the item opens on click only.',
+							'mega-menu'
+						) }
+						checked={ !! openOnHover }
+						onChange={ ( value ) =>
+							setAttributes( { openOnHover: value } )
+						}
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<div { ...useBlockProps() }>
