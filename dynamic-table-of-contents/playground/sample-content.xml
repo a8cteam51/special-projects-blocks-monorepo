@@ -64,7 +64,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>The block's Heading levels setting chooses which levels are listed. This one lists H2 and H3 headings only, so the level-four heading below this section is left out.</p>
+<p>The block's Include H1 headings to Include H6 headings settings choose which levels are listed. This one lists H2 and H3 headings only, so the level-four heading below this section is left out.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -76,7 +76,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Check H4 under Heading levels and this heading joins the list, in document order with the rest.</p>
+<p>Switch on Include H4 headings in the block's settings and this heading joins the list, in document order with the rest.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -159,7 +159,7 @@
 
 <!-- wp:accordion-panel -->
 <div role="region" class="wp-block-accordion-panel"><!-- wp:paragraph -->
-<p>Yes. Check the levels you want under Heading levels in the block's settings. This page lists H2 and H3. In code, the <code>a8csp_dynamic_table_of_contents_heading_selectors</code> filter can change which headings are collected.</p>
+<p>Yes. Switch on the levels you want in the block's settings, such as Include H2 headings. This page lists H2 and H3. In code, the <code>a8csp_dynamic_table_of_contents_heading_selectors</code> filter can change which headings are collected.</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:accordion-panel --></div>
 <!-- /wp:accordion-item --></div>

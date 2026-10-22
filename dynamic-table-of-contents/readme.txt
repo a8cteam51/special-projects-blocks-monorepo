@@ -21,7 +21,7 @@ The list is assembled in the browser at render time from the post's live heading
 * **Headings from wrapper blocks** — an optional **Include headings nested in other blocks** toggle lists headings rendered by blocks such as accordions (which wrap their title in extra elements and so never get a server-side anchor). When enabled, the view script generates an anchor for each such heading and ignores decorative, `aria-hidden` icons when building the label.
 * **Scroll-spy highlighting** — an `IntersectionObserver` watches the headings and adds an `active` class to the matching link as each section scrolls into view, so the table tracks the reader's position. The active entry is shown in bold.
 * **Editable title** — the block title is editable inline via RichText and defaults to "Table of Contents". An empty title is omitted from the output.
-* **Heading levels** — checkboxes in the block's **Settings** panel choose which heading levels (H1 to H6) are listed. All six are on by default. The `a8csp_dynamic_table_of_contents_heading_selectors` filter lets code change which headings are listed, and overrides the checkboxes.
+* **Heading levels** — **Include H1 headings** to **Include H6 headings** toggles in the block's **Settings** panel choose which heading levels are listed. All six are on by default, and **Reset all** in the panel's menu puts them back. The `a8csp_dynamic_table_of_contents_heading_selectors` filter lets code change which headings are listed, and overrides the toggles.
 * **Per-heading opt-out** — switch on **Hide from table of contents** in a Heading block's settings to keep it out of the list. Behind the scenes this adds the `hide-from-toc` CSS class, and adding that class to a wrapping block (such as a Group or Column) excludes every heading inside it. The `a8csp_dynamic_table_of_contents_exclude_selectors` filter lets you change the class(es) that trigger the opt-out.
 * **Title filter** — the `wpcomsp_dynamic_table_of_contents_block_title` filter lets you adjust the rendered title.
 * **Block supports** — background and text colour, padding / margin / block gap spacing, sticky positioning, and border width, radius, and colour, all through the standard block editor controls.
@@ -47,7 +47,7 @@ Requirements: Node.js 18+.
 
 = How does the table of contents get its entries? =
 
-The list is built on the frontend from the headings in your post. When the page loads, the block's view script queries the post content for headings (by default every level checked under **Heading levels**, inside `.wp-block-post-content`) and creates a linked entry for each one. You do not add or edit the entries yourself.
+The list is built on the frontend from the headings in your post. When the page loads, the block's view script queries the post content for headings (by default every level switched on in the block's **Settings**, inside `.wp-block-post-content`) and creates a linked entry for each one. You do not add or edit the entries yourself.
 
 = Do I need to add anchor IDs to my headings? =
 
@@ -55,9 +55,9 @@ No. The plugin adds an `id` to any heading that doesn't already have one, genera
 
 = Which headings appear in the list? =
 
-By default, all heading levels (`h1` through `h6`) inside the post content are included. To change that, select the block, open **Settings** in the block settings sidebar, and uncheck the levels you don't want under **Heading levels**. For example, check only H2 and H3 to leave deeper subsections out. If no level is checked, the block shows nothing on the site.
+By default, all heading levels (`h1` through `h6`) inside the post content are included. To change that, select the block and, under **Settings** in the block settings sidebar, switch off the levels you don't want (for example, **Include H4 headings**). Leaving only H2 and H3 on keeps deeper subsections out. If every level is off, the block shows nothing on the site.
 
-To set the headings in code instead, use the `a8csp_dynamic_table_of_contents_heading_selectors` filter. It receives the selectors for the checked levels, the block attributes, and the block object, and must return an array of CSS selectors. What it returns wins over the checkboxes:
+To set the headings in code instead, use the `a8csp_dynamic_table_of_contents_heading_selectors` filter. It receives the selectors for the levels that are switched on, the block attributes, and the block object, and must return an array of CSS selectors. What it returns wins over the toggles:
 
 `
 add_filter(
@@ -104,7 +104,7 @@ Yes. The title is editable inline in the editor and defaults to "Table of Conten
 == Changelog ==
 
 = 0.5.0 =
-* Added a **Heading levels** setting (H1 to H6 checkboxes, all on by default) that chooses which heading levels the table lists. The heading selectors filter now starts from the checked levels and still overrides them.
+* Added **Include H1 headings** to **Include H6 headings** toggles (all on by default) that choose which heading levels the table lists. The Settings panel is now a tools panel with a reset menu. The heading selectors filter now starts from the levels that are on and still overrides them.
 * Added a **Hide from table of contents** toggle to the Heading block. It adds or removes the existing `hide-from-toc` class, so headings that already have the class keep working.
 
 = 0.4.1 =

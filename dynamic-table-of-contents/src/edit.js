@@ -1,25 +1,17 @@
 import { __, sprintf } from '@wordpress/i18n';
-import { useInstanceId } from '@wordpress/compose';
 import {
 	useBlockProps,
 	RichText,
 	InspectorControls,
 } from '@wordpress/block-editor';
 import {
-	BaseControl,
-	CheckboxControl,
 	Notice,
-	PanelBody,
 	ToggleControl,
+	__experimentalToolsPanel as ToolsPanel, // eslint-disable-line @wordpress/no-unsafe-wp-apis
+	__experimentalToolsPanelItem as ToolsPanelItem, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 } from '@wordpress/components';
 
 const HEADING_LEVELS = [ 1, 2, 3, 4, 5, 6 ];
-
-const HEADING_LEVELS_GRID_STYLE = {
-	display: 'grid',
-	gridTemplateColumns: 'repeat( 3, 1fr )',
-	gap: '12px 16px',
-};
 
 /**
  * Whether a heading level is listed. Blocks saved before 0.5.0 have no
@@ -45,92 +37,106 @@ function isLevelIncluded( attributes, level ) {
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
-	const headingLevelsHelpId = `dynamic-table-of-contents-heading-levels-help-${ useInstanceId(
-		Edit
-	) }`;
 	const hasNoLevels = ! HEADING_LEVELS.some( ( level ) =>
 		isLevelIncluded( attributes, level )
 	);
 
+	const resetAll = () =>
+		setAttributes( {
+			includeH1: true,
+			includeH2: true,
+			includeH3: true,
+			includeH4: true,
+			includeH5: true,
+			includeH6: true,
+			includeNestedHeadings: false,
+		} );
+
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody
-					title={ __( 'Settings', 'dynamic-table-of-contents' ) }
+				<ToolsPanel
+					label={ __( 'Settings', 'dynamic-table-of-contents' ) }
+					resetAll={ resetAll }
 				>
-					<fieldset
-						aria-describedby={ headingLevelsHelpId }
-						style={ { border: 0, margin: '0 0 16px', padding: 0 } }
-					>
-						<BaseControl.VisualLabel as="legend">
-							{ __(
-								'Heading levels',
+					{ HEADING_LEVELS.map( ( level ) => {
+						const attribute = `includeH${ level }`;
+						const label = sprintf(
+							/* translators: %d: heading level, 1 to 6. */
+							__(
+								'Include H%d headings',
 								'dynamic-table-of-contents'
-							) }
-						</BaseControl.VisualLabel>
-						<div style={ HEADING_LEVELS_GRID_STYLE }>
-							{ HEADING_LEVELS.map( ( level ) => (
-								// Each checkbox gets its own wrapper so the inspector's
-								// margin between controls doesn't push rows out of line.
-								<div key={ level }>
-									<CheckboxControl
-										__nextHasNoMarginBottom
-										label={ sprintf(
-											/* translators: %d: heading level, 1 to 6. */
-											__(
-												'H%d',
-												'dynamic-table-of-contents'
-											),
-											level
-										) }
-										checked={ isLevelIncluded(
-											attributes,
-											level
-										) }
-										onChange={ ( checked ) =>
-											setAttributes( {
-												[ `includeH${ level }` ]:
-													checked,
-											} )
-										}
-									/>
-								</div>
-							) ) }
-						</div>
-						<p
-							id={ headingLevelsHelpId }
-							className="components-base-control__help"
-						>
-							{ __(
-								'Only headings at the checked levels are listed.',
-								'dynamic-table-of-contents'
-							) }
-						</p>
-					</fieldset>
+							),
+							level
+						);
+
+						return (
+							<ToolsPanelItem
+								key={ attribute }
+								label={ label }
+								hasValue={ () =>
+									! isLevelIncluded( attributes, level )
+								}
+								onDeselect={ () =>
+									setAttributes( { [ attribute ]: true } )
+								}
+								isShownByDefault
+							>
+								<ToggleControl
+									__nextHasNoMarginBottom
+									label={ label }
+									checked={ isLevelIncluded(
+										attributes,
+										level
+									) }
+									onChange={ ( checked ) =>
+										setAttributes( {
+											[ attribute ]: checked,
+										} )
+									}
+								/>
+							</ToolsPanelItem>
+						);
+					} ) }
 					{ hasNoLevels && (
-						<Notice status="warning" isDismissible={ false }>
-							{ __(
-								'No heading levels are checked, so the table of contents will not show on the site.',
-								'dynamic-table-of-contents'
-							) }
-						</Notice>
+						// ToolsPanel lays its children out on a grid; span every column.
+						<div style={ { gridColumn: '1 / -1' } }>
+							<Notice status="warning" isDismissible={ false }>
+								{ __(
+									'No heading levels are included, so the table of contents will not show on the site.',
+									'dynamic-table-of-contents'
+								) }
+							</Notice>
+						</div>
 					) }
-					<ToggleControl
-						__nextHasNoMarginBottom
+					<ToolsPanelItem
 						label={ __(
 							'Include headings nested in other blocks',
 							'dynamic-table-of-contents'
 						) }
-						help={ __(
-							'List headings that come from wrapper blocks such as accordions, which split their title across extra elements. These headings have no anchor of their own, so one is generated from the heading text on the frontend.',
-							'dynamic-table-of-contents'
-						) }
-						checked={ !! attributes.includeNestedHeadings }
-						onChange={ ( includeNestedHeadings ) =>
-							setAttributes( { includeNestedHeadings } )
+						hasValue={ () => !! attributes.includeNestedHeadings }
+						onDeselect={ () =>
+							setAttributes( { includeNestedHeadings: false } )
 						}
-					/>
-				</PanelBody>
+						isShownByDefault
+					>
+						<ToggleControl
+							__nextHasNoMarginBottom
+							label={ __(
+								'Include headings nested in other blocks',
+								'dynamic-table-of-contents'
+							) }
+							help={ __(
+								'List headings that come from wrapper blocks such as accordions, which split their title across extra elements. These headings have no anchor of their own, so one is generated from the heading text on the frontend.',
+								'dynamic-table-of-contents'
+							) }
+							checked={ !! attributes.includeNestedHeadings }
+							onChange={ ( includeNestedHeadings ) =>
+								setAttributes( { includeNestedHeadings } )
+							}
+						/>
+					</ToolsPanelItem>
+				</ToolsPanel>
 			</InspectorControls>
 			<div { ...useBlockProps() }>
 				<RichText
