@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.5.0 - 2026-10-21
+
+### Added
+
+- **Heading levels** setting: six checkboxes (H1 to H6) in the block's Settings panel choose which heading levels the table lists. They're stored as the `includeH1` to `includeH6` attributes, all on by default, so existing blocks keep listing every level. The `a8csp_dynamic_table_of_contents_heading_selectors` filter now receives only the enabled levels, and still has the last word. With no levels enabled the block renders nothing, rather than falling back to every level.
+- **Hide from table of contents** toggle on the Heading block, in its own "Table of contents" panel. It adds or removes the existing `hide-from-toc` class, so headings that already have the class show the toggle switched on and saved markup doesn't change.
+
 ## 0.4.1 - 2026-10-09
 
 ### Removed

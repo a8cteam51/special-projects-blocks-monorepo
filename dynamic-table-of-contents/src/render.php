@@ -10,30 +10,21 @@ if ( ! isset( $block->context['postId'] ) ) {
 	return;
 }
 
-// WPCom is having trouble enqueueing view.js for this block, so doing it here.
-$asset_deps = require trailingslashit( plugin_dir_path( __FILE__ ) ) . 'view.asset.php';
+// List each heading level the block's settings include. Blocks saved before
+// 0.5.0 have none of these attributes, so a missing one counts as included.
+$default_heading_selectors = array();
 
-wp_enqueue_script(
-	'wpcomsp-dynamic-table-of-contents-view',
-	plugins_url( 'view.js', __FILE__ ),
-	$asset_deps['dependencies'],
-	$asset_deps['version'],
-	true
-);
-
-$default_heading_selectors = array(
-	'.wp-block-post-content h1',
-	'.wp-block-post-content h2',
-	'.wp-block-post-content h3',
-	'.wp-block-post-content h4',
-	'.wp-block-post-content h5',
-	'.wp-block-post-content h6',
-);
+foreach ( range( 1, 6 ) as $heading_level ) {
+	if ( $attributes[ 'includeH' . $heading_level ] ?? true ) {
+		$default_heading_selectors[] = '.wp-block-post-content h' . $heading_level;
+	}
+}
 
 /**
  * Filters the selectors used by the view script to collect headings for the table of contents.
  *
  * @since 0.2.0
+ * @since 0.5.0 The default selectors only cover the heading levels enabled in the block's settings.
  *
  * @param string[] $default_heading_selectors Array of selectors for table of contents headings.
  * @param array    $attributes                Block attributes.
@@ -44,6 +35,23 @@ $heading_selectors = apply_filters(
 	$default_heading_selectors,
 	$attributes,
 	$block
+);
+
+// With no heading levels to list there is nothing to show. Without this, the
+// view script would fall back to listing every level.
+if ( empty( $heading_selectors ) ) {
+	return;
+}
+
+// WPCom is having trouble enqueueing view.js for this block, so doing it here.
+$asset_deps = require trailingslashit( plugin_dir_path( __FILE__ ) ) . 'view.asset.php';
+
+wp_enqueue_script(
+	'wpcomsp-dynamic-table-of-contents-view',
+	plugins_url( 'view.js', __FILE__ ),
+	$asset_deps['dependencies'],
+	$asset_deps['version'],
+	true
 );
 
 $include_nested_headings = ! empty( $attributes['includeNestedHeadings'] );
