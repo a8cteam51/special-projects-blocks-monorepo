@@ -29,6 +29,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * through the block editor in the corresponding context.
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
+ *
+ * @return void
  */
 function wpcomsp_dynamic_table_of_contents_block_init() {
 	register_block_type( __DIR__ . '/build' );
