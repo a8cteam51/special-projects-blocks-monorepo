@@ -4,7 +4,7 @@
  * Description:       Creates a table of contents that's dynamically (PHP) rendered.
  * Requires at least: 6.1
  * Requires PHP:      8.0
- * Version:           0.4.1
+ * Version:           0.5.0
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
  * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/
@@ -29,6 +29,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * through the block editor in the corresponding context.
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
+ *
+ * @return void
  */
 function wpcomsp_dynamic_table_of_contents_block_init() {
 	register_block_type( __DIR__ . '/build' );

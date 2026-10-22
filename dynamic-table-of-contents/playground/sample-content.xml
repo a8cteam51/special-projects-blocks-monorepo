@@ -19,7 +19,7 @@
 		<dc:creator><![CDATA[admin]]></dc:creator>
 		<content:encoded><![CDATA[<!-- wp:columns {"align":"wide"} -->
 <div class="wp-block-columns alignwide"><!-- wp:column {"width":"33.33%"} -->
-<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:wpcomsp/dynamic-table-of-contents {"title":"On this page","includeNestedHeadings":true,"style":{"position":{"type":"sticky","top":"0px"},"spacing":{"padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"backgroundColor":"accent-5"} /--></div>
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:wpcomsp/dynamic-table-of-contents {"title":"On this page","includeNestedHeadings":true,"includeH1":false,"includeH4":false,"includeH5":false,"includeH6":false,"style":{"position":{"type":"sticky","top":"0px"},"spacing":{"padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"backgroundColor":"accent-5"} /--></div>
 <!-- /wp:column -->
 
 <!-- wp:column {"width":"66.66%"} -->
@@ -64,7 +64,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Headings of every level, from H1 to H6, are listed. This section has a level-four heading below it.</p>
+<p>The block's Include H1 headings to Include H6 headings settings choose which levels are listed. This one lists H2 and H3 headings only, so the level-four heading below this section is left out.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -76,7 +76,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Headings at deeper levels are listed too, in document order with the rest.</p>
+<p>Switch on Include H4 headings in the block's settings and this heading joins the list, in document order with the rest.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -124,7 +124,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>The heading above has the <code>hide-from-toc</code> class, added under Advanced, Additional CSS class(es), so it is not listed. Give the class to a Group or Column and every heading inside it is left out.</p>
+<p>The heading above has Hide from table of contents switched on in its settings, so it is not listed. The toggle adds the <code>hide-from-toc</code> class; give that class to a Group or Column and every heading inside it is left out.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -159,7 +159,7 @@
 
 <!-- wp:accordion-panel -->
 <div role="region" class="wp-block-accordion-panel"><!-- wp:paragraph -->
-<p>Yes. The <code>a8csp_dynamic_table_of_contents_heading_selectors</code> filter changes which headings are collected, for example H2 headings only.</p>
+<p>Yes. Switch on the levels you want in the block's settings, such as Include H2 headings. This page lists H2 and H3. In code, the <code>a8csp_dynamic_table_of_contents_heading_selectors</code> filter can change which headings are collected.</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:accordion-panel --></div>
 <!-- /wp:accordion-item --></div>
