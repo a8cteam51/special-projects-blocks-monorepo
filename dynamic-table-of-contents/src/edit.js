@@ -1,4 +1,5 @@
 import { __, sprintf } from '@wordpress/i18n';
+import { useInstanceId } from '@wordpress/compose';
 import {
 	useBlockProps,
 	RichText,
@@ -39,6 +40,9 @@ function isLevelIncluded( attributes, level ) {
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
+	const headingLevelsHelpId = `dynamic-table-of-contents-heading-levels-help-${ useInstanceId(
+		Edit
+	) }`;
 	const hasNoLevels = ! HEADING_LEVELS.some( ( level ) =>
 		isLevelIncluded( attributes, level )
 	);
@@ -49,18 +53,16 @@ export default function Edit( { attributes, setAttributes } ) {
 				<PanelBody
 					title={ __( 'Settings', 'dynamic-table-of-contents' ) }
 				>
-					<BaseControl
-						__nextHasNoMarginBottom
-						id="dynamic-table-of-contents-heading-levels"
-						label={ __(
-							'Heading levels',
-							'dynamic-table-of-contents'
-						) }
-						help={ __(
-							'Only headings at the checked levels are listed.',
-							'dynamic-table-of-contents'
-						) }
+					<fieldset
+						aria-describedby={ headingLevelsHelpId }
+						style={ { border: 0, margin: '0 0 16px', padding: 0 } }
 					>
+						<BaseControl.VisualLabel as="legend">
+							{ __(
+								'Heading levels',
+								'dynamic-table-of-contents'
+							) }
+						</BaseControl.VisualLabel>
 						<Flex justify="flex-start" wrap gap={ 3 }>
 							{ HEADING_LEVELS.map( ( level ) => (
 								<CheckboxControl
@@ -86,7 +88,16 @@ export default function Edit( { attributes, setAttributes } ) {
 								/>
 							) ) }
 						</Flex>
-					</BaseControl>
+						<p
+							id={ headingLevelsHelpId }
+							className="components-base-control__help"
+						>
+							{ __(
+								'Only headings at the checked levels are listed.',
+								'dynamic-table-of-contents'
+							) }
+						</p>
+					</fieldset>
 					{ hasNoLevels && (
 						<Notice status="warning" isDismissible={ false }>
 							{ __(
@@ -123,6 +134,8 @@ export default function Edit( { attributes, setAttributes } ) {
 					onChange={ ( title ) => setAttributes( { title } ) }
 					className="table-of-contents-title"
 				/>
+				{ /* A static preview: the real list is built on the front end, so these links go nowhere. */ }
+				{ /* eslint-disable jsx-a11y/anchor-is-valid */ }
 				<ul className="table-of-contents-list">
 					<li className="table-of-contents-list-item">
 						<a href="#" className="active">
@@ -136,6 +149,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						<a href="#">When used in your post.</a>
 					</li>
 				</ul>
+				{ /* eslint-enable jsx-a11y/anchor-is-valid */ }
 			</div>
 		</>
 	);
