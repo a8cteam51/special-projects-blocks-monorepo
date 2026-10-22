@@ -8,13 +8,18 @@ import {
 import {
 	BaseControl,
 	CheckboxControl,
-	Flex,
 	Notice,
 	PanelBody,
 	ToggleControl,
 } from '@wordpress/components';
 
 const HEADING_LEVELS = [ 1, 2, 3, 4, 5, 6 ];
+
+const HEADING_LEVELS_GRID_STYLE = {
+	display: 'grid',
+	gridTemplateColumns: 'repeat( 3, 1fr )',
+	gap: '12px 16px',
+};
 
 /**
  * Whether a heading level is listed. Blocks saved before 0.5.0 have no
@@ -63,31 +68,35 @@ export default function Edit( { attributes, setAttributes } ) {
 								'dynamic-table-of-contents'
 							) }
 						</BaseControl.VisualLabel>
-						<Flex justify="flex-start" wrap gap={ 3 }>
+						<div style={ HEADING_LEVELS_GRID_STYLE }>
 							{ HEADING_LEVELS.map( ( level ) => (
-								<CheckboxControl
-									__nextHasNoMarginBottom
-									key={ level }
-									label={ sprintf(
-										/* translators: %d: heading level, 1 to 6. */
-										__(
-											'H%d',
-											'dynamic-table-of-contents'
-										),
-										level
-									) }
-									checked={ isLevelIncluded(
-										attributes,
-										level
-									) }
-									onChange={ ( checked ) =>
-										setAttributes( {
-											[ `includeH${ level }` ]: checked,
-										} )
-									}
-								/>
+								// Each checkbox gets its own wrapper so the inspector's
+								// margin between controls doesn't push rows out of line.
+								<div key={ level }>
+									<CheckboxControl
+										__nextHasNoMarginBottom
+										label={ sprintf(
+											/* translators: %d: heading level, 1 to 6. */
+											__(
+												'H%d',
+												'dynamic-table-of-contents'
+											),
+											level
+										) }
+										checked={ isLevelIncluded(
+											attributes,
+											level
+										) }
+										onChange={ ( checked ) =>
+											setAttributes( {
+												[ `includeH${ level }` ]:
+													checked,
+											} )
+										}
+									/>
+								</div>
 							) ) }
-						</Flex>
+						</div>
 						<p
 							id={ headingLevelsHelpId }
 							className="components-base-control__help"
