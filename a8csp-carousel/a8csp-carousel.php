@@ -26,6 +26,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @see https://make.wordpress.org/core/2025/03/13/more-efficient-block-type-registration-in-6-8/
  * @see https://make.wordpress.org/core/2024/10/17/new-block-type-registration-apis-to-improve-performance-in-wordpress-6-7/
+ *
+ * @return void
  */
 function a8csp_carousel_block_init() {
 	/**
