@@ -270,7 +270,7 @@ class Breadcrumbs {
 				$page_id = get_the_id();
 				$page    = get_post( $page_id );
 
-				if ( 0 < $page && $page->post_parent ) {
+				if ( $page instanceof \WP_Post && $page->post_parent ) {
 					$ancestors = get_post_ancestors( $page_id );
 					foreach ( array_reverse( $ancestors ) as $ancestor_id ) {
 						$ancestor = get_post( $ancestor_id );
