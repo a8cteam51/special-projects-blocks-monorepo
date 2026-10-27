@@ -1,9 +1,10 @@
-import { __ , sprintf } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { useRefEffect } from '@wordpress/compose';
 import { useState } from '@wordpress/element';
 import {
 	addToggleModeListener,
+	setInitialColorScheme,
 	toggleColorMode,
 	updateToggleClass,
 	updateToggleAriaLabel,
@@ -31,6 +32,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			const { defaultView } = ownerDocument;
 
 			setLocalWindow( defaultView, defaultView );
+			setInitialColorScheme( defaultMode );
 
 			const removeListeners = addToggleModeListener( defaultView );
 
@@ -38,7 +40,7 @@ export default function Edit( { attributes, setAttributes } ) {
 
 			return removeListeners;
 		},
-		[ setLocalWindow ]
+		[ setLocalWindow, defaultMode ]
 	);
 
 	/**

@@ -17,7 +17,7 @@
 			"step": "installPlugin",
 			"pluginData": {
 				"resource": "url",
-				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/light-dark-toggle%400.2.2/light-dark-toggle.zip"
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/light-dark-toggle%400.2.3/light-dark-toggle.zip"
 			},
 			"options": {
 				"activate": true

@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block
 Tested up to:      6.7
-Stable tag:        1.0.0
+Stable tag:        0.2.3
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,6 +44,9 @@ If you would like to change how the toggle look, it can be styled using the `wp-
 The inner of the toggle is controlled by `wp-block-wpcomsp-light-dark-toggle:before`
 
 == Changelog ==
+
+= 0.2.3 =
+* Fixed: a visitor with no stored preference now starts in the block's Default Mode. The setting was ignored, so every first visit started in the light scheme.
 
 = 0.2.2 =
 * Removed the self-update mechanism. Updates are now installed manually from GitHub releases.

@@ -1,3 +1,10 @@
+## 0.2.3 (2026-10-27)
+
+### Fixed
+
+-   A visitor with no stored preference starts in the block's Default Mode, on the front end and in the editor. The setting was ignored, so every first visit started in the light scheme (#244).
+-   The readme's Stable tag matches the plugin version.
+
 ## 0.2.2 (2026-10-09)
 
 ### Removed
