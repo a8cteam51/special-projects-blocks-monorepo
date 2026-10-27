@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Counter
  * Description:       Allows adding an animated counter to your content. Just pick a start and end
- * Version:           0.1.2
+ * Version:           0.1.3
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            Automattic Special Projects Team
@@ -25,6 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * through the block editor in the corresponding context.
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
+ *
+ * @return void
  */
 function wpcomsp_counter_block_init() {
 	register_block_type( __DIR__ . '/build' );
