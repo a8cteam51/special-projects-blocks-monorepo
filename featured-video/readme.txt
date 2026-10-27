@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, video, featured-image, media, post-thumbnail
 Tested up to:      6.8.2
-Stable tag:        0.3.1
+Stable tag:        0.4.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 6.6
@@ -22,6 +22,8 @@ The **Featured Video** plugin extends WordPress functionality to allow you to us
 * **Play-Icon Overlay**: Optionally show a centered play button overlay for click-to-play UX
 * **Custom Poster Image**: Pick any image from the media library as the video's poster
 * **External Sources**: Use a direct video URL (.mp4/.webm/.ogv/.mov) or any oEmbed provider (YouTube, Vimeo, etc.)
+* **Cover Blocks**: A Cover block that uses the featured image plays a Media Library or direct-URL featured video as its background
+* **Per-Block Control**: Turn the featured video off on any Post Featured Image or Cover block, e.g. in a Query Loop, to show the featured image there instead
 * **Works on All Thumbnail-Supporting Post Types**: Posts, pages, and any CPT with thumbnail support
 * **Accessibility**: Fallback text for unsupported browsers and an accessible play-icon button
 
@@ -68,6 +70,14 @@ Yes. Switch the "Video Source" select to "External Video" and paste the URL. Any
 
 No. Autoplay, loop, mute, inline, controls, and the play-icon overlay only apply to videos uploaded to the media library or pasted as a direct video URL. Provider embeds (YouTube, Vimeo, etc.) use the provider's own player.
 
+= Can I show the featured image instead of the video in some places? =
+
+Yes. Select the Post Featured Image block (or a Cover block that uses the featured image) and turn off "Show featured video" in its Featured video settings. That block then shows the featured image, for example in a Query Loop on the home page, while other blocks keep showing the video.
+
+= Does it work with the Cover block? =
+
+Yes, when the Cover block uses the featured image. If the post's featured video is from the Media Library or a direct video file URL, it plays as the Cover's background, muted, autoplaying and looping like a core Cover video background. The video's poster image is used as the poster, or the featured image when there isn't one. Provider embeds (YouTube, Vimeo, etc.) can't be a background, so those Covers keep the featured image. The editor still previews the featured image.
+
 = Can I still use featured images? =
 
 Yes! If no featured video is set, the plugin will fall back to the regular featured image.
@@ -87,17 +97,30 @@ If something described here is not working as expected, please open an issue in 
 
 == Developers ==
 
-The plugin uses WordPress's post meta system to store the featured video ID. The video replacement happens through the `render_block_core/post-featured-image` filter.
+The plugin uses WordPress's post meta system to store the featured video ID. The video replacement happens through the `render_block_core/post-featured-image` and `render_block_core/cover` filters.
 
 **Key Functions:**
 - `wpcomsp_featured_video_register_post_meta()` - Registers the custom post meta
 - `wpcomsp_featured_video_render_post_featured_image()` - Handles the video replacement logic
+- `wpcomsp_featured_video_render_cover()` - Plays the featured video as a Cover block's background
+
+**Block Attribute:**
+- `showFeaturedVideo` (boolean, default `true`) is added to `core/post-featured-image` and `core/cover`. Set it to `false` to show the featured image in that block.
+
+**Filters:**
+- `wpcomsp_featured_video_show_in_block` - Whether a block shows the featured video. Receives the block's `showFeaturedVideo` setting, the parsed block and the post ID. Return `false` to keep the featured image, e.g. for every Cover block: `add_filter( 'wpcomsp_featured_video_show_in_block', fn( $show, $block ) => 'core/cover' === $block['blockName'] ? false : $show, 10, 2 );`
 
 **CSS Classes:**
 - Videos use the class `wp-post-video` in addition to the standard `wp-post-image` class
 - The `intrinsic-ignore` class is added for proper responsive behavior
 
 == Changelog ==
+
+= 0.4.0 =
+* Add a "Show featured video" setting to the Post Featured Image block, so a block (e.g. in a Query Loop) can show the featured image instead
+* Add Cover block support: a Cover that uses the featured image plays a Media Library or direct-URL featured video as its background
+* Add the `wpcomsp_featured_video_show_in_block` filter
+* Fix: the playback options (poster, play icon, autoplay, loop, mute, inline, controls) now show in the editor for direct video URLs, not just Media Library videos
 
 = 0.3.1 =
 * Removed the self-update mechanism. Updates are now installed manually from GitHub releases.

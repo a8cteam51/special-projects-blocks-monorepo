@@ -1,3 +1,15 @@
+## 0.4.0
+
+### Added
+
+-   "Show featured video" setting on the Post Featured Image block, so a block (e.g. in a Query Loop) can show the featured image instead (#160)
+-   Cover block support: a Cover that uses the featured image plays a Media Library or direct-URL featured video as its background (#160)
+-   `wpcomsp_featured_video_show_in_block` filter
+
+### Fixed
+
+-   The playback options (poster, play icon, autoplay, loop, mute, inline, controls) now show in the editor for direct video URLs, not just Media Library videos (#247)
+
 ## 0.3.1
 
 ### Removed
