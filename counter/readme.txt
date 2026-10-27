@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, counter, animation, numbers
 Tested up to:      6.7
-Stable tag:        1.0.0
+Stable tag:        0.1.3
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,11 +54,16 @@ Yes! The block supports **typography and spacing controls**, so you can change f
 
 == Developers ==
 
-- The block wrapper uses the class `wp-block-counter-block`.
-- The animated number is wrapped inside a `<span class="wp-counter-number">`.
-- You can style pre- and post-text using `.wp-counter-pre` and `.wp-counter-post`.
+- The block wrapper is a `<p>` with the class `wp-block-wpcomsp-counter`.
+- The animated number is wrapped inside a `<span class="counter__number">`, which carries the `data-start`, `data-end` and `data-duration` values.
+- You can style pre- and post-text using `.counter__pre` and `.counter__post`.
 
 == Changelog ==
+
+= 0.1.3 =
+* Fixed: decimal start and end values now animate at their precision instead of in whole numbers.
+* Fixed: decimal durations (e.g. 1.5 or 0.5 seconds) are no longer truncated to whole seconds.
+* Fixed: the Developers section names the classes the block outputs.
 
 = 0.1.2 =
 * Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
