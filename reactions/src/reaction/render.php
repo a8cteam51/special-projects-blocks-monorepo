@@ -20,6 +20,10 @@ $context     = array(
 
 $reaction         = wpcomsp_reactions_get_reaction_attributes( $name );
 $svg_allowed_html = wpcomsp_reactions_kses_svg_allowed_tags();
+
+// The button's accessible name comes from its text (label, then count), so a
+// hidden label still needs to be in the markup for screen readers.
+$accessible_label = $label ? $label : $reaction['label'];
 ?>
 <li
 	data-wp-interactive="wpcomsp/reactions"
@@ -27,14 +31,13 @@ $svg_allowed_html = wpcomsp_reactions_kses_svg_allowed_tags();
 	<?php echo wp_kses_post( get_block_wrapper_attributes() ); ?>
 	<?php echo wp_kses_post( wp_interactivity_data_wp_context( $context ) ); ?>
 >
-	<button
-		data-wp-on--click="actions.handleReaction"
-		aria-label="<?php echo esc_attr( $name ); ?>"
-	>
-		<span class="wp-block-wpcomsp-reaction__icon"><?php echo wp_kses( $reaction['iconsets'][ $iconset ], $svg_allowed_html ); ?></span>
+	<button data-wp-on--click="actions.handleReaction">
+		<span class="wp-block-wpcomsp-reaction__icon" aria-hidden="true"><?php echo wp_kses( $reaction['iconsets'][ $iconset ], $svg_allowed_html ); ?></span>
 
 		<?php if ( $show_labels && $label ) { ?>
 			<span class="wp-block-wpcomsp-reaction__label"><?php echo esc_html( $label ); ?></span>
+		<?php } elseif ( $accessible_label ) { ?>
+			<span class="screen-reader-text"><?php echo esc_html( $accessible_label ); ?></span>
 		<?php } ?>
 
 		<?php if ( $show_counts ) { ?>

@@ -1,4 +1,6 @@
 <?php
+// phpcs:disable WordPress.DB.PreparedSQLPlaceholders.UnsupportedIdentifierPlaceholder -- The plugin requires WordPress 6.6; %i needs 6.2.
+
 /**
  * Get all prepared reactions data.
  *
@@ -153,11 +155,20 @@ function wpcomsp_reactions_update_reaction( int $post_id, string $reaction, stri
 			);
 		} else {
 			// Update the reaction type.
+			$data   = array( 'reaction_type' => $new_reaction );
+			$format = array( '%s' );
+
+			// A reaction made as a guest belongs to whoever is now logged in on the same browser.
+			if ( $user_id ) {
+				$data['user_id'] = $user_id;
+				$format[]        = '%d';
+			}
+
 			$wpdb->update(
 				$table_name,
-				array( 'reaction_type' => $new_reaction ),
+				$data,
 				array( 'id' => $existing_reaction->id ),
-				array( '%s' ),
+				$format,
 				array( '%d' )
 			);
 		}
