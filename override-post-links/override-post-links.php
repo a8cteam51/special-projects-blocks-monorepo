@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Override Post Links
  * Description:       Add a panel in the WP Admin allowing the user to enter a link which overrides the post links to the new link.
- * Version:           0.1.2
+ * Version:           0.1.3
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            Automattic Special Projects Team
@@ -191,6 +191,8 @@ function wpcomsp_exit_post_if_external_link() {
 	wp_safe_redirect( $redirect_url );
 	exit;
 }
+
+add_action( 'template_redirect', 'wpcomsp_exit_post_if_external_link' );
 
 /**
  * Register Block Bindings for the External News Link Source.
