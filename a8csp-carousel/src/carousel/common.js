@@ -18,6 +18,8 @@ export function getHTMLAttributes( attributes ) {
 		animationSpeed,
 		itemCount,
 		overflow,
+		slidesPerView,
+		slidesPerViewSmall,
 		style,
 		title,
 		trackHeight,
@@ -44,13 +46,22 @@ export function getHTMLAttributes( attributes ) {
 		styles[ '--track-height' ] = `${ trackHeight }${ trackHeightUnit }`;
 	}
 
+	if ( slidesPerView ) {
+		styles[ '--slides-per-view' ] = String( slidesPerView );
+
+		if ( slidesPerViewSmall ) {
+			styles[ '--slides-per-view-small' ] = String( slidesPerViewSmall );
+		}
+	}
+
 	const htmlAttributes = {
 		'aria-label': title || __( 'Carousel', 'a8csp-carousel' ),
 		'data-animate-end': animateEnd,
 		role: 'region',
 		className: clsx(
 			'all-visible' === animate && 'animate-visible',
-			`has-overflow-${ overflow }`
+			`has-overflow-${ overflow }`,
+			slidesPerView && 'has-slides-per-view'
 		),
 		style: styles,
 	};

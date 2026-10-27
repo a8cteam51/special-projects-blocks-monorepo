@@ -17,7 +17,7 @@
 			"step": "installPlugin",
 			"pluginData": {
 				"resource": "url",
-				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/a8csp-carousel%401.1.2/a8csp-carousel.zip"
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/a8csp-carousel%401.2.0/a8csp-carousel.zip"
 			},
 			"options": {
 				"activate": true

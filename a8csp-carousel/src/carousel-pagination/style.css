@@ -28,9 +28,13 @@
 			background: var(--button-background-hover, currentcolor);
 		}
 
-		&[aria-disabled="true"] {
-			opacity: 0.5;
-			pointer-events: none;
+		&[aria-current="true"] {
+			cursor: default;
 		}
+	}
+
+	/* The buttons for slides in view carry `aria-current`. */
+	&:has([aria-current="true"]) .wp-block-a8csp-carousel-pagination--button:not([aria-current="true"]) {
+		opacity: 0.5;
 	}
 }
