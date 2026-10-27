@@ -1,4 +1,9 @@
-import { RichText, useBlockProps } from '@wordpress/block-editor';
+import {
+	RichText,
+	useBlockProps,
+	store as blockEditorStore,
+} from '@wordpress/block-editor';
+import { useDispatch } from '@wordpress/data';
 import { useRef, useEffect } from '@wordpress/element';
 
 export default function Edit( { attributes, setAttributes } ) {
@@ -6,13 +11,21 @@ export default function Edit( { attributes, setAttributes } ) {
 	const blockProps = useBlockProps( viewBox ? { viewBox } : {} );
 	const wrapperRef = useRef();
 	const richTextRef = useRef();
+	const viewBoxRef = useRef( viewBox );
+	viewBoxRef.current = viewBox;
+	const { __unstableMarkNextChangeAsNotPersistent } =
+		useDispatch( blockEditorStore );
 
 	useEffect( () => {
 		const observer = new window.ResizeObserver( () => {
 			const { offsetWidth, offsetHeight } = wrapperRef.current;
-			setAttributes( {
-				viewBox: `0 0 ${ offsetWidth } ${ offsetHeight }`,
-			} );
+			const nextViewBox = `0 0 ${ offsetWidth } ${ offsetHeight }`;
+			// Only sync a changed size, and don't record the sync as an edit of its own.
+			if ( nextViewBox !== viewBoxRef.current ) {
+				viewBoxRef.current = nextViewBox;
+				__unstableMarkNextChangeAsNotPersistent();
+				setAttributes( { viewBox: nextViewBox } );
+			}
 			// This hack is required to prevent RichText to overwrite `white-space`.
 			if ( richTextRef.current ) {
 				richTextRef.current.style.whiteSpace = 'nowrap';
@@ -23,7 +36,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		return () => {
 			observer.disconnect();
 		};
-	}, [] );
+	}, [ __unstableMarkNextChangeAsNotPersistent, setAttributes ] );
 
 	const onChange = ( nextContent ) => {
 		setAttributes( { content: nextContent } );
