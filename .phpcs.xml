@@ -4,4 +4,7 @@
 
 	<rule ref="./vendor/a8cteam51/team51-configs/quality-tools/phpcs.xml.dist"/>
 
+	<!-- Playground demo setup scripts: not shipped in release zips. -->
+	<exclude-pattern>*/playground/*</exclude-pattern>
+
 </ruleset>
