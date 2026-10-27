@@ -6,7 +6,14 @@ require_once ABSPATH . 'wp-admin/includes/image.php';
 
 $uploads = wp_upload_dir()['basedir'];
 
-// Copies a Twenty Twenty-Five image into a BuddyPress avatar folder at BuddyPress's avatar sizes.
+/**
+ * Copies a Twenty Twenty-Five image into a BuddyPress avatar folder at BuddyPress's avatar sizes.
+ *
+ * @param string $file Image file name in the theme's assets/images folder.
+ * @param string $dir  Avatar folder to write to.
+ *
+ * @return void
+ */
 function playground_bp_avatar( $file, $dir ) {
 	wp_mkdir_p( $dir );
 	$sizes = array(
