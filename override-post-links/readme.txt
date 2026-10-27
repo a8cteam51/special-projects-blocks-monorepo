@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block
 Tested up to:      6.7
-Stable tag:        0.1.0
+Stable tag:        0.1.3
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,10 @@ Requirements: Node.js 18+.
 1. The Override Post Links panel in the post editor sidebar, with the external news link and source fields.
 
 == Changelog ==
+
+= 0.1.3 =
+* Fixed: single posts with a News Link redirect to the blog archive again, as documented. The redirect was unhooked in 0.1.1 (#41), in the change that guarded it against redirect loops. Return an empty string from `wpcomsp_override_post_links_redirect_url` to keep the singles accessible.
+* Fixed: the Stable tag matches the plugin version.
 
 = 0.1.2 =
 * Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
