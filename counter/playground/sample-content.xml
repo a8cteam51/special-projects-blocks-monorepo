@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:wp="http://wordpress.org/export/1.2/">
+<channel>
+	<title>Counter demo</title>
+	<link>https://example.com</link>
+	<language>en-US</language>
+	<wp:wxr_version>1.2</wp:wxr_version>
+	<wp:base_site_url>https://example.com</wp:base_site_url>
+	<wp:base_blog_url>https://example.com</wp:base_blog_url>
+	<wp:author><wp:author_id>1</wp:author_id><wp:author_login><![CDATA[admin]]></wp:author_login><wp:author_email><![CDATA[admin@example.com]]></wp:author_email><wp:author_display_name><![CDATA[admin]]></wp:author_display_name></wp:author>
+
+	<item>
+		<title><![CDATA[Counter]]></title>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>Each number below animates from its start value to its end value the first time it scrolls into view. Reload the page to replay the animation, or open the page in the editor to change the values, duration and text.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Statistics</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Large counters with text before or after the number, running for different durations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column -->
+<div class="wp-block-column"><!-- wp:wpcomsp/counter {"pre":"$","post":"k","end":250,"duration":2,"align":"center","fontSize":"xx-large"} -->
+<p class="wp-block-wpcomsp-counter aligncenter has-xx-large-font-size"><span class="counter__pre">$</span><span class="counter__number" data-start="0" data-end="250" data-duration="2">0</span><span class="counter__post">k</span></p>
+<!-- /wp:wpcomsp/counter -->
+
+<!-- wp:paragraph {"style":{"typography":{"textAlign":"center"}}} -->
+<p class="has-text-align-center">Raised in two seconds</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column -->
+
+<!-- wp:column -->
+<div class="wp-block-column"><!-- wp:wpcomsp/counter {"post":"%","end":98,"duration":3,"align":"center","fontSize":"xx-large"} -->
+<p class="wp-block-wpcomsp-counter aligncenter has-xx-large-font-size"><span class="counter__number" data-start="0" data-end="98" data-duration="3">0</span><span class="counter__post">%</span></p>
+<!-- /wp:wpcomsp/counter -->
+
+<!-- wp:paragraph {"style":{"typography":{"textAlign":"center"}}} -->
+<p class="has-text-align-center">Reached in three seconds</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column -->
+
+<!-- wp:column -->
+<div class="wp-block-column"><!-- wp:wpcomsp/counter {"post":"+","end":1200,"duration":4,"align":"center","fontSize":"xx-large"} -->
+<p class="wp-block-wpcomsp-counter aligncenter has-xx-large-font-size"><span class="counter__number" data-start="0" data-end="1200" data-duration="4">0</span><span class="counter__post">+</span></p>
+<!-- /wp:wpcomsp/counter -->
+
+<!-- wp:paragraph {"style":{"typography":{"textAlign":"center"}}} -->
+<p class="has-text-align-center">Counted in four seconds</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Counting down</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>When the start value is higher than the end value, the counter runs backwards.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:wpcomsp/counter {"pre":"Doors open in ","post":" min","start":10,"end":0,"duration":10,"fontSize":"x-large"} -->
+<p class="wp-block-wpcomsp-counter has-x-large-font-size"><span class="counter__pre">Doors open in </span><span class="counter__number" data-start="10" data-end="0" data-duration="10">10</span><span class="counter__post"> min</span></p>
+<!-- /wp:wpcomsp/counter -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Inside a sentence</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Text before and after the number can be a whole phrase, so the counter reads as part of a sentence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:wpcomsp/counter {"pre":"You have earned $","post":" in rewards!","duration":2,"fontSize":"large"} -->
+<p class="wp-block-wpcomsp-counter has-large-font-size"><span class="counter__pre">You have earned $</span><span class="counter__number" data-start="0" data-end="100" data-duration="2">0</span><span class="counter__post"> in rewards!</span></p>
+<!-- /wp:wpcomsp/counter -->
+
+<!-- wp:wpcomsp/counter {"pre":"Only ","post":" tickets left","start":500,"end":37,"duration":3,"style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|20","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"backgroundColor":"accent-1","fontSize":"large"} -->
+<p class="wp-block-wpcomsp-counter has-accent-1-background-color has-background has-large-font-size" style="padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--30)"><span class="counter__pre">Only </span><span class="counter__number" data-start="500" data-end="37" data-duration="3">500</span><span class="counter__post"> tickets left</span></p>
+<!-- /wp:wpcomsp/counter -->]]></content:encoded>
+		<wp:post_id>1001</wp:post_id>
+		<wp:post_date><![CDATA[2026-01-01 00:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-01-01 00:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[counter]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+	</item>
+</channel>
+</rss>

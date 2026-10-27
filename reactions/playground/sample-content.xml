@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:wp="http://wordpress.org/export/1.2/">
+<channel>
+	<title>Reactions demo</title>
+	<link>https://example.com</link>
+	<language>en-US</language>
+	<wp:wxr_version>1.2</wp:wxr_version>
+	<wp:base_site_url>https://example.com</wp:base_site_url>
+	<wp:base_blog_url>https://example.com</wp:base_blog_url>
+	<wp:author><wp:author_id>1</wp:author_id><wp:author_login><![CDATA[admin]]></wp:author_login><wp:author_email><![CDATA[admin@example.com]]></wp:author_email><wp:author_display_name><![CDATA[admin]]></wp:author_display_name></wp:author>
+
+	<item>
+		<title><![CDATA[Reactions]]></title>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>React to this page with the buttons below. Select your reaction again to remove it, or choose another to change it. Reactions are saved in the database, so the counts are still there after you reload the page.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:wpcomsp/reactions {"showLabels":true} -->
+<ul class="wp-block-wpcomsp-reactions wp-block-wpcomsp-reactions__default"><!-- wp:wpcomsp/reaction {"name":"like","label":"Like"} /-->
+
+<!-- wp:wpcomsp/reaction {"name":"heart","label":"Heart"} /-->
+
+<!-- wp:wpcomsp/reaction {"name":"laugh","label":"Laugh"} /-->
+
+<!-- wp:wpcomsp/reaction {"name":"surprised","label":"Surprised"} /-->
+
+<!-- wp:wpcomsp/reaction {"name":"celebration","label":"Celebration"} /-->
+
+<!-- wp:wpcomsp/reaction {"name":"fire","label":"Fire"} /--></ul>
+<!-- /wp:wpcomsp/reactions -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Popover mode</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Popover mode puts the reactions behind a single button. Both blocks on this page record reactions to this page, so their counts match.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:wpcomsp/reactions {"mode":"popover"} -->
+<div class="wp-block-wpcomsp-reactions wp-block-wpcomsp-reactions__popover"><button><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.15798 0.118432C5.1728 0.0885151 5.19569 0.0633348 5.22406 0.0457308C5.25244 0.0281267 5.28516 0.0187988 5.31855 0.0187988C5.35194 0.0187988 5.38467 0.0281267 5.41304 0.0457308C5.44141 0.0633348 5.4643 0.0885151 5.47913 0.118432L6.9623 3.12349C6.97512 3.14956 6.99409 3.17212 7.01757 3.18923C7.04105 3.20634 7.06833 3.21748 7.09707 3.2217L10.4132 3.70343C10.4463 3.70823 10.4774 3.72218 10.5029 3.74369C10.5285 3.76521 10.5475 3.79343 10.5579 3.82519C10.5682 3.85695 10.5695 3.89097 10.5616 3.92341C10.5536 3.95586 10.5368 3.98544 10.5129 4.00881L8.11286 6.34791C8.09196 6.36824 8.07633 6.39336 8.06734 6.42109C8.05835 6.44882 8.05625 6.47833 8.06124 6.50705L8.62756 9.80961C8.63305 9.84247 8.62928 9.87621 8.61667 9.90704C8.60405 9.93787 8.58309 9.96458 8.55614 9.98416C8.52919 10.0037 8.49731 10.0154 8.46408 10.0179C8.43086 10.0204 8.39761 10.0135 8.36806 9.99814L5.40171 8.43898C5.37605 8.42554 5.34752 8.41852 5.31855 8.41852C5.28959 8.41852 5.26105 8.42554 5.2354 8.43898L2.26905 9.99814C2.23947 10.0137 2.20613 10.0207 2.17279 10.0183C2.13945 10.016 2.10744 10.0043 2.08037 9.98471C2.0533 9.9651 2.03226 9.93831 2.01962 9.90737C2.00697 9.87642 2.00324 9.84256 2.00883 9.80961L2.57514 6.50705C2.58022 6.47839 2.57824 6.44892 2.56938 6.42119C2.56051 6.39346 2.54502 6.36831 2.52425 6.34791L0.124213 4.00881C0.10035 3.98544 0.0834939 3.95586 0.0755481 3.92341C0.0676023 3.89097 0.0688825 3.85695 0.0792442 3.82519C0.089606 3.79343 0.108637 3.76521 0.134189 3.74369C0.159742 3.72218 0.190799 3.70823 0.223856 3.70343L3.54003 3.2217C3.56877 3.21748 3.59606 3.20634 3.61953 3.18923C3.64301 3.17212 3.66198 3.14956 3.6748 3.12349L5.15798 0.118432Z" fill="currentColor"></path></svg>React</button><ul><!-- wp:wpcomsp/reaction {"name":"like","label":"Like"} /-->
+
+<!-- wp:wpcomsp/reaction {"name":"heart","label":"Heart"} /-->
+
+<!-- wp:wpcomsp/reaction {"name":"laugh","label":"Laugh"} /-->
+
+<!-- wp:wpcomsp/reaction {"name":"surprised","label":"Surprised"} /-->
+
+<!-- wp:wpcomsp/reaction {"name":"celebration","label":"Celebration"} /-->
+
+<!-- wp:wpcomsp/reaction {"name":"fire","label":"Fire"} /--></ul></div>
+<!-- /wp:wpcomsp/reactions -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>1001</wp:post_id>
+		<wp:post_date><![CDATA[2026-01-01 00:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-01-01 00:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[reactions]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+	</item>
+</channel>
+</rss>
