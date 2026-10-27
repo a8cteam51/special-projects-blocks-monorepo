@@ -11,15 +11,15 @@ const v1 = {
 		const { defaultMode } = attributes;
 
 		const className = [ defaultMode ? `mode-${ defaultMode }` : '' ]
-		.join( ' ' )
-		.trim();
+			.join( ' ' )
+			.trim();
 		return (
 			<button
 				{ ...useBlockProps.save( { className } ) }
 				data-default-mode={ defaultMode }
 			></button>
 		);
-	}
+	},
 };
 
 export default [ v1 ];

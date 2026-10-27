@@ -83,7 +83,9 @@ export function updateToggleClass( window ) {
  * @param {window} window The window object
  */
 export function updateToggleAriaLabel( window ) {
-	const toggle = window.document.querySelector( '.wp-block-wpcomsp-light-dark-toggle' );
+	const toggle = window.document.querySelector(
+		'.wp-block-wpcomsp-light-dark-toggle'
+	);
 
 	if ( ! toggle ) {
 		return;

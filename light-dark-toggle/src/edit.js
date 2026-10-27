@@ -1,4 +1,4 @@
-import { __ , sprintf } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { useRefEffect } from '@wordpress/compose';
 import { useState } from '@wordpress/element';
