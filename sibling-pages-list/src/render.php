@@ -16,7 +16,8 @@ if ( 'page' !== $block->context['postType'] ) {
 
 $parent_page_id = wp_get_post_parent_id( $block->context['postId'] );
 
-if ( false === $parent_page_id ) {
+// 0 for a top-level page, false when the page doesn't exist.
+if ( ! $parent_page_id ) {
 	return;
 }
 
