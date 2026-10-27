@@ -9,7 +9,7 @@
 	}
 
 	.group-progress-bar-fill {
-		background-color: var(--wp--preset--color--primary);
+		background-color: var(--wp--preset--color--primary, currentColor);
 		height: 12px;
 	}
 }

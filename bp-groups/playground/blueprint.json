@@ -27,7 +27,7 @@
 			"step": "installPlugin",
 			"pluginData": {
 				"resource": "url",
-				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/bp-groups%400.2.2/bp-groups.zip"
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/bp-groups%400.2.3/bp-groups.zip"
 			},
 			"options": {
 				"activate": true

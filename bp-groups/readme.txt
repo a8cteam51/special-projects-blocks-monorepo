@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block BuddyPress
 Tested up to:      6.8
-Stable tag:        0.2.2
+Stable tag:        0.2.3
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,10 @@ wp.domReady( () => {
 2. Screenshot of how this looks in the front end.
 
 == Changelog ==
+
+= 0.2.3 =
+Fixed a PHP notice on group pages, where the current group object was compared with an integer.
+The Progress Bar fill now falls back to the text colour on themes without a `primary` palette colour.
 
 = 0.2.2 =
 Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
