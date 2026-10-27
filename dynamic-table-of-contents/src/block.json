@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "wpcomsp/dynamic-table-of-contents",
-	"version": "0.4.1",
+	"version": "0.5.0",
 	"title": "Dynamic Table of Contents",
 	"category": "design",
 	"description": "Creates a table of contents that's dynamically (PHP) rendered.",
@@ -38,6 +38,30 @@
 		"includeNestedHeadings": {
 			"type": "boolean",
 			"default": false
+		},
+		"includeH1": {
+			"type": "boolean",
+			"default": true
+		},
+		"includeH2": {
+			"type": "boolean",
+			"default": true
+		},
+		"includeH3": {
+			"type": "boolean",
+			"default": true
+		},
+		"includeH4": {
+			"type": "boolean",
+			"default": true
+		},
+		"includeH5": {
+			"type": "boolean",
+			"default": true
+		},
+		"includeH6": {
+			"type": "boolean",
+			"default": true
 		}
 	},
 	"textdomain": "dynamic-table-of-contents",

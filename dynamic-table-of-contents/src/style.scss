@@ -47,6 +47,7 @@
 			margin-bottom: 0;
 
 			a {
+
 				&:not(.active) {
 					color: var(--wp--preset--color--black);
 				}
@@ -57,7 +58,7 @@
 			}
 
 			a.active {
-				font-weight: bold;
+				font-weight: 700;
 			}
 		}
 	}
