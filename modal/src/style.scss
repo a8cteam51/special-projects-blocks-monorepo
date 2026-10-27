@@ -22,6 +22,11 @@ body.modal-open {
 		z-index: 1000;
 	}
 
+	// Start below the admin bar, which sits above the modal.
+	.admin-bar & {
+		top: var(--wp-admin--admin-bar--height, 32px);
+	}
+
 	.close-modal {
 		align-items: center;
 		display: flex;

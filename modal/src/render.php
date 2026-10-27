@@ -17,6 +17,9 @@ if ( ! $a8csp_blocks_modal_label || ! $a8csp_blocks_modal_slug ) {
 	return null;
 }
 
+// Tells a8csp_modal_insert_modal_templates() that the page needs the modal templates.
+do_action( 'a8csp_modal_button_rendered', $a8csp_blocks_modal_slug );
+
 $a8csp_blocks_modal_button_classes = apply_filters( 'a8csp_blocks_modal_button_classes', array() );
 $a8csp_blocks_modal_button_id      = wp_unique_id( '-button-' );
 $a8csp_blocks_modal_button         = $a8csp_blocks_modal_slug . $a8csp_blocks_modal_button_id;
