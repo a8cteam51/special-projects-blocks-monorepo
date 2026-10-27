@@ -4,7 +4,7 @@
  * Description:       Displays a list of the current page's sibling pages
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           0.1.2
+ * Version:           0.1.3
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
  * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/
@@ -25,6 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * through the block editor in the corresponding context.
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
+ *
+ * @return void
  */
 function wpcomsp_sibling_pages_list_block_init() {
 	register_block_type( __DIR__ . '/build' );
