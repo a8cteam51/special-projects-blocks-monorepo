@@ -154,7 +154,7 @@ export default function Edit( props ) {
 		apiFetch( { path: '/buddypress/v1/member-types' } ).then( ( types ) => {
 			setMemberTypes( types );
 		} );
-	} );
+	}, [] );
 
 	const { receiveEntityRecords } = useDispatch( 'core' );
 
