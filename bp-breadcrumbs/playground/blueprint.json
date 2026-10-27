@@ -27,7 +27,7 @@
 			"step": "installPlugin",
 			"pluginData": {
 				"resource": "url",
-				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/bp-breadcrumbs%400.1.1/bp-breadcrumbs.zip"
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/bp-breadcrumbs%400.1.2/bp-breadcrumbs.zip"
 			},
 			"options": {
 				"activate": true

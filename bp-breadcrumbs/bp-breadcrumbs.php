@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       BuddyPressBreadcrumbs
  * Description:       Breadcrumbs block for BuddyPress and BBPress. Also works on non-BuddyPress/BBPress pages.
- * Version:           0.1.1
+ * Version:           0.1.2
  * Requires at least: 6.8
  * Requires PHP:      7.4
  * Author:            Automattic Special Projects Team
