@@ -13,7 +13,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 
-import { PanelBody, TextControl } from '@wordpress/components';
+import { PanelBody, TextControl, VisuallyHidden } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -52,14 +52,20 @@ export default function Edit( { attributes, setAttributes, context } ) {
 			</InspectorControls>
 
 			<li { ...useBlockProps() }>
-				<button aria-label={ name }>
-					<span className="wp-block-wpcomsp-reaction__icon">
+				<button>
+					<span
+						className="wp-block-wpcomsp-reaction__icon"
+						aria-hidden="true"
+					>
 						{ Icon }
 					</span>
 					{ label && context.showLabels && (
 						<span className="wp-block-wpcomsp-reaction__text">
 							{ label }
 						</span>
+					) }
+					{ label && ! context.showLabels && (
+						<VisuallyHidden>{ label }</VisuallyHidden>
 					) }
 					{ context.showCounts && (
 						<span className="wp-block-wpcomsp-reaction__count">
