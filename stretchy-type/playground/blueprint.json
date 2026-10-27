@@ -17,7 +17,7 @@
 			"step": "installPlugin",
 			"pluginData": {
 				"resource": "url",
-				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/stretchy-type%400.1.5/stretchy-type.zip"
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/stretchy-type%400.1.6/stretchy-type.zip"
 			},
 			"options": {
 				"activate": true

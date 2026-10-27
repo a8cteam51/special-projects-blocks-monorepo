@@ -1,3 +1,9 @@
+## 0.1.6 (2026-10-27)
+
+### Fixed
+
+-   Opening a post that contains the block no longer marks it as having unsaved changes. The editor now syncs the block's `viewBox` only when the measured size has changed, and doesn't record the sync as an edit of its own (#243).
+
 ## 0.1.5 (2026-10-09)
 
 ### Removed

@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block, typography, svg, responsive, heading
 Tested up to:      6.8
-Stable tag:        0.1.5
+Stable tag:        0.1.6
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,9 @@ Yes. You can transform a core Paragraph or Heading block into Stretchy Type from
 Yes. A `ResizeObserver` watches the container in both the editor and on the frontend and updates the SVG `viewBox` whenever the container is resized, so the text rescales automatically.
 
 == Changelog ==
+
+= 0.1.6 =
+* Fix: opening a post that contains the block no longer marks it as having unsaved changes. The editor only syncs the block's size when it has changed.
 
 = 0.1.5 =
 * Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
