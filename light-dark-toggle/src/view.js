@@ -2,6 +2,7 @@ import domReady from '@wordpress/dom-ready';
 import {
 	addToggleModeListener,
 	getColorScheme,
+	setInitialColorScheme,
 	toggleColorMode,
 	updateToggleClass,
 	updateToggleAriaLabel,
@@ -13,6 +14,15 @@ domReady( wpcomDarkLightMode );
  * Handles the light/dark mode toggle functionality.
  */
 function wpcomDarkLightMode() {
+	const toggle = document.querySelector(
+		'.wp-block-wpcomsp-light-dark-toggle'
+	);
+
+	/**
+	 * Start in the block's Default Mode when the visitor has no stored preference
+	 */
+	setInitialColorScheme( toggle?.dataset.defaultMode );
+
 	/**
 	 * Add the toggle mode listener to the window object
 	 */
@@ -24,10 +34,6 @@ function wpcomDarkLightMode() {
 	updateToggleClass( window );
 
 	//add interactivity ( click, slide )
-	const toggle = document.querySelector(
-		'.wp-block-wpcomsp-light-dark-toggle'
-	);
-
 	let pointerActive = false;
 	let pointerStartX = 0;
 	let pointerEndX = 0;
