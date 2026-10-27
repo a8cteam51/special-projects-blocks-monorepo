@@ -27,7 +27,7 @@
 			"step": "installPlugin",
 			"pluginData": {
 				"resource": "url",
-				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/videopress-download%400.1.1/videopress-download.zip"
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/videopress-download%400.1.2/videopress-download.zip"
 			},
 			"options": {
 				"activate": true
