@@ -10,6 +10,7 @@ import { useState } from "@wordpress/element";
 import LocalControl from "./local-control";
 import ExternalControl from "./external-control";
 import VideoControls from "./video-controls";
+import "./block-settings";
 
 const META_KEY = "_wpcomsp_featured_video_id";
 const META_OPTIONS_KEY = "_wpcomsp_featured_video_options";
