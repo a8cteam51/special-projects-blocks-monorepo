@@ -175,7 +175,7 @@ class Groups_Block_Bindings {
 	 *
 	 * @param array<mixed> $context The block context which may contain 'postId' and 'postType' for group blocks.
 	 *
-	 * @return \BP_Groups_Group|int The current group object, or 0 if not in a group context.
+	 * @return \BP_Groups_Group|integer The current group object, or 0 if not in a group context.
 	 */
 	public static function get_current_group( array $context = array() ) {
 
@@ -187,11 +187,11 @@ class Groups_Block_Bindings {
 			case ( 'bp_group' === $post_type && 0 < $post_id ):
 				$group = groups_get_group( $post_id );
 				break;
-			case ( 0 < groups_get_current_group() ):
+			case ( groups_get_current_group() instanceof \BP_Groups_Group ):
 				$group = groups_get_current_group();
 				break;
 
-			case ( 0 < bp_get_group() ):
+			case ( bp_get_group() instanceof \BP_Groups_Group ):
 				$group = bp_get_group();
 				break;
 		}
