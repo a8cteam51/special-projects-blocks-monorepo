@@ -178,6 +178,61 @@ import { encodeSvgForDataUri, getPixelValue } from './imports/utils';
 	}
 
 	/**
+	 * Returns the element the clip path is computed from.
+	 *
+	 * Image blocks clip the picture itself, so measure that rather than the
+	 * figure: a non-aligned image narrower than its column leaves the figure
+	 * at full column width, and a path built from the figure's box would put
+	 * the right-hand corners past the picture's edge. This mirrors the
+	 * editor, which measures the img too.
+	 *
+	 * @param {Element} block      The block element.
+	 * @param {Object}  cachedData The block's cached data.
+	 *
+	 * @return {Element} The element to measure.
+	 */
+	function getMeasuredElement( block, cachedData ) {
+		if ( cachedData.isImage ) {
+			const img = block.querySelector( 'img' );
+			if ( img ) {
+				return img;
+			}
+		}
+
+		return block;
+	}
+
+	/**
+	 * Fits the border overlay to the measured element's box.
+	 *
+	 * The overlay span is injected by PHP with `inset: 0`, which matches the
+	 * block's box. For image blocks the path is sized to the picture, so the
+	 * overlay has to follow the picture's offset and size within the figure.
+	 *
+	 * @param {Element} block  The block element.
+	 * @param {Element} target The measured element.
+	 */
+	function fitBorderOverlay( block, target ) {
+		if ( target === block ) {
+			return;
+		}
+
+		const overlay = block.querySelector(
+			':scope > .dynamic-shape-border-overlay'
+		);
+		if ( ! overlay ) {
+			return;
+		}
+
+		overlay.style.top = `${ target.offsetTop }px`;
+		overlay.style.left = `${ target.offsetLeft }px`;
+		overlay.style.width = `${ target.offsetWidth }px`;
+		overlay.style.height = `${ target.offsetHeight }px`;
+		overlay.style.right = 'auto';
+		overlay.style.bottom = 'auto';
+	}
+
+	/**
 	 * Update the clip path for the given block.
 	 *
 	 * @param {Element} block       Block for which to update the clip path.
@@ -201,8 +256,9 @@ import { encodeSvgForDataUri, getPixelValue } from './imports/utils';
 		}
 
 		// Get dimensions - if not available, retry up to MAX_RETRY_COUNT times.
-		const width = block.offsetWidth;
-		const height = block.offsetHeight;
+		const target = getMeasuredElement( block, cachedData );
+		const width = target.offsetWidth;
+		const height = target.offsetHeight;
 
 		if ( ! width || ! height ) {
 			if ( retryCount < MAX_RETRY_COUNT ) {
@@ -237,6 +293,7 @@ import { encodeSvgForDataUri, getPixelValue } from './imports/utils';
 
 		if ( cachedData.borderData ) {
 			applyBorderSvg( block, path, width, height, cachedData );
+			fitBorderOverlay( block, target );
 		} else {
 			block.style.removeProperty( '--border-svg' );
 		}
@@ -274,12 +331,25 @@ import { encodeSvgForDataUri, getPixelValue } from './imports/utils';
 
 		resizeObserver = new ResizeObserver( ( entries ) => {
 			entries.forEach( ( entry ) => {
-				scheduleUpdate( entry.target );
+				// Entries may be a block or the picture inside an image block.
+				const block =
+					entry.target.closest( DYNAMIC_SHAPE_SELECTOR ) ||
+					entry.target;
+				scheduleUpdate( block );
 			} );
 		} );
 
 		dynamicShapeBlocks.forEach( ( block ) => {
 			resizeObserver.observe( block );
+
+			// The picture can change size without the figure doing so.
+			const cachedData = dynamicShapeBlocksData.get( block );
+			const target = cachedData
+				? getMeasuredElement( block, cachedData )
+				: block;
+			if ( target !== block ) {
+				resizeObserver.observe( target );
+			}
 		} );
 	}
 
