@@ -43,7 +43,7 @@ function get_dynamic_shapes_blocks(): array {
  *
  * @param string $value The value to check.
  *
- * @return bool True if the value is a preset.
+ * @return boolean True if the value is a preset.
  */
 function is_preset_value( string $value ): bool {
 	return '' !== $value && str_contains( $value, 'var:preset|' );
@@ -95,7 +95,7 @@ function preset_to_css_var( string $preset_value ): string {
 /**
  * Gets the larger of two dynamic shape values, preserving the original format.
  *
- * @param string $left_value The left value.
+ * @param string $left_value  The left value.
  * @param string $right_value The right value.
  *
  * @return string The larger value in its original format (preset or pixel).
@@ -112,7 +112,7 @@ function get_larger_dynamic_shape_value( string $left_value, string $right_value
  *
  * @param string $size The size value to parse.
  *
- * @return int The pixel value.
+ * @return integer The pixel value.
  */
 function parse_size_to_pixels( string $size ): int {
 	if ( '' === $size ) {
@@ -168,7 +168,7 @@ function get_spacing_preset_size( string $slug ): string {
  *
  * @param string $value The value to compute.
  *
- * @return int The computed pixel value.
+ * @return integer The computed pixel value.
  */
 function get_computed_pixel_value( string $value ): int {
 	if ( '' === $value ) {
@@ -225,12 +225,12 @@ function get_theme_palette_color( string $slug ): string {
 /**
  * Normalizes and appends styles to existing inline styles.
  *
- * @param string|true|null $existing_styles Existing inline styles.
- * @param string           $new_style       New style to append.
+ * @param string|boolean|null $existing_styles Existing inline styles.
+ * @param string              $new_style       New style to append.
  *
  * @return string Normalized combined styles.
  */
-function append_inline_style( string|true|null $existing_styles, string $new_style ): string {
+function append_inline_style( string|bool|null $existing_styles, string $new_style ): string {
 	// Normalize existing styles to always end with semicolon.
 	$normalized = ( is_string( $existing_styles ) && '' !== $existing_styles )
 		? rtrim( $existing_styles, ';' ) . ';'
@@ -273,8 +273,8 @@ function update_block_shadow( string $block_content, string $shadow ): string {
 /**
  * Applies border color attributes to an HTML tag processor.
  *
- * @param \WP_HTML_Tag_Processor $html              The HTML tag processor.
- * @param string                 $border_color      The border color slug.
+ * @param \WP_HTML_Tag_Processor $html                The HTML tag processor.
+ * @param string                 $border_color        The border color slug.
  * @param string                 $custom_border_color The custom border color value.
  *
  * @return void
@@ -371,7 +371,7 @@ function get_border_width( array $border_widths ): string {
  *
  * @param array<string, mixed> $attrs Block attributes.
  *
- * @return bool True if the block has a resolvable border width.
+ * @return boolean True if the block has a resolvable border width.
  */
 function has_border_width( array $attrs ): bool {
 	return '' !== get_border_width( get_border_widths( $attrs ) );
@@ -696,7 +696,7 @@ function maybe_enqueue_view_script(): void {
  *
  * @param string               $block_content Block content.
  * @param array<string, mixed> $attrs         Block attributes.
- * @param bool                 $is_image      Whether this is an image block.
+ * @param boolean              $is_image      Whether this is an image block.
  *
  * @return string Modified block content.
  */
