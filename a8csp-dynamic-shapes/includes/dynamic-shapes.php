@@ -92,100 +92,9 @@ function preset_to_css_var( string $preset_value ): string {
 	return $preset_value;
 }
 
-/**
- * Gets the larger of two dynamic shape values, preserving the original format.
- *
- * @param string $left_value  The left value.
- * @param string $right_value The right value.
- *
- * @return string The larger value in its original format (preset or pixel).
- */
-function get_larger_dynamic_shape_value( string $left_value, string $right_value ): string {
-	$left_pixels  = get_computed_pixel_value( $left_value );
-	$right_pixels = get_computed_pixel_value( $right_value );
 
-	return $left_pixels >= $right_pixels ? $left_value : $right_value;
-}
 
-/**
- * Parses a size value (from preset) and returns pixel value.
- *
- * @param string $size The size value to parse.
- *
- * @return integer The pixel value.
- */
-function parse_size_to_pixels( string $size ): int {
-	if ( '' === $size ) {
-		return 0;
-	}
 
-	// Handle clamp() values by extracting the minimum value.
-	if ( str_contains( $size, 'clamp(' ) ) {
-		// Extract the first value from clamp(min, preferred, max).
-		preg_match( '/clamp\(\s*(\d+(?:\.\d+)?)px/', $size, $matches );
-		return isset( $matches[1] ) ? (int) $matches[1] : 0;
-	}
-
-	// Handle rem values (convert to approximate pixels).
-	if ( str_contains( $size, 'rem' ) ) {
-		$rem_value = (float) $size;
-		return (int) ( $rem_value * 16 ); // Approximate 1rem = 16px.
-	}
-
-	// Fallback to numeric value.
-	return (int) $size;
-}
-
-/**
- * Gets the CSS size value for a spacing preset slug.
- *
- * @param string $slug The spacing preset slug.
- *
- * @return string The CSS size value, or empty string if not found.
- */
-function get_spacing_preset_size( string $slug ): string {
-	$theme_settings  = wp_get_global_settings();
-	$spacing_presets = $theme_settings['spacing']['spacingSizes'] ?? array();
-	$theme_presets   = $spacing_presets['theme'] ?? array();
-	$default_presets = $spacing_presets['default'] ?? array();
-	$preset_sources  = array() !== $theme_presets ? $theme_presets : $default_presets;
-
-	if ( ! is_array( $preset_sources ) ) {
-		return '';
-	}
-
-	foreach ( $preset_sources as $preset ) {
-		if ( isset( $preset['slug'] ) && $preset['slug'] === $slug ) {
-			return $preset['size'] ?? '';
-		}
-	}
-
-	return '';
-}
-
-/**
- * Gets the computed pixel value of a preset or regular value.
- *
- * @param string $value The value to compute.
- *
- * @return integer The computed pixel value.
- */
-function get_computed_pixel_value( string $value ): int {
-	if ( '' === $value ) {
-		return 0;
-	}
-
-	if ( is_numeric( $value ) || str_ends_with( $value, 'px' ) ) {
-		return (int) $value;
-	}
-
-	$parsed = parse_preset_value( $value );
-	if ( null === $parsed || 'spacing' !== $parsed['type'] ) {
-		return 0;
-	}
-
-	return parse_size_to_pixels( get_spacing_preset_size( $parsed['slug'] ) );
-}
 
 /**
  * Gets a theme palette color.
@@ -432,6 +341,11 @@ function update_block_border( string $block_content, array $attrs ): string {
 /**
  * Converts a dynamic shape value to a CSS value for padding calculation.
  *
+ * Presets are passed through as their CSS variable and left for the browser
+ * to resolve. PHP has no reliable way to turn a fluid preset size such as
+ * min(), calc(), or a rem-based clamp() into pixels, and getting that wrong
+ * means no inset for the shape at all.
+ *
  * @param string $value The dynamic shape value.
  *
  * @return string|null The CSS value or null if value is 0 or empty.
@@ -441,26 +355,51 @@ function get_dynamic_shape_padding_value( string $value ): ?string {
 		return null;
 	}
 
-	$is_preset = is_preset_value( $value );
-
-	// Match how view.js derives the clip path from the same value: presets go
-	// through the computed pixel value, everything else is parsed as a float.
-	// PHP writes the final front-end padding and nothing re-computes it on load,
-	// so a plain (int) cast here would inset content less than the shape is
-	// clipped for fractional widths such as "12.5px".
-	$pixels = $is_preset ? get_computed_pixel_value( $value ) : (float) $value;
-
-	if ( $pixels <= 0 ) {
-		return null;
+	if ( is_preset_value( $value ) ) {
+		return preset_to_css_var( $value );
 	}
 
-	if ( $is_preset ) {
-		return preset_to_css_var( $value );
+	// PHP writes the final front-end padding and nothing re-computes it on
+	// load, so a plain (int) cast here would inset content less than the
+	// shape is clipped for fractional widths such as "12.5px".
+	if ( (float) $value <= 0 ) {
+		return null;
 	}
 
 	// Preserve the authored fractional value; append a unit only if a bare
 	// number somehow reaches here.
 	return str_ends_with( $value, 'px' ) ? $value : $value . 'px';
+}
+
+/**
+ * Builds the CSS term for a side's dynamic shape offset.
+ *
+ * Each side has two corners. Which one is larger can depend on the viewport
+ * when presets are fluid, so when both are set the comparison is left to CSS
+ * max() rather than decided here.
+ *
+ * @param string $first_value  The first corner's value.
+ * @param string $second_value The second corner's value.
+ *
+ * @return string|null The CSS term, or null if neither corner is set.
+ */
+function get_dynamic_shape_side_padding( string $first_value, string $second_value ): ?string {
+	$terms = array_values(
+		array_unique(
+			array_filter(
+				array(
+					get_dynamic_shape_padding_value( $first_value ),
+					get_dynamic_shape_padding_value( $second_value ),
+				)
+			)
+		)
+	);
+
+	if ( array() === $terms ) {
+		return null;
+	}
+
+	return 1 === count( $terms ) ? $terms[0] : sprintf( 'max(%s)', implode( ', ', $terms ) );
 }
 
 /**
@@ -508,10 +447,10 @@ function update_block_padding( string $block_content, array $attrs ): string {
 		}
 
 		// Add dynamic shape offset value.
-		$shape_value_1 = $dynamic_shape[ $shape_keys[0] ] ?? '';
-		$shape_value_2 = $dynamic_shape[ $shape_keys[1] ] ?? '';
-		$larger_value  = get_larger_dynamic_shape_value( $shape_value_1, $shape_value_2 );
-		$shape_padding = get_dynamic_shape_padding_value( $larger_value );
+		$shape_padding = get_dynamic_shape_side_padding(
+			(string) ( $dynamic_shape[ $shape_keys[0] ] ?? '' ),
+			(string) ( $dynamic_shape[ $shape_keys[1] ] ?? '' )
+		);
 
 		if ( null !== $shape_padding ) {
 			$side_padding[] = $shape_padding;
@@ -753,10 +692,9 @@ function is_unset_shape_value( $value ): bool {
 	}
 
 	// Presets always count as set. Their pixel value is resolved in the
-	// browser by view.js; parse_size_to_pixels() returns 0 for sizes it
-	// can't read (min(), calc(), clamp() with a rem minimum, and so on),
-	// so judging presets by it here would drop valid corners on themes
-	// with fluid spacing presets.
+	// browser by view.js; PHP cannot reliably read fluid sizes such as
+	// min(), calc(), or a rem-based clamp(), so judging presets here would
+	// drop valid corners on themes with fluid spacing presets.
 	if ( is_preset_value( $value ) ) {
 		return false;
 	}
