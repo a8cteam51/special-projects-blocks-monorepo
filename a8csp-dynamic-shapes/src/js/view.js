@@ -286,6 +286,12 @@ import { encodeSvgForDataUri, getPixelValue } from './imports/utils';
 
 		const newClipPath = `path('${ path }')`;
 		if ( block.style.getPropertyValue( '--clip-path' ) === newClipPath ) {
+			// The picture can move inside the figure without the path
+			// changing (the figure resized, the picture did not), so keep
+			// the overlay on it even when there is nothing else to do.
+			if ( cachedData.borderData ) {
+				fitBorderOverlay( block, target );
+			}
 			return;
 		}
 

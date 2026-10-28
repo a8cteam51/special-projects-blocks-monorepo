@@ -752,8 +752,13 @@ function is_unset_shape_value( $value ): bool {
 		return true;
 	}
 
+	// Presets always count as set. Their pixel value is resolved in the
+	// browser by view.js; parse_size_to_pixels() returns 0 for sizes it
+	// can't read (min(), calc(), clamp() with a rem minimum, and so on),
+	// so judging presets by it here would drop valid corners on themes
+	// with fluid spacing presets.
 	if ( is_preset_value( $value ) ) {
-		return get_computed_pixel_value( $value ) <= 0;
+		return false;
 	}
 
 	return (float) $value <= 0;
