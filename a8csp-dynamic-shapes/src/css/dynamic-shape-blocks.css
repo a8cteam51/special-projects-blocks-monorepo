@@ -1,0 +1,87 @@
+/* Editor preview. `.dynamic-shape-container` is the block's own wrapper
+   element (applied through `editor.BlockListBlock` wrapperProps), so these
+   rules target the block directly rather than a child of an extra div.
+
+   Only `::before` is used here. The editor draws its hover and selection
+   outlines on every block's `::after`, so anything (and in particular any
+   clip-path) placed on that pseudo-element would break those outlines. */
+
+.dynamic-shape-container {
+
+	/* Keep the negative z-index layers below inside this block. */
+	isolation: isolate;
+	position: relative;
+}
+
+/* Non-image blocks: the clipped fill, with the SVG stroke painted over it
+   when the block has a border, sits under the block's content. The content
+   is padded past the stroke and the shape offsets (see below), so nothing
+   overlaps it in practice. */
+.dynamic-shape-container:not(.is-image) {
+	background: none !important;
+	padding-top: calc(var(--pad-t-o) + var(--pad-t-a)) !important;
+	padding-right: calc(var(--pad-r-o) + var(--pad-r-a)) !important;
+	padding-bottom: calc(var(--pad-b-o) + var(--pad-b-a)) !important;
+	padding-left: calc(var(--pad-l-o) + var(--pad-l-a)) !important;
+}
+
+.dynamic-shape-container:not(.is-image)::before {
+	background: var(--border-svg, none) no-repeat, var(--background);
+	clip-path: var(--clip-path);
+	content: "";
+	inset: 0;
+	pointer-events: none;
+	position: absolute;
+	z-index: -1;
+}
+
+.dynamic-shape-container.wp-block-cover {
+
+	/* Push the cover's own layers under the fill/stroke pseudo-element. */
+	.wp-block-cover__image-background,
+	.wp-block-cover__background {
+		clip-path: var(--clip-path);
+		z-index: -2;
+	}
+
+	/* Reset border-radius so the editor's outline indicator doesn't follow
+	   the block's rounded corners, which would obscure corner controls.
+	   The clip-path handles the visual shape, so this has no visual effect. */
+	border-radius: 0 !important;
+}
+
+.dynamic-shape-container.dynamic-shape-has-border:not(.is-image) {
+	border: none !important;
+	padding-top: calc(var(--pad-t-o) + var(--pad-t-a) + var(--stroke-width)) !important;
+	padding-right: calc(var(--pad-r-o) + var(--pad-r-a) + var(--stroke-width)) !important;
+	padding-bottom: calc(var(--pad-b-o) + var(--pad-b-a) + var(--stroke-width)) !important;
+	padding-left: calc(var(--pad-l-o) + var(--pad-l-a) + var(--stroke-width)) !important;
+}
+
+/* Image blocks: the stroke has to sit above the picture. */
+.dynamic-shape-container.is-image.dynamic-shape-has-border::before {
+	background: var(--border-svg) no-repeat;
+	clip-path: var(--clip-path);
+	content: "";
+	inset: 0;
+	pointer-events: none;
+	position: absolute;
+	z-index: 2;
+}
+
+.dynamic-shape-container.is-image[style*="--filter"]:not(.is-selected),
+.dynamic-shape-container.is-image[style*="--filter"].is-selected .components-resizable-box__container {
+
+	/* Unfortunately, this also adds a drop shadow to the resizing handles.
+	But it's better than no representation at all. */
+	filter: var(--filter);
+}
+
+.dynamic-shape-container.is-image img,
+.dynamic-shape-container.is-image .wp-block-post-featured-image__overlay {
+	clip-path: var(--clip-path);
+}
+
+.dynamic-shape-container.is-image figcaption {
+	display: none;
+}
