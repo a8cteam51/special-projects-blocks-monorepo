@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.2 - 2026-10-28
+
+### Fixed
+- Fatal error on PHP 8.0 and 8.1. `append_inline_style()` declared a `string|true|null` parameter, and a standalone `true` type needs PHP 8.2; the type is now `string|bool|null`.
+- Supported blocks no longer crash on the block widgets screen or in the Customizer. The editor script read the color palette from the `core/editor` store, which is not registered there. It now reads the block editor settings, which also lets default-palette colors resolve on themes that define their own palette.
+- Wide and full-aligned blocks keep their alignment in the editor. The preview wrapped `BlockEdit` in an extra `div`, which took the block out of its layout container, so alignwide and alignfull previews collapsed to the content width. The preview is now applied to the block's own wrapper element through `editor.BlockListBlock`.
+- Setting the first shape value no longer remounts the block. The conditional wrapper caused a remount that moved focus out of the sidebar, so the next keystroke selected the inner block and the Dynamic Shape panel disappeared.
+- Front-end image clip paths are measured from the picture rather than the figure, matching the editor. A non-aligned image narrower than its column had its right-hand insets placed past the picture's edge. The border overlay now follows the picture, and the picture's own resizes are observed.
+- A corner slid back to 0 is treated as unset in the editor and in PHP, instead of being saved as `'0px'` or `''` and still clipping the block, padding it, and removing image captions. Zero-only shapes saved earlier now render as plain blocks.
+- Group and Cover blocks no longer receive a `filter: drop-shadow()` that their own clip path clipped away.
+
+### Changed
+- Documented in the readme that shape-following drop shadows apply to Image and Featured Image blocks only. A shadow on a shaped Group or Cover block is not rendered.
+
 ## 0.1.1 - 2026-07-15
 
 ### Fixed

@@ -2,7 +2,7 @@
 Contributors:      Automattic Special Projects
 Tags:              editor plugin, group, cover, image
 Tested up to:      6.7
-Stable tag:        0.1.1
+Stable tag:        0.1.2
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -92,6 +92,9 @@ While the `a8csp_dynamic_shapes_blocks` filter allows for adding support for cus
 Rounded corners use cubic Bezier curves that approximate circular arcs. The approximation is highly accurate for typical shapes, but extreme combinations of large radii with very acute or obtuse corner angles may produce slightly imperfect curves.
 
 == Changelog ==
+
+= 0.1.2 =
+* Fixes a fatal error on PHP 8.0 and 8.1, a crash on the block widgets screen and in the Customizer, editor alignment and focus issues, front-end image insets, and zero-value corners. See CHANGELOG.md for full details.
 
 = 0.1.1 =
 * Fixes front-end asset loading and border rendering. See CHANGELOG.md for full details.
