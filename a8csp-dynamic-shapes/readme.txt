@@ -18,7 +18,7 @@ Dynamic Shapes extends the WordPress block editor with shape customization tools
 * **Block Support**: Works with Group, Cover, Image, and Post Featured Image blocks
 * **Border Radius Integration**: Integrates with WordPress border radius controls
 * **Borders & Backgrounds**: Full support for borders and backgrounds that follow the clipped shape
-* **Drop Shadows**: Apply shape-respecting drop shadows via `filter: drop-shadow()`
+* **Drop Shadows**: Shape-following drop shadows on Image and Featured Image blocks via `filter: drop-shadow()`
 * **Padding Adjustments**: Automatic padding calculations for non-image blocks to account for shape offsets and border width
 * **Preset Support**: Use spacing presets or custom values for precise control
 
@@ -72,6 +72,12 @@ Yes! The plugin supports both WordPress spacing presets and custom pixel values.
 = How do borders work with dynamic shapes? =
 
 Borders are applied using SVG strokes that follow the custom clip path. The border width is doubled internally to account for the stroke being centered on the path, then trimmed in half by the clip-path. Note that SVG strokes can only accommodate a single width value, so if you have different border widths per side, only the top width will be used.
+
+= Do drop shadows follow the shape? =
+
+On Image and Featured Image blocks, yes: the picture is clipped and the figure carries a `filter: drop-shadow()`, so the shadow traces the shape.
+
+Group and Cover blocks are clipped at the block itself, and a clip path removes everything outside it, including any shadow. A shadow set on a shaped Group or Cover block is therefore not rendered.
 
 = What happens to padding when using dynamic shapes? =
 

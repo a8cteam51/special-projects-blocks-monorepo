@@ -440,13 +440,16 @@ function useDynamicShapeWrapperProps( { clientId, name, attributes } ) {
 		style?.border,
 	] );
 
+	// Shadows only follow the shape on image blocks (the picture is clipped,
+	// the figure carries the filter), matching the front end.
 	useEffect( () => {
-		const shadow = style?.shadow ? presetToCssVar( style.shadow ) : '';
+		const shadow =
+			isImage && style?.shadow ? presetToCssVar( style.shadow ) : '';
 
 		setShadowProps( {
 			'--filter': shadow ? `drop-shadow(${ shadow })` : '',
 		} );
-	}, [ style?.shadow ] );
+	}, [ isImage, style?.shadow ] );
 
 	const styles = useMemo(
 		() =>

@@ -240,13 +240,15 @@ function append_inline_style( string|bool|null $existing_styles, string $new_sty
 }
 
 /**
- * Updates block shadow output.
+ * Updates image block shadow output.
  *
  * The `filter` property can be leveraged to apply a drop shadow on the block
  * that follows the clipped path shape of the inner image.
  *
  * This works for all but the `outlined` style drop shadow,
  * perhaps owing to its use of two layers.
+ *
+ * Only image blocks get this treatment; see apply_style_transforms().
  *
  * @see https://css-tricks.com/using-box-shadows-and-clip-path-together/
  *
@@ -705,7 +707,12 @@ function apply_style_transforms( string $block_content, array $attrs, bool $is_i
 		$block_content = clip_image_block_children( $block_content );
 	}
 
-	if ( '' !== ( $attrs['style']['shadow'] ?? '' ) ) {
+	// Shape-following shadows are only possible where the clip path sits on
+	// an inner element (the picture) and the filter on its parent (the
+	// figure). Group and Cover blocks are clipped at the root, which would
+	// clip the drop shadow away with everything else, so leave the shadow
+	// out there rather than paying for a filter that can never be seen.
+	if ( $is_image && '' !== ( $attrs['style']['shadow'] ?? '' ) ) {
 		$block_content = update_block_shadow( $block_content, $attrs['style']['shadow'] );
 	}
 
