@@ -4,12 +4,11 @@
 import clsx from 'clsx';
 
 // WordPress dependencies.
-import { InspectorControls } from '@wordpress/block-editor';
+import { InspectorControls, useSettings } from '@wordpress/block-editor';
 import {
 	__experimentalToolsPanel as ToolsPanel, // eslint-disable-line
 } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { useSelect } from '@wordpress/data';
 import {
 	useCallback,
 	useEffect,
@@ -76,9 +75,24 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 		const wrapperRef = useRef( null );
 
-		const colorPalette = useSelect(
-			( select ) => select( 'core/editor' ).getEditorSettings()?.colors,
-			[]
+		// Read the palette from the block editor settings rather than the
+		// `core/editor` store: that store is not registered on the block
+		// widgets screen or in the Customizer, so selecting from it there
+		// throws and takes every supported block down with it. Merging the
+		// origins also lets default-palette slugs resolve on themes that
+		// define their own palette.
+		const [ customColors, themeColors, defaultColors ] = useSettings(
+			'color.palette.custom',
+			'color.palette.theme',
+			'color.palette.default'
+		);
+		const colorPalette = useMemo(
+			() => [
+				...( customColors ?? [] ),
+				...( themeColors ?? [] ),
+				...( defaultColors ?? [] ),
+			],
+			[ customColors, themeColors, defaultColors ]
 		);
 
 		const [ path, setPath ] = useState( '' );
