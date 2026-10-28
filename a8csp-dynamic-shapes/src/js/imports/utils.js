@@ -99,6 +99,20 @@ export const getComputedPixelValue = ( value, element = null ) => {
 };
 
 /**
+ * Strips characters that could break out of an attribute in the border SVG.
+ *
+ * The colour comes from block attributes and is interpolated into SVG
+ * markup, so quotes and angle brackets must not get through.
+ *
+ * @param {*} color The colour value.
+ *
+ * @return {string} The colour with quotes and angle brackets removed.
+ */
+export const sanitizeSvgColor = ( color ) => {
+	return String( color ?? '' ).replace( /["'<>]/g, '' );
+};
+
+/**
  * Encode an SVG string for use in a data URI.
  * Escapes characters that would break the URI or cause parsing issues.
  *

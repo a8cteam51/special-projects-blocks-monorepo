@@ -32,6 +32,7 @@ import {
 	isPresetValue,
 	presetToCssVar,
 	resolveColor,
+	sanitizeSvgColor,
 } from './imports/utils';
 
 const IMAGE_BLOCKS = [ 'core/image', 'core/post-featured-image' ];
@@ -420,7 +421,13 @@ function useDynamicShapeWrapperProps( { clientId, name, attributes } ) {
 				'#000000'
 			);
 
-			const svg = `<svg width="${ dimensions.width }" height="${ dimensions.height }" viewBox="0 0 ${ dimensions.width } ${ dimensions.height }" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="${ path }" stroke="${ borderColor }" stroke-width="${ strokeWidth }"/></svg>`;
+			const svg = `<svg width="${ dimensions.width }" height="${
+				dimensions.height
+			}" viewBox="0 0 ${ dimensions.width } ${
+				dimensions.height
+			}" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="${ path }" stroke="${ sanitizeSvgColor(
+				borderColor
+			) }" stroke-width="${ strokeWidth }"/></svg>`;
 
 			newStyles[
 				'--border-svg'

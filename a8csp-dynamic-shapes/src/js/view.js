@@ -5,7 +5,11 @@ import domReady from '@wordpress/dom-ready';
 
 // Internal dependencies.
 import { getPath } from './imports/get-path';
-import { encodeSvgForDataUri, getPixelValue } from './imports/utils';
+import {
+	encodeSvgForDataUri,
+	getPixelValue,
+	sanitizeSvgColor,
+} from './imports/utils';
 
 {
 	// Selectors.
@@ -317,7 +321,9 @@ import { encodeSvgForDataUri, getPixelValue } from './imports/utils';
 	function applyBorderSvg( block, path, width, height, cachedData ) {
 		const { width: borderWidth, color: borderColor } =
 			cachedData.borderData;
-		const svg = `<svg width="${ width }" height="${ height }" viewBox="0 0 ${ width } ${ height }" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="${ path }" stroke="${ borderColor }" stroke-width="${ borderWidth }"/></svg>`;
+		const svg = `<svg width="${ width }" height="${ height }" viewBox="0 0 ${ width } ${ height }" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="${ path }" stroke="${ sanitizeSvgColor(
+			borderColor
+		) }" stroke-width="${ borderWidth }"/></svg>`;
 
 		// Set as custom property for the border overlay span, which renders
 		// the border SVG above the block's content layers.

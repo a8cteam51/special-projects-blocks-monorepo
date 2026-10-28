@@ -256,22 +256,36 @@ function get_border_widths( array $attrs ): array {
  * Uses the uniform 'width' if set, otherwise falls back to the 'top'
  * side width (SVG stroke can't accommodate different widths per side).
  *
+ * The width is written into an inline custom property as-is, so only a
+ * plain CSS length is accepted. Core sanitizes its own border output; this
+ * path does not go through that.
+ *
  * @param array<string, mixed> $border_widths Filtered border width data.
  *
- * @return string The resolved border width value, or empty string if none.
+ * @return string The resolved border width value, or empty string if none or invalid.
  */
 function get_border_width( array $border_widths ): string {
+	$width = '';
+
 	if ( isset( $border_widths['width'] ) ) {
-		return $border_widths['width'];
+		$width = $border_widths['width'];
+	} else {
+		$top_width = $border_widths['top'] ?? null;
+
+		if ( is_array( $top_width ) && isset( $top_width['width'] ) ) {
+			$width = $top_width['width'];
+		} elseif ( is_string( $top_width ) ) {
+			$width = $top_width;
+		}
 	}
 
-	$top_width = $border_widths['top'] ?? null;
-
-	if ( is_array( $top_width ) && isset( $top_width['width'] ) ) {
-		return $top_width['width'];
+	if ( ! is_string( $width ) ) {
+		return '';
 	}
 
-	return is_string( $top_width ) ? $top_width : '';
+	$width = trim( $width );
+
+	return 1 === preg_match( '/^\d*\.?\d+(?:px|r?em|%|v[wh]|ch)?$/', $width ) ? $width : '';
 }
 
 /**
@@ -344,31 +358,33 @@ function update_block_border( string $block_content, array $attrs ): string {
  * Presets are passed through as their CSS variable and left for the browser
  * to resolve. PHP has no reliable way to turn a fluid preset size such as
  * min(), calc(), or a rem-based clamp() into pixels, and getting that wrong
- * means no inset for the shape at all.
+ * means no inset for the shape at all. The variable carries a 0px fallback:
+ * a slug the active theme no longer defines would otherwise invalidate the
+ * whole padding declaration, taking the author's own padding with it.
+ *
+ * Only values that pass sanitize_dynamic_shape_value() are emitted, so the
+ * output is always a plain length or a var() built from a vetted slug.
  *
  * @param string $value The dynamic shape value.
  *
- * @return string|null The CSS value or null if value is 0 or empty.
+ * @return string|null The CSS value or null if the value is unset or invalid.
  */
 function get_dynamic_shape_padding_value( string $value ): ?string {
-	if ( '' === $value ) {
+	$value = sanitize_dynamic_shape_value( $value );
+
+	if ( null === $value ) {
 		return null;
 	}
 
-	if ( is_preset_value( $value ) ) {
-		return preset_to_css_var( $value );
+	$parsed = parse_preset_value( $value );
+
+	if ( null !== $parsed ) {
+		return sprintf( 'var(--wp--preset--spacing--%s, 0px)', $parsed['slug'] );
 	}
 
-	// PHP writes the final front-end padding and nothing re-computes it on
-	// load, so a plain (int) cast here would inset content less than the
-	// shape is clipped for fractional widths such as "12.5px".
-	if ( (float) $value <= 0 ) {
-		return null;
-	}
-
-	// Preserve the authored fractional value; append a unit only if a bare
-	// number somehow reaches here.
-	return str_ends_with( $value, 'px' ) ? $value : $value . 'px';
+	// Already a validated pixel length; fractional widths such as "12.5px"
+	// are kept as authored so the inset matches the clip path exactly.
+	return $value;
 }
 
 /**
@@ -669,41 +685,42 @@ function apply_style_transforms( string $block_content, array $attrs, bool $is_i
 	return $block_content;
 }
 
+
 /**
- * Checks whether a dynamic shape corner value is effectively unset.
+ * Validates a dynamic shape corner value.
  *
- * Mirrors isUnsetShapeValue() in the editor script: '' and zero values do
- * not change the shape, so they must not turn a block into a dynamic shape
- * block on their own.
+ * A corner is either a spacing preset (`var:preset|spacing|<slug>`) or a
+ * positive pixel length. Anything else, including '' and zero (a corner slid
+ * back to 0), is treated as unset. The values end up in inline styles that
+ * are generated at render time, after KSES, so this is also what keeps a
+ * crafted corner from injecting CSS.
+ *
+ * Mirrors isUnsetShapeValue() in the editor script for the unset cases.
  *
  * @param mixed $value The corner value.
  *
- * @return boolean True if the value is unset or zero.
+ * @return string|null The value in canonical form, or null if unset or invalid.
  */
-function is_unset_shape_value( $value ): bool {
+function sanitize_dynamic_shape_value( $value ): ?string {
 	if ( ! is_scalar( $value ) ) {
-		return true;
+		return null;
 	}
 
 	$value = trim( (string) $value );
 
-	if ( '' === $value ) {
-		return true;
+	if ( 1 === preg_match( '/^var:preset\|spacing\|([a-z0-9-]+)$/i', $value, $matches ) ) {
+		return 'var:preset|spacing|' . $matches[1];
 	}
 
-	// Presets always count as set. Their pixel value is resolved in the
-	// browser by view.js; PHP cannot reliably read fluid sizes such as
-	// min(), calc(), or a rem-based clamp(), so judging presets here would
-	// drop valid corners on themes with fluid spacing presets.
-	if ( is_preset_value( $value ) ) {
-		return false;
+	if ( 1 === preg_match( '/^(\d*\.?\d+)(?:px)?$/', $value, $matches ) && (float) $matches[1] > 0 ) {
+		return $matches[1] . 'px';
 	}
 
-	return (float) $value <= 0;
+	return null;
 }
 
 /**
- * Removes unset corners from a dynamic shape attribute.
+ * Removes unset and invalid corners from a dynamic shape attribute.
  *
  * @param mixed $dynamic_shape The raw attribute value.
  *
@@ -717,8 +734,10 @@ function normalize_dynamic_shape( $dynamic_shape ): array {
 	$normalized = array();
 
 	foreach ( $dynamic_shape as $corner => $value ) {
-		if ( ! is_unset_shape_value( $value ) ) {
-			$normalized[ $corner ] = (string) $value;
+		$sanitized = sanitize_dynamic_shape_value( $value );
+
+		if ( null !== $sanitized && is_string( $corner ) ) {
+			$normalized[ $corner ] = $sanitized;
 		}
 	}
 
