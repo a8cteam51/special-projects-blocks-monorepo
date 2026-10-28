@@ -5,6 +5,7 @@ import {
 
 // Internal dependencies.
 import { CornerControl } from './corner-control';
+import { isUnsetShapeValue } from './utils';
 
 export const AxisControls = ( {
 	corners,
@@ -32,12 +33,22 @@ export const AxisControls = ( {
 						corner={ key }
 						label={ cornerLabel }
 						value={ values?.[ key ] || '' }
-						onChange={ ( value ) =>
-							onChange( {
-								...( values || {} ),
-								[ key ]: value || '',
-							} )
-						}
+						onChange={ ( value ) => {
+							const next = { ...( values || {} ) };
+
+							// Drop unset corners rather than storing '' or
+							// '0px', and clear the attribute entirely when
+							// no corner is left.
+							if ( isUnsetShapeValue( value ) ) {
+								delete next[ key ];
+							} else {
+								next[ key ] = value;
+							}
+
+							onChange(
+								Object.keys( next ).length ? next : undefined
+							);
+						} }
 						presets={ presets }
 						presetKey={ presetKey }
 					/>

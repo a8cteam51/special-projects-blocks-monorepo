@@ -724,6 +724,58 @@ function apply_style_transforms( string $block_content, array $attrs, bool $is_i
 }
 
 /**
+ * Checks whether a dynamic shape corner value is effectively unset.
+ *
+ * Mirrors isUnsetShapeValue() in the editor script: '' and zero values do
+ * not change the shape, so they must not turn a block into a dynamic shape
+ * block on their own.
+ *
+ * @param mixed $value The corner value.
+ *
+ * @return boolean True if the value is unset or zero.
+ */
+function is_unset_shape_value( $value ): bool {
+	if ( ! is_scalar( $value ) ) {
+		return true;
+	}
+
+	$value = trim( (string) $value );
+
+	if ( '' === $value ) {
+		return true;
+	}
+
+	if ( is_preset_value( $value ) ) {
+		return get_computed_pixel_value( $value ) <= 0;
+	}
+
+	return (float) $value <= 0;
+}
+
+/**
+ * Removes unset corners from a dynamic shape attribute.
+ *
+ * @param mixed $dynamic_shape The raw attribute value.
+ *
+ * @return array<string, string> The corners that are set, keyed by corner.
+ */
+function normalize_dynamic_shape( $dynamic_shape ): array {
+	if ( ! is_array( $dynamic_shape ) ) {
+		return array();
+	}
+
+	$normalized = array();
+
+	foreach ( $dynamic_shape as $corner => $value ) {
+		if ( ! is_unset_shape_value( $value ) ) {
+			$normalized[ $corner ] = (string) $value;
+		}
+	}
+
+	return $normalized;
+}
+
+/**
  * Filters dynamic shape block HTML.
  *
  * @param string               $block_content Block content.
@@ -738,10 +790,14 @@ function filter_dynamic_shape_block( string $block_content, array $block ): stri
 		return $block_content;
 	}
 
-	$dynamic_shape = $block['attrs']['dynamicShape'] ?? null;
-	if ( null === $dynamic_shape || array() === $dynamic_shape ) {
+	$dynamic_shape = normalize_dynamic_shape( $block['attrs']['dynamicShape'] ?? null );
+	if ( array() === $dynamic_shape ) {
 		return $block_content;
 	}
+
+	// Downstream helpers read the attribute again, so hand them the
+	// normalized corners rather than the raw value.
+	$block['attrs']['dynamicShape'] = $dynamic_shape;
 
 	$is_image_block = in_array( $block_name, array( 'core/image', 'core/post-featured-image' ), true );
 	$html           = new \WP_HTML_Tag_Processor( $block_content );

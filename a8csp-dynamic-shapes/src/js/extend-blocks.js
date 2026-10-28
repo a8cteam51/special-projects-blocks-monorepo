@@ -28,6 +28,7 @@ import {
 	getComputedPixelValue,
 	getPaddingVar,
 	getPixelValue,
+	hasShapeValues,
 	isPresetValue,
 	presetToCssVar,
 	resolveColor,
@@ -116,7 +117,9 @@ function DynamicShapeControls( { attributes, setAttributes, name } ) {
 	const resetAxis = ( keys ) => {
 		const updated = { ...dynamicShape };
 		keys.forEach( ( key ) => delete updated[ key ] );
-		setAttributes( { dynamicShape: updated } );
+		setAttributes( {
+			dynamicShape: Object.keys( updated ).length ? updated : undefined,
+		} );
 	};
 
 	const resetDynamicShape = () => {
@@ -131,7 +134,7 @@ function DynamicShapeControls( { attributes, setAttributes, name } ) {
 			>
 				<AxisControls
 					corners={ axisConfig( VERTICAL_KEYS ) }
-					hasValue={ () => !! dynamicShape }
+					hasValue={ () => hasShapeValues( dynamicShape ) }
 					label={
 						isImage
 							? __( 'Vertical insets', 'a8csp-dynamic-shapes' )
@@ -149,7 +152,7 @@ function DynamicShapeControls( { attributes, setAttributes, name } ) {
 				/>
 				<AxisControls
 					corners={ axisConfig( HORIZONTAL_KEYS ) }
-					hasValue={ () => !! dynamicShape }
+					hasValue={ () => hasShapeValues( dynamicShape ) }
 					label={ __( 'Horizontal insets', 'a8csp-dynamic-shapes' ) }
 					onChange={ ( newValues ) =>
 						setAttributes( {
@@ -213,7 +216,9 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 function useDynamicShapeWrapperProps( { clientId, name, attributes } ) {
 	const { dynamicShape, style } = attributes;
 	const isImage = IMAGE_BLOCKS.includes( name );
-	const hasShape = !! dynamicShape;
+	// Saved content may still carry zero-only shapes from before unset
+	// corners were dropped on input; those render as plain blocks.
+	const hasShape = hasShapeValues( dynamicShape );
 
 	// The block's wrapper element in the editor canvas, looked up once the
 	// block has rendered. Plays the role the wrapper div's ref used to.

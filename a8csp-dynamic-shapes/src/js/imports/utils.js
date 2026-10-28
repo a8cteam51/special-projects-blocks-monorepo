@@ -203,6 +203,45 @@ export const getPixelValue = ( value, element = null ) => {
 };
 
 /**
+ * Checks whether a corner value is effectively unset.
+ *
+ * A corner slid back to 0 produces '0px' (custom mode) or '' (preset mode).
+ * Neither changes the shape, but a saved object containing them still counts
+ * as a dynamic shape, so the block gets clipped, padded, and loses its
+ * caption for no visible reason. Treat them as unset everywhere.
+ *
+ * @param {*} value The corner value.
+ *
+ * @return {boolean} True if the value is unset or zero.
+ */
+export const isUnsetShapeValue = ( value ) => {
+	if ( value === undefined || value === null || value === '' ) {
+		return true;
+	}
+
+	if ( isPresetValue( value ) ) {
+		return false;
+	}
+
+	return ! ( parseFloat( value ) > 0 );
+};
+
+/**
+ * Checks whether a dynamic shape object has at least one set corner.
+ *
+ * @param {Object|undefined} shape The dynamic shape attribute.
+ *
+ * @return {boolean} True if any corner is set.
+ */
+export const hasShapeValues = ( shape ) => {
+	return (
+		!! shape &&
+		typeof shape === 'object' &&
+		Object.values( shape ).some( ( value ) => ! isUnsetShapeValue( value ) )
+	);
+};
+
+/**
  * Checks if a value is a preset value.
  *
  * @param {string} value The value to check.
