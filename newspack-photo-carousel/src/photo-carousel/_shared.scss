@@ -1,0 +1,18 @@
+/**
+ * Photo Carousel: shared by view.scss and editor.scss.
+ */
+
+$fade-duration: 400ms;
+
+// An inactive slide in the stacked stage. visibility, not opacity alone:
+// keeps off-slide slides out of the tab order and the a11y tree.
+@mixin inactive-slide {
+	visibility: hidden;
+	opacity: 0;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition:
+			opacity $fade-duration ease,
+			visibility 0s linear $fade-duration;
+	}
+}

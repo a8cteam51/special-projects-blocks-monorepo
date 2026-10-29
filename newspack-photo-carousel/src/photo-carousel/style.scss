@@ -1,0 +1,276 @@
+/**
+ * Photo Carousel: front-end and editor-canvas styles.
+ *
+ * Colours and type try the theme's presets first (Newspack Block Theme slugs),
+ * then the classic Newspack theme's variables, then newspack-colors tokens.
+ */
+
+@use "newspack-tokens" as np-colors;
+@use "shared" as *;
+
+$block: ".wp-block-newspack-photo-carousel";
+$arrow-size: 40px;
+$arrow-size-compact: 32px;
+
+// Newspack's $tablet_width, less one.
+$compact-max: 781px;
+
+#{$block} {
+	--newspack-photo-carousel-aspect-ratio: 16 / 9;
+
+	display: grid;
+
+	// Anchors the compact layout's overlapping grid items to this block.
+	position: relative;
+	grid-template-areas:
+		"prev stage next"
+		"rail rail rail"
+		"cap  cap  cap";
+	grid-template-columns: auto 1fr auto;
+	row-gap: var(--wp--preset--spacing--50, 2rem);
+	column-gap: var(--wp--preset--spacing--40, 1.5rem);
+
+	// Rail and captions follow the content column; the stage follows the
+	// block's own alignment width.
+	&__rail,
+	&__captions {
+		box-sizing: border-box;
+		width: 100%;
+		max-width: var(--wp--style--global--content-size, 632px);
+		margin-inline: auto;
+	}
+
+	/* Stage and arrows */
+
+	&__prev {
+		grid-area: prev;
+		justify-self: start;
+	}
+
+	&__next {
+		grid-area: next;
+		justify-self: end;
+	}
+
+	&__prev,
+	&__next {
+		display: inline-flex;
+		align-self: center;
+		align-items: center;
+		justify-content: center;
+		width: $arrow-size;
+		height: $arrow-size;
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: transparent;
+		box-shadow: inset 0 0 0 1px var(--wp--preset--color--base-3, #{np-colors.$neutral-300});
+		color: var(--wp--preset--color--contrast, #{np-colors.$neutral-900});
+		cursor: pointer;
+
+		&:hover {
+			background: var(--wp--preset--color--base-2, #{np-colors.$neutral-100});
+		}
+
+		// The arrows are the only keyboard control (the rail is pointer-only).
+		&:focus-visible {
+			outline: 2px solid var(--wp--preset--color--contrast, #{np-colors.$neutral-900});
+			outline-offset: 2px;
+		}
+	}
+
+	&__chevron {
+		width: 24px;
+		height: 24px;
+	}
+
+	&__prev &__chevron {
+		transform: scaleX(-1);
+	}
+
+	&__slides {
+		grid-area: stage;
+		position: relative;
+		display: grid;
+		aspect-ratio: var(--newspack-photo-carousel-aspect-ratio);
+
+		// Explicit row: the implicit `auto` one sizes to the tallest slide,
+		// which leaves the `height: 100%` chain below unresolvable.
+		grid-template-rows: minmax(0, 1fr);
+		overflow: hidden;
+
+		// Vertical drags scroll the page; horizontal ones swipe (carousel-engine.js).
+		touch-action: pan-y;
+	}
+
+	&__slide {
+		grid-area: 1 / 1;
+
+		// Grid items default to `min-height: auto`, which would push the
+		// row back open past the stage.
+		min-height: 0;
+		margin: 0;
+
+		@include inactive-slide;
+
+		&.is-active {
+			visibility: visible;
+			opacity: 1;
+
+			@media (prefers-reduced-motion: no-preference) {
+				transition:
+					opacity $fade-duration ease,
+					visibility 0s linear 0s;
+			}
+		}
+	}
+
+	&__slide-media {
+		width: 100%;
+		height: 100%;
+	}
+
+	&__slide-image {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	&__slide-media.is-uncropped &__slide-image {
+		object-fit: contain;
+	}
+
+	/* Thumbnail rail */
+
+	&__rail {
+		grid-area: rail;
+
+		// Makes `<li>` offsets rail-relative for carousel-engine.js's scroll math.
+		position: relative;
+		display: flex;
+		flex-wrap: nowrap;
+		align-items: flex-start;
+
+		// `safe` keeps the first thumb reachable once the rail overflows.
+		justify-content: safe center;
+		gap: var(--wp--preset--spacing--30, 1rem);
+		margin-block: 0;
+		padding: 0;
+		list-style: none;
+
+		// No scroll-snap: it overrides the partial offsets
+		// revealActiveInRail() computes, re-clipping the neighbour.
+		overflow-x: auto;
+		scrollbar-width: none;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		> li {
+			flex: 0 0 auto;
+			margin: 0;
+		}
+	}
+
+	&__goto {
+		display: block;
+		width: 90px;
+		height: 60px;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: none;
+		overflow: hidden;
+		cursor: pointer;
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition: opacity $fade-duration ease;
+		}
+
+		&:not(.is-active) {
+			opacity: 0.5;
+		}
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	&__goto-image {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	/* Captions */
+
+	&__captions {
+		grid-area: cap;
+	}
+
+	&__caption {
+		display: none;
+		color: var(--wp--preset--color--contrast-3, #{np-colors.$neutral-600});
+		font-size: var(--wp--preset--font-size--x-small, var(--newspack-theme-font-size-sm, 0.8em));
+		line-height: var(--wp--custom--line-height--x-small, var(--newspack-theme-font-line-height-body, 1.6));
+
+		&.is-active {
+			display: block;
+		}
+	}
+
+	&__caption-text,
+	&__caption-credit {
+		display: block;
+	}
+
+	&__caption-text + &__caption-credit {
+		margin-top: var(--wp--preset--spacing--20, 0.5rem);
+	}
+
+	// Visually hidden: the engine writes each slide change here for screen
+	// readers.
+	&__caption-status {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	/* Compact: the arrows sit at the ends of the rail */
+
+	@media (max-width: $compact-max) {
+		grid-template-areas:
+			"stage"
+			"rail"
+			"cap";
+		grid-template-columns: 1fr;
+
+		&__prev,
+		&__next {
+			grid-area: rail;
+			width: $arrow-size-compact;
+			height: $arrow-size-compact;
+		}
+
+		// Margin, not padding: a scroller's padding still scrolls thumbs under
+		// the arrows.
+		&__rail {
+			width: auto;
+			max-width: none;
+			margin-inline: calc(#{$arrow-size-compact} + var(--wp--preset--spacing--20, 0.5rem));
+		}
+
+		&__captions {
+			max-width: none;
+		}
+	}
+}

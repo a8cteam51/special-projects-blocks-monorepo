@@ -51,6 +51,7 @@ longer-form process docs.
 | `marquee` | `Marquee`; registers `a8csp/marquee`, which duplicates its inner blocks to fill the track and scrolls them with a CSS animation. |
 | `mega-menu` | Registers `a8csp/mega-menu`, adds a `menu` template part area, and allows the block in Navigation blocks. |
 | `modal` | Registers `a8csp/modal`, adds a `modal` template part area, and stores modal template metadata in the `modal_meta` option exposed through REST settings. |
+| `newspack-photo-carousel` | `Newspack Photo Carousel`; registers `newspack/photo-carousel`, a one-photo-at-a-time carousel of `core/image` blocks with a thumbnail rail, arrow-key and touch-swipe paging, optional autoplay, and a three-photo loading window. Carousel images get Photo Caption and Photo Credit boxes in the sidebar's Content tab; credits are Newspack's (`_media_credit` meta), and their PHP and editor script load only while the Newspack plugin is active. Converts to and from `core/gallery`. Filters in `includes/`. |
 | `override-post-links` | Registers `wpcomsp/override-post-links`, stores `wpcomsp_news_data` post meta for filtered post types, rewrites core post links, and registers the `wpcomsp/news-link-source` block binding. |
 | `reactions` | Registers `wpcomsp/reactions` and `wpcomsp/reaction`; creates the `wpcomsp_reactions` table, adds `wpcomsp-reactions/v1/react` and `/get-reaction` REST routes, and provides an admin DataViews page. |
 | `scroll-progress-bar` | Registers `a8csp/scroll-progress-bar`. |
