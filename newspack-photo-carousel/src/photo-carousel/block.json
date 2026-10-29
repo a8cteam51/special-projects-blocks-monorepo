@@ -10,6 +10,10 @@
 	"keywords": [ "carousel", "slider", "slideshow", "gallery", "photos" ],
 	"textdomain": "newspack-photo-carousel",
 	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "wide"
+		},
 		"ariaLabel": {
 			"type": "string",
 			"default": ""

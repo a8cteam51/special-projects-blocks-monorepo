@@ -27,6 +27,7 @@ Both boxes appear only on images inside a Photo Carousel; other Image blocks are
 
 = Settings =
 
+* **Alignment** (`align`, default `wide`): new carousels are wide width; full width and none can be picked in the toolbar. The default isn't written into saved markup, so it must not change in a later release.
 * **Accessible label** (`ariaLabel`, default empty): the region's accessible name. Empty means "Photo carousel".
 * **Aspect ratio** (`aspectRatio`, default `16/9`): stage shape, one of `16/9`, `3/2`, `4/3`, `1/1` or `4/5`.
 * **Crop images to fill frame** (`imageCrop`, default on): fill the frame (cover) or show the whole photo (contain).
