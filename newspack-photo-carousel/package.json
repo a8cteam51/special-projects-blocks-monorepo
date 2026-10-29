@@ -1,0 +1,45 @@
+{
+	"name": "newspack-photo-carousel",
+	"version": "0.1.0",
+	"description": "A one-photo-at-a-time carousel of Image blocks, with a thumbnail rail, arrow and swipe paging, optional autoplay, and a caption and Newspack photo credit for each slide. Only the current photo and its neighbours load.",
+	"author": "Automattic Special Projects Team",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build --webpack-copy-php --blocks-manifest && npm run build:credits",
+		"build:credits": "wp-scripts build --webpack-src-dir=src/credits --output-path=build/credits",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start --webpack-copy-php --blocks-manifest",
+		"start:credits": "wp-scripts start --webpack-src-dir=src/credits --output-path=build/credits"
+	},
+	"files": [
+		"build/",
+		"includes/",
+		"newspack-photo-carousel.php",
+		"readme.txt",
+		"CHANGELOG.md"
+	],
+	"devDependencies": {
+		"@wordpress/scripts": "^36.1.0"
+	},
+	"dependencies": {
+		"@wordpress/block-editor": "^19.0.0",
+		"@wordpress/blocks": "^17.0.0",
+		"@wordpress/components": "^43.0.0",
+		"@wordpress/compose": "^9.0.0",
+		"@wordpress/core-data": "^9.0.0",
+		"@wordpress/data": "^11.0.0",
+		"@wordpress/editor": "^16.0.0",
+		"@wordpress/element": "^10.0.0",
+		"@wordpress/hooks": "^5.0.0",
+		"@wordpress/i18n": "^7.0.0",
+		"@wordpress/keyboard-shortcuts": "^6.0.0",
+		"@wordpress/notices": "^6.0.0",
+		"@wordpress/plugins": "^8.0.0",
+		"@wordpress/rich-text": "^8.0.0"
+	}
+}

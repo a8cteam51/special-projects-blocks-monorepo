@@ -1,0 +1,63 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "newspack/photo-carousel",
+	"version": "0.1.0",
+	"title": "Photo Carousel",
+	"category": "media",
+	"icon": "format-gallery",
+	"description": "A one-photo-at-a-time carousel of Image blocks, with a thumbnail rail, arrow and swipe paging, optional autoplay, and a caption and Newspack photo credit for each slide. Only the current photo and its neighbours load.",
+	"keywords": [ "carousel", "slider", "slideshow", "gallery", "photos" ],
+	"textdomain": "newspack-photo-carousel",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "wide"
+		},
+		"ariaLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"aspectRatio": {
+			"type": "string",
+			"enum": [ "16/9", "3/2", "4/3", "1/1", "4/5" ],
+			"default": "16/9"
+		},
+		"imageCrop": {
+			"type": "boolean",
+			"default": true
+		},
+		"autoplay": {
+			"type": "boolean",
+			"default": false
+		},
+		"autoplayDelay": {
+			"type": "number",
+			"default": 5000
+		},
+		"showCaptions": {
+			"type": "boolean",
+			"default": true
+		},
+		"showCredits": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"allowedBlocks": [ "core/image" ],
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [ "wide", "full" ],
+		"color": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}
