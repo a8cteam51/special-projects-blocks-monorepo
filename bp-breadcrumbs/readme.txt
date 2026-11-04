@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block
 Tested up to:      6.8
-Stable tag:        0.1.1
+Stable tag:        0.1.2
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,4 +76,8 @@ it does add blocks that have been added to a page though, and the breadcrumbs sh
 1. Breadcrumbs in the WP Admin
 2. BuddyPress Breadcrumbs on the front end of a site
 
+== Changelog ==
 
+= 0.1.2 =
+* Fixed the block stylesheet targeting `.wp-block-a8csp-breadcrumbs-block`, a class the block doesn't output, so its flex layout never applied. The trail is now a wrapping flex row, with a small gap between crumbs and separators.
+* Fixed a PHP notice ("Object of class WP_Post could not be converted to int") on every page view.
