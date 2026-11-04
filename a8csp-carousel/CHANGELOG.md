@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.2.0 (2026-10-21)
+
+### Added
+
+- Slides per view setting, with a separate value for carousels narrower than 600px (`--slides-per-view`, `--slides-per-view-small`).
+- Carousel Navigation styles: Either side (buttons over the carousel's left and right edges) and Left column (buttons in a column beside the track).
+- Carousel Navigation icon size setting (`--button-icon-size`).
+
+### Changed
+
+- Pagination buttons for slides in view carry `aria-current="true"` instead of `aria-disabled="true"`, and the other buttons are dimmed rather than the current ones. Theme styles that target `[aria-disabled="true"]` on pagination buttons need to target `[aria-current="true"]`.
+- Slides out of view are no longer `inert`. They keep `aria-hidden` and leave the tab order, and a slide that receives focus from a script is brought into view.
+- Outside infinite mode, the track stops at its last slide: when the remaining slides do not fill it, they line up with its end.
+- Every track except a gallery gets `--item-gap` as its gap; galleries get it when slides per view is set.
+
+### Fixed
+
+- Pagination kept a button for every slide the editor expected, so a query returning fewer posts left dead buttons and a script error. Buttons now match the slides on the page.
+- The Posts variation put the track class on the Query Loop as well as its Post Template, which stopped navigation. New carousels put it on the Post Template only, and carousels saved with both work.
+- Focus returned to a slide out of view (core's image lightbox does this on close) fell to the page body.
+- Navigation stopped after the first move when there was no transition to wait for, such as with reduced motion.
+- Opening a post marked it as edited when its stored slide count differed from the editor's.
+
 ## 1.1.2 (2026-10-09)
 
 ### Removed

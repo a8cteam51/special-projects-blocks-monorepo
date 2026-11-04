@@ -127,7 +127,7 @@ The resolved count may not exactly match the rendered output (e.g. fewer results
 
 On page load, `ensureItemCount()` counts the track's direct children in the DOM and updates the `--item-count` CSS custom property. This works for all block types, including server-rendered blocks whose child count isn't known in the editor.
 
-If a pagination block is present, `ensurePaginationButtons()` creates any missing pagination buttons to match the actual slide count.
+If a pagination block is present, `ensurePaginationButtons()` adds or removes pagination buttons so there is one per slide, and labels each with the actual slide count.
 
 ## CSS Custom Properties
 
@@ -139,6 +139,8 @@ These custom properties are set on the `.wp-block-a8csp-carousel` element and ca
 | `--item-count`       | Number of slides (set by JS)                | `0`                              |
 | `--item-gap`         | Gap between slides                          | `var(--wp--preset--spacing--20)` |
 | `--track-height`     | Height of the track (gallery variation only) | `430px`                          |
+| `--slides-per-view`  | Slides in view at once (when set)            | unset                            |
+| `--slides-per-view-small` | Slides in view when the track is narrower than 600px | `--slides-per-view` |
 
 Sub-blocks expose additional properties:
 
@@ -147,5 +149,6 @@ Sub-blocks expose additional properties:
 | `--button-size`        | Carousel Nav    | Size of navigation buttons |
 | `--button-background`  | Carousel Nav    | Button background color    |
 | `--icon-color`         | Carousel Nav    | Button icon color          |
+| `--button-icon-size`   | Carousel Nav    | Size of the button icon (when set) |
 | `--button-size`        | Carousel Pagination | Size of pagination dots |
 | `--button-background`  | Carousel Pagination | Active dot color       |

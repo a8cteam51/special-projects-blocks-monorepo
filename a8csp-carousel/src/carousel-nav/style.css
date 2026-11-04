@@ -8,6 +8,21 @@
 		}
 	}
 
+	&:where([style*="--button-icon-size"]) .wp-block-a8csp-carousel-nav--button {
+
+		svg {
+			flex: none;
+			height: var(--button-icon-size);
+			width: var(--button-icon-size);
+		}
+
+		img {
+			flex: none;
+			height: auto;
+			width: var(--button-icon-size);
+		}
+	}
+
 	&.aligncenter,
 	&.alignleft,
 	&.alignright {
@@ -44,5 +59,35 @@
 
 	.wp-block-a8csp-carousel-nav--button_next img {
 		transform: scaleX(-1);
+	}
+}
+
+/* Either side: the buttons sit over the carousel's left and right edges. */
+.wp-block-a8csp-carousel > .wp-block-a8csp-carousel-nav.is-style-sides {
+	align-items: center;
+	inset: 0;
+	justify-content: space-between;
+	pointer-events: none;
+	position: absolute;
+	z-index: 1;
+
+	.wp-block-a8csp-carousel-nav--button:not([aria-disabled="true"]) {
+		pointer-events: auto;
+	}
+}
+
+/* Left column: the buttons take a column to the left of the other blocks. */
+.wp-block-a8csp-carousel:has(> .wp-block-a8csp-carousel-nav.is-style-column) {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+
+	> * {
+		grid-column: 2;
+	}
+
+	> .wp-block-a8csp-carousel-nav.is-style-column {
+		grid-column: 1;
+		grid-row: 1;
+		width: auto;
 	}
 }

@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "a8csp/carousel",
-	"version": "0.1.0",
+	"version": "1.2.0",
 	"title": "Carousel",
 	"category": "widgets",
 	"icon": "slides",
@@ -51,6 +51,12 @@
 			"type": "string",
 			"default": "hidden",
 			"enum": [ "hidden", "right", "left", "both" ]
+		},
+		"slidesPerView": {
+			"type": "number"
+		},
+		"slidesPerViewSmall": {
+			"type": "number"
 		},
 		"title": {
 			"type": "string"

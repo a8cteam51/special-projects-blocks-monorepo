@@ -40,7 +40,6 @@ const variations = [
 			{
 				name: 'core/query',
 				attributes: {
-					className: 'wp-block-a8csp-carousel-track',
 					query: {
 						perPage: 10,
 						postType: 'post',

@@ -9,8 +9,10 @@
 		width: 100%;
 	}
 
-	.wp-block-group.wp-block-a8csp-carousel-track {
-		gap: var(--wp--style--block-gap);
+	/* Galleries keep their own gap unless the carousel sets slides per view. */
+	.wp-block-a8csp-carousel-track:not(.wp-block-gallery),
+	&.has-slides-per-view .wp-block-a8csp-carousel-track {
+		gap: var(--item-gap);
 	}
 
 	&.has-overflow-hidden .wp-block-a8csp-carousel-track {
@@ -33,6 +35,19 @@
 		flex: 1 0 auto;
 		margin: 0;
 		max-width: 100%;
+	}
+
+	&.has-slides-per-view .wp-block-a8csp-carousel-track > * {
+		--slides: var(--slides-per-view);
+		flex: 0 0 calc((100% - (var(--slides) - 1) * var(--item-gap, 0px)) / var(--slides));
+		min-width: 0;
+	}
+
+	@container carousel-track (width < 600px) {
+
+		&.has-slides-per-view .wp-block-a8csp-carousel-track > * {
+			--slides: var(--slides-per-view-small, var(--slides-per-view));
+		}
 	}
 
 	@media (prefers-reduced-motion: no-preference) {

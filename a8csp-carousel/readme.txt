@@ -1,12 +1,12 @@
 === Carousel ===
 Contributors:      The WordPress Contributors
 Tags:              block, carousel, slider
-Tested up to:      6.8
-Stable tag:        0.1.0
+Tested up to:      7.1
+Stable tag:        1.2.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
-Requires at least: 6.4
-Requires PHP:      7.4
+Requires at least: 6.7
+Requires PHP:      8.0
 
 Create responsive image, post, product, or custom content carousels with optional navigation and pagination controls.
 
@@ -33,6 +33,16 @@ Both the Carousel Navigation and Pagination blocks offer customizable colors, si
 2. Add the Carousel Block to any post or page.
 
 == Changelog ==
+
+= 1.2.0 =
+* Added a Slides per view setting, with its own value for carousels narrower than 600px.
+* Added Either side and Left column styles to the Carousel Navigation block, and an icon size setting.
+* Pagination: one button per slide on the page; the buttons for slides in view carry `aria-current` instead of `aria-disabled`.
+* Fixed the Posts variation putting the track class on the Query Loop as well as its Post Template. Carousels saved that way work again.
+* Fixed focus being lost when it returns to a slide out of view, such as when core's image lightbox closes.
+* The track no longer moves past its last slide, and Post Template and product tracks get the item gap.
+* Fixed navigation stopping after the first move when there is no transition (reduced motion).
+* Opening a post no longer marks it as edited when its stored slide count differs.
 
 = 1.1.2 =
 * Removed the self-update mechanism. Updates are now installed manually from GitHub releases.

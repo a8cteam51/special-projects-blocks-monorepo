@@ -23,8 +23,14 @@ import './editor.css';
 
 export default function Edit( props ) {
 	const { attributes, setAttributes, clientId } = props;
-	const { layout, buttonColors, buttonSize, customIcon, iconUpload } =
-		attributes;
+	const {
+		layout,
+		buttonColors,
+		buttonSize,
+		customIcon,
+		iconSize,
+		iconUpload,
+	} = attributes;
 	const { background, backgroundHover, icon, iconHover } = buttonColors;
 
 	const { ...innerBlocksProps } = useInnerBlocksProps(
@@ -95,6 +101,20 @@ export default function Edit( props ) {
 						onChange={ ( v ) => setAttributes( { buttonSize: v } ) }
 						min={ 0 }
 						max={ 100 }
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					/>
+					<RangeControl
+						label={ __( 'Icon size', 'a8csp-carousel' ) }
+						help={ __(
+							'Leave empty for the default size.',
+							'a8csp-carousel'
+						) }
+						value={ iconSize }
+						onChange={ ( v ) => setAttributes( { iconSize: v } ) }
+						min={ 0 }
+						max={ 200 }
+						allowReset
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 					/>
