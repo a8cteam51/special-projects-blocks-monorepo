@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Featured Video
- * Description: Add the ability to use Featured Video inplace of Featured Image. <strong>Supported Block:</strong> core/post-featured-image
- * Version: 0.3.1
+ * Description: Add the ability to use Featured Video inplace of Featured Image. <strong>Supported Blocks:</strong> core/post-featured-image, core/cover
+ * Version: 0.4.0
  * Author: Automattic Special Projects Team
  * Author URI: https://specialprojects.automattic.com/
  * Update URI: https://github.com/a8cteam51/special-projects-blocks-monorepo/
@@ -42,6 +42,7 @@ function wpcomsp_featured_video_option_schema() {
  * Sanitize the featured video options object.
  *
  * @param mixed $value Raw value from the REST request.
+ *
  * @return array Sanitized, allowlist-filtered options.
  */
 function wpcomsp_featured_video_sanitize_options( $value ) {
@@ -67,6 +68,7 @@ function wpcomsp_featured_video_sanitize_options( $value ) {
  * Sanitize the featured video ID/URL meta value.
  *
  * @param mixed $value Raw value from the REST request.
+ *
  * @return string Either a stringified integer attachment ID, or an esc_url_raw'd URL, or ''.
  */
 function wpcomsp_featured_video_sanitize_id( $value ) {
@@ -99,8 +101,70 @@ function wpcomsp_featured_video_enqueue_editor_assets() {
 		$asset_meta['version'] ?? filemtime( __DIR__ . '/build/editor/editor.js' ),
 		true
 	);
+
+	// The editor shows the playback options for direct video URLs, so it needs the
+	// same extension list `wpcomsp_featured_video_is_direct_video_url()` checks against.
+	wp_add_inline_script(
+		'featured-video-editor-script',
+		'window.wpcomspFeaturedVideo = ' . wp_json_encode( array( 'videoExtensions' => wpcomsp_featured_video_get_video_extensions() ) ) . ';',
+		'before'
+	);
 }
 add_action( 'enqueue_block_editor_assets', 'wpcomsp_featured_video_enqueue_editor_assets' );
+
+/**
+ * Blocks that get the "Show featured video" setting.
+ *
+ * @return string[] Block names.
+ */
+function wpcomsp_featured_video_supported_blocks() {
+	return array( 'core/post-featured-image', 'core/cover' );
+}
+
+/**
+ * Register the `showFeaturedVideo` attribute on the supported core blocks.
+ *
+ * @param array  $args       Block type arguments.
+ * @param string $block_type Block type name.
+ *
+ * @return array Block type arguments.
+ */
+function wpcomsp_featured_video_register_block_attribute( $args, $block_type ) {
+	if ( in_array( $block_type, wpcomsp_featured_video_supported_blocks(), true ) ) {
+		$args['attributes']                      = $args['attributes'] ?? array();
+		$args['attributes']['showFeaturedVideo'] = array(
+			'type'    => 'boolean',
+			'default' => true,
+		);
+	}
+
+	return $args;
+}
+add_filter( 'register_block_type_args', 'wpcomsp_featured_video_register_block_attribute', 10, 2 );
+
+/**
+ * Whether a block should show the post's featured video in place of its featured image.
+ *
+ * @param array   $block   The parsed block.
+ * @param integer $post_id The post the block renders.
+ *
+ * @return boolean
+ */
+function wpcomsp_featured_video_block_shows_video( $block, $post_id ) {
+	$show = false !== ( $block['attrs']['showFeaturedVideo'] ?? true );
+
+	/**
+	 * Filters whether a block shows the post's featured video in place of its featured image.
+	 *
+	 * Runs for core/post-featured-image and for core/cover blocks that use the featured image.
+	 * The default is the block's "Show featured video" setting.
+	 *
+	 * @param bool  $show    Whether to show the featured video.
+	 * @param array $block   The parsed block.
+	 * @param int   $post_id The post the block renders.
+	 */
+	return (bool) apply_filters( 'wpcomsp_featured_video_show_in_block', $show, $block, $post_id );
+}
 
 /**
  * Enqueue the frontend view script and styles for the play-icon overlay.
@@ -146,7 +210,6 @@ function wpcomsp_featured_video_register_post_meta() {
 	$post_types = get_post_types_by_support( 'thumbnail' );
 
 	foreach ( $post_types as $post_type ) {
-
 		register_post_meta(
 			$post_type,
 			'_wpcomsp_featured_video_id',
@@ -198,7 +261,8 @@ add_action( 'init', 'wpcomsp_featured_video_register_post_meta', 11 );
  * WordPress's mime-type registry (and any site-level filters on it).
  *
  * @param string $url Candidate URL.
- * @return bool True if the URL resolves to a video/* mime type.
+ *
+ * @return boolean True if the URL resolves to a video/* mime type.
  */
 function wpcomsp_featured_video_is_direct_video_url( $url ) {
 	// `wp_check_filetype()` anchors on `$`, so query strings or fragments would
@@ -213,10 +277,55 @@ function wpcomsp_featured_video_is_direct_video_url( $url ) {
 }
 
 /**
+ * File extensions `wpcomsp_featured_video_is_direct_video_url()` treats as video.
+ *
+ * @return string[] Lowercase extensions, e.g. `mp4`, `webm`, `mov`.
+ */
+function wpcomsp_featured_video_get_video_extensions() {
+	$extensions = array();
+
+	foreach ( get_allowed_mime_types() as $exts => $mime ) {
+		if ( 0 === strpos( $mime, 'video/' ) ) {
+			$extensions = array_merge( $extensions, explode( '|', strtolower( $exts ) ) );
+		}
+	}
+
+	return array_values( array_unique( $extensions ) );
+}
+
+/**
+ * The URL to play in a <video> element for a stored featured video value.
+ *
+ * @param string $featured_video_id Media Library attachment ID or external URL.
+ *
+ * @return string The video file URL, or '' when the value is empty, not a video
+ *                attachment, or an external URL that isn't a direct video file
+ *                (an oEmbed provider).
+ */
+function wpcomsp_featured_video_get_inline_video_url( $featured_video_id ) {
+	if ( '' === $featured_video_id || null === $featured_video_id ) {
+		return '';
+	}
+
+	if ( is_numeric( $featured_video_id ) ) {
+		$attachment_id = (int) $featured_video_id;
+		// Guard against the stored ID no longer pointing at a video — e.g. the
+		// attachment was replaced with an image or hand-edited in the database.
+		if ( ! wp_attachment_is( 'video', $attachment_id ) ) {
+			return '';
+		}
+		return (string) wp_get_attachment_url( $attachment_id );
+	}
+
+	return wpcomsp_featured_video_is_direct_video_url( $featured_video_id ) ? (string) $featured_video_id : '';
+}
+
+/**
  * Build the inline <video> markup for a given source URL and options.
  *
- * @param string $video_url  Source URL of the video file.
- * @param array  $options    Sanitized options array.
+ * @param string $video_url Source URL of the video file.
+ * @param array  $options   Sanitized options array.
+ *
  * @return string HTML markup for the <video> element (no wrapping <figure>).
  */
 function wpcomsp_featured_video_build_video_tag( $video_url, $options ) {
@@ -250,11 +359,12 @@ function wpcomsp_featured_video_build_video_tag( $video_url, $options ) {
 /**
  * Copy class / style / id from the original block's outer <figure> onto a new wrapper.
  *
- * @param string $block_content      Original rendered block content from core.
- * @param bool   $strip_aspect_ratio When true, the `aspect-ratio` declaration is removed from the
- *                                   copied style. Used for embeds, where the provider iframe drives
- *                                   the natural aspect ratio and an inherited image-shaped ratio
- *                                   would crop or letterbox the video unexpectedly.
+ * @param string  $block_content      Original rendered block content from core.
+ * @param boolean $strip_aspect_ratio When true, the `aspect-ratio` declaration is removed from the
+ *                                    copied style. Used for embeds, where the provider iframe drives
+ *                                    the natural aspect ratio and an inherited image-shaped ratio
+ *                                    would crop or letterbox the video unexpectedly.
+ *
  * @return array{class:string,style:string,id:string} Map of attribute strings, empty if none found.
  */
 function wpcomsp_featured_video_extract_wrapper_attrs( $block_content, $strip_aspect_ratio = false ) {
@@ -295,6 +405,7 @@ function wpcomsp_featured_video_extract_wrapper_attrs( $block_content, $strip_as
  *
  * @param string $target_html HTML containing a <figure> as its first tag.
  * @param array  $extra       Map with optional keys class/style/id to merge in.
+ *
  * @return string Updated HTML, or the original if no <figure> was found.
  */
 function wpcomsp_featured_video_merge_figure_attrs( $target_html, $extra ) {
@@ -345,6 +456,10 @@ function wpcomsp_featured_video_render_post_featured_image( $block_content, $blo
 		return $block_content;
 	}
 
+	if ( ! wpcomsp_featured_video_block_shows_video( $block, (int) $post_id ) ) {
+		return $block_content;
+	}
+
 	$raw_options = get_post_meta( $post_id, '_wpcomsp_featured_video_options', true );
 	$options     = wpcomsp_featured_video_sanitize_options( is_array( $raw_options ) ? $raw_options : array() );
 
@@ -367,7 +482,7 @@ function wpcomsp_featured_video_render_post_featured_image( $block_content, $blo
 		// shared oembed_cache and `embed_oembed_html` filter chain, so the output stays
 		// in lockstep with however a regular `core/embed` block renders.
 		global $wp_embed;
-		$markup = sprintf(
+		$markup   = sprintf(
 			"<figure class=\"wp-block-embed wp-embed-aspect-16-9 wp-has-aspect-ratio\"><div class=\"wp-block-embed__wrapper\">\n%s\n</div></figure>",
 			esc_url( $featured_video_id )
 		);
@@ -386,21 +501,11 @@ function wpcomsp_featured_video_render_post_featured_image( $block_content, $blo
 	}
 
 	// Inline-video paths (media library attachment or direct video file URL).
-	if ( is_numeric( $featured_video_id ) ) {
-		$attachment_id = (int) $featured_video_id;
-		// Guard against the stored ID no longer pointing at a video — e.g. the
-		// attachment was replaced with an image or hand-edited in the database.
-		if ( ! wp_attachment_is( 'video', $attachment_id ) ) {
-			return $block_content;
-		}
-		$video_url = wp_get_attachment_url( $attachment_id );
-		if ( ! $video_url ) {
-			return $block_content;
-		}
-		$inner = wpcomsp_featured_video_build_video_tag( $video_url, $options );
-	} else {
-		$inner = wpcomsp_featured_video_build_video_tag( $featured_video_id, $options );
+	$video_url = wpcomsp_featured_video_get_inline_video_url( $featured_video_id );
+	if ( '' === $video_url ) {
+		return $block_content;
 	}
+	$inner = wpcomsp_featured_video_build_video_tag( $video_url, $options );
 
 	// Core only auto-enqueues `wp-block-video` when a core/video block is detected on
 	// the page. Without it, `<video>` falls back to its intrinsic dimensions (often
@@ -438,3 +543,70 @@ function wpcomsp_featured_video_render_post_featured_image( $block_content, $blo
 	return sprintf( '<figure%s>%s%s</figure>', $figure_attrs, $inner, $play_button );
 }
 add_filter( 'render_block_core/post-featured-image', 'wpcomsp_featured_video_render_post_featured_image', 10, 3 );
+
+/**
+ * Play the featured video as the background of a Cover block that uses the featured image.
+ *
+ * Applies to Media Library videos and direct video file URLs. oEmbed providers keep the
+ * featured image. Like core's video background, the video is muted, autoplays and loops.
+ *
+ * @param string   $block_content The block content.
+ * @param array    $block         The parsed block.
+ * @param WP_Block $wp_block      The WP_Block instance.
+ *
+ * @return string The block content with the featured video as its background.
+ */
+function wpcomsp_featured_video_render_cover( $block_content, $block, $wp_block ) {
+
+	$attrs = $block['attrs'] ?? array();
+
+	if ( empty( $attrs['useFeaturedImage'] ) || 'image' !== ( $attrs['backgroundType'] ?? 'image' ) ) {
+		return $block_content;
+	}
+
+	$post_id = $wp_block->context['postId'] ?? get_the_ID();
+
+	if ( empty( $post_id ) ) {
+		return $block_content;
+	}
+
+	$video_url = wpcomsp_featured_video_get_inline_video_url( get_post_meta( $post_id, '_wpcomsp_featured_video_id', true ) );
+
+	if ( '' === $video_url || ! wpcomsp_featured_video_block_shows_video( $block, (int) $post_id ) ) {
+		return $block_content;
+	}
+
+	// Core inserts the featured image just before the cover's own inner container.
+	if ( 1 !== preg_match( '/<div\b[^>]+wp-block-cover__inner-container[\s|"][^>]*>/U', $block_content, $matches, PREG_OFFSET_CAPTURE ) ) {
+		return $block_content;
+	}
+
+	$before = substr( $block_content, 0, $matches[0][1] );
+	$after  = substr( $block_content, $matches[0][1] );
+
+	// Drop that image: an <img>, or an empty <div> with a background image for fixed or repeated backgrounds.
+	$before = preg_replace( '/<img\b[^>]*\bwp-block-cover__image-background\b[^>]*>|<div\b[^>]*\bwp-block-cover__image-background\b[^>]*><\/div>/', '', $before, 1 );
+
+	$raw_options = get_post_meta( $post_id, '_wpcomsp_featured_video_options', true );
+	$options     = wpcomsp_featured_video_sanitize_options( is_array( $raw_options ) ? $raw_options : array() );
+	$poster_url  = ! empty( $options['posterId'] ) ? wp_get_attachment_image_url( (int) $options['posterId'], 'full' ) : false;
+	if ( ! $poster_url ) {
+		$poster_url = get_the_post_thumbnail_url( $post_id, $attrs['sizeSlug'] ?? 'full' );
+	}
+
+	// Same markup as a core Cover block with a video background. The tag processor escapes the URLs.
+	$p = new WP_HTML_Tag_Processor( '<video class="wp-block-cover__video-background intrinsic-ignore" autoplay muted loop playsinline data-object-fit="cover"></video>' );
+	$p->next_tag();
+	$p->set_attribute( 'src', $video_url );
+	if ( $poster_url ) {
+		$p->set_attribute( 'poster', $poster_url );
+	}
+	if ( isset( $attrs['focalPoint']['x'], $attrs['focalPoint']['y'] ) ) {
+		$object_position = round( $attrs['focalPoint']['x'] * 100 ) . '% ' . round( $attrs['focalPoint']['y'] * 100 ) . '%';
+		$p->set_attribute( 'style', 'object-position:' . $object_position );
+		$p->set_attribute( 'data-object-position', $object_position );
+	}
+
+	return $before . $p->get_updated_html() . $after;
+}
+add_filter( 'render_block_core/cover', 'wpcomsp_featured_video_render_cover', 10, 3 );

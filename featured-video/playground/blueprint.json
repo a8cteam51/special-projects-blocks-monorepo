@@ -17,7 +17,7 @@
 			"step": "installPlugin",
 			"pluginData": {
 				"resource": "url",
-				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/featured-video%400.3.1/featured-video.zip"
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/featured-video%400.4.0/featured-video.zip"
 			},
 			"options": {
 				"activate": true

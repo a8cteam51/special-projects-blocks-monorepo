@@ -2,6 +2,8 @@ import { ToggleControl, Flex, Button, FlexBlock } from "@wordpress/components";
 import { MediaUpload, MediaUploadCheck } from "@wordpress/block-editor";
 import { __ } from "@wordpress/i18n";
 
+import { isDirectVideoUrl } from "./utils";
+
 const VideoControls = (props) => {
 	const {
 		videoSource,
@@ -13,7 +15,12 @@ const VideoControls = (props) => {
 		selectedVideoId,
 	} = props;
 
-	if ("local" !== videoSource || !selectedVideoId) {
+	// Playback options apply to Media Library videos and direct video file
+	// URLs, which render as <video>; oEmbed providers use their own player.
+	if (
+		!selectedVideoId ||
+		("external" === videoSource && !isDirectVideoUrl(selectedVideoId))
+	) {
 		return null;
 	}
 
