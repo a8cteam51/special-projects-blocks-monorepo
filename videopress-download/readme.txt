@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block
 Tested up to:      6.7
-Stable tag:        0.1.1
+Stable tag:        0.1.2
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,9 @@ Requirements: Node.js 18+.
 4. `npm start` — development build with file watching
 
 == Changelog ==
+
+= 0.1.2 =
+* Border settings now show in the editor and are output on the front end. The block's border support is now declared as `__experimentalBorder`, the key WordPress reads.
 
 = 0.1.1 =
 * Removed the self-update mechanism. Updates are now installed manually from GitHub releases.

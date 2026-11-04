@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       VideoPress Download
  * Description:       Adds a Download button for VideoPress videos that exist on the same page as the button.
- * Version:           0.1.1
+ * Version:           0.1.2
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            Automattic Special Projects Team
