@@ -7,7 +7,14 @@ global $wpdb;
 
 $uploads = wp_upload_dir()['basedir'];
 
-// Copies a Twenty Twenty-Five image into a BuddyPress avatar folder at BuddyPress's avatar sizes.
+/**
+ * Copies a Twenty Twenty-Five image into a BuddyPress avatar folder at BuddyPress's avatar sizes.
+ *
+ * @param string $file Image file name in the theme's assets/images folder.
+ * @param string $dir  Avatar folder to write to.
+ *
+ * @return void
+ */
 function playground_bp_avatar( $file, $dir ) {
 	wp_mkdir_p( $dir );
 	$sizes = array(
@@ -22,11 +29,32 @@ function playground_bp_avatar( $file, $dir ) {
 }
 
 // Profile fields in the default "Base" field group (field 1 is the member's name).
-$location_id = xprofile_insert_field( array( 'field_group_id' => 1, 'type' => 'textbox', 'name' => 'Location', 'field_order' => 1 ) );
-$about_id    = xprofile_insert_field( array( 'field_group_id' => 1, 'type' => 'textarea', 'name' => 'About', 'field_order' => 2 ) );
-$interest_id = xprofile_insert_field( array( 'field_group_id' => 1, 'type' => 'checkbox', 'name' => 'Interests', 'field_order' => 3 ) );
+$location_id = xprofile_insert_field(
+	array(
+		'field_group_id' => 1,
+		'type'           => 'textbox',
+		'name'           => 'Location',
+		'field_order'    => 1,
+	)
+);
+$about_id    = xprofile_insert_field(
+	array(
+		'field_group_id' => 1,
+		'type'           => 'textarea',
+		'name'           => 'About',
+		'field_order'    => 2,
+	)
+);
+$interest_id = xprofile_insert_field(
+	array(
+		'field_group_id' => 1,
+		'type'           => 'checkbox',
+		'name'           => 'Interests',
+		'field_order'    => 3,
+	)
+);
 $interests   = array( 'Gardening', 'Reading', 'Running', 'Photography', 'Cooking', 'Music' );
-foreach ( $interests as $order => $option ) {
+foreach ( $interests as $index => $option ) {
 	$wpdb->insert(
 		buddypress()->profile->table_name_fields,
 		array(
@@ -35,7 +63,7 @@ foreach ( $interests as $order => $option ) {
 			'type'         => 'option',
 			'name'         => $option,
 			'description'  => '',
-			'option_order' => $order + 1,
+			'option_order' => $index + 1,
 		)
 	);
 }

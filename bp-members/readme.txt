@@ -2,7 +2,7 @@
 Contributors:      wpspecialprojects
 Tags:              block
 Tested up to:      6.8
-Stable tag:        0.1.1
+Stable tag:        0.1.2
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,9 @@ wp.domReady( () => {
 2. Screenshot of how this looks in the front end.
 
 == Changelog ==
+
+= 0.1.2 =
+* Fixed the Members List block re-requesting the member types from the REST API on every render in the editor.
 
 = 0.1.1 =
 * Removed the self-update mechanism. Updates are now installed manually from GitHub releases.
