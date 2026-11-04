@@ -4,7 +4,7 @@
  * Description:       A block that allows users to react to a post.
  * Requires at least: 6.6
  * Requires PHP:      8.0
- * Version:           0.1.2
+ * Version:           0.1.3
  * Author:            Automattic Special Projects Team
  * Author URI:        https://specialprojects.automattic.com/
  * Update URI:        https://github.com/a8cteam51/special-projects-blocks-monorepo/

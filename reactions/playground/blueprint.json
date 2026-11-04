@@ -17,7 +17,7 @@
 			"step": "installPlugin",
 			"pluginData": {
 				"resource": "url",
-				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/reactions%400.1.2/reactions.zip"
+				"url": "https://github.com/a8cteam51/special-projects-blocks-monorepo/releases/download/reactions%400.1.3/reactions.zip"
 			},
 			"options": {
 				"activate": true
