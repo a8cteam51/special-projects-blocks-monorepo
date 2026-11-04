@@ -109,14 +109,14 @@ const { actions, state, helpers } = store( 'a8csp/modal', {
 				return;
 			}
 
-			if ( 'wp-block-a8csp-modal' === event.target.className ) {
+			// The click that opened a modal, from a Modal button with any classes.
+			if ( event.target.closest( '.wp-block-a8csp-modal' ) ) {
 				return;
 			}
 
 			const modal = helpers.getModal( id );
-			const modalInner = modal.querySelector( '.wp-block-a8csp-modal-container--inner' );
 
-			if ( ! modalInner.contains( event.target ) ) {
+			if ( helpers.isBackdropClick( modal, event.target ) ) {
 				actions.closeModal();
 			}
 		} ),
@@ -142,6 +142,63 @@ const { actions, state, helpers } = store( 'a8csp/modal', {
 		},
 		getBody() {
 			return document.body;
-		}
+		},
+		/*
+		 * The inner container is full width, and so is a layout wrapper such as a Group with a
+		 * content width, so a click beside narrower content lands on one of them. Treat a click as
+		 * a backdrop click unless the clicked element, or one of its ancestors inside the modal
+		 * content, paints something there: text, media, a control, a background, a border or a shadow.
+		 */
+		isBackdropClick( modal, target ) {
+			const modalInner = modal.querySelector(
+				'.wp-block-a8csp-modal-container--inner'
+			);
+
+			if ( ! modalInner.contains( target ) ) {
+				return true;
+			}
+
+			const hasText = [ ...target.childNodes ].some(
+				( node ) =>
+					node.nodeType === node.TEXT_NODE && node.textContent.trim()
+			);
+
+			if ( hasText ) {
+				return false;
+			}
+
+			for (
+				let element = target;
+				element !== modalInner;
+				element = element.parentElement
+			) {
+				if ( helpers.paintsContent( element ) ) {
+					return false;
+				}
+			}
+
+			return true;
+		},
+		paintsContent( element ) {
+			if (
+				element.matches(
+					'a, button, label, input, select, textarea, img, svg, video, audio, iframe, canvas'
+				)
+			) {
+				return true;
+			}
+
+			const style = window.getComputedStyle( element );
+
+			return (
+				style.backgroundColor !== 'rgba(0, 0, 0, 0)' ||
+				style.backgroundImage !== 'none' ||
+				style.boxShadow !== 'none' ||
+				[ 'Top', 'Right', 'Bottom', 'Left' ].some(
+					( side ) =>
+						parseFloat( style[ `border${ side }Width` ] ) > 0
+				)
+			);
+		},
 	},
 } );

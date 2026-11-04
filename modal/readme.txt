@@ -3,7 +3,7 @@ Contributors:      wpspecialprojects
 Tags:              block, modal, dialog, interactivity, accessibility
 Requires at least: 6.6
 Tested up to:      6.8
-Stable tag:        0.1.5
+Stable tag:        0.1.6
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,12 @@ Yes. The plugin adds the Modal button to the blocks allowed inside the core Navi
 Yes. A Modal button can be placed inside a modal's content to trigger a second modal. When the second modal closes, focus returns to the button that opened it.
 
 == Changelog ==
+
+= 0.1.6 =
+* Fix: A Modal button in a template part (such as the header or footer) or a Navigation block now opens its modal on pages whose content has no Modal block.
+* Fix: A Modal button with an extra CSS class no longer closes its modal on the click that opens it.
+* Fix: Clicking the backdrop beside modal content that is narrower than the screen now closes the modal.
+* Fix: The modal starts below the admin bar for logged-in users, so the close button is no longer covered by it.
 
 = 0.1.5 =
 * Removed the self-update mechanism. Updates are now installed manually from GitHub releases.

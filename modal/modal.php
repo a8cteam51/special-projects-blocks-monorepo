@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Modal
  * Description:       A modal block that can be toggled open and closed.
- * Version:           0.1.5
+ * Version:           0.1.6
  * Requires at least: 6.6
  * Requires PHP:      7.2
  * Author:            Automattic Special Projects Team
@@ -144,17 +144,27 @@ add_action( 'init', 'a8csp_modal_add_modal_meta' );
  * templates are added to the end of the page so that other html elements on the page
  * do not interfere with the modal container.
  *
+ * A block theme renders the whole template, template parts and Navigation blocks included, before wp_head,
+ * so a Modal button anywhere on the page has rendered by then. A classic theme renders the page after wp_head:
+ * has_block() covers a Modal button in the post content there, and the wp_footer call covers one rendered
+ * anywhere else, such as a widget.
+ *
  * @return void
  */
 function a8csp_modal_insert_modal_templates() {
+	static $inserted = false;
 
-	if ( ! has_block( 'a8csp/modal' ) ) {
+	if ( $inserted ) {
 		return;
 	}
 
-	if ( post_password_required() ) {
-		return;
+	if ( ! did_action( 'a8csp_modal_button_rendered' ) ) {
+		if ( doing_action( 'wp_footer' ) || ! has_block( 'a8csp/modal' ) || post_password_required() ) {
+			return;
+		}
 	}
+
+	$inserted = true;
 
 	$modal_templates = a8csp_modal_get_modal_templates();
 
@@ -204,8 +214,12 @@ function a8csp_modal_insert_modal_templates() {
 		<?php
 	}
 
-	$html = ob_get_contents();
-	ob_clean();
+	$html = ob_get_clean();
+
+	if ( doing_action( 'wp_footer' ) ) {
+		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		return;
+	}
 
 	add_action(
 		'wp_footer',
@@ -216,6 +230,7 @@ function a8csp_modal_insert_modal_templates() {
 }
 
 add_action( 'wp_head', 'a8csp_modal_insert_modal_templates', 0 );
+add_action( 'wp_footer', 'a8csp_modal_insert_modal_templates', 0 );
 
 /**
  * Add the default inner content for the modal.
