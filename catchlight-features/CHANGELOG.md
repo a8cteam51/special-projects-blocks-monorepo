@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   Initial release: the `catchlight-features/photo-carousel` block, with per-slide captions, Newspack photo credits, a thumbnail rail, a three-photo loading window, keyboard and touch-swipe paging, optional autoplay, and Gallery block transforms.
--   Story patterns in a CatchLight Story category: the Story Starter and its pieces (Opener, Photo Carousel, Pull Quote, Photo Pair, Offset Photo Pair, Wide Photo, Full-Width Photo, Centered Photo), with placeholder photos.
+-   Story patterns in a CatchLight Story category: the Story Starter and its pieces (Opener, Photo Carousel, Pull Quote, Photo Pair, Offset Photo Pair, Partner Story Card, Related Story Card, Wide Photo, Full-Width Photo, Centered Photo), with placeholder photos.
 
 ### Changed
 

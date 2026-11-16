@@ -14,7 +14,7 @@ A one-photo-at-a-time carousel of curated images, with a thumbnail rail, per-sli
 
 The Photo Carousel block (`catchlight-features/photo-carousel`) shows a set of Image blocks one photo at a time, with a thumbnail rail under the stage. Each slide has its own caption and, with the [Newspack plugin](https://github.com/Automattic/newspack-plugin) active, its Newspack photo credit. Only the current photo and its neighbours load, so the page weight stays flat however many photos the carousel holds.
 
-The plugin also adds Story patterns in a **CatchLight Story** inserter category: a Story Starter and the pieces it is built from (Opener, Photo Carousel, Pull Quote, Photo Pair, Offset Photo Pair, Wide Photo, Full-Width Photo and Centered Photo), so editors can build a photo story from the whole layout or one section at a time. They use core blocks and the Photo Carousel only, so they work in the classic Newspack theme, and their photos are neutral placeholders to replace.
+The plugin also adds Story patterns in a **CatchLight Story** inserter category: a Story Starter and the pieces it is built from (Opener, Photo Carousel, Pull Quote, Photo Pair, Offset Photo Pair, Partner Story Card, Related Story Card, Wide Photo, Full-Width Photo and Centered Photo), so editors can build a photo story from the whole layout or one section at a time. They use core blocks and the Photo Carousel only, so they work in the classic Newspack theme, and their photos are neutral placeholders to replace.
 
 = Editing =
 

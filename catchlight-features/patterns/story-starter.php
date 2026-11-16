@@ -19,6 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <?php echo catchlight_features_photo_carousel_pattern_markup( 'story-photo-pair' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Pattern markup, escaped in its own file. ?>
 
+<?php echo catchlight_features_photo_carousel_pattern_markup( 'story-partner-story-card' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Pattern markup, escaped in its own file. ?>
+
 <!-- wp:paragraph -->
 <p><?php echo esc_html__( 'Continue the story here. This is a good spot for a quote from the photographer about their approach. Talk about how you built trust with the people in your photographs and what you hope readers take away.', 'catchlight-features' ); ?></p>
 <!-- /wp:paragraph -->
@@ -58,6 +60,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 <!-- /wp:spacer -->
 
 <?php echo catchlight_features_photo_carousel_pattern_markup( 'story-centered-photo' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Pattern markup, escaped in its own file. ?>
+
+<?php echo catchlight_features_photo_carousel_pattern_markup( 'story-related-story-card' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Pattern markup, escaped in its own file. ?>
 
 <!-- wp:paragraph -->
 <p><?php echo esc_html__( 'As the story winds down, return to the people and the place you opened with. Readers should come away knowing where things stand today.', 'catchlight-features' ); ?></p>

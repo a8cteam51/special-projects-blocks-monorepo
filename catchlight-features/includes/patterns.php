@@ -54,39 +54,47 @@ function catchlight_features_photo_carousel_register_patterns() {
 	);
 
 	$patterns = array(
-		'story-starter'           => array(
+		'story-starter'            => array(
 			__( 'Story Starter', 'catchlight-features' ),
-			__( 'A full photo story built from the Story pieces: opener, carousel, pull quote, photo pairs and single photos, with prompts for the text in between.', 'catchlight-features' ),
+			__( 'A full photo story built from the Story pieces: opener, carousel, pull quote, photo pairs, story cards and single photos, with prompts for the text in between.', 'catchlight-features' ),
 		),
-		'story-opener'            => array(
+		'story-opener'             => array(
 			__( 'Story: Opener', 'catchlight-features' ),
 			__( 'A one-sentence subheading and two opening paragraphs.', 'catchlight-features' ),
 		),
-		'story-photo-carousel'    => array(
+		'story-photo-carousel'     => array(
 			__( 'Story: Photo Carousel', 'catchlight-features' ),
 			__( 'A Photo Carousel with three photos, each with its own caption.', 'catchlight-features' ),
 		),
-		'story-pull-quote'        => array(
+		'story-pull-quote'         => array(
 			__( 'Story: Pull Quote', 'catchlight-features' ),
 			__( 'A short pull quote from the story.', 'catchlight-features' ),
 		),
-		'story-photo-pair'        => array(
+		'story-photo-pair'         => array(
 			__( 'Story: Photo Pair', 'catchlight-features' ),
 			__( 'Two photos side by side, one larger than the other.', 'catchlight-features' ),
 		),
-		'story-offset-photo-pair' => array(
+		'story-offset-photo-pair'  => array(
 			__( 'Story: Offset Photo Pair', 'catchlight-features' ),
 			__( 'Two staggered photos, for a before and after or two moments in one place.', 'catchlight-features' ),
 		),
-		'story-wide-photo'        => array(
+		'story-partner-story-card' => array(
+			__( 'Story: Partner Story Card', 'catchlight-features' ),
+			__( 'A card linking to the full story on the partner newsroom\'s site.', 'catchlight-features' ),
+		),
+		'story-related-story-card' => array(
+			__( 'Story: Related Story Card', 'catchlight-features' ),
+			__( 'A card linking to a related story or interactive.', 'catchlight-features' ),
+		),
+		'story-wide-photo'         => array(
 			__( 'Story: Wide Photo', 'catchlight-features' ),
 			__( 'A single photo wider than the text column.', 'catchlight-features' ),
 		),
-		'story-full-width-photo'  => array(
+		'story-full-width-photo'   => array(
 			__( 'Story: Full-Width Photo', 'catchlight-features' ),
 			__( 'A single photo the full width of the screen.', 'catchlight-features' ),
 		),
-		'story-centered-photo'    => array(
+		'story-centered-photo'     => array(
 			__( 'Story: Centered Photo', 'catchlight-features' ),
 			__( 'A single centered photo.', 'catchlight-features' ),
 		),
