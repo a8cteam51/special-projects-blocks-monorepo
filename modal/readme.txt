@@ -74,7 +74,7 @@ Yes. A Modal button can be placed inside a modal's content to trigger a second m
 == Changelog ==
 
 = 0.1.6 =
-* Fix: in a block theme, the modals are no longer printed on a page that shows no Modal button. A search results page or archive that lists titles and excerpts printed every modal, unstyled, below the footer when its first post contained a Modal button.
+* Fix: on a page served by a block template, the modals are no longer printed when it shows no Modal button. A search results page or archive that lists titles and excerpts printed every modal, unstyled, below the footer when its first post contained a Modal button.
 
 = 0.1.5 =
 * Removed the self-update mechanism. Updates are now installed manually from GitHub releases.

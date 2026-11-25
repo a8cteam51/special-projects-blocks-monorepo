@@ -2,7 +2,7 @@
 
 ### Fixed
 
--   In a block theme, the modals are no longer printed on a page that shows no Modal button. A search results page or archive that lists titles and excerpts printed every modal, unstyled, below the footer when its first post contained a Modal button: `has_block()` matched that first post, and the block's styles only load where the block renders.
+-   On a page served by a block template, the modals are no longer printed when it shows no Modal button. A search results page or archive that lists titles and excerpts printed every modal, unstyled, below the footer when its first post contained a Modal button: `has_block()` matched that first post, and the block's styles only load where the block renders.
 
 ## 0.1.5 (2026-10-09)
 

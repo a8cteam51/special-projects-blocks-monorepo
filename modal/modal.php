@@ -135,6 +135,25 @@ function a8csp_modal_add_modal_meta() {
 add_action( 'init', 'a8csp_modal_add_modal_meta' );
 
 /**
+ * Whether the page's blocks were rendered before wp_head.
+ *
+ * A block template is served through core's template canvas, which renders the whole template before it
+ * prints the head. A PHP template prints the head first, whether it belongs to a classic theme or is one
+ * a plugin supplies in a block theme.
+ *
+ * @return bool
+ */
+function a8csp_modal_is_page_rendered_before_head() {
+	if ( ! isset( $GLOBALS['template'] ) || ! is_string( $GLOBALS['template'] ) ) {
+		return false;
+	}
+
+	$canvas = realpath( ABSPATH . WPINC . '/template-canvas.php' );
+
+	return false !== $canvas && realpath( $GLOBALS['template'] ) === $canvas;
+}
+
+/**
  * Add the modal templates to the site.
  *
  * The action has to be added to the wp_head hook to ensure correct styles are loaded for the inner content
@@ -145,9 +164,9 @@ add_action( 'init', 'a8csp_modal_add_modal_meta' );
  * do not interfere with the modal container.
  *
  * has_block() reads the current post, which on a list of posts (search results, an archive, the blog) is
- * the first post listed, whether or not the page shows that post's content. A block theme renders the whole
- * template before wp_head, so there a Modal block the page shows has already rendered by now. A classic
- * theme renders the page after wp_head, so has_block() is all there is to go on.
+ * the first post listed, whether or not the page shows that post's content. Where the page was rendered
+ * before wp_head, a Modal block the page shows has already rendered by now. Where it was not, has_block()
+ * is all there is to go on.
  *
  * @return void
  */
@@ -157,7 +176,7 @@ function a8csp_modal_insert_modal_templates() {
 		return;
 	}
 
-	if ( wp_is_block_theme() && ! did_filter( 'render_block_a8csp/modal' ) ) {
+	if ( a8csp_modal_is_page_rendered_before_head() && ! did_filter( 'render_block_a8csp/modal' ) ) {
 		return;
 	}
 
