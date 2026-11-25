@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Modal
  * Description:       A modal block that can be toggled open and closed.
- * Version:           0.1.5
+ * Version:           0.1.6
  * Requires at least: 6.6
  * Requires PHP:      7.2
  * Author:            Automattic Special Projects Team
@@ -144,11 +144,20 @@ add_action( 'init', 'a8csp_modal_add_modal_meta' );
  * templates are added to the end of the page so that other html elements on the page
  * do not interfere with the modal container.
  *
+ * has_block() reads the current post, which on a list of posts (search results, an archive, the blog) is
+ * the first post listed, whether or not the page shows that post's content. A block theme renders the whole
+ * template before wp_head, so there a Modal block the page shows has already rendered by now. A classic
+ * theme renders the page after wp_head, so has_block() is all there is to go on.
+ *
  * @return void
  */
 function a8csp_modal_insert_modal_templates() {
 
 	if ( ! has_block( 'a8csp/modal' ) ) {
+		return;
+	}
+
+	if ( wp_is_block_theme() && ! did_filter( 'render_block_a8csp/modal' ) ) {
 		return;
 	}
 
