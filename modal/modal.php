@@ -141,7 +141,7 @@ add_action( 'init', 'a8csp_modal_add_modal_meta' );
  * prints the head. A PHP template prints the head first, whether it belongs to a classic theme or is one
  * a plugin supplies in a block theme.
  *
- * @return bool
+ * @return boolean
  */
 function a8csp_modal_is_page_rendered_before_head() {
 	if ( ! isset( $GLOBALS['template'] ) || ! is_string( $GLOBALS['template'] ) ) {
